@@ -1,1 +1,0 @@
-https://github.com/Protegiks01/hwb/actions/runs/21023644477/job/60443142518
