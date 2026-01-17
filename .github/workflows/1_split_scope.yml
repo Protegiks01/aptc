@@ -1,4 +1,4 @@
-name: 2 Run Question Generator Question
+name: 1 Generate Scope
 
 on:
   workflow_dispatch:  # allows manual trigger from Actions tab
@@ -11,7 +11,7 @@ permissions:
   actions: write
 
 jobs:
-  run-deepwiki:
+  run-audit:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,12 +34,8 @@ jobs:
           pip install selenium webdriver-manager
           pip install -r requirements.txt || echo "No requirements.txt found, skipping"
 
-      - name: Run Question Generator with virtual display
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
-          sudo apt-get install xclip
-          xvfb-run --auto-servernum python run_questions_generator_questions.py
+      - name: Run Split Scope
+        run: python run_split_all_scope_questions.py
 
       - name: Commit and push changes
         run: |
@@ -47,6 +43,22 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add .
           
-          git diff --staged --quiet || git commit -m "Auto-update: collections and reports [skip ci]"
-          git push --force origin master
-
+          git commit -m "Auto-update: collections and reports"
+          # Retry logic
+          n=0
+          until [ $n -ge 3 ]; do
+            git pull --rebase origin master
+            if git push --force origin master; then
+              echo "Push succeeded"
+              break
+            fi
+            n=$((n+1))
+            echo "Push failed, retrying in 5 seconds..."
+            sleep 5
+          done
+          
+          # Fail the step if all retries are exhausted
+          if [ $n -eq 3 ]; then
+          echo "Failed to push after 3 attempts"
+          exit 1
+          fi

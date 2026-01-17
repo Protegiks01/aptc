@@ -14,7 +14,7 @@ def get_questions():
 
 questions = get_questions()
 
-questions_generator  = [
+scope_files  = [
     'aptos-core/api/openapi-spec-generator/src/fake_context.rs',
     'aptos-core/api/openapi-spec-generator/src/main.rs',
     'aptos-core/api/src/accept_type.rs',
