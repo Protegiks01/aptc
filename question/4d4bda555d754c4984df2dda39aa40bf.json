@@ -1,0 +1,21 @@
+[
+  "[File: aptos-core/types/src/jwks/mod.rs] [Const: DELETE_COMMAND_INDICATOR] [String literal] DELETE marker is untyped string at line 321 - can typos or encoding issues cause deletion logic to fail silently? (Medium)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Struct: QuorumCertifiedUpdate] [Timestamp missing] QuorumCertifiedUpdate has no timestamp field - can old updates be replayed indefinitely without expiration? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Struct: KeyLevelUpdate] [Atomic execution] Are KeyLevelUpdate operations atomic, or can partial application cause split-brain where some validators have updated keys and others don't? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [OnChainConfig: ObservedJWKs] [Consensus dependency] ObservedJWKs requires consensus to update - what happens during network partition? Can validators diverge in their JWK sets? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Field: multi_sig] [Quorum threshold] AggregateSignature at line 306 - what quorum threshold is required? Can attackers with <1/3 stake inject updates? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Struct: PatchedJWKs] [Override semantics] How do PatchedJWKs interact with ObservedJWKs? Can patches override observations creating inconsistent state? (High)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Function: ProviderJWKs::indexed()] [Error propagation] indexed() returns Result but callers might unwrap() - can error cases be triggered to crash validators? (Medium)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Function: AllProvidersJWKs::get_jwk()] [Nested Results] get_jwk() has nested ? operators - does error context get lost making debugging impossible? (Low)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Function: KeyLevelUpdate::try_from_issuer_level_repr()] [Panic vs Error] Multiple ensure! checks - do they return Err or panic? Can attackers trigger panics? (Medium)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [TryFrom traits] [Unrecoverable errors] If TryFrom fails during transaction execution, is the transaction reverted or does it partially succeed? (High)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [OnChainConfig updates] [Governance bypass] Can validator consensus update OnChainConfigs without going through governance, bypassing policy controls? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Struct: QuorumCertifiedUpdate] [Validator collusion] Can colluding validators (just over 2/3) create QuorumCertifiedUpdate for any JWKs bypassing OIDC provider validation? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Struct: SupportedOIDCProviders] [Provider addition] Who can add new OIDC providers? Can any validator do it or only governance? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Struct: PatchedJWKs] [Patch authority] Who has authority to create patches? Can patches override quorum-certified observations? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Multiple OnChainConfigs] [Config conflicts] ObservedJWKs, PatchedJWKs, and FederatedJWKs all contain AllProvidersJWKs - which one is authoritative? Can they conflict? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Function: ObservedJWKs::into_providers_jwks()] [Ownership transfer] into_providers_jwks() moves data - if called multiple times or concurrently, can it cause use-after-move? (High)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Struct: ProviderJWKs] [Version gaps] If versions jump (e.g., 1 -> 100), are intermediate versions validated as missing or can attackers skip versions? (High)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [HashMap: AllProvidersJWKs::indexed()] [Non-deterministic ordering] HashMap iteration order is random - can this cause non-deterministic transaction execution across validators? (Critical)",
+  "[File: aptos-core/types/src/jwks/mod.rs] [Empty collections] [Zero-length vectors] Can empty issuer Vec<u8>, config_url, or kid cause division-by-zero or underflow in length calculations? (Medium)"
+]
