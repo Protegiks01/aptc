@@ -223,53 +223,6 @@ class GetQuestions:
         # Optional: Clean up whitespace (strip) for each question found
         return [q.strip() for q in questions]
 
-
-def split_all_questions():
-    """
-    Split all_questions.json into chunks of 25 questions and save them as separate files.
-    Each file will be named with a UUID and contain 25 questions.
-    """
-    # Get the question directory, default to 'question'
-    question_directory = os.environ.get('QUESTION_DIR', 'question')
-    input_file = 'all_questions.json'
-
-    # Create the question directory if it doesn't exist
-    os.makedirs(question_directory, exist_ok=True)
-
-    try:
-        # Load all questions
-        with open(input_file, 'r', encoding='utf-8') as f:
-            all_questions = json.load(f)
-
-        # Split into chunks of 25
-        chunk_size = 25
-        total_questions = len(all_questions)
-
-        for i in range(0, total_questions, chunk_size):
-            # Get a chunk of 25 questions
-            chunk = all_questions[i:i + chunk_size]
-
-            # Generate a unique filename
-            filename = f"{str(uuid.uuid4())}.json".replace("-", "")
-            filepath = os.path.join(question_directory, filename)
-
-            # Save the chunk to a new file
-            with open(filepath, 'w', encoding='utf-8') as f:
-                json.dump(chunk, f, indent=2, ensure_ascii=False)
-
-            print(f"Saved {len(chunk)} questions to {filepath}")
-
-        print(
-            f"\nSuccessfully split {total_questions} questions into {((total_questions - 1) // chunk_size) + 1} files")
-
-    except FileNotFoundError:
-        print(f"Error: {input_file} not found")
-    except json.JSONDecodeError:
-        print(f"Error: {input_file} is not a valid JSON file")
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
-
-
 def generate_file_path_for_scope():
     # Get the directory from environment variable, or use 'questions' as default
     scope_questions_directory = os.environ.get('SCOPE_QUESTIONS_DIR', 'scope_questions')
