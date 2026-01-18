@@ -1,0 +1,6 @@
+[
+  "[File: aptos-core/crates/node-resource-metrics/src/collectors/cpu_metrics_collector.rs] [Function: collect()] [FFI safety] sysinfo library uses FFI to access system APIs - if underlying C libraries (glibc, kernel) have memory safety bugs in CPU information functions, can this cause undefined behavior in collect()? (Medium)",
+  "[File: aptos-core/crates/node-resource-metrics/src/collectors/cpu_metrics_collector.rs] [Struct: CpuMetricsCollector] [Send/Sync safety] CpuMetricsCollector is used as Box<dyn Collector> in Registry (line 126) - if Collector trait requires Send+Sync but Arc<Mutex<System>> is not Sync due to sysinfo internals, can this cause thread safety violations? (Medium)",
+  "[File: aptos-core/crates/node-resource-metrics/src/collectors/cpu_metrics_collector.rs] [Function: collect()] [String lifetime] Lines 78, 90, 101-102 convert CPU names to String labels - if sysinfo returns references that become invalid during collect(), can this cause use-after-free or dangling pointer issues? (Low)",
+  "[File: aptos-core/crates/node-resource-metrics/src/collectors/cpu_metrics_collector.rs] [Function: collect()] [Buffer overflow] format! macro on line 90 concatenates cpu.name() with idx - if cpu.name() is extremely long (pathological case), can string formatting cause buffer allocation failures or excessive memory usage? (Low)"
+]

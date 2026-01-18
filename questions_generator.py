@@ -223,6 +223,7 @@ class GetQuestions:
         # Optional: Clean up whitespace (strip) for each question found
         return [q.strip() for q in questions]
 
+
 def generate_file_path_for_scope():
     # Get the directory from environment variable, or use 'questions' as default
     scope_questions_directory = os.environ.get('SCOPE_QUESTIONS_DIR', 'scope_questions')

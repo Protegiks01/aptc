@@ -1,0 +1,9 @@
+[
+  "[File: aptos-core/crates/channel/src/lib.rs] [Function: poll_next()] [Polling frequency] If poll_next() is called in a tight loop when messages arrive slowly, does excessive gauge.dec() checking cause cache contention that slows down message processing across validator components? (Low)",
+  "[File: aptos-core/crates/channel/src/lib.rs] [Struct: Receiver] [Single receiver] The documentation mentions single-consumer, but is this enforced by the type system, or could multiple Receiver clones (via unsafe code) cause race conditions in gauge decrements? (Medium)",
+  "[File: aptos-core/crates/channel/src/lib.rs] [Function: new()] [Maximum capacity] What is the maximum size value supported at line 120, and if size=usize::MAX is used, does this cause integer overflow in gauge operations when the channel becomes full? (Medium)",
+  "[File: aptos-core/crates/channel/src/lib.rs] [Function: start_send()] [Immediate drop] If a message is sent via start_send() but the receiver immediately drops it without polling, does the gauge stay incremented forever, causing permanent capacity loss? (Medium)",
+  "[File: aptos-core/crates/channel/src/lib.rs] [General] [Empty channel lifetime] Can an empty channel (size=0 at creation, never used) cause resource leaks due to gauge registration that persists even when no messages are ever sent? (Low)",
+  "[File: aptos-core/crates/channel/src/lib.rs] [General] [Gauge-capacity invariant] Is there a documented invariant that gauge value == actual queued messages at all times, and if this invariant is violated, what are the security implications for consensus and state sync? (Critical)",
+  "[File: aptos-core/crates/channel/src/lib.rs] [General] [Backpressure guarantee] Does this channel guarantee that when the gauge reaches the configured capacity, no new messages are accepted, or can there be a window where messages exceed capacity, breaking Byzantine fault tolerance assumptions? (Critical)"
+]

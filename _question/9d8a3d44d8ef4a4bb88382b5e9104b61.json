@@ -1,0 +1,11 @@
+[
+  "[File: aptos-core/crates/aptos-ledger/src/lib.rs] [Function: fetch_batch_accounts()] [Index boundary] The function accepts Range<u32> - are there maximum index values that the Ledger device supports, or could u32::MAX cause errors? (Medium)",
+  "[File: aptos-core/crates/aptos-ledger/src/lib.rs] [Function: get_public_key()] [Magic byte skip] The code skips offset += 1 for a 0x04 byte - if response_buffer[1] is not 0x04, does this still skip it and cause misaligned parsing? (Medium)",
+  "[File: aptos-core/crates/aptos-ledger/src/lib.rs] [Function: fetch_batch_accounts()] [Duplicate path parsing] Similar magic byte skip logic exists in two places - are both implementations consistent, or could divergence cause vulnerabilities? (Low)",
+  "[File: aptos-core/crates/aptos-ledger/src/lib.rs] [Function: open_ledger_transport()] [Generic error mapping] Both HidApi::new() and TransportNativeHID::new() errors map to DeviceNotFound - could this hide other error types like permission issues? (Low)",
+  "[File: aptos-core/crates/aptos-ledger/src/lib.rs] [From<LedgerHIDError>] [Status code loss] The From implementation discards the Option<u16> retcode - could preserving this help debug Ledger-specific errors? (Low)",
+  "[File: aptos-core/crates/aptos-ledger/src/lib.rs] [Function: get_public_key()] [Display bypass] When display=false, keys are extracted without user confirmation - could malware silently enumerate all keys by calling this repeatedly? (High)",
+  "[File: aptos-core/crates/aptos-ledger/src/lib.rs] [Function: fetch_batch_accounts()] [No display option] The function always uses P1_NON_CONFIRM - should batch operations require at least one user confirmation to prevent silent key enumeration? (Medium)",
+  "[File: aptos-core/crates/aptos-ledger/src/lib.rs] [Function: get_public_key() & fetch_batch_accounts()] [Hex encoding consistency] The code uses hex::encode() - is this function safe against all input sizes, or could very large buffers cause issues? (Low)",
+  "[File: aptos-core/crates/aptos-ledger/src/lib.rs] [Function: get_public_key()] [Encoded string validation] Ed25519PublicKey::from_encoded_string() expects specific encoding - what happens if hex_string has odd length or invalid hex characters? (Low)"
+]
