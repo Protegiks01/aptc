@@ -1,0 +1,20 @@
+[
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Error: expect() calls] [Panic on DB Errors] Multiple expect() calls at lines 89, 101, 183 - can database errors crash the validator? (Critical)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Error: unwrap_or_default] [Silent Failures] At line 360, mempool errors are silently converted to empty results - can this hide critical failures? (Medium)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Edge Case: Empty Transaction List] If handle_scheduled_pull returns empty batches repeatedly, can this indicate mempool starvation or attack? (Low)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Edge Case: Single Transaction] Can batches with single large transaction cause inefficient bandwidth usage or gas estimation issues? (Low)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Edge Case: Max Batch Size] If a single transaction equals sender_max_batch_bytes, can this create edge cases in batch splitting logic? (Medium)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Edge Case: Batch ID Wraparound] When batch_id reaches u64::MAX and wraps, can this cause collisions with cleaned-up old batches? (High)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Edge Case: Zero Gas Price] Can transactions with gas_unit_price = 0 cause division by zero or bypass bucketing logic at lines 262-287? (Medium)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Dependency: insert_batch -> txns_in_progress_sorted] Can inconsistencies between batches_in_progress and txns_in_progress_sorted cause transactions to be double-counted or lost? (High)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Dependency: create_new_batch -> insert_batch] If create_new_batch fails after insert_batch, can this cause orphaned transaction entries? (Medium)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Dependency: batch_expirations -> batches_in_progress] Can desynchronization between batch_expirations and batches_in_progress cause incorrect expiry? (High)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Type: BatchInfoExt] Batch<BatchInfoExt> is used throughout - can type confusion between batch versions cause safety violations? (High)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Type: SignedTransaction] SignedTransaction is passed around - are signatures validated before insertion into batches? (Critical)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Conversion: into()] At line 489, batch.into() converts to persist format - can this conversion lose information? (Medium)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Concurrency: Async Mutation] The entire BatchGenerator is mutated in async context without explicit locking - is single-threaded async execution guaranteed? (High)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Concurrency: MempoolProxy] MempoolProxy at line 110 likely contains channels - can concurrent pulls cause mempool state corruption? (Medium)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Concurrency: BatchWriter] batch_writer.persist() at line 491 - can concurrent persist calls cause race conditions in storage? (High)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Memory: Vec::drain] drain() at line 246 invalidates iterators - can this cause use-after-free if transaction vector is accessed concurrently? (High)",
+  "[File: aptos-core/consensus/src/quorum_store/batch_generator.rs] [Memory: Clone Overhead] Frequent cloning of txns_in_progress_sorted at line 357 - can this cause memory pressure under high load? (Medium)"
+]
