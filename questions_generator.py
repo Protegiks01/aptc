@@ -170,7 +170,7 @@ class GetQuestions:
         try:
             self.driver.get(url)
 
-            wait = WebDriverWait(self.driver, 120)
+            wait = WebDriverWait(self.driver, 20)
             #  this would click the copy button
             copy_button_selector = (By.CSS_SELECTOR, '[aria-label="Copy"]')
             all_copy_buttons = wait.until(

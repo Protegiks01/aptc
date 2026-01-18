@@ -114,7 +114,7 @@ def main():
             counter = 0
             report = GetQuestions(teardown=True)
             for i, url in enumerate(pending_urls):
-                print(f"[{i + 1}/{total}] Generating report for: {url[:50]}...")
+                print(f"[{i + 1}/{total}] Generating report for: {url}")
                 report.get_questions(url)
                 counter += 1
                 if counter >= 500:
