@@ -1,0 +1,18 @@
+[
+  "[File: aptos-core/dkg/src/network.rs] [Network: Self-send security] Self-sending bypass network authentication (lines 69-80) - can this be exploited if an attacker can spoof the author address? (High)",
+  "[File: aptos-core/dkg/src/network.rs] [Network: Multiple networks] The panic check ensures only 1 network (line 144) - but what if network topology changes during runtime, can this cause the validator to miss DKG messages? (Medium)",
+  "[File: aptos-core/dkg/src/network.rs] [Network: Latency sorting side effects] sort_peers_by_latency() (line 122) can change message delivery order - can this be exploited to manipulate which validators process transcripts first? (Medium)",
+  "[File: aptos-core/dkg/src/network.rs] [Integration: RBNetworkSender trait] Does the RBNetworkSender trait make security assumptions that NetworkSender violates, such as message authentication or ordering guarantees? (High)",
+  "[File: aptos-core/dkg/src/network.rs] [Integration: DKGNetworkClient wrapper] NetworkSender wraps DKGNetworkClient - can the wrapper bypass security checks implemented in the inner client? (Medium)",
+  "[File: aptos-core/dkg/src/network.rs] [Integration: Response sender trait] The RpcResponseSender trait allows multiple implementations - can mixing RealRpcResponseSender and DummyRpcResponseSender cause security issues? (Low)",
+  "[File: aptos-core/dkg/src/network.rs] [Integration: aptos_channel] Using custom aptos_channel instead of standard channels - are there security vulnerabilities specific to this implementation? (Medium)",
+  "[File: aptos-core/dkg/src/network.rs] [Integration: Protocol selection] Multiple protocols (Compressed/Bcs/Json) supported - can protocol downgrade attacks force use of less secure protocols? (High)",
+  "[File: aptos-core/dkg/src/network.rs] [Edge: Empty validator set] What happens if network_and_events.values() returns empty set - does the panic at line 147 fire, or can it cause undefined behavior? (Low)",
+  "[File: aptos-core/dkg/src/network.rs] [Edge: Concurrent initialization] Can NetworkTask::new() be called multiple times concurrently, creating multiple tasks that fight over the same channels? (High)",
+  "[File: aptos-core/dkg/src/network.rs] [Edge: Channel closure] If self_sender channel is closed while send_rpc() is executing, does line 73 propagate the error properly or cause panic? (High)",
+  "[File: aptos-core/dkg/src/network.rs] [Edge: Protocol array bounds] RPC array is defined in network_interface.rs - can mismatched versions cause RPC[0] to be out of bounds? (Medium)",
+  "[File: aptos-core/dkg/src/network.rs] [Edge: Zero timeout] What happens if timeout_duration is Duration::ZERO - does the timeout fire immediately causing all RPCs to fail? (Low)",
+  "[File: aptos-core/dkg/src/network.rs] [Edge: Duplicate peers] Can the peers Vec in to_bytes_by_protocol() contain duplicates, causing the same message to be sent multiple times to the same validator? (Low)",
+  "[File: aptos-core/dkg/src/network.rs] [Edge: Response sender double-boxing] IncomingRpcRequest wraps response_sender in Box twice (lines 33, 167) - can this cause unnecessary overhead or type confusion? (Low)",
+  "[File: aptos-core/dkg/src/network.rs] [Edge: Stream termination] When all_events stream ends (line 161 returns None), does the task exit cleanly or leave resources hanging? (Medium)"
+]
