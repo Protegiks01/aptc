@@ -1,0 +1,13 @@
+[
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Function: try_commit()] [Index increment] Line 683 uses fetch_add(1) - can this overflow after many commits? (Low)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Function: read_latest_predicted_value()] [Index arithmetic] Line 762 computes current_txn_idx + 1 - can this overflow? (Low)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Function: set_base_value()] [Memory size addition] Line 445-447 adds memory sizes - can total_base_value_size overflow u64? (Medium)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Delta operations] [Accumulator overflow] Line 267-303 accumulate deltas - can delta.merge_with_previous_delta cause u128 overflow? (Critical)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Multiple locations] [Unreachable macros] Lines 120, 211, 215, 248, 250, 270, 284, 293 use unreachable!() - can any of these be reached through race conditions or malformed inputs? (High)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Function: insert_speculative_value()] [CodeInvariantError return] Lines 171-174 return CodeInvariantError which is non-deterministic - can this be triggered during normal execution causing validator disagreement? (Critical)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Function: try_commit()] [Multiple error paths] Various CodeInvariantError and ReExecutionNeeded returns - are all error paths properly tested to ensure no state corruption? (High)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Error type: CommitError] [Two error variants] Lines 22-25 define CodeInvariantError and ReExecutionNeeded - are these properly distinguished to avoid treating recoverable errors as invariant violations? (Medium)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Error propagation] [PanicOr wrapper] Multiple functions return PanicOr<MVDelayedFieldsError> - can PanicError be improperly caught or handled? (Medium)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Struct: VersionedValue] [BTreeMap growth] Line 62 uses BTreeMap that grows indefinitely - can transaction aborts/re-executions cause unbounded memory growth? (High)",
+  "[File: aptos-move/mvhashmap/src/versioned_delayed_fields.rs] [Struct: VersionedDelayedFields] [DashMap growth] Line 408 uses DashMap - are entries ever removed, or does it grow indefinitely? (High)"
+]
