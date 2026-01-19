@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: batch_insert_at()] [Single child leaf promotion] When only one child remains at lines 574-598, leaf nodes are promoted. Can this logic be exploited to create artificially shallow trees that bypass depth-based security checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df07ccb3-57a5-4366-995f-e89c82088e17?mode=deep",
+    "timestamp": "2026-01-19 21:52:35.035764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: batch_insert_at()] [Old leaf node retrieval] At lines 581-585, old leaf nodes are retrieved from storage and marked stale. Can race conditions cause the retrieved node to differ from the one that was originally in the tree, causing hash mismatches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2c210b7-2f73-450e-b4ae-04450fe0d8f9?mode=deep",
+    "timestamp": "2026-01-19 21:52:47.445926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: batch_insert_at()] [Child node key generation] The gen_child_node_key calls at lines 582, 609, and 612 use version and nibble parameters. Can incorrect version usage cause nodes from different versions to collide in storage? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4899a180-4d41-441c-899d-0d2be91859c7?mode=deep",
+    "timestamp": "2026-01-19 21:53:00.827771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: batch_insert_at()] [Hash cache exploitation] The Child::for_node call at line 612 uses hash_cache. Can cache poisoning attacks provide incorrect hashes that later cause merkle proof verification to fail, breaking state integrity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6e1c373-999d-4c6d-8766-12e5bb885c16?mode=deep",
+    "timestamp": "2026-01-19 21:53:13.838789",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: batch_insert_at()] [Null node depth constraint] The ensure! at lines 625-628 allows Null nodes only at depth <= MIN_LEAF_DEPTH. Can violating this by manipulating depth parameters cause Null nodes in invalid positions, corrupting tree structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45a05631-ba92-41d3-9b4d-80c81c0ac0c2?mode=deep",
+    "timestamp": "2026-01-19 21:53:27.405563",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: batch_insert_at()] [Existing leaf handling delegation] At line 621, existing leaf nodes are handled by batch_update_subtree_with_existing_leaf. Can inconsistencies between this function and batch_update_subtree cause divergent behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e089516-d626-4262-abc9-45b0db43d0e7?mode=deep",
+    "timestamp": "2026-01-19 21:53:42.074405",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: insert_at_child()] [Child index extraction] The child_index is extracted at line 647 using get_nibble(depth). Can depth values exceeding ROOT_NIBBLE_HEIGHT cause out-of-bounds access or incorrect nibble extraction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b6c044e-6fb4-41da-b07b-00dc8b6624b8?mode=deep",
+    "timestamp": "2026-01-19 21:53:57.687306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: insert_at_child()] [Child existence branch divergence] When child is Some vs None (lines 650-667), different code paths are taken. Can attackers exploit timing differences to learn information about tree structure through side-channel attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70e8c001-595d-475f-a9a0-bd37d5023568?mode=deep",
+    "timestamp": "2026-01-19 21:54:14.490369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: insert_at_child()] [Slice range calculation] The kvs slice at lines 654 and 662 uses left..=right range. Can off-by-one errors in NibbleRangeIterator cause incorrect slices that skip or duplicate keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_567eff36-63ed-4bb6-9c1d-e32eab43c952?mode=deep",
+    "timestamp": "2026-01-19 21:54:32.603290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: insert_at_child()] [Depth increment overflow] The depth + 1 at lines 655 and 663 increments depth. Can recursive calls with maximum depth cause integer overflow leading to incorrect depth values and invalid tree structure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_941f0a75-3f03-4895-98df-eb74636ce229?mode=deep",
+    "timestamp": "2026-01-19 21:54:51.728328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: insert_at_child()] [New subtree version usage] When creating new subtrees at line 659, the version parameter is used. Can version inconsistencies between parent and child nodes cause merkle path verification failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe58ac27-fe4b-4193-a28e-13a7d3cb2750?mode=deep",
+    "timestamp": "2026-01-19 21:55:11.254457",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof()] [Proof conversion safety] The function converts SparseMerkleProofExt to SparseMerkleProof at line 714. Can this conversion lose critical information needed for verification, causing invalid proofs to be accepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c2f34d7-3605-4292-8a5a-18b419c5e999?mode=deep",
+    "timestamp": "2026-01-19 21:55:31.926370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Empty tree proof forgery] For empty trees, a proof with no sibling hash is returned at line 793. Can attackers exploit this to prove non-existence of keys that actually exist by manipulating version parameters? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8297b516-6599-445c-abe2-2c5f6568a26c?mode=deep",
+    "timestamp": "2026-01-19 21:55:53.521392",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Cyclic graph detection] The loop at line 731 deliberately limits iterations to ROOT_NIBBLE_HEIGHT to detect cycles. Can carefully crafted tree structures bypass this detection and cause infinite loops or DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81fa4faf-ad80-4029-85ae-b6e7bed5849f?mode=deep",
+    "timestamp": "2026-01-19 21:56:16.181597",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Root node error handling] At lines 736-741, MissingRootError is returned only when nibble_depth == 0. Can this leak information about tree depth through error messages, enabling timing attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ada95be-4b87-49a9-86b0-f201b35b3208?mode=deep",
+    "timestamp": "2026-01-19 21:56:39.336442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Single leaf internal node skip] At lines 744-751, internal nodes with leaf_count == 1 are skipped without adding siblings. Can this optimization be exploited to create shorter proof paths that hide actual tree structure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b42a40fc-f879-4298-a365-e534a9c3cddb?mode=deep",
+    "timestamp": "2026-01-19 21:57:03.713313",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Nibble iterator exhaustion] At lines 753-755, running out of nibbles returns an error. Can malformed keys cause premature exhaustion that generates invalid proofs accepted by verifiers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8694e48e-5420-438e-a5a0-47604426b5ef?mode=deep",
+    "timestamp": "2026-01-19 21:57:28.962539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Child retrieval with siblings] The get_child_with_siblings call at lines 756-763 populates out_siblings. Can manipulation of this function cause missing or extra siblings that break proof verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4ac9e38-7e0a-4015-9115-32bdc04df934?mode=deep",
+    "timestamp": "2026-01-19 21:57:55.169318",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Non-existence proof validity] When child_node_key is None at lines 764-776, a proof of non-existence is returned. Can attackers craft keys that produce false non-existence proofs for existing keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5ce3254-0be6-4069-9b93-c63a64e3b69c?mode=deep",
+    "timestamp": "2026-01-19 21:58:20.474501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Leaf key comparison] At line 780, leaf_node.account_key() == key determines value existence. Can hash collisions cause two different keys to match, returning wrong values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e599fe19-3d89-4c1f-9cfd-23b124fb4c57?mode=deep",
+    "timestamp": "2026-01-19 21:58:46.548196",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Target root depth handling] The target_root_depth parameter (line 721) affects proof generation at lines 762, 772, and 788. Can manipulation cause proofs valid for one depth to be incorrectly accepted at another depth? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19abd3c0-e4e3-4d73-9acd-c151efb1c0a2?mode=deep",
+    "timestamp": "2026-01-19 21:59:12.431677",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_with_proof_ext()] [Null node proof handling] When encountering Node::Null at line 792, an empty proof is returned. Can this be exploited to prove anything about null subtrees, bypassing access control checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_778a105d-7e74-4eee-9395-1f0cf454449a?mode=deep",
+    "timestamp": "2026-01-19 21:59:37.910342",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_range_proof()] [Rightmost key validation] The ensure! at line 807 requires the rightmost_key_to_prove to exist. Can providing a non-existent key cause proof generation to fail in a way that leaks information about tree contents? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdca520a-273e-4a44-8a31-b659c50354fe?mode=deep",
+    "timestamp": "2026-01-19 22:00:02.964541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_range_proof()] [Sibling filtering logic] The filter_map at lines 809-820 keeps only right siblings (!bit condition at line 815). Can incorrect bit iteration or off-by-one errors cause wrong siblings to be included, invalidating range proofs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d031621-5c3a-452e-a85a-a12c9676f862?mode=deep",
+    "timestamp": "2026-01-19 22:00:27.312850",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/lib.rs] [Function: get_range_proof()] [Sibling reversal] The .rev() call at line 821 reverses siblings. Can this ordering be exploited to create range proofs that verify incorrectly when the order is non-deterministic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4062885-822f-4160-85e9-3e0b5b88e223?mode=deep",
+    "timestamp": "2026-01-19 22:00:53.238317",
+    "report_generated": false
+  }
+]
