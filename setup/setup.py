@@ -160,7 +160,7 @@ def main():
     num_repos = 10  # For testing, change to 100 for production
 
     # Get GitHub token and username from environment
-    token = os.getenv('GITHUB_TOKEN') or config('GITHUB_TOKEN', default=None)
+    token = os.getenv('REPO_TOKEN') or config('REPO_TOKEN', default=None)
     username = "grass-dev-pa"
 
     if not token:
