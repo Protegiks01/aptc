@@ -1,0 +1,68 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Function: insert_to_db()] [Database-level races] The read_write() transaction mode at lines 92 and 108 - what READ COMMITTED isolation level guarantees exist? Can phantom reads occur? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b4af22f-475e-4cea-a0e8-0519ff9e96b0?mode=deep",
+    "timestamp": "2026-01-19 16:47:41.446037",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Function: insert_to_db()] [Lock contention] The sorting at lines 374-385 is meant to prevent deadlocks, but can row-level locks still cause contention if multiple processors update overlapping pools? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f08aaf6b-28ba-4608-8c02-897a463b0577?mode=deep",
+    "timestamp": "2026-01-19 16:47:54.085969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Struct: StakeTransactionProcessor] [State persistence] The StakeTransactionProcessor struct only holds connection_pool - is there any state tracking for last processed version to prevent re-processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_004713b3-d8aa-4ac2-b709-a170a749e9e6?mode=deep",
+    "timestamp": "2026-01-19 16:48:06.842266",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Function: process_transactions()] [Idempotency] If the same transaction batch is processed multiple times due to retries, can the do_nothing() and do_update() policies at various insert functions guarantee idempotency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7158a098-3f92-418b-a191-c4c775354c90?mode=deep",
+    "timestamp": "2026-01-19 16:48:20.233586",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Function: process_transactions()] [Crash recovery] If the indexer crashes after insert_to_db() succeeds but before returning ProcessingResult, can this cause the same transactions to be re-processed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b37eee1-1c05-4cee-9f34-993dc5413561?mode=deep",
+    "timestamp": "2026-01-19 16:48:34.433802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Function: process_transactions()] [Transaction type filtering] The loop at line 335 processes all transactions - are there checks to ensure only relevant staking transactions are processed, or is excessive work done on non-staking transactions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a40a1b7-74b5-4335-8375-ec928cf0a739?mode=deep",
+    "timestamp": "2026-01-19 16:48:49.954437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Function: process_transactions()] [Empty transaction handling] If transactions vector is empty or contains no staking data, can empty inserts cause database errors or performance issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70b49142-54e6-4f9d-91cd-0078a2453fa6?mode=deep",
+    "timestamp": "2026-01-19 16:49:06.381629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Function: insert_to_db()] [Null byte injection] The clean_data_for_db() at lines 110-117 removes null bytes on retry - can null bytes in the first insert attempt cause database corruption before cleanup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1619644-39be-4c7f-b8db-a9d853c3bf81?mode=deep",
+    "timestamp": "2026-01-19 16:49:24.768825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Function: insert_to_db()] [Data transformation correctness] Does clean_data_for_db() preserve all semantic information when removing null bytes, or can it corrupt addresses/handles that contain legitimate zero bytes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6cfee213-b622-4ab2-819b-491aabc19587?mode=deep",
+    "timestamp": "2026-01-19 16:49:43.410476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/stake_processor.rs] [Function: insert_to_db()] [Serialization/deserialization] The clean_data_for_db() serializes and deserializes data - can this introduce bugs if custom serialization logic in models is incorrect? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc9129b8-d6bc-41de-ae28-ab5b3c732cf5?mode=deep",
+    "timestamp": "2026-01-19 16:50:03.344484",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates\n\n### Citations\n\n**File:** crates/indexer/src/processors/stake_processor.rs (L1-418)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{\n    database::{\n        clean_data_for_db, execute_with_better_error, get_chunks, PgDbPool, PgPoolConnection,\n    },\n    indexer::{\n        errors::TransactionProcessingError, processing_result::ProcessingResult,\n        transaction_processor::TransactionProcessor,\n    },\n    models::stake_models::{\n        delegator_activities::DelegatedStakingActivity,\n        delegator_balances::{CurrentDelegatorBalance, CurrentDelegatorBalanceMap},\n        delegator_pools::{\n            CurrentDelegatorPoolBalance, DelegatorPool, DelegatorPoolBalance, DelegatorPoolMap,\n        },\n        proposal_votes::ProposalVote,\n        staking_pool_voter::{CurrentStakingPoolVoter, StakingPoolVoterMap},\n    },\n    schema,\n};\nuse aptos_api_types::Transaction as APITransaction;\nuse async_trait::async_trait;\nuse diesel::{pg::upsert::excluded, result::Error, ExpressionMethods, PgConnection};\nuse field_count::FieldCount;\nuse std::{collections::HashMap, fmt::Debug};\n\npub const NAME: &str =",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18392621-f59a-4dce-8e52-b8f63183af02?mode=deep",
+    "timestamp": "2026-01-19 16:50:23.929291",
+    "report_generated": false
+  }
+]
