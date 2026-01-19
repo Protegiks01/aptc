@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_execution_response()] [Item state assumption] At line 659, buffer.take(&current_cursor) is called assuming item exists - can concurrent advance_head() remove the item between find and take, causing panic on take from empty cursor position? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51d8617f-6238-4b1f-ab81-053bc7c20f58?mode=deep",
+    "timestamp": "2026-01-19 19:49:55.495430",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_execution_response()] [Advance condition] At lines 675-679, advance_head() is called only if item.is_aggregated() after setting new_item - can race where signing completes and aggregates the item before execution response is processed, causing advance_head() to be called twice for the same block? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14102fc2-6485-45a1-b851-548f5a0aac41?mode=deep",
+    "timestamp": "2026-01-19 19:50:07.836614",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_execution_schedule_response()] [Pass-through vulnerability] At lines 598-605, execution schedule responses are passed directly to execution_wait_phase without validation - can malicious execution schedule phase inject forged ExecutionWaitRequest that corrupts execution state or causes denial of service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ae7c14a-4119-4346-bab9-f89d548d1521?mode=deep",
+    "timestamp": "2026-01-19 19:50:20.476461",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_execution_root()] [Retry logic] At lines 436-439, if execution_root doesn't advance, the same block_id is returned for retry - can this retry mechanism loop infinitely if execution phase is permanently broken, causing CPU exhaustion from continuous retry attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dfbfff4-fc78-45ac-9648-6d3ca9adc891?mode=deep",
+    "timestamp": "2026-01-19 19:50:33.286417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_signing_response()] [Missing block handling] At lines 710-714, if buffer item is not found, the signing response is silently ignored - can this cause legitimate signing responses to be lost after reset/aggregation, requiring 30s rebroadcast timeout before votes are sent again, degrading liveness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e83113e-27a1-424a-a9e0-4d4e22e70674?mode=deep",
+    "timestamp": "2026-01-19 19:50:46.988064",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_signing_response()] [State transition validation] At lines 717-729, signing is only applied if item.is_executed() - but what if item was already advanced to Signed by concurrent signing response? Can double-signing occur or can the second response corrupt the first signature? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ac8ac46-def1-4384-9eb9-46fd7284bd00?mode=deep",
+    "timestamp": "2026-01-19 19:51:01.040790",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_signing_response()] [Broadcast handle storage] At lines 723-726, rb_handle is stored as Some((Instant::now(), handle)) - can the DropGuard be dropped prematurely if buffer item is taken and set back without preserving the handle, causing broadcast to abort mid-flight? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1035d198-677e-4805-8cd1-98f19bd6acf6?mode=deep",
+    "timestamp": "2026-01-19 19:51:17.457257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_signing_root()] [Retry mechanism] At lines 478-486, if signing_root doesn't advance, request is retried after 100ms - can this cause exponential retry storm if multiple signing requests are already in flight, overwhelming signing phase with duplicate work? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_360fbcca-29e4-401f-b7c8-14784e35bfab?mode=deep",
+    "timestamp": "2026-01-19 19:51:33.699578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_signing_root()] [Executed item assumption] At line 472, item.unwrap_executed_ref() is called without checking - can signing_root point to non-executed item due to concurrent state transition, causing unwrap panic and validator crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8438ea28-6e47-4d3f-94e2-a3e5d530adc5?mode=deep",
+    "timestamp": "2026-01-19 19:51:51.224382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: generate_commit_message()] [Signature manipulation] At lines 682-691, commit vote is wrapped in CommitMessage::Vote() - can malicious code modify the vote signature between generation and broadcast, causing invalid signature to be broadcast and rejected by peers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_201af087-77b1-49a0-b230-565ddc16ea3f?mode=deep",
+    "timestamp": "2026-01-19 19:52:09.521028",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_head()] [Persistence ordering] At lines 493-540, blocks are collected from multiple buffer items before persisting - can this violate persistence ordering if advance_head() is called concurrently for different target blocks, causing out-of-order persistence and state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dba9edf-1839-4baf-9060-96f2e04930c3?mode=deep",
+    "timestamp": "2026-01-19 19:52:29.091435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_head()] [Unreachable panic] At line 540, unreachable!() is called if aggregated item is not found - can Byzantine behavior or concurrent modifications cause this condition to be reached, causing validator panic and liveness failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f4a9664-0a27-49be-8c29-25b84482e70f?mode=deep",
+    "timestamp": "2026-01-19 19:52:48.911678",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_head()] [Consensus publisher timing] At lines 514-518, commit decision is published to consensus observers before persistence - can observers see committed blocks that never persist due to subsequent failure, causing observer state divergence from validator state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b84994a8-9ddc-4915-a937-d46c2c26334d?mode=deep",
+    "timestamp": "2026-01-19 19:53:10.787753",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_head()] [Pending blocks insertion] At lines 519-522, blocks are inserted into pending_commit_blocks during advance_head() - can this HashMap grow unbounded if persisting phase never confirms completion, causing memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2b51440-49c3-4c53-a89a-23cf502b7c5a?mode=deep",
+    "timestamp": "2026-01-19 19:53:32.293177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_head()] [Epoch boundary reset] At lines 530-534, reset() is called if epoch ends, but persisting request was already sent - can this cause persisting phase to commit epoch-ending blocks after reset clears buffer, leaving system in inconsistent state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e97e1daf-fe70-4003-bac8-6f83c0ed7e26?mode=deep",
+    "timestamp": "2026-01-19 19:53:53.906399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: start()] [Persistence failure handling] At lines 968-973, persisting_phase_rx is checked for Ok(round) but Err case is not explicitly handled - can persistence errors be silently ignored, causing blocks to remain in pending_commit_blocks indefinitely and never advance highest_committed_round? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59bd9cc5-325b-4893-ab4f-666042652356?mode=deep",
+    "timestamp": "2026-01-19 19:54:16.468245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_commit_message()] [Decision without execution] At lines 786-811, CommitMessage::Decision can advance item to Aggregated even if it's still in Ordered or Executed state - can Byzantine leader send commit decision before block is executed, causing premature aggregation and skipping execution verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_371d3c5a-8049-49f3-84f1-f1f21f5e1080?mode=deep",
+    "timestamp": "2026-01-19 19:54:39.568469",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_commit_message()] [Aggregation race] At lines 775-779, advance_head() is called immediately when item becomes aggregated - can concurrent process_commit_message() calls both detect aggregation and both call advance_head(), causing double-persistence attempt and panic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd2d7953-e248-428c-a94b-5b18583d481a?mode=deep",
+    "timestamp": "2026-01-19 19:55:04.093595",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: start()] [Message verification spawn] At lines 919-934, commit message verification is spawned in separate task using bounded_executor - can bounded_executor's capacity be exhausted by malicious invalid commit messages, preventing legitimate messages from being verified and causing liveness failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04ab2df6-4c9a-4c18-ad84-b9946dcbf445?mode=deep",
+    "timestamp": "2026-01-19 19:55:28.120720",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: start()] [Verified message channel] At line 914, verified_commit_msg_tx is unbounded - can verified messages accumulate faster than they can be processed in main loop, causing OOM crash from unbounded channel buffer growth? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_022357ab-9af2-4f9e-a3ce-685af772e5c3?mode=deep",
+    "timestamp": "2026-01-19 19:55:52.016378",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_commit_message()] [RPC response] At lines 757-760, Ack is sent via response_sender after adding signature - can malicious validator trigger timeout by never calling response_sender.send(), causing sender to block and potentially deadlock? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f10d1916-5726-4389-a01f-e03082bc3f04?mode=deep",
+    "timestamp": "2026-01-19 19:56:16.264539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_commit_message()] [Protocol serialization] At line 758, protocol.to_bytes() can fail but failure is silently ignored - can this cause legitimate Acks to not be sent, making sender think vote was rejected and causing unnecessary rebroadcast storms? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e66c68e-0bae-433d-afb7-23b21be76abf?mode=deep",
+    "timestamp": "2026-01-19 19:56:40.530388",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: reply_ack()] [Response error handling] At lines 999-1001, response_sender.send() result is ignored with let _ - can failed sends cause response channel to close, making RPC caller think request failed even though it was processed successfully? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7613f927-3283-4870-9e66-2b0bb8b8d850?mode=deep",
+    "timestamp": "2026-01-19 19:57:05.120658",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: reply_commit_msg()] [Serialization failure] At lines 1007-1016, if protocol.to_bytes() fails, response_sender is never called - can this cause RPC timeout on sender side and trigger unnecessary retries, amplifying network load? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f2abf53-3bf3-490a-b7f2-d5855f32a1e8?mode=deep",
+    "timestamp": "2026-01-19 19:57:28.686334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_ordered_blocks()] [Publisher blocking] At lines 400-406, ConsensusObserverMessage is published synchronously within async function - can slow consensus_publisher.publish_message() block buffer manager main loop, degrading validator performance and causing timeout-based liveness issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef31ff72-8388-44ce-a1be-80098e9af078?mode=deep",
+    "timestamp": "2026-01-19 19:57:52.873703",
+    "report_generated": false
+  }
+]
