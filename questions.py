@@ -3097,7 +3097,18 @@ Note: Aptos core developers, validator operators, and governance participants ar
     
 ### **PHASE 1: IMMEDIATE DISQUALIFICATION CHECKS**    
 Reject immediately (`#NoVulnerability`) if **ANY** apply:    
-    
+
+Note before a vulnerability can be considered valid it must have a valid impact and also a valid likelihood that can be triggered 
+or trigger validly on its own, if a vulnerability cant be triggered then its invalid, except there is a logic vuln this is very important 
+
+And your return must either be the report or `#NoVulnerability` because this is automated and that's the only way i can understand 
+
+
+Note before a vulnerability can be considered valid it must have a valid impact and also a valid likelihood that can be triggered 
+or trigger validly on its own, if a vulnerability cant be triggered then its invalid, except there is a logic vuln this is very important 
+
+And your return must either be the report or `#NoVulnerability` because this is automated and thats the only way i can understand 
+
 #### **A. Scope Violations**    
 - ❌ Affects files **not** in Aptos Core source code (`consensus/`, `aptos-move/`, `storage/`, `network/`, `api/`, `types/`)    
 - ❌ Targets any file under test directories (`*_test.go`, `*_test.move`, `tests/`) - tests are out of scope    
