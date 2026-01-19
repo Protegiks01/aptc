@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Start Version Desync] At lines 91-92, start_version is recalculated as (end_version - num_slots), can this cause start_version to skip backwards if end_version increases by less than num_slots, creating inconsistent cache boundaries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e778900-efc0-450c-b4a4-c079f8c35aa7?mode=deep",
+    "timestamp": "2026-01-19 20:01:29.322061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: get_data()] [Stale Reference] Since get_data() returns a reference to Option<Box<Transaction>>, can the caller hold this reference across RwLock boundaries, and if update_data() evicts that slot, does the reference become dangling? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d68b3058-c977-4382-87ee-b9a29ff5810a?mode=deep",
+    "timestamp": "2026-01-19 20:01:43.158399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Malicious Transaction Injection] At line 86, transactions are stored without validation - can attackers inject malformed or malicious Transaction protos that cause downstream consumers to crash or behave incorrectly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25d21573-471e-4eb9-be35-2aa4a2680228?mode=deep",
+    "timestamp": "2026-01-19 20:01:58.125148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Cache Overwrite Attack] Can an attacker repeatedly call update_data() with the same start_version to overwrite cached transactions with different (potentially malicious) data, causing indexer to serve inconsistent transaction history? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02303ca0-023e-440b-99dc-46e647217a92?mode=deep",
+    "timestamp": "2026-01-19 20:02:13.192235",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Timestamp Manipulation] At lines 94-101, transaction timestamp is read from the last transaction without validation - can attackers inject transactions with future timestamps to manipulate LATENCY_MS metrics or cause time-based logic errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22566593-b904-4398-bfe0-da7003728854?mode=deep",
+    "timestamp": "2026-01-19 20:02:29.889326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Empty Transaction Vector] If transactions vector is empty at line 44, end_version equals start_version (line 45), bypassing the old data check (line 60) - can this be exploited to reset cache state or cause infinite loops in callers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3cb1bb7-d64a-4529-9c53-7b5c80d8f83c?mode=deep",
+    "timestamp": "2026-01-19 20:02:47.969900",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: new()] [Zero Slots] If num_slots=0 is passed to new(), data vector will be empty (line 32), causing all get_data() and update_data() calls to panic on modulo division by zero - is this validated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1398ef1-9bee-4340-84e9-bb10be0f7bab?mode=deep",
+    "timestamp": "2026-01-19 20:03:07.536777",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: new()] [Huge Allocation] If num_slots is extremely large (e.g., usize::MAX), can the vec![None; num_slots] allocation at line 32 cause OOM panic, crashing the indexer service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53da19f4-bc8c-4fb6-ab22-ed252690e17b?mode=deep",
+    "timestamp": "2026-01-19 20:03:30.295893",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Max Version Edge Case] If start_version equals u64::MAX and transactions.len() > 0, can the end_version calculation at line 45 overflow to 0, causing all subsequent operations to fail with 'data too old' errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e72a6f8-6369-4e04-894d-e0161978f22f?mode=deep",
+    "timestamp": "2026-01-19 20:03:55.968433",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Skip All Transactions] If num_to_skip (line 69) equals or exceeds transactions.len(), the enumerate().skip() at line 78 processes no transactions, but end_version is still updated (line 90) - can this create version gaps in the cache? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78a28d70-0183-46f8-81d7-c9700dc965fe?mode=deep",
+    "timestamp": "2026-01-19 20:04:23.025071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Negative Cast] At line 80, i is cast to u64 - if enumerate() somehow produces negative values (impossible in safe Rust), could this cause undefined behavior in version calculation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_687a1010-87b8-4608-a964-9e8ddab657c0?mode=deep",
+    "timestamp": "2026-01-19 20:04:49.686259",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Timestamp Panic] At line 98, unwrap() is called on SystemTime::now().duration_since() - can system time going backwards cause panic and crash the indexer during timestamp calculation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5ad6b4b-a072-47bc-8d83-3debf5d20146?mode=deep",
+    "timestamp": "2026-01-19 20:05:16.646689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Timestamp Overflow] At lines 96-97, timestamp seconds and nanos are cast to u64 and u32 - can negative timestamps or overflow values cause Duration::new() to panic, crashing the service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b34a48c7-daff-4416-903b-00e1e17aa465?mode=deep",
+    "timestamp": "2026-01-19 20:05:45.695093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [End Version Assumption] At line 94, get_data(end_version - 1) is called without checking if end_version > 0 - can end_version=0 cause integer underflow and out-of-bounds access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c8db232-e03e-45dd-a165-f19811775619?mode=deep",
+    "timestamp": "2026-01-19 20:06:13.979558",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Eviction Starvation] The eviction loop (lines 108-116) only evicts from start_version forward - can attackers fill the cache with large transactions at higher versions, preventing eviction of older data and causing memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9b78051-b7be-4668-9146-a1e7d195b81b?mode=deep",
+    "timestamp": "2026-01-19 20:06:43.248193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Infinite Eviction Loop] If transaction.encoded_len() returns 0 or size accounting is broken, can the while loop at line 108 run forever since total_size never decreases below eviction_target, causing DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f428690-a478-4826-9204-8085e61a78fe?mode=deep",
+    "timestamp": "2026-01-19 20:07:12.504945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Eviction of Current Data] At line 110, eviction uses start_version modulo - can rapid updates cause start_version to catch up to end_version, evicting data that was just written and should still be servable? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2ccafb3-54f5-418d-aeb6-06c702e1af8c?mode=deep",
+    "timestamp": "2026-01-19 20:07:38.975707",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Size Accounting During Eviction] At line 112, total_size is decreased by evicted transaction size, but if this calculation is corrupted by races, can total_size become negative (wrapping to huge value), breaking all future evictions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_305821f4-52fc-46df-a018-b938dcf57b2d?mode=deep",
+    "timestamp": "2026-01-19 20:08:05.931492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Eviction Without Bounds Check] The eviction loop increments start_version (line 115) but doesn't check if start_version >= end_version - can this cause start_version to overtake end_version, creating invalid cache state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_230e31ee-9d25-467d-9485-83e682a0f51c?mode=deep",
+    "timestamp": "2026-01-19 20:08:34.669009",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_cache_metrics()] [Integer Cast Overflow] At lines 123-125, u64/usize values are cast to i64 - can values >= i64::MAX cause the cast to produce negative metric values, misleading operators about cache state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1fbe209-1380-4bba-987c-ac6168755d8c?mode=deep",
+    "timestamp": "2026-01-19 20:09:02.194223",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: new()] [Metrics Init Race] At line 28, CACHE_SIZE_LIMIT_BYTES is set without synchronization - can concurrent new() calls from different threads race to set this global metric, causing incorrect monitoring? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a3d8b5d-2364-48eb-b069-291338646c1b?mode=deep",
+    "timestamp": "2026-01-19 20:09:30.546626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Metrics Before State Update] Metrics are updated at line 119 after state changes - can crashes between state updates (lines 89-116) and metric updates leave metrics permanently inconsistent with actual state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5d1fbc1-2b4a-4852-acaa-52bdb0f32543?mode=deep",
+    "timestamp": "2026-01-19 20:09:58.551684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Latency Metric Injection] At line 100, LATENCY_MS is set based on transaction timestamp without validation - can attackers inject transactions with far-past timestamps to make latency appear artificially low, hiding real performance issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39112c3e-38d5-45c5-992c-74bb33804180?mode=deep",
+    "timestamp": "2026-01-19 20:10:29.844975",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Unchecked Transaction Validity] At line 86, transactions are boxed and stored without any validation of their internal structure - can corrupted protobuf data cause crashes when later accessed via get_data()? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_015568d8-9ede-486c-a44c-ff03004c4c52?mode=deep",
+    "timestamp": "2026-01-19 20:11:01.563136",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Timestamp Field Absence] At line 94, timestamp is accessed with if let Some(), but if None, latency isn't updated - can attackers send transactions without timestamps to avoid latency tracking and hide performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9ade611-cddb-40b0-906c-09e1d3c645da?mode=deep",
+    "timestamp": "2026-01-19 20:11:35.087425",
+    "report_generated": false
+  }
+]
