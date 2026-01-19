@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: parse_move_value()] [Address casting] The table handle is extracted by casting AnnotatedMoveValue::Address to TableHandle - can an attacker provide invalid addresses that don't correspond to real tables, causing the indexer to store fake table info? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_164bf59d-01f1-4965-bf7b-501c1280c66e?mode=deep",
+    "timestamp": "2026-01-19 17:27:31.889108",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: parse_move_value()] [Type args validation] For table structs, it asserts type_args.len() == 2 and directly clones them as key_type and value_type - can an attacker provide malicious type arguments that don't represent valid Move types, causing type confusion in subsequent value parsing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_162d01d7-1987-4034-bb33-105129b51fb9?mode=deep",
+    "timestamp": "2026-01-19 17:27:44.168024",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: parse_move_value()] [RawStruct handling] For AnnotatedMoveValue::RawStruct, it iterates over field_values without type checking - can this allow bypassing table detection logic or extracting table handles from non-table types? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecf315dd-74e4-40b0-8fe3-687ef50d7e9b?mode=deep",
+    "timestamp": "2026-01-19 17:27:57.257146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: parse_move_value()] [Closure captured values] For AnnotatedMoveValue::Closure, it recursively processes captured values - can an attacker embed table handles in closure captures to bypass access controls or create hidden tables not tracked by normal indexing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f13249c9-4b84-4702-9832-2e045cba75db?mode=deep",
+    "timestamp": "2026-01-19 17:28:10.297462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: save_table_info()] [Duplicate detection bypass] The function only saves table info if get_table_info() returns None - can an attacker exploit timing windows where concurrent transactions create the same table handle, causing one to be silently ignored and creating inconsistent table info? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67d646bc-ad8d-4290-b639-95826f779bcc?mode=deep",
+    "timestamp": "2026-01-19 17:28:24.054254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: save_table_info()] [Pending items processing] When pending_on contains items for a newly discovered table, they are reprocessed - can an attacker craft transaction sequences where pending items reference the wrong table info version, causing incorrect value type interpretation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d5da404-0253-4ef2-984a-e247beb9df31?mode=deep",
+    "timestamp": "2026-01-19 17:28:39.027153",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: save_table_info()] [Recursive processing] Calling parse_table_item() within save_table_info() can trigger further calls to save_table_info() - can an attacker create circular table dependencies causing infinite recursion or stack overflow? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6905581-b6d2-4fd8-8c9f-64739a0899a4?mode=deep",
+    "timestamp": "2026-01-19 17:28:55.779560",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: is_table()] [Module address check] The function checks if address == AccountAddress::ONE and module == 'table' - can an attacker deploy a malicious module at address ONE that mimics table structures to inject fake table info into the indexer? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61ab5a06-2171-4209-9bba-7c72397a6c80?mode=deep",
+    "timestamp": "2026-01-19 17:29:13.103711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: is_table()] [Name collision] Checking only name == 'Table' without verifying the full module path - can an attacker create a struct named 'Table' in a different module at address ONE to be incorrectly identified as a table? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cbaad26d-1681-4c07-a14c-b9ed18350791?mode=deep",
+    "timestamp": "2026-01-19 17:29:30.696024",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: get_table_info()] [Cache poisoning] The function first checks self.result (in-memory cache) before querying the database - can an attacker exploit race conditions to inject malicious table info into the cache that overrides correct database entries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c050728c-9694-4e82-8e70-fa9cc5bfdce3?mode=deep",
+    "timestamp": "2026-01-19 17:29:49.758681",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: finish()] [Pending validation] The function ensures pending_on is empty but doesn't validate that all table handles in result were actually encountered in write_sets - can an attacker inject fake table handles that bypass validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7f5d392-1650-4f97-aa85-9bf8ba45623c?mode=deep",
+    "timestamp": "2026-01-19 17:30:09.005194",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: finish()] [Batch write atomicity] The function returns Ok(false) if result is empty, avoiding a batch write - can this create timing windows where next_version is updated but no table info is written, causing version/data inconsistency? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e236fbf2-7c3a-4d12-8805-ee31b8da549d?mode=deep",
+    "timestamp": "2026-01-19 17:30:29.727556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: finish()] [Iterator error handling] Using try_for_each() to write table info to batch - if one write fails, are previous writes in the batch rolled back, or can this create partial state updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf7d7226-e447-4067-95cc-756b063543e4?mode=deep",
+    "timestamp": "2026-01-19 17:30:51.464302",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Struct: Indexer] [Shared mutable state] The Indexer struct contains an AtomicVersion but is wrapped in Arc for sharing - can multiple threads calling index() concurrently cause data races in the DB writes or table_info_parser state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eed2bd41-667d-4185-b3ca-fd792b43c54b?mode=deep",
+    "timestamp": "2026-01-19 17:31:13.613832",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: index()] [StateView invalidation] The function creates a state_view at last_version, but if the underlying db_reader is updated concurrently, can this cause the annotator to read inconsistent state leading to incorrect table info extraction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed05f81b-0259-4147-ab3b-a22f02945272?mode=deep",
+    "timestamp": "2026-01-19 17:31:36.670894",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: index()] [Last version calculation] Computing last_version = first_version + write_sets.len() assumes write_sets processes exactly these versions - can an attacker provide write_sets that don't match this assumption, causing state_view to be created at wrong version? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f74553df-237f-4b40-a3bc-e8d1aaf390d7?mode=deep",
+    "timestamp": "2026-01-19 17:32:00.824078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: index_with_annotator()] [Annotator lifetime] The annotator reference is passed through to table_info_parser - if the StateView is dropped or invalidated during processing, can this cause use-after-free or invalid memory access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_555fd134-f972-46b0-82ff-f811b10e7e72?mode=deep",
+    "timestamp": "2026-01-19 17:32:25.895601",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: index_with_annotator()] [Write set iteration] Iterating over write_sets without cloning means any modification to the slice during iteration could cause undefined behavior - are there guarantees that write_sets remains immutable? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_794c8da3-5bbd-43cc-a7c9-7cedd237ae26?mode=deep",
+    "timestamp": "2026-01-19 17:32:51.222770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: index_with_annotator()] [Error recovery] When parse_write_op() returns an error, the function propagates it but doesn't roll back next_version updates - can this leave the indexer in a state where it expects a higher version than actually processed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d9aea89-acbd-4cb6-80be-f9e6a37807e7?mode=deep",
+    "timestamp": "2026-01-19 17:33:17.450740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: index_with_annotator()] [Silent failure] When end_version <= next_version, the function returns Ok(()) with only a warning log - can this mask critical issues where the indexer is consistently behind the main chain state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e9b7ae5-d10b-4483-8a28-c581733ae7ab?mode=deep",
+    "timestamp": "2026-01-19 17:33:44.603819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: index_with_annotator()] [Verbose logging] The error handler logs all write_sets when table_info_parser.finish() fails - can this expose sensitive transaction data or be exploited for log injection attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ead9273-5da6-4827-9722-4449e975a3f9?mode=deep",
+    "timestamp": "2026-01-19 17:34:11.547047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: parse_write_op()] [Error propagation] Using ? operator to propagate errors means any failure in nested parsing immediately returns - can this leave pending_on or result maps in inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50eff865-7356-4e84-be9b-2fb3d3aaa584?mode=deep",
+    "timestamp": "2026-01-19 17:34:39.109948",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: parse_move_value()] [Pattern matching exhaustiveness] The match statement covers all AnnotatedMoveValue variants, but if new variants are added to the enum, will this cause silent failures or incorrect parsing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a5eff5d-03dc-44f8-ac47-5a92fe3c85d5?mode=deep",
+    "timestamp": "2026-01-19 17:35:06.759592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: parse_move_value()] [Assertion failures] Using assert_eq! for field name validation means invalid data causes panics rather than graceful error handling - can an attacker trigger this to crash the indexer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a13b158-b338-4818-ba76-b4c0487ddc53?mode=deep",
+    "timestamp": "2026-01-19 17:35:34.928311",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer/src/lib.rs] [Function: parse_move_value()] [db_other_bail usage] When table struct is malformed, it uses db_other_bail! which may not properly clean up parser state - can this cause resource leaks or state corruption? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_423d6d21-6845-4c42-a202-9fe47592fe71?mode=deep",
+    "timestamp": "2026-01-19 17:36:02.923625",
+    "report_generated": false
+  }
+]
