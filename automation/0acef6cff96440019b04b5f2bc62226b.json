@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: choose_leader()] [Empty Input Panic] Can choose_leader() panic with 'No trusted peers found!' when given an empty peers vector, and if this function is called during critical consensus initialization, will this panic cause the validator to fail to start, resulting in loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ac2b8e4-eef5-4bab-8584-b27711ea25d8?mode=deep",
+    "timestamp": "2026-01-19 23:20:19.173945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: choose_leader()] [Determinism Assumption] Does choose_leader() always return deterministic results (minimum PeerId), and can Byzantine validators manipulate their PeerId values to ensure they are always selected as the fixed proposer, centralizing block production power? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0399bec8-e716-43bc-b9e6-9931ac058e4d?mode=deep",
+    "timestamp": "2026-01-19 23:20:31.845689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: choose_leader()] [Single Point of Failure] Since choose_leader() is described as a 'tmp hack function' for fixed proposer election, if this is used in production and the selected proposer goes offline, does this cause total loss of liveness requiring manual intervention to recover? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5cbf315-d31a-4e87-aeeb-937c7996aaee?mode=deep",
+    "timestamp": "2026-01-19 23:20:45.061105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: choose_leader()] [PeerId Ordering] Is the min() comparison on Author types well-defined and deterministic across all validators, or can different Rust standard library implementations or compiler versions produce different orderings, causing validators to disagree on the chosen leader? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0b57c5a-7e32-4726-90e9-690a46e76d34?mode=deep",
+    "timestamp": "2026-01-19 23:20:58.371128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: choose_leader()] [Vector Consumption] Does choose_leader() consume the peers vector by taking ownership, and can this lead to accidental double-use bugs where the same validator set cannot be reused after leader selection? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57754093-193f-4914-b552-fb904843e56c?mode=deep",
+    "timestamp": "2026-01-19 23:21:12.717938",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Struct: RotatingProposer] [Concurrent Access] Is RotatingProposer properly marked with Send/Sync traits for safe concurrent access, or can race conditions occur when multiple threads simultaneously call get_valid_proposer() on shared instances? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42a6a86b-f2a1-40f2-992e-0d92dd4c5fce?mode=deep",
+    "timestamp": "2026-01-19 23:21:27.969384",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Read-Write Races] If RotatingProposer is wrapped in Arc/RwLock for shared access, can read operations (get_valid_proposer) race with potential future write operations (validator set updates), causing torn reads or inconsistent proposer selection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2535bc15-cbea-4752-95c3-4f631998c8e0?mode=deep",
+    "timestamp": "2026-01-19 23:21:44.357238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Struct: RotatingProposer] [Memory Ordering] Are the proposers vector and contiguous_rounds field accessed with proper memory ordering guarantees, or can relaxed atomic operations cause different threads to see stale or inconsistent values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e172c48a-0d77-4b33-b923-48e5e3aa131f?mode=deep",
+    "timestamp": "2026-01-19 23:22:03.065107",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Proposal Validation] When round_manager validates incoming proposals, if get_valid_proposer() is called with a manipulated round number from a Byzantine proposer, can this cause validators to accept proposals from wrong proposers, violating consensus safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_910c79cb-5a4e-4783-8012-6856fbec857c?mode=deep",
+    "timestamp": "2026-01-19 23:22:22.823537",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Vote Routing] If get_valid_proposer() is used to determine where to send votes, and the function returns wrong results due to bugs, can votes be misdirected to non-proposers, causing quorum failures and loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2adcd51-12ea-4568-88cc-16f5275f8684?mode=deep",
+    "timestamp": "2026-01-19 23:22:43.605243",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Trait: ProposerElection] [Interface Contract] Does get_valid_proposer() properly implement the ProposerElection trait contract, ensuring it never returns an Author that is not actually in the validator set, which could cause signature verification failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e05fe52-16d9-4f81-a8d4-bd13de89e99c?mode=deep",
+    "timestamp": "2026-01-19 23:23:04.613702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Proposer Availability] Does get_valid_proposer() account for validator liveness/availability, or will it return offline validators as valid proposers, causing timeout rounds that reduce network performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6569bcb-e6fc-4fdf-b10d-688f34129d64?mode=deep",
+    "timestamp": "2026-01-19 23:23:28.162766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Byzantine Proposer Detection] If get_valid_proposer() returns a Byzantine validator as the proposer, does the consensus protocol have sufficient safeguards to prevent malicious block proposals from being committed, or can Byzantine proposers exploit their rounds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b847bfc-8fe0-4578-a44f-8fa1014bc2cc?mode=deep",
+    "timestamp": "2026-01-19 23:23:52.422791",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Round Zero] Does get_valid_proposer() handle round=0 correctly, or can this edge case cause unexpected behavior such as always selecting proposers[0], potentially creating unfair advantages for the first validator in the list? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fa4f80d-b627-4751-91f8-d74eadd970ca?mode=deep",
+    "timestamp": "2026-01-19 23:24:16.339349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Round u64::MAX] What happens when round approaches u64::MAX - does the division operation behave correctly, or can this cause wraparound issues that restart the proposer rotation unexpectedly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_225bba5f-f561-4185-8419-d7d3bea5cb2b?mode=deep",
+    "timestamp": "2026-01-19 23:24:40.566162",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Negative Round Numbers] Although Round is u64 (unsigned), can integer underflow in other parts of the system cause negative round numbers to be passed to get_valid_proposer(), resulting in unexpected proposer selection? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_067134fb-3dd4-4334-8892-6124d6f328c1?mode=deep",
+    "timestamp": "2026-01-19 23:25:05.253258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Round Skip Attacks] Can Byzantine validators skip rounds to avoid being proposers when they would be expected to produce blocks, and does get_valid_proposer()'s deterministic calculation allow the protocol to detect such misbehavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5332427b-9389-4473-bc55-feeb65a6e34e?mode=deep",
+    "timestamp": "2026-01-19 23:25:30.723475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Round Consistency] If different validators have slightly different round numbers due to clock skew or network delays, will get_valid_proposer() return consistent results within the same logical consensus round, or can this cause disagreement on valid proposers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d6f8b48-bd4f-4553-ab6e-53107e82ef85?mode=deep",
+    "timestamp": "2026-01-19 23:25:56.399846",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Struct: RotatingProposer] [Contiguous Rounds = 1] When contiguous_rounds=1, does the proposer change every single round, and can this cause performance issues or increase timeout rates if validators are not prepared for rapid leadership changes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb4b175c-6122-4a9a-af6a-373fb56369ca?mode=deep",
+    "timestamp": "2026-01-19 23:26:21.457399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Struct: RotatingProposer] [Contiguous Rounds = u32::MAX] If contiguous_rounds is set to u32::MAX, will the same proposer remain leader for over 4 billion rounds, effectively creating a fixed proposer scenario that violates the intended rotation mechanism? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca3eb808-8440-4c7a-90ea-a909409628b6?mode=deep",
+    "timestamp": "2026-01-19 23:26:48.344744",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Contiguous Rounds Mismatch] Can validators in the same epoch have different contiguous_rounds values due to configuration inconsistencies, causing them to disagree on valid proposers and breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8728caca-cec6-465e-a45a-a31a0a0f03a2?mode=deep",
+    "timestamp": "2026-01-19 23:27:15.424512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Struct: RotatingProposer] [Contiguous Rounds Overflow] When calculating 'round / u64::from(self.contiguous_rounds)', can extremely large round numbers combined with small contiguous_rounds values cause the quotient to overflow or produce unexpected results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ddc5d6a-2c1a-4290-8018-7601cd6a3c53?mode=deep",
+    "timestamp": "2026-01-19 23:27:41.662202",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Index Calculation] Can the complex indexing expression '((round / u64::from(self.contiguous_rounds)) % self.proposers.len() as u64) as usize' produce out-of-bounds indices under any circumstances, such as when proposers.len() changes between the modulo and indexing operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed31745f-9e05-4d44-a23f-ed562ec05fea?mode=deep",
+    "timestamp": "2026-01-19 23:28:08.486267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Vector Length Cast] Does casting 'self.proposers.len() as u64' safely handle all possible usize values on platforms where usize > u64 (if any exist), or can truncation cause incorrect modulo results? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d12ebc7b-9f6e-45a0-b296-205ced63b134?mode=deep",
+    "timestamp": "2026-01-19 23:28:35.456208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/rotating_proposer_election.rs] [Function: get_valid_proposer()] [Modulo Zero] If proposers.len() is 0, the expression '% self.proposers.len() as u64' results in division by zero - is there any code path that can reach this with an empty vector? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d927b938-bf0d-4f31-af07-38e467d325aa?mode=deep",
+    "timestamp": "2026-01-19 23:29:02.099358",
+    "report_generated": false
+  }
+]
