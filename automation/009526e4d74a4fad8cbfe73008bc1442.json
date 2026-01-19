@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_state_snapshot_receiver()] [Race condition] Can multiple concurrent calls to get_state_snapshot_receiver() cause a race condition when writing to fast_sync_status, potentially allowing multiple snapshot receivers to be created simultaneously and corrupting the state transition from UNKNOWN to STARTED? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a112632-ebcf-4e70-9fce-5f849d8aa64e?mode=deep",
+    "timestamp": "2026-01-19 16:59:49.049998",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [Assertion bypass] Can an attacker trigger finalize_state_snapshot() before get_state_snapshot_receiver() is called, causing the assertion at line 159 to panic and crash the node, resulting in loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17617ed4-d529-482a-a566-473447d01725?mode=deep",
+    "timestamp": "2026-01-19 17:00:01.462265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [State machine violation] If finalize_state_snapshot() is called multiple times concurrently, can the fast_sync_status transition from STARTED to FINISHED happen multiple times, potentially causing inconsistent state or allowing duplicate snapshot finalization? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08c7b556-16b2-42c8-a3a6-f384199de699?mode=deep",
+    "timestamp": "2026-01-19 17:00:14.209992",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_read_ref()] [TOCTOU] Between checking is_fast_sync_bootstrap_finished() at line 125 and returning the database reference, can the status change from STARTED to FINISHED by another thread, causing reads to switch databases mid-operation and return inconsistent state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff347e92-b311-4fda-9830-a1de398f12c2?mode=deep",
+    "timestamp": "2026-01-19 17:00:29.552694",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_write_ref()] [TOCTOU] Between checking is_fast_sync_bootstrap_started() at line 133 and returning the database reference, can the status transition cause writes to be directed to the wrong database, potentially corrupting either temporary_db_with_genesis or db_for_fast_sync? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6662e0d5-dd89-4098-a1fe-ef63489b6be5?mode=deep",
+    "timestamp": "2026-01-19 17:00:43.658161",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Struct: fast_sync_status] [Lock ordering] Does the RwLock on fast_sync_status have consistent lock ordering with other locks in AptosDB? Can improper lock ordering cause deadlocks when multiple threads access storage operations during fast sync? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d387d512-4d79-404a-b791-9f90a5755191?mode=deep",
+    "timestamp": "2026-01-19 17:00:58.834258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_state_snapshot_receiver()] [Atomic state update] The status write at line 147 happens before calling get_state_snapshot_receiver on the DB. If the DB call fails, does the status remain as STARTED even though no snapshot receiver was created, leaving the wrapper in an inconsistent state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a2de997-8308-46e3-8902-3b573fd2739c?mode=deep",
+    "timestamp": "2026-01-19 17:01:16.054109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [Atomic state update] Between the assertion check at line 159 and the status update at lines 165-166, if the underlying DB finalize fails, does the status remain as STARTED or incorrectly transition to FINISHED, causing future operations to use the wrong database? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e8ad89d-981d-42ed-aa91-958d54d4e98b?mode=deep",
+    "timestamp": "2026-01-19 17:01:34.045850",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_fast_sync_status()] [Lock contention] Can malicious code repeatedly call get_fast_sync_status() to cause read lock contention on fast_sync_status, potentially blocking critical write operations in get_state_snapshot_receiver() or finalize_state_snapshot() and causing DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e026f3d-f363-4df0-b040-bb6f23017c48?mode=deep",
+    "timestamp": "2026-01-19 17:01:52.511648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Enum: FastSyncStatus] [Missing state] The state machine only has UNKNOWN, STARTED, and FINISHED states. Is there a missing ERROR or FAILED state to handle snapshot failures? Can failed snapshots leave the system in STARTED state permanently, making the node unbootstrapable? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbe017bd-6d38-414f-b0a9-e352b43cc094?mode=deep",
+    "timestamp": "2026-01-19 17:02:12.620705",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_read_ref()] [Inconsistent reads] If a read operation starts when status is STARTED (reading from temporary_db_with_genesis) and another thread transitions to FINISHED during the read, can subsequent read operations in the same transaction see different database contents, violating atomicity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3be7d685-037d-4de8-bbee-e13b6cf0cbc3?mode=deep",
+    "timestamp": "2026-01-19 17:02:33.245067",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_write_ref()] [Split brain writes] If status transitions from UNKNOWN to STARTED while writes are in progress to temporary_db_with_genesis, can writes be split between the two databases, causing data loss or state inconsistency? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_982a67cd-4d0b-42e2-9ceb-e46e345d925c?mode=deep",
+    "timestamp": "2026-01-19 17:02:54.522806",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: initialize_dbs()] [TOCTOU vulnerability] Between checking synced_version at lines 70-75 and creating the secondary DB at line 78, can another process modify the synced_version, causing the wrapper to be incorrectly initialized when it shouldn't be, or vice versa? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_424b77f2-c75b-43d3-93c3-28d04061f794?mode=deep",
+    "timestamp": "2026-01-19 17:03:17.394435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: initialize_dbs()] [Integer overflow] The synced_version check uses map_or(0, |v| v) at line 74. Can an attacker manipulate synced_version to be a very large number that wraps around or causes overflow in subsequent comparisons, bypassing the == 0 check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbae94ac-13b9-43e6-9f55-fe8334de53b2?mode=deep",
+    "timestamp": "2026-01-19 17:03:40.544724",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: initialize_dbs()] [Path traversal] The secondary DB path is constructed by pushing SECONDARY_DB_DIR to db_dir at line 77. Can an attacker manipulate the config.storage.dir() or SECONDARY_DB_DIR constant to perform path traversal and create the secondary DB in an arbitrary location? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51cc2079-65d9-40a4-93e5-699daa9eb822?mode=deep",
+    "timestamp": "2026-01-19 17:04:04.748010",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Constant: SECONDARY_DB_DIR] [Directory collision] The constant SECONDARY_DB_DIR is 'fast_sync_secondary'. Can an attacker pre-create this directory with malicious contents, and when AptosDB opens it, will it load corrupted data or allow arbitrary code execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c54ef2f7-875b-48d5-bcf1-d827b32ace95?mode=deep",
+    "timestamp": "2026-01-19 17:04:29.598734",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: initialize_dbs()] [Resource exhaustion] Both db_main and secondary_db are opened with the same configs. Can opening two full database instances with identical resource limits cause memory exhaustion or file descriptor exhaustion, leading to node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_712c094a-18f0-4427-8f00-54dcb6fa7014?mode=deep",
+    "timestamp": "2026-01-19 17:04:57.227339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: initialize_dbs()] [Configuration mismatch] The secondary_db is opened with None for internal_indexer_db at line 86, while db_main uses the provided internal_indexer_db. Can this mismatch cause indexer inconsistencies or allow an attacker to query different states from the main vs secondary DB? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba06cc57-44b1-4ad4-8d81-4fd27ad9f532?mode=deep",
+    "timestamp": "2026-01-19 17:05:27.895737",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: initialize_dbs()] [Version update subscriber] Only db_main receives the update_sender at lines 59-61, but secondary_db does not. If the secondary DB is used during early fast sync, can this cause version update notifications to be lost, breaking upstream dependencies on version updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94f124bc-10c4-4db3-a547-1779be99b995?mode=deep",
+    "timestamp": "2026-01-19 17:05:56.299732",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: initialize_dbs()] [Conditional initialization] The wrapper is only created if is_fast_sync() is true AND synced_version == 0. Can an attacker manipulate node configuration to force fast_sync mode on a partially synced node, causing data loss when the secondary DB overwrites existing state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be9e5d60-1ede-41b1-9dba-b667fe91067b?mode=deep",
+    "timestamp": "2026-01-19 17:06:25.510093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: initialize_dbs()] [Error handling inconsistency] If opening db_main succeeds but opening secondary_db fails at line 78, the function returns an error. Does this leave db_main in an open state with locks held, causing resource leaks or preventing future initialization attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b16d000e-a40b-4e99-9278-c83211b21735?mode=deep",
+    "timestamp": "2026-01-19 17:06:54.053889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: initialize_dbs()] [Readonly mode bypass] Both databases are opened with readonly=false. Can an attacker trigger fast sync mode on a node that should be readonly, allowing unauthorized writes to the database? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_415862fc-32c2-49b3-ab70-b4a19d805c4e?mode=deep",
+    "timestamp": "2026-01-19 17:07:23.317743",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_state_snapshot_receiver()] [Version validation] The version and expected_root_hash are passed directly to the underlying DB without validation. Can an attacker provide a version that is higher than the current ledger version, causing the snapshot to overwrite legitimate future state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a230bb88-820b-41f6-be76-bd5c810c000f?mode=deep",
+    "timestamp": "2026-01-19 17:07:52.866841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_state_snapshot_receiver()] [Hash collision] If an attacker provides an expected_root_hash that collides with a legitimate state but represents malicious state, can they trick the snapshot receiver into accepting corrupted state and finalizing it? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5032376-447a-4274-8f6a-c8db99eb16e1?mode=deep",
+    "timestamp": "2026-01-19 17:08:23.625500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [Output proof validation] The output_with_proof parameter is passed to the underlying DB without validation in the wrapper. Can an attacker provide invalid or malicious TransactionOutputListWithProofV2 that corrupts the state when finalized? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_970fbf01-d2cf-43d8-90ba-c5f5efcf10a2?mode=deep",
+    "timestamp": "2026-01-19 17:08:54.720393",
+    "report_generated": false
+  }
+]
