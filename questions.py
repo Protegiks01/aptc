@@ -22,6 +22,7 @@ else:
 
 SOURCE_REPO = "aptos-labs/aptos-core"
 
+
 scope_files = [
     'aptos-core/api/openapi-spec-generator/src/fake_context.rs',
     'aptos-core/api/openapi-spec-generator/src/main.rs',
