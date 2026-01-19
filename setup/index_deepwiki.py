@@ -87,7 +87,7 @@ class IndexDeepwiki:
             #                            textarea)
             textarea.send_keys(email)
             textarea.send_keys(Keys.ENTER)
-            time.sleep(15)
+            time.sleep(3)
         except Exception as a:
             print(f"There was an error in index : {a}")
 
