@@ -2,6 +2,7 @@ import json
 import os
 import random
 import shutil
+import sys
 import time
 import uuid
 from datetime import datetime
@@ -17,7 +18,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
-from questions import question_format, BASE_URL
+sys.path.append(str(Path(__file__).parent.parent))
+
+from questions import  BASE_URL
 
 
 class IndexDeepwiki:
