@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::cur()] [Panic vulnerability] Can an attacker craft a malicious AST structure that causes the lines vector to become empty, triggering an unwrap panic when cur() calls lines.last_mut().unwrap(), potentially crashing the compiler during smart contract compilation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1fe36c30-f818-4a94-94a2-7fa19e145142?mode=deep",
+    "timestamp": "2026-01-19 19:17:47.662435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::cur()] [Denial of service] Does the cur() method have any bounds checking before calling unwrap() on last_mut(), or can concurrent modifications to the lines vector cause it to be empty at line 86, leading to compilation failures that block contract deployment? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e66c66c1-89fc-4d24-8d3c-a4c585d24aa1?mode=deep",
+    "timestamp": "2026-01-19 19:18:00.515880",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::write()] [Memory exhaustion] Can an attacker submit deeply nested AST structures that cause unbounded string growth at line 99, where cur.push_str() appends to the current line without size limits, potentially exhausting compiler memory and preventing legitimate contract compilation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75e5071b-0469-4af4-adc8-662fc78f285a?mode=deep",
+    "timestamp": "2026-01-19 19:18:13.765755",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::write()] [Resource exhaustion] At lines 96-98, the margin spacing loop (0..margin).for_each(|_| cur.push(' ')) lacks bounds checking on margin value - can a malicious AST with extreme nesting depth cause integer overflow in margin calculation, leading to massive memory allocation or infinite loop? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4aad995e-71a0-474e-96c5-b087d4f4edd4?mode=deep",
+    "timestamp": "2026-01-19 19:18:27.966956",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::write()] [Integer overflow] Does the margin value used at line 94 have an upper bound check? Can crafted AST structures with thousands of nested levels cause margin to overflow usize::MAX, wrapping to 0 and corrupting output formatting or causing logic errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd76bb96-3e02-4c8a-9333-ce15b12905ea?mode=deep",
+    "timestamp": "2026-01-19 19:18:42.302177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::write()] [Unbounded growth] The cur.push_str(s.as_ref()) call at line 99 appends arbitrary strings without length validation - can an attacker provide extremely long identifier names or string literals in Move code that cause O(n²) memory growth when combined with multiple write() calls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_565b870b-8e80-4f71-89cd-9d43a0f347ac?mode=deep",
+    "timestamp": "2026-01-19 19:18:57.529855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::new_line()] [Memory exhaustion] Can an attacker craft AST structures that trigger excessive new_line() calls at line 90, causing the lines vector to grow unboundedly and exhaust compiler memory, potentially preventing compilation of legitimate contracts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c4a29c7-b6cf-4080-b1c7-d95747ca49d5?mode=deep",
+    "timestamp": "2026-01-19 19:19:14.354443",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::new_line()] [Vector growth] At line 90, self.lines.push(String::new()) grows the vector without capacity checks - can pathological AST structures with millions of nodes cause Vec reallocation thrashing, degrading compiler performance and creating DoS conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8901a6a-22a0-489f-b7ce-08daf6b83a43?mode=deep",
+    "timestamp": "2026-01-19 19:19:32.570711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::indent()] [Integer underflow] At lines 109-111, margin is incremented then decremented (self.margin += inc; ... self.margin -= inc) - can deeply nested recursive AST traversal cause margin arithmetic to underflow below 0 if decrement happens without corresponding increment due to early returns or panics in closure f? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e7966b5-8392-49d7-b4cb-278614ee499e?mode=deep",
+    "timestamp": "2026-01-19 19:19:51.766406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::indent()] [Integer overflow] Does the margin increment at line 109 check for overflow? Can an attacker provide AST structures with extreme nesting depth causing self.margin += inc to overflow usize::MAX, wrapping to small values and corrupting indentation logic or causing infinite loops in write()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3214e30-723e-424a-b820-01bb66948ad2?mode=deep",
+    "timestamp": "2026-01-19 19:20:13.821771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::indent()] [Stack overflow] Can deeply nested AST structures cause recursive indent() calls through the closure f at line 110, leading to stack exhaustion and compiler crashes when processing maliciously crafted Move code with thousands of nested blocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d053291d-5f9e-4f4b-a028-a7bab0165bf5?mode=deep",
+    "timestamp": "2026-01-19 19:20:35.095680",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::indent()] [State corruption] If the closure f panics between lines 109-111, the margin decrement at line 111 may not execute, permanently corrupting the AstWriter state - can this cause subsequent compilation attempts to produce incorrect output or fail entirely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d8238ef-89be-4765-8194-b8a265ae798d?mode=deep",
+    "timestamp": "2026-01-19 19:20:58.034653",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::indent()] [Logic error] The indent method calls new_line() twice (lines 108, 112) - can this interaction with margin modifications cause off-by-one errors in line tracking, potentially hiding compilation errors or producing misleading error messages? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47ace3db-375c-4735-a68f-55eced40fb72?mode=deep",
+    "timestamp": "2026-01-19 19:21:21.304702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::block()] [Stack overflow] At line 117, block() calls indent(4, f) which recursively invokes closure f - can malicious AST structures with deeply nested blocks cause unbounded recursion, exhausting stack space and crashing the compiler? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3c451eb-8f83-4cd4-8ec3-d72abcb79ebe?mode=deep",
+    "timestamp": "2026-01-19 19:21:46.147207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::block()] [Unbounded nesting] Does block() have any depth limit checks before calling indent() at line 117? Can an attacker submit Move code with thousands of nested {} blocks, each calling block() recursively until stack overflow occurs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a5e8439-1670-4535-a180-d3865535762a?mode=deep",
+    "timestamp": "2026-01-19 19:22:09.841332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::block()] [Format string injection] The write(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcf7f401-c9c2-40e3-9581-2078db0af3c1?mode=deep",
+    "timestamp": "2026-01-19 19:22:35.404726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::annotate()] [Recursion depth] At line 122, annotate() calls annotate_gen() which invokes annot.ast_debug(w) - can circular references in AST annotation structures cause infinite recursion, leading to stack overflow and compiler crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b20cbef-1667-4354-947a-6519e821efb2?mode=deep",
+    "timestamp": "2026-01-19 19:23:00.335095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::annotate_gen()] [Stack overflow] Between lines 135-143, annotate_gen() calls closure f and annot_writer which may recursively call back to annotate() - can deeply annotated AST nodes cause unbounded recursion chains, exhausting stack space? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_956a0fe2-99a5-43b7-b881-1718a570abe7?mode=deep",
+    "timestamp": "2026-01-19 19:23:25.382648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::annotate_gen()] [String injection] At lines 140-141, annot_writer(self, annot) writes arbitrary annotation content - can malicious annotations contain format specifiers or control characters that corrupt subsequent output or cause parsing errors in debug consumers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d8a931b-27c6-4ad6-a9e0-b552a123129a?mode=deep",
+    "timestamp": "2026-01-19 19:23:51.629890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::annotate()] [Memory exhaustion] When verbose mode is enabled (line 135), annotations are written for every AST node - can extremely large AST structures with verbose annotations cause exponential memory growth in the lines vector? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f2fcdc1-5757-4223-a9cb-cae19cb4ae48?mode=deep",
+    "timestamp": "2026-01-19 19:24:18.555332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::list()] [Size hint violation] At lines 153-157, the code checks size_hint() and asserts lower == 0 if upper is None, then returns early - can malicious iterator implementations with incorrect size hints bypass list processing, causing AST nodes to be silently dropped from output? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3159a7ec-b34f-4013-b120-e0abd3286f77?mode=deep",
+    "timestamp": "2026-01-19 19:24:43.386499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::list()] [Logic bypass] The size hint check at lines 153-157 assumes if upper is None, lower must be 0, but this may not hold for all iterators - can custom iterators with (lower > 0, None) size hints trigger the assertion at line 155, causing compiler panic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ae2b874-a6f2-41f8-b4e1-36903f18ffee?mode=deep",
+    "timestamp": "2026-01-19 19:25:05.407156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::list()] [Silent data loss] If an iterator returns (0, None) as size_hint(), the method returns at line 156 without processing any items - can this cause important AST nodes to be omitted from debug output, hiding compilation errors or security issues in Move code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d886069-0dbf-4d3e-a584-c422b45f0e03?mode=deep",
+    "timestamp": "2026-01-19 19:25:27.507857",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::list()] [Index confusion] At lines 160-167, the loop compares idx + 1 != len to determine if separator should be added - can iterator length mismatches between size_hint() and actual item count cause missing separators or extra separators in output? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73b90b10-e58d-4092-a4ff-482c9414466f?mode=deep",
+    "timestamp": "2026-01-19 19:25:50.686215",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/ast_debug.rs] [Function: AstWriter::list()] [Unbounded iteration] The enumerate() loop at line 160 has no bounds check - can infinite iterators or extremely long item lists cause the compiler to hang indefinitely while formatting AST output? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ec9974f-dbfc-4121-b0f2-632faee45c33?mode=deep",
+    "timestamp": "2026-01-19 19:26:13.858778",
+    "report_generated": false
+  }
+]
