@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: get_internal()] [Serialization error masking] If both single and Vec parsing fail, the function returns SerializationError with raw response - can this leak sensitive repository data in error messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03f81518-9131-4b1c-9ea3-9704ea283772?mode=deep",
+    "timestamp": "2026-01-19 20:35:47.940897",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: get_file()] [Content stripping vulnerability] The function strips newlines every 60 characters - can an attacker craft base64 content where this stripping corrupts validator keys or configuration in a way that appears valid but is compromised? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9887f23a-d696-4436-9429-40d6eb495b39?mode=deep",
+    "timestamp": "2026-01-19 20:36:01.020534",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: get_file()] [Base64 length manipulation] Since GitHub adds newlines every 60 chars, can an attacker exploit edge cases where legitimate base64 data is corrupted by the stripping logic, causing validators to load invalid keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88c8f1cd-cdd2-4313-a842-c4d857f1cb1e?mode=deep",
+    "timestamp": "2026-01-19 20:36:13.962689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: put()] [Content encoding bypass] Does the function validate that content parameter is valid base64, or can attackers inject raw binary or malicious strings that get stored without validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9ad502f-c8f9-409a-a667-967797167bdb?mode=deep",
+    "timestamp": "2026-01-19 20:36:27.911474",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: get_file()] [Content size attack] Can an attacker upload extremely large base64-encoded files that cause memory exhaustion when the lines().collect() operation loads the entire content into memory on validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_852106b4-1037-4297-ad52-d0b2af52a862?mode=deep",
+    "timestamp": "2026-01-19 20:36:42.352239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: get_file()] [Newline injection] Can malicious content with injected newlines bypass the stripping logic to embed malicious data or commands within validator configuration files? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b4b9be3-37fd-4e8b-bb4d-17632140562e?mode=deep",
+    "timestamp": "2026-01-19 20:36:57.895708",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Constant: TIMEOUT] [Timeout integer overflow] The TIMEOUT constant is u64 = 10_000 - can this value overflow when converted to milliseconds internally, causing infinite timeouts that hang validator operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9082dac-d1db-4ec8-9c58-f11930e7043d?mode=deep",
+    "timestamp": "2026-01-19 20:37:15.119501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: upgrade_request()] [Timeout bypass] Does timeout_connect apply to the entire request lifecycle including response reading, or can attackers exploit slow HTTP response bodies to bypass the 10 second timeout? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fee3f248-7d17-4625-8d1a-40553117103a?mode=deep",
+    "timestamp": "2026-01-19 20:37:33.720395",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: upgrade_request()] [Connection reuse attack] Are HTTP connections properly closed after each request, or can connection pooling be exploited to maintain open connections that bypass timeout restrictions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65de9b4e-7d2f-4678-ba2c-b9998729fdb6?mode=deep",
+    "timestamp": "2026-01-19 20:37:53.700733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Constant: TIMEOUT] [DoS via timeout] Is the 10-second timeout sufficient to prevent slowloris-style attacks where GitHub API deliberately delays responses to exhaust validator resources? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aaaf55ff-eee2-4a02-9971-220ef5a59f1e?mode=deep",
+    "timestamp": "2026-01-19 20:38:14.833831",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: upgrade_request()] [Proxy injection] Can an attacker manipulate environment variables or configuration to set a malicious proxy_url that intercepts all GitHub API traffic including validator credentials? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ce55c56-4d05-41cd-bd15-61162453cd3d?mode=deep",
+    "timestamp": "2026-01-19 20:38:36.213325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: upgrade_request()] [Proxy parsing vulnerability] Does ureq::Proxy::new() properly validate the proxy_url format, or can specially crafted proxy URLs cause crashes, code execution, or credential leakage? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0c663cf-3254-450b-8594-02e14219407f?mode=deep",
+    "timestamp": "2026-01-19 20:38:59.194662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: upgrade_request()] [HTTPS downgrade via proxy] Can a malicious proxy configuration downgrade HTTPS to HTTP, allowing man-in-the-middle attacks on validator configuration updates? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e902e124-01c1-473b-899f-2fcf34799310?mode=deep",
+    "timestamp": "2026-01-19 20:39:22.767306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: upgrade_request()] [Proxy bypass] Does the proxy configuration properly handle all GitHub API endpoints including api.github.com, or can attackers bypass proxy restrictions to make unauthorized requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3752cb8-8d48-466c-b3be-be46aa8abf17?mode=deep",
+    "timestamp": "2026-01-19 20:39:46.934648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: upgrade_request()] [Host extraction exploit] The expect() on request.get_host() will panic if host is None - can this be triggered to crash validator nodes processing malformed GitHub API requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c0c934c-6fe6-4548-8983-b52556aebdee?mode=deep",
+    "timestamp": "2026-01-19 20:40:10.834690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: delete_directory()] [Infinite recursion DoS] Can an attacker create a deeply nested directory structure or circular symlinks that cause stack overflow when recursively deleting, crashing validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de52a22b-aecc-445f-8f3d-cf7f31bac6fb?mode=deep",
+    "timestamp": "2026-01-19 20:40:35.755526",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: delete_directory()] [Resource exhaustion] Can an attacker create a directory with millions of files that cause the recursive deletion to consume excessive API quota or processing time, degrading validator performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7f4b990-acad-4009-a954-ca3fb64d314a?mode=deep",
+    "timestamp": "2026-01-19 20:40:59.408513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: delete_directory()] [Partial deletion state] If deletion fails midway through a recursive delete, can validators be left in an inconsistent state with partially deleted configuration that breaks consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1883610d-b6fc-47d5-bdbf-6bf1e765469c?mode=deep",
+    "timestamp": "2026-01-19 20:41:19.802702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: get_directory()] [Directory size DoS] Can an attacker fill a directory with millions of files causing get_directory() to return enormous Vec<String> that exhausts validator memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_603e0229-db27-4d67-b95e-f753cd0df9e4?mode=deep",
+    "timestamp": "2026-01-19 20:41:44.951661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: delete_directory()] [Trailing slash handling] The function uses trim_end_matches('/') - can inconsistent handling of paths with/without trailing slashes cause deletion of wrong directories? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40ceef12-9801-4a83-976a-31893f88cd20?mode=deep",
+    "timestamp": "2026-01-19 20:42:10.334100",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: post_url()] [Owner/repository injection] Are the owner and repository fields validated to prevent path traversal or special characters that could manipulate the GitHub API URL? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88e00dff-fde5-451f-9de4-1f933e08760f?mode=deep",
+    "timestamp": "2026-01-19 20:42:34.118297",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: get_url()] [Query parameter injection] Can the branch field contain special characters like '&' or '?' that inject additional query parameters to manipulate API responses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c864c9b0-3aff-42c0-bd65-27d80ec4c095?mode=deep",
+    "timestamp": "2026-01-19 20:43:00.348202",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Constant: URL] [Hardcoded endpoint vulnerability] The hardcoded 'https://api.github.com' URL cannot be changed - can this prevent validators from using GitHub Enterprise or alternative git hosting, forcing reliance on public GitHub? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7268aa9e-5627-4c50-8894-a6f48b8e992a?mode=deep",
+    "timestamp": "2026-01-19 20:43:22.632888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: post_url()] [URL encoding bypass] Are path components properly URL-encoded when constructing API endpoints, or can unencoded special characters cause API request failures or unexpected behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea30d1bf-ba2a-4e69-9ffd-18e160822a38?mode=deep",
+    "timestamp": "2026-01-19 20:43:44.679887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-github-client/src/lib.rs] [Function: get_url()] [Branch name validation] Can branch names with special characters like '../' or null bytes exploit URL construction to access unauthorized refs or tags? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_489d831e-2ea8-487b-9c5d-e89ca636641f?mode=deep",
+    "timestamp": "2026-01-19 20:44:05.172810",
+    "report_generated": false
+  }
+]
