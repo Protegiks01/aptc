@@ -30,8 +30,8 @@ class IndexDeepwiki:
         self.options = webdriver.ChromeOptions()
 
         # --- Add these two lines here ---
-        self.options.add_argument("--headless")
-        self.options.add_argument("--window-size=1920,1080")
+        # self.options.add_argument("--headless")
+        # self.options.add_argument("--window-size=1920,1080")
         # ---------------------------------
 
         # removed headless so the browser window is visible
@@ -80,11 +80,12 @@ class IndexDeepwiki:
             textarea.clear()
 
             email = f"devprotegik{random.randint(0,100)}@gmail.com"
-            # Use JavaScript to set the textarea value directly. It's more reliable for large text.
-            self.driver.execute_script("arguments[0].value = arguments[1];", textarea, email)
-            # Dispatch an 'input' event to make sure the web application detects the change.
-            self.driver.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
-                                       textarea)
+            # # Use JavaScript to set the textarea value directly. It's more reliable for large text.
+            # self.driver.execute_script("arguments[0].value = arguments[1];", textarea, email)
+            # # Dispatch an 'input' event to make sure the web application detects the change.
+            # self.driver.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
+            #                            textarea)
+            textarea.send_keys(email)
             textarea.send_keys(Keys.ENTER)
             time.sleep(5)
         except Exception as a:
