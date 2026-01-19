@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: Proof::generate()] [Cryptographic Soundness] Does the generate() function create truly random-looking proofs, or can patterns in the unsafe_random_point() and sample_field_element() calls leak information about the RNG state, allowing an attacker to predict future proofs and potentially forge valid-looking proofs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0d43af6-2e54-431e-ab37-339fc5db8bbb?mode=deep",
+    "timestamp": "2026-01-19 21:03:49.237078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Struct: Proof] [Proof Malleability] Can an attacker manipulate the Proof struct fields (hatC, pi_PoK, Cs, D, a, a_h, a_js, pi_gamma) after serialization but before verification to create a different but still valid-looking proof that passes verification for incorrect values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_703cfc22-1251-4e74-8c10-8d9ee41cae03?mode=deep",
+    "timestamp": "2026-01-19 21:04:01.508008",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Struct: Proof] [Deserialization Attack] During CanonicalDeserialize of the Proof struct, are there checks to ensure the length of Cs and a_js vectors match ell, or can an attacker provide mismatched lengths causing buffer overflows or verification bypasses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7331bafb-8228-4122-9552-06cdf362ee2b?mode=deep",
+    "timestamp": "2026-01-19 21:04:13.940748",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: setup()] [Parameter Validation] The setup() function asserts that num_omegas.is_power_of_two() at line 253, but can an attacker cause integer overflow when max_n is near usize::MAX, making (max_n + 1) wrap around to pass the power-of-two check with incorrect parameters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7c0791a-6a4c-4956-b7d4-cb6fdc8b3a74?mode=deep",
+    "timestamp": "2026-01-19 21:04:27.739398",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: setup()] [Trapdoor Compromise] Is the trapdoor generated at line 256 properly secured? Can an attacker who gains read access to memory during setup() extract the trapdoor and use it to forge proofs or break the hiding property of commitments? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ba889b7-0042-4afa-ac28-e0aceb7adcfb?mode=deep",
+    "timestamp": "2026-01-19 21:04:41.569139",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: setup()] [Key Consistency] The setup generates vk_hkzg and ck_S at line 259-260. Can an attacker cause inconsistency between ProverKey and VerificationKey by exploiting race conditions if setup() is called concurrently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32371cda-2ea5-42c2-9fe1-12bf1b924dac?mode=deep",
+    "timestamp": "2026-01-19 21:04:56.133917",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: setup()] [Powers of Two] The powers_of_two vector is computed at line 264. Can an attacker provide max_ell values that cause integer overflow in the arkworks::powers_of_two computation, leading to incorrect precomputed values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34d20d50-3ef1-4021-a678-5eca3982138d?mode=deep",
+    "timestamp": "2026-01-19 21:05:11.191980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: commit_with_randomness()] [Commitment Binding] The function prepends a zero to values at line 298-299. Can an attacker exploit this deterministic padding to create commitment collisions by finding different value sets that produce the same commitment? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7e39ad2-3b32-4e14-af67-183476c87eb5?mode=deep",
+    "timestamp": "2026-01-19 21:05:28.431336",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: commit_with_randomness()] [Hiding Property] Does the commitment scheme maintain hiding when rho is reused across multiple commitments? Can an attacker who observes multiple commitments with the same randomness extract information about the committed values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad2cd2fe-de77-4951-8bf3-65585cd0b11b?mode=deep",
+    "timestamp": "2026-01-19 21:05:45.758930",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Bounds Check] Lines 329-334 assert n <= max_n and ell <= max_ell, but do these checks prevent an attacker from providing n=0 or ell=0, which could cause division by zero or empty vector operations later in the proof generation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df64fb3d-5dd5-4d5a-8f55-fd97ee6dfc17?mode=deep",
+    "timestamp": "2026-01-19 21:06:04.421475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Transcript Initialization] The Fiat-Shamir transcript is initialized at line 316 with Self::DST. Can an attacker who controls the DST constant cause transcript collisions with other protocols, allowing cross-protocol attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c02ca879-61cd-45bf-b333-f852e0e44e6e?mode=deep",
+    "timestamp": "2026-01-19 21:06:24.192097",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Subdomain TODO] Line 335 has a TODO comment about using subdomains when n << max_n. Can an attacker exploit the current inefficient implementation to cause computational DoS by providing small n with large max_n, forcing unnecessary large FFT computations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e028181d-63a0-4b04-9397-5cd5c28be578?mode=deep",
+    "timestamp": "2026-01-19 21:06:44.618112",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Inverse Computation] Line 355 computes num_omegas_inv using .inverse().unwrap(). Can an attacker provide parameters where num_omegas is zero modulo the field order, causing a panic during proof generation and DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0a3785a-561d-439c-a41c-8b55c080bd38?mode=deep",
+    "timestamp": "2026-01-19 21:07:06.195371",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Randomness Generation] Lines 366-367 generate r and delta_rho using sample_field_element(). If the RNG is weak or predictable, can an attacker who observes multiple proofs extract the randomness and compromise the zero-knowledge property? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b06b2b3a-fd72-4c09-9a8a-0d4031de5c14?mode=deep",
+    "timestamp": "2026-01-19 21:07:28.254706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [MSM Computation] Line 368 computes hatC using MSM operations. Can an attacker cause integer overflow in the scalar multiplications when delta_rho or r are near the field modulus? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7cf27ec-d879-4dee-86f7-d6c49823f41a?mode=deep",
+    "timestamp": "2026-01-19 21:07:51.157193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Commitment Consistency] The hatC computation at line 368 adds comm.0 to the result. Can an attacker provide a malicious comm that when added causes the point to be at infinity, breaking the proof structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95f6e013-02e0-44e0-8920-4b3c173f5030?mode=deep",
+    "timestamp": "2026-01-19 21:08:14.585422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Sigma Proof Soundness] Lines 374-386 generate pi_PoK using the two_term_msm homomorphism. Can an attacker forge a valid-looking pi_PoK by exploiting weaknesses in the sigma protocol without knowing the witness (r, delta_rho)? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bea0766-fa54-41bb-acfa-2f1f9083103a?mode=deep",
+    "timestamp": "2026-01-19 21:08:39.278185",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Witness Encoding] The witness is encoded as Scalar(r) and Scalar(delta_rho) at lines 380-381. Can wrapper type inconsistencies allow an attacker to inject malformed scalars that pass type checks but fail cryptographic properties? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fed4fe3c-380c-4665-9aa6-395327443311?mode=deep",
+    "timestamp": "2026-01-19 21:09:04.865952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Codomain Computation] Line 383 computes the codomain as hatC - comm.0. Can underflow in the group subtraction cause the result to be an invalid point or point at infinity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac95938c-8579-4d94-83f6-e7d5103da0e5?mode=deep",
+    "timestamp": "2026-01-19 21:09:30.388365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Bit Extraction] Lines 402-405 extract bits from values using utils::scalar_to_bits_le(). Can an attacker provide malicious scalar values that cause incorrect bit extraction, leading to proofs that verify but represent wrong ranges? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad4eec13-2cd0-4832-b456-d0ed4500fc6e?mode=deep",
+    "timestamp": "2026-01-19 21:09:54.545213",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Vector Capacity] Line 395 pre-allocates f_js_evals with capacity num_omegas. Can an attacker cause memory exhaustion by providing extremely large max_n values that pass validation but allocate excessive memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_911e1e97-6e04-49b7-8bd0-76063e7ded10?mode=deep",
+    "timestamp": "2026-01-19 21:10:17.644897",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Random rs Generation] Line 392 generates random rs values for each j. Can correlation between these random values across different proof generations leak information about the prover's RNG state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ed35b4a-6e2d-4fc4-a820-c9eb4b20f44e?mode=deep",
+    "timestamp": "2026-01-19 21:10:41.643325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Vector Resizing] Lines 408-410 resize f_j vectors to num_omegas with zero padding. Can an attacker exploit the deterministic padding to create polynomial collisions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e7cba29-5b54-4816-a34c-bde3da1582ea?mode=deep",
+    "timestamp": "2026-01-19 21:11:05.893011",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Loop Bounds] The loop at line 401 iterates over values.iter(). If values is empty due to n=0, does this cause the f_js_evals to only contain rs, potentially breaking the range proof soundness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64cf3188-ebd7-47cc-934f-b1c1eec27309?mode=deep",
+    "timestamp": "2026-01-19 21:11:30.033600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/range_proofs/dekart_univariate_v2.rs] [Function: prove()] [Hiding Commitments] Lines 415-417 generate random rhos for hiding. Can reuse of rhos across different proofs or values of j break the hiding property and leak information about the bits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_354bebf9-d2c4-4d15-aad8-f8e2ee5d86f9?mode=deep",
+    "timestamp": "2026-01-19 21:11:52.377887",
+    "report_generated": false
+  }
+]
