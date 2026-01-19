@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Integer overflow] Can an attacker cause integer overflow by providing target_version near u64::MAX when calling prune(current_progress, target_version), potentially causing the iteration range in TransactionAuxiliaryDataDb::prune() to wrap around and delete unintended versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_416d3d8c-659a-42ce-a659-c3c1a77786c1?mode=deep",
+    "timestamp": "2026-01-19 22:47:47.306588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Invalid range] What happens if target_version < current_progress when prune(current_progress, target_version) is called? Could this cause the loop in TransactionAuxiliaryDataDb::prune() to skip entirely or behave unexpectedly, leading to inconsistent pruner progress metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d8c3175-f6f7-4160-8d9b-5965d4fd6934?mode=deep",
+    "timestamp": "2026-01-19 22:47:59.746128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Version boundary] If current_progress equals target_version in prune(), does the empty range [current_progress..target_version) cause the metadata to be updated without actually pruning any data, creating a false progress indicator? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e4f9888-7727-4412-9bda-c9e2155b4e17?mode=deep",
+    "timestamp": "2026-01-19 22:48:12.380910",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Large range] Can an attacker or malicious validator force the pruner to delete an extremely large range (billions of versions) in a single call to prune(), causing memory exhaustion when SchemaBatch accumulates deletion operations before write_schemas()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7e38909-87ff-42d4-8e30-271d8887c29c?mode=deep",
+    "timestamp": "2026-01-19 22:48:27.110456",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: new()] [Initialization overflow] In new(), if metadata_progress is u64::MAX, can this cause arithmetic overflow in the subsequent prune(progress, metadata_progress) call during initialization, leading to pruner creation failure or corrupted state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f22eeaa0-d947-4a4e-bfb3-a7af4a9e8da3?mode=deep",
+    "timestamp": "2026-01-19 22:48:40.988827",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Atomic failure] If write_schemas(batch) fails after TransactionAuxiliaryDataDb::prune() succeeds in building the batch, are the auxiliary data deletions and metadata progress update applied atomically, or could partial failure leave the database in an inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05fdedf4-3be8-469b-9cf6-1dc60073426b?mode=deep",
+    "timestamp": "2026-01-19 22:48:56.041778",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Progress corruption] If the batch.put() for DbMetadataKey::TransactionAuxiliaryDataPrunerProgress succeeds but subsequent write_schemas() fails, could the pruner progress metadata become permanently desynchronized from actual pruned data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92b5c6b3-a97d-4612-a17d-8c18f982660f?mode=deep",
+    "timestamp": "2026-01-19 22:49:13.272943",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Partial write] Can a crash or power failure during write_schemas() execution lead to partially written batches where some deletion operations succeed but the progress metadata update fails, causing data loss without progress tracking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a2152b6-e144-4d02-9a71-a9fc8d69a0ab?mode=deep",
+    "timestamp": "2026-01-19 22:49:30.804124",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Duplicate deletion] If prune() is called multiple times with overlapping version ranges due to concurrent execution or retry logic, could duplicate deletion operations in SchemaBatch cause undefined behavior or database corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9f42c77-b2a8-478a-a874-1b14ea05f1cd?mode=deep",
+    "timestamp": "2026-01-19 22:49:49.251742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Transaction isolation] Does the write_schemas() call provide proper transaction isolation guarantees? Can readers observe partially pruned state where some versions are deleted but others remain within the [current_progress..target_version) range? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15123523-0ab8-4fc3-b9e9-5ab88bb07dab?mode=deep",
+    "timestamp": "2026-01-19 22:50:08.969242",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Parallel execution race] Since TransactionAuxiliaryDataPruner is executed in parallel with other sub-pruners via rayon::par_iter() in LedgerPruner, can race conditions occur when multiple pruners simultaneously access the shared transaction_auxiliary_data_db, causing write conflicts or deadlocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_012cea5f-4436-4e8d-8778-ce0878a8f75f?mode=deep",
+    "timestamp": "2026-01-19 22:50:29.522591",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Progress race condition] Can concurrent calls to prune() from multiple threads cause race conditions when reading/writing DbMetadataKey::TransactionAuxiliaryDataPrunerProgress, leading to progress values being overwritten incorrectly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ad451fc-dcb1-40fa-8e39-7715dae314cf?mode=deep",
+    "timestamp": "2026-01-19 22:50:50.575686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: new()] [Initialization race] If multiple threads attempt to initialize TransactionAuxiliaryDataPruner concurrently, can the get_or_initialize_subpruner_progress() call have TOCTOU (time-of-check-time-of-use) issues where progress is read, then another thread writes it, causing the initialization prune() to use stale progress values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c403971-3ede-4220-b55e-3015f8cbb3e0?mode=deep",
+    "timestamp": "2026-01-19 22:51:13.465644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Struct: TransactionAuxiliaryDataPruner] [Arc safety] The ledger_db field is Arc<LedgerDb> but not protected by a mutex - can concurrent access to transaction_auxiliary_data_db() through the shared Arc cause data races if the underlying DB implementation is not thread-safe? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0157ab29-5888-4d62-834b-627fa1a3998b?mode=deep",
+    "timestamp": "2026-01-19 22:51:36.859661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Batch reuse] If SchemaBatch is reused or cloned in concurrent contexts, can operations from different pruning ranges contaminate each other, causing deletions to be applied to wrong versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ed22c72-8f7b-4d70-9a56-62a26e02018c?mode=deep",
+    "timestamp": "2026-01-19 22:52:01.345524",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Error propagation] If TransactionAuxiliaryDataDb::prune() returns an error after partially populating the batch, is the batch properly cleaned up, or could subsequent batch operations include stale deletion operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d183059-862c-41c6-90d6-429ecd002132?mode=deep",
+    "timestamp": "2026-01-19 22:52:26.054710",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Silent failure] If batch.put() for the progress metadata fails but returns Ok(()) due to a bug, could the pruner continue operating with incorrect progress tracking, eventually pruning the same data multiple times or skipping versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_194451e4-8af6-4e97-a0bc-32eff32029ad?mode=deep",
+    "timestamp": "2026-01-19 22:52:51.768690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: new()] [Initialization failure recovery] If the catch-up prune(progress, metadata_progress) in new() fails, does the pruner get created anyway with stale progress, or does the error propagate correctly to prevent an invalid pruner from being used? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a263401-effe-43c6-9e2c-9e1383abb38a?mode=deep",
+    "timestamp": "2026-01-19 22:53:18.992765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: new()] [Panic on catch-up] Can the unwrap() operations in the Result chain during new() cause panics if get_or_initialize_subpruner_progress() or prune() fail, potentially crashing the validator node during startup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf16932e-844b-4d3a-91a8-71fc8991f1fe?mode=deep",
+    "timestamp": "2026-01-19 22:53:46.497784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Retry logic] If prune() fails midway through a large deletion range, does the retry mechanism properly resume from the last successful version, or could it re-attempt deleting already-deleted versions causing wasted I/O or errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58f48f17-0673-4c38-af5c-965c16f8dda3?mode=deep",
+    "timestamp": "2026-01-19 22:54:13.972377",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: new()] [Progress initialization] In get_or_initialize_subpruner_progress(), if the metadata_progress parameter is maliciously set to 0 while actual ledger has advanced to millions of versions, could the forced initialization cause massive unnecessary catch-up pruning, wasting resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdd5ddcb-4817-4643-bec1-a9307e8f6880?mode=deep",
+    "timestamp": "2026-01-19 22:54:42.519103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: new()] [Metadata mismatch] What happens if metadata_progress from LedgerMetadataPruner is far ahead of the actual TransactionAuxiliaryDataPrunerProgress stored in the database? Could this cause the catch-up prune() to delete data that hasn't been properly committed yet? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_061c0228-7996-4902-9bed-a65d264cc4a4?mode=deep",
+    "timestamp": "2026-01-19 22:55:10.786876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Progress monotonicity] Does the code enforce that target_version must be >= current_progress? If not, can backwards progress updates corrupt the metadata, making the pruner believe data has been deleted when it hasn't? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3aa92393-4376-4795-a642-6898bb3b1f62?mode=deep",
+    "timestamp": "2026-01-19 22:55:36.636645",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: prune()] [Progress granularity] If prune() is called with a large version range but fails midway, the progress is only updated at the end to target_version - can this cause loss of partial progress information, requiring redundant re-pruning on restart? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_582d4d24-0176-4573-b036-dc763785aa8c?mode=deep",
+    "timestamp": "2026-01-19 22:56:02.013690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_auxiliary_data_pruner.rs] [Function: new()] [Metadata key collision] Could DbMetadataKey::TransactionAuxiliaryDataPrunerProgress collide with other metadata keys if the enum serialization changes, causing the pruner to read progress values from unrelated metadata entries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ba0f9d0-a575-496c-8c87-2b24de115095?mode=deep",
+    "timestamp": "2026-01-19 22:56:27.835842",
+    "report_generated": false
+  }
+]
