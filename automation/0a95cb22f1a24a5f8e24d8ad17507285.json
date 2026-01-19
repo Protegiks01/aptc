@@ -1,0 +1,110 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Misleading log messages] The debug! macro at lines 47-51 says 'exec deadline' before actually executing the task - if task execution fails or panics, the log would incorrectly suggest the task executed successfully, confusing debugging efforts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e13e011d-1821-4749-a2d1-24198debcc29?mode=deep",
+    "timestamp": "2026-01-19 23:09:17.336351",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Struct: SimulatedTimeServiceInner] [Box<dyn ScheduledTask> safety] The pending vector stores Box<dyn ScheduledTask> - are there any unsafe blocks or transmute operations that could violate the safety of the trait object, particularly when tasks are moved out of the vector and executed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40ec1db2-f208-414c-843a-37714d1e8a72?mode=deep",
+    "timestamp": "2026-01-19 23:09:29.639408",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Overall] [Unsafe code audit] Does the file contain any unsafe blocks that could lead to undefined behavior? (Note: No unsafe blocks are visible, but this checks for hidden unsafe in dependencies) (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a8a45c6-aefe-451e-b5b4-424552119f62?mode=deep",
+    "timestamp": "2026-01-19 23:09:42.256229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Vec::remove panic] At line 120, pending.remove(i) will panic if i >= pending.len() - although the while loop at line 117 checks 'i != inner.pending.len()', could concurrent modifications to pending (via other threads) cause this panic condition? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_891d5f2e-5992-4c61-86e9-41e96e03560a?mode=deep",
+    "timestamp": "2026-01-19 23:09:55.314663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Mutex lock unwrap] Lines 35, 64, and 69 use Mutex::lock() which returns a LockResult - are these implicitly unwrapping (via Mutex from aptos_infallible), and if so, could a poisoned mutex cause panics that abort tests without proper error messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c8f588d-c909-4798-b1f9-634ff5189ff8?mode=deep",
+    "timestamp": "2026-01-19 23:10:09.228736",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Task execution panic propagation] If a task's run() method panics at line 127, does the panic propagate up and abort the entire test, or is there panic catching? Uncaught panics could leave the SimulatedTimeService in an inconsistent state with some tasks executed and others not? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76fc3954-0aaf-4eee-94b5-816718d71a78?mode=deep",
+    "timestamp": "2026-01-19 23:10:24.017981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: auto_advance_until()] [Confusing name] The auto_advance_until() constructor name suggests time will automatically advance to the limit, but actually tasks are only executed if they're scheduled via run_after() - could this naming confusion lead to incorrect test setup where developers expect automatic time advancement but don't get it? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a6c839a-536b-4fe0-bf31-8b9863fab13f?mode=deep",
+    "timestamp": "2026-01-19 23:10:39.619252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: new()] [Disabled by default] The new() constructor creates a time service with time_limit = 0, meaning all tasks are deferred by default - could this lead to tests hanging or timing out because developers forget to call update_auto_advance_limit() to actually advance time? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8fcd2dd2-3de2-4771-b34a-8c1c725abaa8?mode=deep",
+    "timestamp": "2026-01-19 23:10:55.556043",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Dead code annotation] Line 110 has #[allow(dead_code)] on update_auto_advance_limit() - if this critical function is marked as dead code, does this indicate it's not being used in tests, potentially meaning that time advancement testing is incomplete? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d9719fa-994d-49a7-af28-3ee2fc0be6b6?mode=deep",
+    "timestamp": "2026-01-19 23:11:12.513346",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: sleep()] [TimeService contract violation] The TimeService trait documentation at lines 31-36 guarantees that after sleep(Y), get_current_timestamp() >= X + Y - but if max is set lower than X + Y, the clamping at lines 71-73 could violate this guarantee, breaking the contract? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26b48b07-e77b-4336-b081-4ad5bc639ca6?mode=deep",
+    "timestamp": "2026-01-19 23:11:30.446928",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [AbortHandle contract violation] The TimeService trait expects run_after() to return a functional AbortHandle that can cancel the task, but the mock creates a dummy handle at lines 59-60 - does this violate the trait contract and cause callers to have incorrect assumptions about abort behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f3fb733-fc2e-48ba-b8e3-deba1492b16c?mode=deep",
+    "timestamp": "2026-01-19 23:11:48.911279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: get_current_timestamp()] [Timestamp precision] The real ClockTimeService uses actual system time with nanosecond precision, but SimulatedTimeService uses arbitrary Duration values - could tests that depend on timestamp precision or resolution behave differently between mock and real implementations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8371f4f8-f577-4a9b-895a-41eea73429f2?mode=deep",
+    "timestamp": "2026-01-19 23:12:05.979052",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Multiple functions] [Mutex lock duration] The mutex is held for the entire duration of run_after() including task execution at line 57, and for update_auto_advance_limit() including all task executions - could long-running tasks cause lock contention that leads to deadlocks or thread starvation in multithreaded tests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec2c3e34-7035-4284-bd2c-60b0863c567f?mode=deep",
+    "timestamp": "2026-01-19 23:12:23.167725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: clone() and sleep()] [Clone and modify race] If one thread clones the SimulatedTimeService and another thread calls sleep() on the original, both share the same inner Arc - could this lead to unexpected time advancement from the perspective of the clone, causing non-deterministic test behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09327546-be03-44f3-8bd9-395dbe58f6e3?mode=deep",
+    "timestamp": "2026-01-19 23:12:40.526208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: get_current_timestamp() and run_after()] [Read-modify-write race] A thread could call get_current_timestamp() at line 64, then another thread calls run_after() which modifies inner.now at line 52, then the first thread uses the stale timestamp - could this cause incorrect timeout calculations in consensus tests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d68c0c16-6c56-47bc-8a52-84c8c406e941?mode=deep",
+    "timestamp": "2026-01-19 23:12:58.773853",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Immediate execution logic] When deadline <= time_limit, the task executes immediately and inner.now is set to deadline - but what if the task execution itself calls back into the time service? Would this cause nested mutex locking (which would panic with std::sync::Mutex but might deadlock with other mutex implementations)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b44abd6d-0bb1-4805-97ff-4b1b3c342ecf?mode=deep",
+    "timestamp": "2026-01-19 23:13:16.167512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Multiple tasks same deadline] If multiple pending tasks have the exact same deadline and all become executable when time_limit is updated, they're executed in vector order at line 127 - but should they be considered simultaneous events? Could this execution order affect consensus tests that depend on event ordering? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d55be1b-78d5-4936-a688-cfaa0a2c58bd?mode=deep",
+    "timestamp": "2026-01-19 23:13:33.990718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Struct: SimulatedTimeServiceInner] [max field usage] The max field is initialized to Duration::from_secs(u64::MAX) at line 91 but there's no public API to change it - is this field intended for future use, and could its current implementation be incomplete or buggy? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81502410-8290-43b4-9d22-a00a52b4a732?mode=deep",
+    "timestamp": "2026-01-19 23:13:51.789811",
+    "report_generated": false
+  }
+]
