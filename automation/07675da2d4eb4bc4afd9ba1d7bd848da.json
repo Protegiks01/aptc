@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: FileHandleHash] [Hash Flooding] Can an attacker create many FileHandles that hash to the same value to cause HashMap bucket collisions in the `remote_file_handle_by_hash` HashMap (line 125), degrading cache lookup performance to O(n) and causing validator slowdowns during backup operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfecb86b-bce8-44bf-a172-2f78f844ecdb?mode=deep",
+    "timestamp": "2026-01-19 20:51:13.503965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: FileHandleHash] [Filename Injection] The hash is used directly as a filename on line 154 without sanitization - if the hex formatting can somehow produce path separators or special characters (impossible with standard formatting but worth verifying), could this enable directory traversal? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa4c480a-557f-4772-8b10-f23fbaf6fca0?mode=deep",
+    "timestamp": "2026-01-19 20:51:26.266175",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: LoadMetadataLines] [Memory Exhaustion] The `read_to_string(&mut buf)` on line 240 reads the entire file into memory without size limits - can an attacker upload multi-gigabyte metadata files to exhaust validator memory, trigger OOM, and cause consensus liveness failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_203d2936-9b86-4572-bc32-12f0ba503cd8?mode=deep",
+    "timestamp": "2026-01-19 20:51:39.687896",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: LoadMetadataLines] [Deserialization DoS] The `serde_json::from_str::<Metadata>` on line 245 parses each line without complexity limits - can attackers craft JSON with deeply nested structures, extremely long strings, or pathological patterns that cause exponential parsing time, blocking the async runtime and preventing validator startup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74fb7d6c-1a29-4ccc-914f-356a3b7160f0?mode=deep",
+    "timestamp": "2026-01-19 20:51:54.089057",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: LoadMetadataLines] [Error Handling] The `err_notes((file!(), line!(), &buf))` on line 242 logs the entire buffer contents on error - if the file contains sensitive backup metadata or path information, can this leak secrets through log aggregation systems or expose attack surface information? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0bba5f2-c4ad-48d0-aea4-0f552ac71482?mode=deep",
+    "timestamp": "2026-01-19 20:52:08.424041",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: LoadMetadataLines] [Unicode Handling] The `read_to_string()` assumes valid UTF-8 - if an attacker injects non-UTF-8 bytes into cached files, can this cause the read to fail, preventing metadata loading and causing validators to operate without backup information? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df3a0ed3-ea9e-4246-b7e0-619696aacf3b?mode=deep",
+    "timestamp": "2026-01-19 20:52:23.806545",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: LoadMetadataLines] [Line Splitting] The `buf.lines()` on line 244 splits on '\\\\n' - if an attacker crafts metadata files with only '\\\\r' or mixed line endings, can this cause incorrect parsing, where multiple logical entries are treated as a single malformed entry, corrupting backup metadata interpretation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3c3ec51-b03a-470b-8312-a96a30ddcb4e?mode=deep",
+    "timestamp": "2026-01-19 20:52:41.142127",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: LoadMetadataLines] [Error Propagation] The `collect::<Result<_, serde_json::error::Error>>()` on line 246 stops at the first deserialization error - if one line is corrupted, does the entire file get rejected? Can attackers corrupt single lines to invalidate entire metadata files, causing backup restoration to fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e5f79a9-24d2-4cdf-a9ec-3c98312c34ef?mode=deep",
+    "timestamp": "2026-01-19 20:52:59.846874",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: LoadMetadataLines] [Resource Exhaustion] If a file contains millions of valid JSON lines, can the vector allocation for collected Metadata entries exhaust memory, even if each individual entry is small, causing validator OOM and consensus failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0fd33366-5716-410c-88da-0f8a917c6e09?mode=deep",
+    "timestamp": "2026-01-19 20:53:18.866555",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Trait: LoadMetadataLines] [Type Confusion] The deserialization into `Metadata` enum on line 245 relies on serde's type discrimination - can an attacker craft JSON that deserializes to unexpected Metadata variants, causing type confusion in downstream code that assumes specific metadata types exist? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e99e368a-922e-4036-849a-6d9ce606f113?mode=deep",
+    "timestamp": "2026-01-19 20:53:40.112217",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [Cache Persistence] The cache is persistent across runs but lacks integrity verification - can an attacker with temporary filesystem access modify cached files once, and have those malicious changes persist indefinitely, affecting all future backup operations until manual cache cleanup? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81c19d82-2ffd-49a2-b75d-6c617a833b22?mode=deep",
+    "timestamp": "2026-01-19 20:54:01.307189",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [No Authentication] The cache system doesn't verify the source of metadata files - if an attacker compromises the backup storage or performs MITM attacks, can they inject arbitrary metadata that gets cached and used by all validators accessing that backup? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98f04d00-1389-4828-88fd-3258bea11899?mode=deep",
+    "timestamp": "2026-01-19 20:54:23.046382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [No Integrity Checks] Cached metadata files lack checksums, signatures, or Merkle proofs - can attackers modify cached files directly to corrupt backup metadata, causing validators to restore from incorrect state snapshots and diverge from consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_991af1c8-452c-478f-90d0-2a87c2ec362a?mode=deep",
+    "timestamp": "2026-01-19 20:54:46.013315",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [Concurrent Process Safety] Multiple validator processes or restore operations may access the same cache directory concurrently without file locking - can this cause race conditions where processes overwrite each other's cache entries, corrupt in-progress downloads, or read partially written files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68c685cf-f076-4303-a289-1428d4ceaa79?mode=deep",
+    "timestamp": "2026-01-19 20:55:10.200929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [Rollback Attack] If an attacker replaces the remote backup storage with an older version, will the cache synchronization (lines 134-142) correctly identify and remove metadata for backups that should exist but are missing from the old storage, or will stale cache entries persist? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89185d0a-74ea-4a87-8e46-78a9362db234?mode=deep",
+    "timestamp": "2026-01-19 20:55:35.011825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [Time-of-Check-Time-of-Use] Throughout the file, there are multiple async await points between checking cache state and using it - can attackers exploit these windows to modify files between verification and use, bypassing security checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75bcff22-2400-4805-8e1b-97bdfb8ea6b5?mode=deep",
+    "timestamp": "2026-01-19 20:56:01.089253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [Disk Space Exhaustion] The cache has no size limits or cleanup policies - can attackers cause the backup storage to accumulate unlimited metadata files over time, eventually filling the validator's disk and causing node crash? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_562895c3-f597-4562-bf8f-8c9cece6a3e7?mode=deep",
+    "timestamp": "2026-01-19 20:56:27.378787",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [Error Recovery] If the cache gets into a corrupted state (e.g., invalid files, permission errors, filesystem corruption), does the system detect and recover, or will validators repeatedly fail to load metadata, preventing backup restoration and causing operational downtime? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6d1d2eb-cd67-476e-995a-f075e7882c0e?mode=deep",
+    "timestamp": "2026-01-19 20:56:51.627606",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [Network Partition] If validators in different geographical regions have inconsistent views of the backup storage due to CDN caching or eventual consistency, can they load different metadata sets, leading to non-deterministic backup restoration and potential consensus divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4683bd0-cbee-4eb1-8273-5041f1b81df3?mode=deep",
+    "timestamp": "2026-01-19 20:57:15.682279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [Privilege Escalation] If the cache directory is created with insufficiently restrictive permissions, can local attackers on the validator host read cached metadata to extract sensitive backup information, or write malicious metadata to compromise backup integrity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18f2ae0b-3b61-4fba-8cea-cb59b2876703?mode=deep",
+    "timestamp": "2026-01-19 20:57:41.245103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [State Inconsistency] If the MetadataView construction on line 214 combines loaded metadata with remote_file_handles, but some files failed to download, can this create an inconsistent view where metadata references files that aren't actually cached, causing errors in backup restoration logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55db5506-9a3b-43dd-936f-24c089670af4?mode=deep",
+    "timestamp": "2026-01-19 20:58:06.854742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Transaction Ordering] Does the metadata loading preserve the chronological order of backups (epochs, versions), or can hash-based iteration on line 195 cause metadata to be processed out of order, breaking assumptions in restore logic about state progression? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b294a49-7086-4270-88d1-a695e56bb808?mode=deep",
+    "timestamp": "2026-01-19 20:58:32.486126",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: download_file()] [Bandwidth Attack] Can an attacker cause the backup storage to return extremely large metadata files, causing validators to consume excessive bandwidth during cache synchronization, impacting network performance and potentially degrading consensus message propagation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0692ae0-54d3-47e0-90b1-e62546716acc?mode=deep",
+    "timestamp": "2026-01-19 20:59:00.541779",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Overall] [Metadata Replay] If an attacker captures legitimate metadata files from an earlier backup and replays them to the backup storage, will the cache synchronization detect this as duplicate/stale data, or will old metadata get mixed with current metadata causing state confusion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_efab46e1-b7c0-49be-8869-4b314ac804b1?mode=deep",
+    "timestamp": "2026-01-19 20:59:28.239303",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Validation Gap] The sync_and_load function trusts that deserialized Metadata entries are valid and consistent - if an attacker crafts Metadata with overlapping version ranges, contradictory epochs, or impossible state transitions, can this cause backup restoration to fail or produce incorrect state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_895c1189-db49-4dd6-93a0-d245fcda1325?mode=deep",
+    "timestamp": "2026-01-19 20:59:56.355690",
+    "report_generated": false
+  }
+]
