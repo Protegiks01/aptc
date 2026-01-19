@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Logic Error] The validation condition on line 16 uses 'if native.is_entry || !module_address.is_special()' - does this logic correctly implement the intended security policy, or does the OR condition create an unintended bypass where entry natives from non-special addresses are rejected when they should be allowed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3c4518b-19d2-4196-8af8-86e4b0eccb28?mode=deep",
+    "timestamp": "2026-01-19 20:11:36.562096",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Access Control Bypass] Can an attacker craft a module with native.is_entry=false and module_address in range 0x10-0xff to bypass the special address check on line 16, since is_special() only checks for 0x0-0xf, allowing unauthorized native function deployment? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6fc5d9fd-ce8e-4970-8b31-eeb1c41c3ce8?mode=deep",
+    "timestamp": "2026-01-19 20:11:48.881899",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Entry Function Exploit] Line 16 checks 'native.is_entry' - can an attacker manipulate bytecode to set is_entry=true on a native function at a non-special address to bypass validation, potentially enabling arbitrary code execution through native function calls? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc53e860-955f-4f02-8afa-c45c73d2adba?mode=deep",
+    "timestamp": "2026-01-19 20:12:02.017662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Atomic Validation] The function iterates through modules on line 13 - if validation fails for one module on line 17-23, are previously validated modules in the batch already committed to state, creating a partial deployment vulnerability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9a400f9-d883-486b-b74a-3ab6b34334cd?mode=deep",
+    "timestamp": "2026-01-19 20:12:15.031422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Race Condition] Is validate_module_natives() called under proper locking when modules are being published concurrently? Can two threads validate conflicting module sets simultaneously, allowing TOCTOU attacks where module_address.is_special() changes between check and use? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3e1e037-2319-4821-9948-c99e39587962?mode=deep",
+    "timestamp": "2026-01-19 20:12:28.901910",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Address Spoofing] Line 14 calls module.self_addr() - can this return a cached or manipulated address that differs from the actual deployment address, bypassing the is_special() check on line 16? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4bcae40-5268-47a0-afc1-e80c757ab6a1?mode=deep",
+    "timestamp": "2026-01-19 20:12:43.897866",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Boundary Condition] The is_special() check on line 16 validates address range 0x0-0xf - is there an off-by-one error where address 0x10 could be treated as special due to integer comparison bugs, allowing unauthorized native deployment at address 0x10? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2dd689f8-bd22-4051-bc1e-25643ee5d34a?mode=deep",
+    "timestamp": "2026-01-19 20:13:00.266071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Address Mutation] Between line 14 where module_address is extracted and line 16 where it's checked, can the module's self_addr() be mutated through unsafe code or memory corruption to bypass validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fec06e07-1f4c-41ff-841e-b7a2d795aed3?mode=deep",
+    "timestamp": "2026-01-19 20:13:17.212424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Special Address Redefinition] If the definition of is_special() changes in a protocol upgrade to include different address ranges, does validate_module_natives() properly handle modules deployed under old rules, or could this create upgrade vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a35dd1d-565f-4ec3-a14d-6d06581e513d?mode=deep",
+    "timestamp": "2026-01-19 20:13:34.729557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Native Detection Bypass] Line 15 filters with 'def.is_native()' - can an attacker craft malformed bytecode where is_native() returns false but the function is still executed as native, bypassing validation entirely? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16d982fb-2637-4be6-94de-ad29db09eff1?mode=deep",
+    "timestamp": "2026-01-19 20:13:53.736979",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Function Definition Manipulation] The filter on line 15 checks function_defs().iter().filter(|def| def.is_native()) - can an attacker provide a CompiledModule with empty function_defs() but still include native functions in other data structures to bypass detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b13fa6b-659f-4a53-bb5f-6038d1754f43?mode=deep",
+    "timestamp": "2026-01-19 20:14:13.854850",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [is_native() Consistency] Does is_native() check match the actual execution path in the VM? Can a function with is_native()=false still be dispatched to native code through type confusion or vtable manipulation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_983e9c93-754d-4ecf-be95-e19a667da000?mode=deep",
+    "timestamp": "2026-01-19 20:14:34.498508",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Duplicate Function Definitions] If a module contains duplicate function definitions with different is_native() values, does the iterator on line 15 catch all instances, or could a native function be hidden after a non-native duplicate? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a96e2c11-691f-4f8d-b2b0-8688c9eae036?mode=deep",
+    "timestamp": "2026-01-19 20:14:56.016620",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Entry Native Confusion] The condition 'native.is_entry' on line 16 appears to reject entry natives from non-special addresses - but shouldn't entry natives be universally forbidden per USER_DEFINED_NATIVE_NOT_ALLOWED? Could this create inconsistent validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95f1cc41-47f3-4419-9837-d51b37532ba3?mode=deep",
+    "timestamp": "2026-01-19 20:15:18.165306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [is_entry Flag Manipulation] Can an attacker set is_entry=true on native functions during module compilation to change validation behavior, potentially exploiting different code paths for entry vs non-entry natives? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7cb700ce-a1df-40c1-8e8f-d993b8706be6?mode=deep",
+    "timestamp": "2026-01-19 20:15:42.232418",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Entry Function Privilege Escalation] If is_entry natives are treated differently (line 16), can an attacker escalate privileges by first deploying an is_entry=true native, then later modifying it to is_entry=false to gain native execution capabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d6c14b3-4836-4ff3-8b77-66b287be8b4a?mode=deep",
+    "timestamp": "2026-01-19 20:16:06.767056",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Error Message Information Leak] Lines 18-22 return detailed error messages including module.self_id() - does this leak information about system module structure or special addresses that could aid attackers in crafting bypass attempts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69d6ae3b-eebf-4de2-a2a6-3127ae252439?mode=deep",
+    "timestamp": "2026-01-19 20:16:32.020423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Partial Validation State] If validation fails on line 17 and returns early, are there any side effects from the iteration over previous modules (lines 13-15) that could leave the VM in an inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfb5c799-c306-4aa5-80f7-bbe84ac8f540?mode=deep",
+    "timestamp": "2026-01-19 20:16:57.755561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Error Recovery] When PartialVMError is returned on line 17, does the caller properly handle cleanup, or could repeated failed validation attempts exhaust resources or create exploitable state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_770c82d4-2644-4883-b242-fe4dbadd6e36?mode=deep",
+    "timestamp": "2026-01-19 20:17:22.384382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Error Code Abuse] The StatusCode::USER_DEFINED_NATIVE_NOT_ALLOWED on line 18 - can this error code be caught and suppressed by malicious code to retry validation with different parameters? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20b36bf0-2bfd-4169-a01c-07ca7bba3ac5?mode=deep",
+    "timestamp": "2026-01-19 20:17:47.538423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Module Order Dependency] Line 13 iterates 'for module in modules' - does validation order matter? Can an attacker order modules such that a malicious native in module[0] passes validation before dependencies are checked? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_719a9018-d1fc-4e22-9e24-da67239486fc?mode=deep",
+    "timestamp": "2026-01-19 20:18:13.369027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Empty Batch Bypass] If modules slice is empty on line 13, does the function return Ok(()) on line 27 without performing any validation, allowing an empty transaction to pass that might enable follow-up attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_195a6088-3bda-469c-a4e9-1fb53f9dc344?mode=deep",
+    "timestamp": "2026-01-19 20:18:39.649777",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Batch Size Attack] Can an attacker submit an extremely large modules slice to cause excessive iteration time in lines 13-25, creating a DoS condition or timing attack that reveals information about special address checking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06c8c580-a964-4e03-b9e9-36b2e82d7aa7?mode=deep",
+    "timestamp": "2026-01-19 20:19:07.459650",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Cross-Module Native Reference] If module A references a native function from module B in the same batch, does validation on line 15 catch this, or only check natives defined directly in each module, missing transitive native calls? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7a584da-a86c-4e47-8b18-598fc2d7f245?mode=deep",
+    "timestamp": "2026-01-19 20:19:35.454695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/native_validation.rs] [Function: validate_module_natives()] [Validation Bypass via VM Path] Is validate_module_natives() called on ALL module deployment paths, or are there execution contexts (genesis, governance upgrades, emergency patches) that skip this validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14723a62-186a-4259-8755-53dc46281c1d?mode=deep",
+    "timestamp": "2026-01-19 20:20:02.559458",
+    "report_generated": false
+  }
+]
