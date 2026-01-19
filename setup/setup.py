@@ -157,7 +157,7 @@ def main():
     # Configuration
     source_repo = SOURCE_REPO
     base_name = source_repo.split("/")[-1]
-    num_repos = 10  # For testing, change to 100 for production
+    num_repos = 100  # For testing, change to 100 for production
 
     # Get GitHub token and username from environment
     token = os.getenv('REPO_TOKEN') or config('REPO_TOKEN', default=None)
