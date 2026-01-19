@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Test coverage gap] Does the blob size range of 0..=20 bytes adequately test the maximum allowed metadata key size (METADATA_KEY_SIZE_MAX = 1023 bytes), potentially missing deserialization vulnerabilities when processing near-maximum-size keys that could cause buffer overflows or DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b73befd-70f5-4733-b1ef-01b3997df195?mode=deep",
+    "timestamp": "2026-01-19 22:46:02.680844",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Test coverage gap] Does the test strategy generate blobs up to METADATA_VALUE_SIZE_MAX (65535 bytes), or does the 0..=20 byte limit fail to test deserialization of maximum-sized metadata values that could trigger memory exhaustion or integer overflow bugs in production? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a313dfe8-b4d5-4169-b3fc-2e6317d52b0d?mode=deep",
+    "timestamp": "2026-01-19 22:46:15.245458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Boundary condition] Does the strategy test empty metadata vectors (size 0), or could missing empty-case testing fail to catch null pointer dereferences or underflow bugs when validators process modules with no metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97a0a2cb-6522-4bcb-a06b-c8ffe1eaeb51?mode=deep",
+    "timestamp": "2026-01-19 22:46:28.138829",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Boundary condition] Does the btree_set generation test the maximum vector size limits enforced by the Move binary format deserializer, or could untested large metadata vectors cause memory exhaustion attacks when malicious actors deploy modules with excessive metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_684c04d5-3e63-450d-a937-0d16b516c7c7?mode=deep",
+    "timestamp": "2026-01-19 22:46:41.922786",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Duplicate key vulnerability] Since the strategy uses btree_set which enforces uniqueness on the entire blob but metadata() creates key-value pairs where key==value, does this fail to test collision handling when different blobs hash to the same key during deserialization, potentially allowing metadata injection attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02a6fb55-500b-4bb2-8e46-a2caca30d6d7?mode=deep",
+    "timestamp": "2026-01-19 22:46:56.156885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Semantic vulnerability] The generated metadata always has identical key and value (key: blob.clone(), value: blob), but real metadata uses different keys and values - does this fail to test cross-field validation logic that could be exploited to inject malicious metadata attributes like forged #[event] or #[resource_group] annotations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6fedce3-dba5-4b94-a29b-0d66e2275883?mode=deep",
+    "timestamp": "2026-01-19 22:47:11.852928",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Type confusion] Since keys and values are identical in generated test data, does this miss testing type confusion vulnerabilities where an attacker swaps key and value fields in serialized bytecode to bypass metadata validation checks during module publishing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1054b3ce-da09-4716-b86c-cb9ea0094498?mode=deep",
+    "timestamp": "2026-01-19 22:47:28.326723",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Validation bypass] Does the identical key-value generation pattern fail to test validation logic that checks key-value relationships (e.g., key specifies attribute type, value contains attribute data), potentially missing bugs where validators accept malformed metadata that violates security invariants? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88c33912-c1e9-48aa-9e5c-be76e57948ba?mode=deep",
+    "timestamp": "2026-01-19 22:47:46.516700",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Collision attack] The btree_set ensures blob uniqueness, but does this fail to test how the deserializer handles duplicate metadata keys in maliciously crafted bytecode, potentially allowing attackers to override security-critical metadata entries like governance permissions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bfc1c289-53de-4a3f-b7b1-82b3f288fef0?mode=deep",
+    "timestamp": "2026-01-19 22:48:05.495903",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Hash collision] Does the test strategy generate blobs that test hash collision scenarios in metadata key lookups, or could missing collision testing allow attackers to craft keys that collide with system metadata keys, bypassing access control checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb82898b-baf4-4110-a681-23be22877f8d?mode=deep",
+    "timestamp": "2026-01-19 22:48:25.783927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Duplicate metadata entries] Since btree_set prevents duplicates during generation, does this fail to test deserializer behavior when processing bytecode with duplicate Metadata entries at different vector indices, potentially causing undefined behavior or security bypasses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8900761c-7653-46f5-ae79-22e87a6e880e?mode=deep",
+    "timestamp": "2026-01-19 22:48:47.560821",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Integer overflow] Does the small blob size (0..=20) test integer arithmetic in size calculations during deserialization, or could missing large-size testing allow attackers to craft metadata with sizes that cause integer overflows in length prefixes, leading to buffer overflows? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b07ef7c-9a90-41de-8a76-f27d8a28570e?mode=deep",
+    "timestamp": "2026-01-19 22:49:10.147910",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Memory exhaustion] Does the test strategy generate metadata vectors large enough to test memory limits and OOM conditions, or could insufficient testing allow malicious modules with extremely large metadata sections to DoS validators during module verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fad670df-756b-4cbc-9212-1dfaf5e8a6f2?mode=deep",
+    "timestamp": "2026-01-19 22:49:33.974742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [ULEB128 encoding] The deserializer uses ULEB128 encoding for sizes - does the 0..=20 byte range test all ULEB128 edge cases (multi-byte encodings, maximum values, invalid encodings), or could missing test coverage allow crafted bytecode to exploit ULEB128 parsing vulnerabilities? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc46390f-a08e-4da2-b4a9-b97582ae8235?mode=deep",
+    "timestamp": "2026-01-19 22:49:58.885701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Vector capacity] Does the test data exercise vector reallocation and capacity growth during metadata construction, or could missing capacity testing allow attackers to trigger reallocation bugs that corrupt adjacent memory during module loading? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d3b5af6-8d59-41e8-8bac-2c91d41d45c3?mode=deep",
+    "timestamp": "2026-01-19 22:50:24.657973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [UTF-8 validation] The strategy generates arbitrary bytes (any::<u8>()), but does this test UTF-8 encoding requirements if metadata keys must be valid UTF-8 strings, potentially missing validation bypass where invalid UTF-8 sequences cause parser crashes or security checks to be skipped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7877ac92-fe9d-4d8b-a41b-dae2ca792631?mode=deep",
+    "timestamp": "2026-01-19 22:50:50.200263",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Null byte injection] Does the arbitrary byte generation test null bytes (0x00) in metadata keys/values, which could truncate strings in C-style string handling or bypass length checks that rely on null terminators in FFI boundaries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6043d7ea-9c80-4e89-8fcc-34de2fa6c08f?mode=deep",
+    "timestamp": "2026-01-19 22:51:15.653772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Control characters] Does the test strategy generate control characters (0x00-0x1F) that could interfere with logging, terminal output, or parsing of metadata during debugging, potentially hiding malicious metadata content from security audits? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3dacbf3d-6c83-47ce-bb26-d3b8235d44c7?mode=deep",
+    "timestamp": "2026-01-19 22:51:42.942629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: strategy()] [Unicode normalization] If metadata keys are compared as strings, does the byte-level generation test Unicode normalization attacks where visually identical keys (NFC vs NFD) have different byte representations, allowing duplicate metadata entries to bypass uniqueness checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed8ce4a8-feff-47f0-8b1f-7daf8a151263?mode=deep",
+    "timestamp": "2026-01-19 22:52:09.075775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Roundtrip testing] Does the generated metadata test serialize-deserialize roundtrip invariants, or could missing roundtrip testing fail to catch non-deterministic serialization that causes different validators to compute different module hashes, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f33208b7-1ae3-4804-b15f-0636209490d1?mode=deep",
+    "timestamp": "2026-01-19 22:52:36.485972",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Canonicalization] Does the test data verify that metadata entries maintain a canonical ordering after deserialization, or could non-deterministic ordering allow attackers to create functionally identical modules with different hashes to bypass duplicate deployment checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c6473b1-7a32-4e49-a16a-6b5d29ea9824?mode=deep",
+    "timestamp": "2026-01-19 22:53:04.522829",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Padding and alignment] Does the generated metadata test alignment and padding requirements in the binary format, or could missing padding tests allow attackers to craft misaligned metadata that causes unaligned memory access crashes in validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5cd9585d-5e36-4c3f-ae48-170d4df378bf?mode=deep",
+    "timestamp": "2026-01-19 22:53:31.572855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Attribute validation bypass] Since test metadata doesn't include realistic attribute keys like 'event', 'resource_group', or 'view', does this fail to test attribute-specific validation logic that prevents malicious modules from claiming privileged attributes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_252d78e4-8fcc-4121-a7fa-830a9eec850d?mode=deep",
+    "timestamp": "2026-01-19 22:53:58.432103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Resource group validation] Does the test strategy generate metadata that exercises resource group validation, or could missing test coverage allow attackers to deploy modules with malformed resource_group metadata that bypasses storage isolation guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3051c271-5f32-431b-a974-a28ccd07c03e?mode=deep",
+    "timestamp": "2026-01-19 22:54:26.232813",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-binary-format/src/proptest_types/metadata.rs] [Function: metadata()] [Event validation] Does the generated metadata test event attribute validation, or could insufficient testing miss vulnerabilities where malicious modules emit events without proper #[event] annotations, bypassing event indexing and monitoring? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f3f34d3-cc51-4d42-8fa1-b00d7f0e2284?mode=deep",
+    "timestamp": "2026-01-19 22:54:54.990655",
+    "report_generated": false
+  }
+]
