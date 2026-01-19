@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: new_epoch_ending_backup()] [Integer overflow] Can an attacker provide first_epoch=u64::MAX and last_epoch=u64::MAX causing integer overflow in compact_epoch_ending_backup_range() when calculating next_epoch = last_epoch + 1, leading to epoch 0 being written and corrupting backup continuity validation during restore? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ced364c-53b5-4ee3-84b1-9d1cfcc8d12f?mode=deep",
+    "timestamp": "2026-01-19 21:44:05.384189",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: new_transaction_backup()] [Integer overflow] Can an attacker create TransactionBackupMeta with last_version=u64::MAX, causing overflow in compact_transaction_backup_range() when computing next_version = last_version + 1, resulting in version wraparound that corrupts transaction sequence during state restoration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e99af38f-f0fd-4d4d-8252-8c7c72ad567d?mode=deep",
+    "timestamp": "2026-01-19 21:44:17.792376",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_epoch_ending_backup_range()] [Integer overflow] In line 75 where next_epoch = backup_meta.last_epoch + 1 is computed, can an attacker craft backup_metas with last_epoch values approaching u64::MAX to trigger overflow, causing next_epoch to wrap to 0 and breaking the continuity check at line 80-84? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f262754-bce1-4192-9780-3636a41e0867?mode=deep",
+    "timestamp": "2026-01-19 21:44:30.467208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_transaction_backup_range()] [Integer overflow] At line 126 where next_version = backup_meta.last_version + 1 is calculated, can malicious backup metadata with last_version=u64::MAX-1 cause overflow after processing multiple backups, leading to incorrect version range validation and potential transaction replay during restore? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67fc3964-200d-4df5-975c-d23140137b94?mode=deep",
+    "timestamp": "2026-01-19 21:44:44.397281",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_epoch_ending_backup_range()] [Integer overflow] At line 85 where next_epoch = backup.last_epoch + 1 is computed in the loop, can an attacker provide a sequence of backup_metas where cumulative additions cause integer overflow after processing multiple entries, corrupting the final epoch range in the compacted metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41ae04e7-cf92-470c-b889-1359efbf9164?mode=deep",
+    "timestamp": "2026-01-19 21:44:58.485152",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_transaction_backup_range()] [Integer overflow] At line 136 where next_version = backup.last_version + 1 is calculated in iteration, can Byzantine validators create overlapping transaction backups that when compacted cause version overflow, allowing duplicate transactions to be restored with different versions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2a47115-aecc-4df1-ae6d-8df7b3c89012?mode=deep",
+    "timestamp": "2026-01-19 21:45:13.414284",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_epoch_ending_backup_range()] [Arithmetic underflow] In the filename generation at line 88-91 using next_epoch - 1, if next_epoch has overflowed to 0 due to previous u64::MAX addition, will the underflow to u64::MAX create a misleading filename like 'epoch_ending_compacted_0-18446744073709551615.meta' that misrepresents the actual epoch range? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8280b61f-6ecd-48ab-8488-d0a9796b874a?mode=deep",
+    "timestamp": "2026-01-19 21:45:28.961294",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_transaction_backup_range()] [Arithmetic underflow] At line 139-142 where the filename uses next_version - 1, can overflow in next_version lead to underflow creating filenames like 'transaction_compacted_0-18446744073709551615.meta' that don't match actual backup contents, causing restore operations to load incorrect transaction ranges? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfcd2311-8715-46e5-a979-b0602368cae3?mode=deep",
+    "timestamp": "2026-01-19 21:45:46.590568",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: new_epoch_ending_backup()] [Invalid range] Can an attacker call this function with first_epoch > last_epoch (e.g., first_epoch=1000, last_epoch=500) to create invalid EpochEndingBackupMeta that passes construction but causes undefined behavior during restore, potentially corrupting epoch transition logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a537f6c-dfeb-4fdc-843a-ed3c5fb841b7?mode=deep",
+    "timestamp": "2026-01-19 21:46:04.992802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: new_epoch_ending_backup()] [Invalid version range] Can malicious input provide first_version > last_version, creating metadata where the version range is inverted, causing the restore controller to process transactions in reverse order or skip critical epoch-ending ledger infos? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6756087-8037-4ef6-a0bc-1f2314e74c5d?mode=deep",
+    "timestamp": "2026-01-19 21:46:25.622333",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: new_transaction_backup()] [Invalid range] Can an attacker provide first_version=1000 and last_version=100 to create TransactionBackupMeta with inverted range, causing transaction restore to fail silently or restore transactions out of order, breaking deterministic execution guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_390bd907-6ca4-4664-b9f7-c939f29bfd85?mode=deep",
+    "timestamp": "2026-01-19 21:46:45.516489",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: new_state_snapshot_backup()] [Epoch-version mismatch] Can an attacker create StateSnapshotBackupMeta with epoch=100 but version=10 (where version is much lower than expected for that epoch), causing state restore to use stale state that doesn't match the current epoch's validator set and consensus state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a59c4212-7e80-40d9-a2f8-7dc0a6766b83?mode=deep",
+    "timestamp": "2026-01-19 21:47:06.092329",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: new_epoch_ending_backup()] [Zero-length range] Can an attacker create backup metadata with first_epoch == last_epoch or first_version == last_version, representing zero-length or single-item ranges that might bypass validation logic in compaction or restore, causing gaps in recovered blockchain state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5faa2e88-54e2-4e50-aa0f-59bced242db6?mode=deep",
+    "timestamp": "2026-01-19 21:47:26.210418",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_epoch_ending_backup_range()] [Discontinuous ranges] At line 79-84 continuity check, can an attacker craft backup_metas vector where entries have overlapping epochs (e.g., [0-10], [5-15]) instead of gaps, passing the equality check but creating duplicate epoch data that corrupts consensus when restored? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c023b83-434b-43f9-ae00-af0383ceac9e?mode=deep",
+    "timestamp": "2026-01-19 21:47:48.578438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_transaction_backup_range()] [Overlapping versions] At line 129-135 continuity validation, can malicious backup metadata contain overlapping transaction version ranges (e.g., [0-1000], [500-1500]) that pass the exact equality check but contain duplicate transactions, causing double-spending when state is restored? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9086db33-e697-46b5-a3e5-51c38e57d5a9?mode=deep",
+    "timestamp": "2026-01-19 21:48:11.564442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_epoch_ending_backup_range()] [Off-by-one gaps] Can an attacker provide backup_metas where next_epoch = backup.first_epoch + 1 instead of exact equality (creating 1-epoch gaps), bypassing the continuity check and causing missing epoch endings that break validator set transitions during restore? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23a326e1-8909-467b-ba03-a6c5a395c4a7?mode=deep",
+    "timestamp": "2026-01-19 21:48:34.500555",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_epoch_ending_backup_range()] [Empty vector bypass] While line 69-72 checks for empty vector, can an attacker pass a vector with single element containing malformed data (e.g., first_epoch > last_epoch) that passes the empty check but causes panic or corruption in filename generation at line 88-91? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ca3cfe7-c987-4790-a23e-077dd56f0948?mode=deep",
+    "timestamp": "2026-01-19 21:48:59.281980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_statesnapshot_backup_range()] [Empty vector] At line 99-102, after the empty check passes, if backup_metas[0] or backup_metas[backup_metas.len()-1] contain invalid epoch values, can the filename generation at line 103-106 create duplicate names that overwrite existing backup metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_809dc56a-de1b-44cc-916a-ee19e47e1255?mode=deep",
+    "timestamp": "2026-01-19 21:49:23.364370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_transaction_backup_range()] [Single element vector] Can an attacker provide backup_metas with exactly one element containing extreme values (first_version=0, last_version=u64::MAX), passing empty check at line 118-121 but creating invalid compacted metadata that claims to contain all possible transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26115540-add0-4c7f-a45b-b244173160aa?mode=deep",
+    "timestamp": "2026-01-19 21:49:46.969244",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_statesnapshot_backup_range()] [Array index] At line 105-106, can backup_metas.len()-1 underflow if len()==0 despite the ensure check, or can race conditions between the check and access cause out-of-bounds panic if another thread modifies the vector? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_814bf3f8-e883-4dcf-887c-b6d57b5e1e37?mode=deep",
+    "timestamp": "2026-01-19 21:50:10.675397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: to_text_line()] [Deserialization bomb] At line 171-172 using serde_json::to_string(), can an attacker craft Metadata with deeply nested or recursive structures (e.g., malicious FileHandle strings) that cause exponential expansion during JSON serialization, consuming excessive memory and causing denial of service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_baf1bfb0-f32e-4d94-a77e-bddd48275507?mode=deep",
+    "timestamp": "2026-01-19 21:50:35.245359",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Enum: Metadata] [Deserialization type confusion] Since Metadata enum at line 15-23 uses serde Deserialize without tagged enum representation, can an attacker provide JSON that deserializes to wrong enum variant (e.g., TransactionBackup fields interpreted as EpochEndingBackup), causing type confusion that corrupts backup restoration logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10888ddb-6b93-41e3-8416-59b20cf17e0b?mode=deep",
+    "timestamp": "2026-01-19 21:51:00.512421",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Struct: EpochEndingBackupMeta] [Integer deserialization] At line 176-183 with u64 fields, can malicious JSON provide negative numbers or floating point values that serde_json accepts and converts to unexpected u64 values through wraparound, corrupting epoch and version ranges? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eee33241-ca32-41c2-a876-897db8d2b09d?mode=deep",
+    "timestamp": "2026-01-19 21:51:27.166500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Struct: CompactionTimestampsMeta] [HashMap deserialization] At line 207 with HashMap<FileHandle, Option<u64>>, can an attacker provide JSON with extremely large HashMap (millions of entries) causing memory exhaustion, or duplicate keys that overwrite critical timestamp data during deserialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d4ae0e8-d714-4383-83c7-7ab9d1388424?mode=deep",
+    "timestamp": "2026-01-19 21:51:53.888838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: to_text_line()] [Malicious FileHandle] Can an attacker inject FileHandle strings containing JSON escape sequences or control characters that, when serialized at line 172, create malformed TextLine objects that bypass the newline validation and corrupt metadata files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a95d3e11-fd11-4f99-ac76-2b77d598578a?mode=deep",
+    "timestamp": "2026-01-19 21:52:20.178450",
+    "report_generated": false
+  }
+]
