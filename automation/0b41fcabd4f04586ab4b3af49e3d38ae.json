@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_to_commit()] [Race condition - Critical] Can concurrent calls to sync_to_commit() create multiple overlapping sync tasks that race to update sync_to_commit_handle, potentially causing one task to complete while another is still running and leading to inconsistent state sync status? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1723fe4f-360c-45e9-a90d-5230c9b3306b?mode=deep",
+    "timestamp": "2026-01-19 23:45:49.584299",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_for_fallback()] [Race condition - Critical] Can multiple concurrent calls to sync_for_fallback() spawn overlapping fallback sync tasks before the handle is set, causing multiple simultaneous state sync operations that could desynchronize the observer from the network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c06cfec9-bbb1-4771-af91-280b9467233d?mode=deep",
+    "timestamp": "2026-01-19 23:46:02.365167",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: clear_active_commit_sync()] [Race condition - High] Can clear_active_commit_sync() be called concurrently with sync_to_commit(), creating a time-of-check-time-of-use vulnerability where the handle is cleared after the check but before setting a new handle, causing handle leaks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d7d5221-1a28-448d-b0b7-c7ac7c217532?mode=deep",
+    "timestamp": "2026-01-19 23:46:15.976695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: clear_active_fallback_sync()] [Race condition - High] Can clear_active_fallback_sync() race with sync_for_fallback() to create a scenario where fallback_sync_handle is set to None while a new sync task is being spawned, losing track of active sync operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a726582c-a484-410b-9a47-0ab45ed3f5ea?mode=deep",
+    "timestamp": "2026-01-19 23:46:29.546364",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Struct: StateSyncManager] [Race condition - Critical] Since StateSyncManager does not use Mutex or Arc<Mutex<>> for its mutable fields, can concurrent access from multiple threads cause data races on fallback_sync_handle and sync_to_commit_handle leading to undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18e8f41f-3663-487d-b39b-12dbb7373149?mode=deep",
+    "timestamp": "2026-01-19 23:46:44.012349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: is_syncing_to_commit()] [TOCTOU - High] Can is_syncing_to_commit() check return true, but clear_active_commit_sync() is called before the caller acts on it, creating time-of-check-time-of-use vulnerabilities in caller code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24ed2235-9bf8-4bcf-ac2b-ccefc6f1776b?mode=deep",
+    "timestamp": "2026-01-19 23:46:59.745266",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: in_fallback_mode()] [TOCTOU - High] Can in_fallback_mode() be checked, return true, but then clear_active_fallback_sync() is called immediately after, causing logic errors in callers who assume fallback mode is still active? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48bc3bdb-6cc2-4cbd-93c6-3688539be42d?mode=deep",
+    "timestamp": "2026-01-19 23:47:16.789153",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: is_syncing_through_epoch()] [TOCTOU - High] Can is_syncing_through_epoch() check race with clear_active_commit_sync(), causing epoch transition logic to make incorrect decisions about validator set changes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29411f15-3107-4a46-b3c4-5944ddad788c?mode=deep",
+    "timestamp": "2026-01-19 23:47:35.912552",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_to_commit()] [Race condition - Critical] Can sync_to_commit() be called with epoch_changed=true while a previous sync_to_commit() is still running with epoch_changed=false, causing epoch transition state to be incorrectly overwritten? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35a1faac-1751-432d-98b9-2d6b696d0478?mode=deep",
+    "timestamp": "2026-01-19 23:47:56.077176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_for_fallback()] [Race condition - High] Can sync_for_fallback() be called while sync_to_commit() is active, and vice versa, without proper mutual exclusion checks, causing both fallback and commit sync to run simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9ad914f-faab-47bb-bba8-ac3149ab1ec5?mode=deep",
+    "timestamp": "2026-01-19 23:48:16.994093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_to_commit()] [Resource leak - High] If sync_to_commit() is called when sync_to_commit_handle already exists, does the old DropGuard get properly dropped, or can repeated calls leak abort handles and associated async tasks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae188842-1eef-47cc-890a-64b563c07ee3?mode=deep",
+    "timestamp": "2026-01-19 23:48:39.607673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_for_fallback()] [Resource leak - High] If sync_for_fallback() is called when fallback_sync_handle already exists, can the previous DropGuard be overwritten without cleanup, leaking the old async task and causing multiple concurrent fallback syncs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35e6a4ad-e11c-41b6-a9db-590ede5abaf0?mode=deep",
+    "timestamp": "2026-01-19 23:49:03.215583",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: clear_active_commit_sync()] [Memory leak - Medium] Does clear_active_commit_sync() properly abort the underlying async task when setting sync_to_commit_handle to None, or can tasks continue running after the handle is cleared? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3513d447-4894-4948-bc6e-372705ac492f?mode=deep",
+    "timestamp": "2026-01-19 23:49:28.315977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: clear_active_fallback_sync()] [Memory leak - Medium] Does clear_active_fallback_sync() ensure the spawned async task is aborted when fallback_sync_handle is set to None, or can orphaned tasks continue consuming resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aee8da40-bf40-4517-bfee-5d20dc743cbe?mode=deep",
+    "timestamp": "2026-01-19 23:49:52.954406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Struct: StateSyncManager] [Resource exhaustion - High] Can an attacker repeatedly trigger sync_to_commit() without waiting for completion, accumulating leaked DropGuard handles and async tasks until system resources are exhausted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1137f5c3-82c2-4d31-a253-f31b125a595e?mode=deep",
+    "timestamp": "2026-01-19 23:50:17.228806",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_to_commit()] [Handle leak - Medium] If the spawned async task panics or is aborted before setting sync_to_commit_handle, can the AbortHandle be leaked without proper cleanup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79d5a9d2-0c54-495b-8879-2bedb9f55848?mode=deep",
+    "timestamp": "2026-01-19 23:50:41.875784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_for_fallback()] [Handle leak - Medium] If the spawned async task in sync_for_fallback() panics before completion, does the DropGuard get cleaned up properly, or can it cause handle leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55c8eac3-2b14-499e-b924-bcc2a6e61003?mode=deep",
+    "timestamp": "2026-01-19 23:51:06.540279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_for_fallback()] [Channel failure - Critical] If state_sync_notification_sender.send() fails due to receiver being dropped, does the async task silently fail, causing the consensus observer to never receive fallback sync completion and potentially halt? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6e0438d-a49e-4846-bcfe-830ee28c9f3d?mode=deep",
+    "timestamp": "2026-01-19 23:51:32.896072",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_to_commit()] [Channel failure - Critical] If state_sync_notification_sender.send() fails when sending CommitSyncCompleted notification, can the consensus observer be stuck waiting indefinitely for a notification that will never arrive, causing loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d935f02d-56bf-4989-a8ae-f56f23b90791?mode=deep",
+    "timestamp": "2026-01-19 23:51:57.570100",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Struct: StateSyncManager] [Channel exhaustion - High] Since state_sync_notification_sender is UnboundedSender, can an attacker trigger rapid sync operations to flood the channel with unbounded notifications, causing memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f678ecd6-8246-4ac9-b3b9-c5c5093b7df1?mode=deep",
+    "timestamp": "2026-01-19 23:52:23.343758",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_for_fallback()] [Notification ordering - High] Can FallbackSyncCompleted and CommitSyncCompleted notifications be sent out of order if both sync operations complete concurrently, causing the observer to process them incorrectly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35b09f23-8c6b-46cd-892d-15d8c3858f5e?mode=deep",
+    "timestamp": "2026-01-19 23:52:47.507086",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_to_commit()] [Notification loss - Critical] If the async task is aborted via AbortHandle after sync_to_target() succeeds but before sending the notification, can the observer miss the sync completion notification and desynchronize from consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2909134f-fe80-4b0d-ab72-f4c94ce19bbf?mode=deep",
+    "timestamp": "2026-01-19 23:53:11.717047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_for_fallback()] [Notification loss - Critical] If the fallback sync task is aborted after sync_for_duration() completes but before sending FallbackSyncCompleted, can the observer remain in fallback mode indefinitely? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a367f523-8cfb-481e-8d65-c6e84a3ac0e6?mode=deep",
+    "timestamp": "2026-01-19 23:53:36.048309",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Struct: StateSyncManager] [Channel blocking - Medium] Can the UnboundedSender block or fail if the receiver's buffer is full or the receiver is slow to process, causing sync tasks to hang? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69e0c26b-e9a3-4d5a-adfb-72f72cc37b94?mode=deep",
+    "timestamp": "2026-01-19 23:54:01.344233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/state_sync_manager.rs] [Function: sync_to_commit()] [Epoch confusion - Critical] Can sync_to_commit() be called with epoch_changed=false when it should be true, causing the observer to miss epoch reconfiguration and continue with stale validator sets? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6de595e5-c398-4b73-9fb1-fd1de7c02d61?mode=deep",
+    "timestamp": "2026-01-19 23:54:27.908422",
+    "report_generated": false
+  }
+]
