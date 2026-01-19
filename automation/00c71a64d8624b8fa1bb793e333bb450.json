@@ -1,0 +1,146 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Entry Block Validation] At line 84, cfg.entry_block_id() is trusted without validation. Can an attacker provide a CFG with invalid or missing entry block, causing the DFS to start from an incorrect position and produce corrupted loop analysis? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48aab9b5-066b-4542-a61b-7b4f773d20ad?mode=deep",
+    "timestamp": "2026-01-19 17:06:31.891109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Successor List Manipulation] At lines 92-93 and 139-142, cfg.successors() results are iterated. If the CFG implementation returns malicious successor lists (e.g., duplicates, self-loops, invalid BlockIds), can this cause incorrect edge classification or loop detection failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea0c87eb-4642-4c98-ae7e-f10912e7cdca?mode=deep",
+    "timestamp": "2026-01-19 17:06:44.468258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [BTreeMap Exploration State] At lines 87-89, exploration state is tracked in BTreeMap. If cfg.entry_block_id() returns a BlockId that causes hash collisions or BTreeMap inefficiencies, can this degrade performance to O(n²) causing validator slowdown during verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da8bf651-65e4-48db-bb6e-95eb18a95677?mode=deep",
+    "timestamp": "2026-01-19 17:06:57.117103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Unreachable Code Handling] The DFS only visits reachable blocks. If bytecode contains unreachable blocks with loops that bypass verification, and these are later made reachable through code modification, can previously unverified loops execute, causing safety violations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0443bb67-1b30-4038-b985-28e8167d3c29?mode=deep",
+    "timestamp": "2026-01-19 17:07:10.282479",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Back Edge Vector Growth] At line 118, backs[to_node] is appended to. For CFGs with many back edges (highly nested/complex loops), can the backs vector grow excessively, causing memory exhaustion during verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38fb3980-64af-4d48-a4ce-cb597e3d35fd?mode=deep",
+    "timestamp": "2026-01-19 17:07:24.132910",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Duplicate Back Edges] If the CFG has multiple edges from the same node to the same loop header, are duplicate back edges added to backs[to_node]? Can this cause downstream algorithms (e.g., Tarjan's) to double-count loop entries and produce incorrect reducibility results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c620fa14-7fd6-415d-8146-67a75dee6544?mode=deep",
+    "timestamp": "2026-01-19 17:07:38.984156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Cross Edge Handling] At line 122, cross edges are added to preds. If cross edges point to nodes in different loop nests, can this cause loop body calculation errors in Tarjan's algorithm, allowing irreducible control flow to pass as reducible? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a364428-c0e1-44ea-9432-bd105a497458?mode=deep",
+    "timestamp": "2026-01-19 17:07:55.277320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Tree Edge Parent Assignment] At line 131, tree edge target nodes have from_node added to preds. Is this correct for tree edges, or should tree edges be tracked separately? Can incorrect edge classification cause loop detection failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38860b6a-dd77-4401-902a-bfd2dbef2a4a?mode=deep",
+    "timestamp": "2026-01-19 17:08:12.354375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [State Transition Atomicity] At line 108, exploration state is mutated from InProgress to Done. If verification is interrupted (e.g., timeout), can partial state leave the exploration map inconsistent for subsequent verification attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3119c5d-b603-486e-a68b-91063c295208?mode=deep",
+    "timestamp": "2026-01-19 17:08:30.559847",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Entry Occupation Pattern Matching] At lines 115-123, Entry::Occupied is matched. If BTreeMap's entry API behavior changes in Rust stdlib updates, can this pattern miss edge cases causing silent verification failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6cb19d52-2607-43a3-aacd-0cf0d73a14e5?mode=deep",
+    "timestamp": "2026-01-19 17:08:49.736743",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Vacant Entry Handling] At lines 127-143, Entry::Vacant creates new nodes. If multiple Vacant entries somehow process the same to_block concurrently, can duplicate NodeIds be assigned, corrupting the node mapping? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce93ceed-a3a2-4590-b44c-d7bd9ecbbc38?mode=deep",
+    "timestamp": "2026-01-19 17:09:10.190899",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: preorder()] [Iterator Range Safety] At line 170, the iterator uses 'self.blocks.len()' as upper bound. If blocks vector was resized or corrupted, can the iterator produce invalid NodeIds that cause panics in downstream code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0af53379-8adf-4b5b-a6b6-1d8440e3cad0?mode=deep",
+    "timestamp": "2026-01-19 17:09:32.667610",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: preorder()] [NodeId Casting] At line 170, 'NodeId(id as u16)' casts usize to u16. If blocks.len() > 65535, can the cast truncate, causing the iterator to produce duplicate or invalid NodeIds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35ea58bf-b78f-43ff-be1a-74d15708cbfd?mode=deep",
+    "timestamp": "2026-01-19 17:09:54.180501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: preorder()] [Empty Graph Handling] If LoopSummary is constructed from an empty CFG (num_blocks=0), does preorder() return an empty iterator correctly, or can edge cases cause panics when used in loop reducibility checks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d468078-8b1d-4e31-ab28-4ad5ef11dbe9?mode=deep",
+    "timestamp": "2026-01-19 17:10:15.802362",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::parent_mut()] [Mutable Aliasing] At line 254, parent_mut returns mutable reference to parents vector element. Can multiple concurrent calls create aliased mutable references, violating Rust's borrow checker and causing undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2aecd9ca-9df2-4bef-8a3e-d9165ef285a3?mode=deep",
+    "timestamp": "2026-01-19 17:10:38.424454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::depth_mut()] [Mutable Aliasing] At line 263, depth_mut returns mutable reference. If called multiple times for the same NodeId while references are held, can this create aliased mutable references causing data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c851df33-d1a4-4db7-9a18-14a910235e8a?mode=deep",
+    "timestamp": "2026-01-19 17:11:02.261416",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::new()] [Identity Mapping Initialization] At line 191, parents are initialized to map each node to itself. If the range 0..num_blocks doesn't match actual node count, can uninitialized or incorrect parent mappings cause containing_loop() to return wrong results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_509200e0-8bd0-4240-a0d3-b05738816a6e?mode=deep",
+    "timestamp": "2026-01-19 17:11:26.651380",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: From<NodeId> for usize] [Widening Cast Safety] At line 278, NodeId(u16) is cast to usize. On 32-bit systems, this widens safely, but can assumptions about usize size cause portability issues if code is ported to 16-bit embedded validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32f69328-ccc9-42d5-b3fa-639d2292d217?mode=deep",
+    "timestamp": "2026-01-19 17:11:52.323527",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [BlockId to usize Conversion] Throughout the code, BlockId is used to index into various vectors. If BlockId is not guaranteed to be < num_blocks, can invalid BlockIds cause index out-of-bounds panics during verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b2978c9-21ec-4505-93de-de729d58c856?mode=deep",
+    "timestamp": "2026-01-19 17:12:17.659549",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: is_descendant()] [u16 Arithmetic Properties] At line 162, arithmetic on u16 NodeIds is performed. Does Rust's default wrapping behavior for u16 addition match the intended semantics, or can overflow cause incorrect descendant detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_699dd8b7-bebe-4391-9291-50ecc2e2f00c?mode=deep",
+    "timestamp": "2026-01-19 17:12:42.473415",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Vector Pre-allocation] At lines 77-80, vectors are pre-allocated with num_blocks capacity. If num_blocks is 0, do these become empty vectors that cause panics when accessed during edge processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_194ee30f-352c-40d9-b1ec-d33321d64da3?mode=deep",
+    "timestamp": "2026-01-19 17:13:06.199461",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Root Node Initialization] At lines 84-89, root node is created and added to exploration. If cfg.entry_block_id() returns a block that's not actually the entry, can this cause incomplete DFS traversal missing loops? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8119cf95-bbfa-4319-b963-15d938f2a9e2?mode=deep",
+    "timestamp": "2026-01-19 17:13:30.129881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::new()] [Depth Initialization] At line 192, all depths start at 0. If a prior LoopPartition was partially processed and reused, can stale depth values persist causing incorrect nesting calculations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30a00ca6-9dd5-4b90-be99-1c56de81edfa?mode=deep",
+    "timestamp": "2026-01-19 17:13:54.657475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Stack Initialization] At lines 91-98, the stack is initialized with root's successors. If cfg.successors() returns an empty list (isolated entry block), does the DFS terminate correctly without processing the root's code? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_364b2df4-4ffa-496a-831d-14de96c62bfe?mode=deep",
+    "timestamp": "2026-01-19 17:14:20.554753",
+    "report_generated": false
+  }
+]
