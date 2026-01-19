@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern() via ConcurrentBTreeInterner::intern_deferred()] [Race condition] Can concurrent calls to intern() from multiple transaction execution threads cause a race condition where two threads both pass the read lock check, then both acquire write locks sequentially, resulting in duplicate allocations and inconsistent index assignments that break deterministic execution across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f909679-bd02-475b-b439-1d46f2da926b?mode=deep",
+    "timestamp": "2026-01-19 22:41:03.313392",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern_by_ref() via ConcurrentBTreeInterner::intern_deferred()] [Race condition] In the window between releasing the read lock and acquiring the write lock, can another thread intern the same ModuleId, causing the second thread to create a duplicate entry with a different index, leading to non-deterministic InternedModuleId values across parallel execution and state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2578ce20-f24e-48d4-b51d-113545cd5720?mode=deep",
+    "timestamp": "2026-01-19 22:41:15.891054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: flush()] [Memory corruption] Can calling flush() while other threads hold InternedModuleId references cause use-after-free vulnerabilities, as the flush operation clears all buffers and invalidates the 'static references that were previously handed out, potentially causing crashes or memory corruption in validator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab2bbc93-fb4a-4172-83b7-e2ca692176cd?mode=deep",
+    "timestamp": "2026-01-19 22:41:28.816734",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern() via InternerPool::alloc()] [Memory safety] Does the unsafe block in alloc() that casts to 'static lifetime properly prevent buffer reallocation? If the buffer grows during concurrent operations, could dangling pointers to the old buffer location cause memory corruption when dereferencing InternedModuleId values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3088fb54-c7ec-4dc7-bd4d-2e09b6bd4d3b?mode=deep",
+    "timestamp": "2026-01-19 22:41:43.290094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: len()] [TOCTOU race] Can a Time-of-Check-Time-of-Use race between len() and subsequent operations cause incorrect size assumptions, where len() is checked but the interner grows before the next operation, leading to out-of-bounds access or incorrect resource allocation decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_278cbd98-b8d2-40f3-b7d4-2e7a665e9427?mode=deep",
+    "timestamp": "2026-01-19 22:41:58.084414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern()] [Resource exhaustion] Can a malicious transaction craft deeply nested or recursive module structures that cause unlimited calls to intern(), exploiting the exponentially growing buffer sizes (doubling with next_size *= 2) to consume all validator memory and cause out-of-memory crashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b031957-2b2a-4de4-8243-ef6a170861ef?mode=deep",
+    "timestamp": "2026-01-19 22:42:13.784059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern() via InternerPool buffer growth] [Memory exhaustion] Since buffer allocation doubles each time (next_size *= 2 starting from 1024), can an attacker force repeated buffer reallocations by interning many unique ModuleIds, causing memory usage to grow to gigabytes and exhaust validator resources, leading to consensus failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b6d34d1-61f2-4bf3-8623-b3d0ffd486c3?mode=deep",
+    "timestamp": "2026-01-19 22:42:30.545013",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern()] [Pool exhaustion] Does the pool vector that stores frozen buffers have any size limit? Can an attacker create transactions that continuously fill buffers, moving them into the pool, until the pool itself consumes all available memory, causing validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c120aa1-3699-4c37-88fa-89888b6dd2f9?mode=deep",
+    "timestamp": "2026-01-19 22:42:48.359027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern_by_ref()] [Clone attack] Can an attacker craft ModuleIds with extremely large internal data structures (large address or name fields) that make the clone operation expensive, then call intern_by_ref() repeatedly to cause CPU exhaustion and slow down block processing below consensus timeout thresholds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c651da55-399e-45a6-bbc7-cf7e3b0ce685?mode=deep",
+    "timestamp": "2026-01-19 22:43:06.942367",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Static TEST_MODULE_ID_POOL] [Global state pollution] Can test code using TEST_MODULE_ID_POOL leak into production builds, allowing attackers to pollute a global shared interner pool across all test executions, causing non-deterministic behavior or state corruption in production validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbf434f8-38d9-4edb-9392-9e548f77dd3e?mode=deep",
+    "timestamp": "2026-01-19 22:43:27.207541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Struct: InternedModuleId(usize)] [Integer overflow] Can the internal usize index overflow if more than usize::MAX modules are interned? Would this cause index wrapping, allowing two different ModuleIds to map to the same InternedModuleId, breaking module isolation and potentially allowing cross-module attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff7dc050-c312-4790-8ad4-7a72fa8f0260?mode=deep",
+    "timestamp": "2026-01-19 22:43:47.699429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern() via vec index calculation] [Integer overflow] In the line 'idx = inner.vec.len() - 1', can vec.len() be 0 due to race conditions or unexpected state, causing integer underflow and returning usize::MAX as the index, which would point to invalid memory and crash the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f7ff673-b5d7-4e55-a538-64c4f71f4484?mode=deep",
+    "timestamp": "2026-01-19 22:44:09.626414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern() via next_size growth] [Integer overflow] Starting from INITIAL_SIZE=1024 and doubling (next_size *= 2), can next_size eventually overflow, wrapping to a small value or zero, causing tiny buffer allocations that get immediately filled and trigger infinite reallocation loops that hang validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f41c3acd-ec3d-4aad-b088-3d811b67a917?mode=deep",
+    "timestamp": "2026-01-19 22:44:32.209176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: len()] [Size inconsistency] Can the interner's internal vec.len() diverge from map.len() due to race conditions or partial updates, causing get() operations to access out-of-bounds indices and trigger panics that crash validator nodes during transaction execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f553cdb1-5bbd-407d-a949-2d8a5b10a52c?mode=deep",
+    "timestamp": "2026-01-19 22:44:56.010633",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern() ordering] [Non-deterministic execution] If two validators process transactions in slightly different orders or timing, can their InternedModuleId assignments differ (same ModuleId gets different usize values), causing StructIdentifier comparisons in reentrancy checks to behave differently and lead to divergent execution results? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80a42c2e-f0ee-468f-b3aa-9e304a46a1bd?mode=deep",
+    "timestamp": "2026-01-19 22:45:20.375559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: flush()] [State divergence] If flush() is called at different times across validators (e.g., due to different transaction boundaries or timing), will subsequent InternedModuleId values differ across nodes, causing validators to compute different state roots and fork the blockchain? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68b66201-9f80-460f-86b8-d31ad522d56e?mode=deep",
+    "timestamp": "2026-01-19 22:45:46.750712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern() via BTreeMap ordering] [Platform differences] Can differences in BTreeMap implementation across platforms (x86 vs ARM, different OS versions, different Rust compiler versions) cause different iteration orders, leading to different intern() ordering and non-deterministic InternedModuleId assignments across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23f00d33-73b4-4adc-a715-1940468cdceb?mode=deep",
+    "timestamp": "2026-01-19 22:46:13.498900",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern_deferred() with Cow] [Timing sensitivity] Can the conversion from Cow::Borrowed to Cow::Owned outside the critical section introduce timing-dependent behavior where expensive clones affect thread scheduling, causing different interning orders across validators and breaking consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43ffc588-cd66-412a-8b80-26c4d205be37?mode=deep",
+    "timestamp": "2026-01-19 22:46:41.162624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern() recheck logic] [Double-check-locking bug] Is the double-checked locking pattern (check with read lock, then check again after acquiring write lock) correctly implemented? Can subtle memory ordering issues on weakly-ordered architectures cause the second check to be optimized away or reordered, leading to duplicate entries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d034763e-5035-4c0f-a27f-645376ddf208?mode=deep",
+    "timestamp": "2026-01-19 22:47:08.733301",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Usage in ReentrancyChecker] [Reentrancy bypass] Can an attacker craft two ModuleIds that should be different but receive the same InternedModuleId due to hash collisions or bugs in the BTreeMap comparison, allowing them to bypass reentrancy checks and illegally access locked resources? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_130218c7-ae81-470d-ad6e-29fe626e0612?mode=deep",
+    "timestamp": "2026-01-19 22:47:35.103427",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: intern() called from reentrancy check] [Deadlock] If the reentrancy checker calls intern() while holding locks on the active_modules HashMap, and intern() blocks waiting for the write lock, can this create a deadlock scenario where transaction execution permanently hangs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd450cf4-dc36-49b1-9cfb-1e466485dac9?mode=deep",
+    "timestamp": "2026-01-19 22:48:01.202081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [InternedModuleId equality] [Module confusion] Can two semantically different ModuleIds (different address or name) incorrectly receive the same InternedModuleId through a bug in the Ord implementation or BTreeMap logic, causing the reentrancy checker to treat them as the same module and incorrectly allow/deny access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5b3606f-4cf4-4b2e-98ec-7da58761a1c8?mode=deep",
+    "timestamp": "2026-01-19 22:48:28.190657",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: flush() interaction with reentrancy] [State corruption] If flush() is called while the reentrancy checker has active entries keyed by InternedModuleId, will those entries become invalid, potentially causing the checker to lose track of active modules and allow reentrancy attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33c79a30-dea9-4fea-8b39-7f45dab927f4?mode=deep",
+    "timestamp": "2026-01-19 22:48:53.438141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: alloc() unsafe block] [Undefined behavior] The unsafe block casts a reference with limited lifetime to 'static - if the buffer vector reallocates or moves due to capacity changes, will existing 'static references become dangling pointers causing undefined behavior and potential exploits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33b741da-a458-4f81-8a21-7fd2046c90c0?mode=deep",
+    "timestamp": "2026-01-19 22:49:18.960364",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/module_id_interner.rs] [Function: alloc() buffer management] [Use-after-free] When buffer is moved to pool via std::mem::replace(), are all existing references properly preserved? Could a reference to the old buffer's last element become invalid when the buffer is moved, causing use-after-free when dereferenced? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0300fcf2-cc23-47e0-8f26-31845879f756?mode=deep",
+    "timestamp": "2026-01-19 22:49:44.947424",
+    "report_generated": false
+  }
+]
