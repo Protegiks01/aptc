@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start()] [Race condition] The `tokio::select!` at line 128 processes three concurrent event streams. Can race conditions between simultaneous reconfig and DKG start events cause inconsistent state updates or missed epoch transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_729bc3a0-840f-4b35-8fa2-3fffefcd8639?mode=deep",
+    "timestamp": "2026-01-19 19:03:19.049296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start()] [Error swallowing] Errors from all handlers are only logged (line 141) but execution continues. Can critical failures like epoch transition errors or DKG initialization failures be silently ignored, causing validators to operate with stale state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0261181-55a6-4c75-ab18-cf0fb7bc66b0?mode=deep",
+    "timestamp": "2026-01-19 19:03:32.498600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start()] [Infinite loop] The main loop (line 127) runs forever without exit conditions. If `await_reconfig_notification()` fails or hangs at line 126, can validators be stuck in an uninitialized state unable to participate in consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_436550b4-d1ff-4f36-a1e5-52c38f74bcd4?mode=deep",
+    "timestamp": "2026-01-19 19:03:46.216263",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start()] [Network receiver exhaustion] If `network_receivers.rpc_rx` (line 135) receives messages faster than they can be processed, can the channel backpressure cause network-level deadlocks or memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46222493-4b84-4302-8867-190ff7bc9b79?mode=deep",
+    "timestamp": "2026-01-19 19:04:00.537263",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start()] [Event ordering] Since `tokio::select!` processes events non-deterministically, can a reconfig event at line 132 be processed before a pending RPC request completes, causing the RPC to be processed with wrong epoch state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47feee9f-bd04-4ec3-bd17-91658174af0d?mode=deep",
+    "timestamp": "2026-01-19 19:04:15.987837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start()] [Shutdown handling] There's no graceful shutdown mechanism in the start loop. Can abrupt validator restarts leave DKG managers in inconsistent states or leaked tokio tasks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd2821b7-d646-4c16-b88c-baf7853162dd?mode=deep",
+    "timestamp": "2026-01-19 19:04:32.554385",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: await_reconfig_notification()] [Panic on startup] Line 151 uses `.expect()` which panics if reconfig sender is dropped. Can an attacker cause validator crashes by manipulating the reconfig event stream during startup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72a856b4-7e8c-456a-8422-e53c94194499?mode=deep",
+    "timestamp": "2026-01-19 19:04:50.208351",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: await_reconfig_notification()] [Unwrap panic] Line 154 uses `.unwrap()` on `start_new_epoch()` result. If epoch initialization fails due to invalid on-chain config, does the validator crash and become unable to restart? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6312d616-e66a-4944-811b-54e7395894c5?mode=deep",
+    "timestamp": "2026-01-19 19:05:10.596572",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: await_reconfig_notification()] [Blocking wait] The function blocks on `.await` at line 149. If the reconfig notification never arrives due to on-chain issues, can validators be permanently stuck in initialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc6a5667-9f7d-48e9-8f00-5c8bb43a487a?mode=deep",
+    "timestamp": "2026-01-19 19:05:33.226799",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: await_reconfig_notification()] [Config validation] The `on_chain_configs` payload from line 152 is passed directly to `start_new_epoch()`. Are there any validation checks to prevent malicious or corrupted on-chain configs from being processed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b720f25-d1cf-48b1-927d-24c99f618065?mode=deep",
+    "timestamp": "2026-01-19 19:05:56.877264",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [ValidatorSet extraction failure] Line 158-160 uses `.expect()` to unwrap ValidatorSet. Can malicious governance proposals deploy invalid on-chain configs that crash all validators simultaneously when a new epoch starts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b38b23f8-2a3b-4bb2-b531-2a76371249eb?mode=deep",
+    "timestamp": "2026-01-19 19:06:22.926809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Epoch state race] Line 163 updates `self.epoch_state` without synchronization. Can concurrent calls to `start_new_epoch()` from multiple reconfig events cause epoch_state to be overwritten with wrong values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04e838fc-903b-4aac-9586-7297502799ce?mode=deep",
+    "timestamp": "2026-01-19 19:06:49.645227",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Index lookup failure] At lines 164-168, `my_index` lookup can return None if the validator is not in the new validator set. Can this cause silent exclusion from DKG even when the validator should participate? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b63f9842-d9c0-4d18-bcd8-5104113b23e1?mode=deep",
+    "timestamp": "2026-01-19 19:07:18.295628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Randomness config bypass] Lines 170-172 use `unwrap_or_else` to default if RandomnessConfigSeqNum is missing. Can an attacker exploit missing on-chain config to force default behavior, enabling or disabling randomness unexpectedly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ab7c755-ca80-431a-a025-e44d687feb8f?mode=deep",
+    "timestamp": "2026-01-19 19:07:49.821253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Override precedence attack] Lines 182-184 warn but allow local `randomness_override_seq_num` to disable randomness. Can a single compromised validator with malicious config participate differently than the network, breaking protocol assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f9a6141-2b03-4fe8-8301-81136da79254?mode=deep",
+    "timestamp": "2026-01-19 19:08:21.975463",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Config construction] Lines 186-190 construct OnChainRandomnessConfig from potentially untrusted inputs. Can integer overflow in seq_num comparison cause randomness to be incorrectly enabled/disabled? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8dbb6299-bfdb-479a-885d-630dec28e1a6?mode=deep",
+    "timestamp": "2026-01-19 19:08:54.988726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Consensus config error handling] Lines 192-196 log errors but use `unwrap_or_default()`. Can a malicious consensus config payload cause all validators to operate with default (potentially insecure) consensus parameters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69945fc4-a402-4ab4-b6c3-37a52d7ccab9?mode=deep",
+    "timestamp": "2026-01-19 19:09:27.197133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Feature flag race] Lines 199-200 check both `is_vtxn_enabled()` and `randomness_enabled()`. Can these feature flags be toggled independently to create states where only some validators participate in DKG? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cba78af-4569-4773-a4c8-d02a20aeb46d?mode=deep",
+    "timestamp": "2026-01-19 19:10:00.449103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [DKGState deserialization] Line 205 uses `unwrap_or_default()` for DKGState extraction. If DKG is in progress but the state is corrupted, will defaulting cause the protocol to restart and lose progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e25964a2-b13f-4555-b1d3-140a66522345?mode=deep",
+    "timestamp": "2026-01-19 19:10:32.883255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Network sender creation] Line 207 creates a network sender without validation. Can this sender be used to send messages before the epoch is fully initialized, causing protocol confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cda37da3-1535-409c-b108-ec4814c3cb99?mode=deep",
+    "timestamp": "2026-01-19 19:11:04.718874",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [ReliableBroadcast initialization] Lines 208-220 construct ReliableBroadcast with parameters from `rb_config`. Can malicious backoff_policy_base_ms or rpc_timeout_ms values cause the broadcast protocol to fail or behave unpredictably? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65c1006a-563c-40c9-8053-07b0c9562901?mode=deep",
+    "timestamp": "2026-01-19 19:11:37.018169",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Validator address ordering] Line 210 uses `get_ordered_account_addresses()`. If validators have different orderings due to config inconsistencies, can ReliableBroadcast protocols diverge across nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2e3f29d-b6c7-4a3b-805c-97eac932e68d?mode=deep",
+    "timestamp": "2026-01-19 19:12:09.366156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Executor bound] Line 219 creates BoundedExecutor with hardcoded limit of 8. Can DKG protocols with many participants exceed this limit, causing task rejections or deadlocks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98629dc9-f296-4ec9-87a4-fc957d4cfac9?mode=deep",
+    "timestamp": "2026-01-19 19:12:43.341145",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [Channel capacity] Lines 223-224 create dkg_start_event_tx with KLAST queue style and capacity 1. Can rapid DKG start events cause earlier events to be dropped before processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0387e64b-ad03-429b-a4cb-7c53590e5238?mode=deep",
+    "timestamp": "2026-01-19 19:13:14.631327",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/epoch_manager.rs] [Function: start_new_epoch()] [RPC message channel] Lines 227-230 create dkg_rpc_msg_rx with FIFO queue and capacity 100. Can an attacker flood this channel during DKG to cause legitimate messages to be dropped or delayed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a458cf00-ae7a-4d5f-8dde-8e1a2c26aa5e?mode=deep",
+    "timestamp": "2026-01-19 19:13:46.287657",
+    "report_generated": false
+  }
+]
