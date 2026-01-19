@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: HEAD_RELEASE_BUNDLE static initialization] [Deserialization attack] Can an attacker craft a malicious head.mrb file with invalid BCS encoding that causes the deserializer to panic during static initialization, preventing the entire node from starting and causing permanent loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_230592cb-9292-4044-912d-87eab20feca8?mode=deep",
+    "timestamp": "2026-01-19 18:06:59.907549",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Constant: HEAD_RELEASE_BUNDLE_BYTES] [Memory exhaustion] Can a malicious build process generate an extremely large head.mrb file (e.g., gigabytes) that gets embedded via include_bytes!(), causing memory exhaustion at compile time or runtime initialization, leading to validator node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_909f8bf1-59e6-4afe-baa5-8cb6f65641d7?mode=deep",
+    "timestamp": "2026-01-19 18:07:13.092089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: Lazy::new()] [Panic on initialization] Does the .expect('bcs succeeds') call at line 18 create a denial-of-service vector where corrupted HEAD_RELEASE_BUNDLE_BYTES cause unrecoverable panics during the first call to head_release_bundle(), halting validator operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dac21ce5-ac23-421e-a138-81859af3d404?mode=deep",
+    "timestamp": "2026-01-19 18:07:26.076851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: bcs::from_bytes] [Type confusion] Can an attacker inject a .mrb file that deserializes successfully as ReleaseBundle but contains type-confused PackageMetadata or module bytecode, leading to Move VM crashes or arbitrary code execution when the framework modules are loaded? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b8fcb6b-65be-4189-b11c-a2b1550c1702?mode=deep",
+    "timestamp": "2026-01-19 18:07:40.982340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Constant: HEAD_RELEASE_BUNDLE_BYTES] [Integer overflow] If the .mrb file contains ReleaseBundle.packages vector with maliciously large Vec<ReleasePackage> entries, can the BCS deserializer trigger integer overflow during memory allocation, potentially leading to heap corruption or out-of-bounds access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b4a4265-e8bd-4f56-ad6e-88905ed984a6?mode=deep",
+    "timestamp": "2026-01-19 18:07:56.081538",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Macro: include_bytes!] [Build-time injection] Can an attacker who compromises the build environment substitute a malicious head.mrb file in OUT_DIR before compilation, injecting backdoored framework code that gets compiled into all validator binaries without detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c25a0afd-621c-42cb-91a6-ae4e3cfb3edb?mode=deep",
+    "timestamp": "2026-01-19 18:08:12.316556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Build script: build.rs] [Determinism violation] Does the build.rs script at aptos-move/framework/cached-packages/build.rs ensure deterministic head.mrb generation, or can non-deterministic builds lead to different validators running incompatible framework versions, causing consensus failures and network partition? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_887e99b4-5060-4eb6-b173-69e916d79c09?mode=deep",
+    "timestamp": "2026-01-19 18:08:30.321174",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Environment variable: OUT_DIR] [Path traversal] Can an attacker manipulating the OUT_DIR environment variable during build cause include_bytes!() to load a malicious .mrb file from an arbitrary location, injecting compromised framework code? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95b2732c-d72c-4469-8582-5cb956bde2dd?mode=deep",
+    "timestamp": "2026-01-19 18:08:50.252037",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Lines 13-15] [Cross-platform attack] Can an attacker exploit the different path separators (Unix '/' vs Windows '\\\\') to cause path confusion attacks, potentially loading different .mrb files on different platforms and breaking consensus determinism? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc912ca4-696f-4b8d-b124-794b91f7b736?mode=deep",
+    "timestamp": "2026-01-19 18:09:11.111419",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Macro: concat!] [Build-time string manipulation] Can attackers inject malicious characters into env!('OUT_DIR') that, when concatenated with '/head.mrb', result in loading a different file or causing deserialization errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_869da05a-ed95-4955-9265-8fd0d9aea88a?mode=deep",
+    "timestamp": "2026-01-19 18:09:34.049274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Static: HEAD_RELEASE_BUNDLE] [Lazy initialization race] Is the Lazy<ReleaseBundle> initialization at line 17-19 thread-safe under concurrent first access? Can race conditions during parallel validator startup cause multiple deserialization attempts or inconsistent initialization state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86b45b5f-03a3-47cb-906b-ad84b95d4910?mode=deep",
+    "timestamp": "2026-01-19 18:09:56.907366",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: head_release_bundle()] [Static lifetime guarantees] Does returning &'static ReleaseBundle at line 22-24 guarantee that the deserialized bundle remains valid for the entire program lifetime, or can unsafe code elsewhere invalidate this reference, causing use-after-free vulnerabilities? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b93dafc7-4808-4e23-872d-1f322134582c?mode=deep",
+    "timestamp": "2026-01-19 18:10:21.848252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Static: HEAD_RELEASE_BUNDLE] [Initialization order] If other static initializers depend on head_release_bundle(), can initialization order fiasco cause the Lazy<ReleaseBundle> to be accessed before deserialization completes, returning corrupted data or causing panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e12cb70a-b0b9-4221-ad5f-fff8bbfeca1d?mode=deep",
+    "timestamp": "2026-01-19 18:10:46.785634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: Lazy::new()] [Panic unwinding] If the bcs::from_bytes deserialization panics during static initialization, does Rust's panic unwinding mechanism leave the Lazy<ReleaseBundle> in an uninitialized or poisoned state, preventing recovery and requiring node restart? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6c0ef55-30f0-4844-98a6-96c3052059ec?mode=deep",
+    "timestamp": "2026-01-19 18:11:12.718028",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: head_release_bundle()] [Missing validation] Does the function at line 22-24 validate the integrity of the deserialized ReleaseBundle (e.g., cryptographic signatures, hash checks), or can compromised .mrb files inject malicious framework modules without detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a254df25-18ea-4d33-8169-bdca7f04149c?mode=deep",
+    "timestamp": "2026-01-19 18:11:39.656391",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Type: ReleaseBundle] [Malformed package metadata] Can a malicious .mrb file contain ReleaseBundle with invalid PackageMetadata (e.g., wrong upgrade_policy, malformed dependencies), allowing unauthorized framework upgrades or breaking module dependency resolution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecd7d353-25c4-48e6-a72c-9f91f09e938b?mode=deep",
+    "timestamp": "2026-01-19 18:12:07.568181",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Type: ReleaseBundle] [Module bytecode injection] Can an attacker craft a .mrb file with ReleasePackage.code containing malicious Move bytecode that passes BCS deserialization but violates Move VM invariants, causing bytecode verification failures or VM crashes during module loading? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2f0bbc9-4445-49e9-9a4c-2c80ac958b48?mode=deep",
+    "timestamp": "2026-01-19 18:12:36.209556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: head_release_bundle()] [Missing source_dirs validation] Does the returned ReleaseBundle validate that source_dirs paths exist and contain expected Move source files, or can manipulated paths cause errors when framework code analysis tools access missing files? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4cadd21b-1a49-45df-96af-1a31a40fc6c4?mode=deep",
+    "timestamp": "2026-01-19 18:13:05.394936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Type: ReleaseBundle.packages] [Dependency order manipulation] Can a malicious .mrb file contain packages in incorrect dependency order (not bottom-up), causing module deployment failures or allowing dependency confusion attacks when modules are loaded? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf50db26-81e1-4bed-a8ae-c7e83f286805?mode=deep",
+    "timestamp": "2026-01-19 18:13:32.715572",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Constant: HEAD_RELEASE_BUNDLE_BYTES] [Memory bloat] If the .mrb file contains ReleaseBundle with thousands of duplicate or unnecessary packages, does the static initialization consume excessive memory, potentially causing validator nodes to OOM during startup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b66c8b44-9652-4926-a47c-dda751bae7e4?mode=deep",
+    "timestamp": "2026-01-19 18:14:01.158712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: bcs::from_bytes] [Recursive deserialization DoS] Can a malicious .mrb file contain deeply nested BCS structures (e.g., nested Vecs in PackageMetadata) that cause stack overflow during recursive deserialization, crashing the validator node during initialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7026f380-fdf0-4649-b849-e386e50c7c1c?mode=deep",
+    "timestamp": "2026-01-19 18:14:29.814496",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: head_release_bundle()] [Clone amplification] If code frequently calls head_release_bundle() and clones the returned ReleaseBundle, can this cause memory amplification attacks, especially if the bundle contains large module bytecode? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0acacc9f-b347-437f-b7e1-6c243ce0cfca?mode=deep",
+    "timestamp": "2026-01-19 18:14:57.584965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Static: HEAD_RELEASE_BUNDLE] [Static memory leak] Is the Lazy<ReleaseBundle> memory properly deallocated on program exit, or does it leak memory that could be exploited in testing scenarios with repeated node restarts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_769d9ae0-8dc4-4711-ae3a-43dbf68d6eb3?mode=deep",
+    "timestamp": "2026-01-19 18:15:24.638179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Lines 13-15] [Platform-dependent paths] Do the different path construction approaches for Unix (#[cfg(unix)]) vs Windows (#[cfg(windows)]) at lines 13-15 guarantee loading identical .mrb files, or can cross-platform differences cause validators to run different framework versions, breaking consensus determinism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e9fe4a4-d326-4da2-80c5-03dfedf27328?mode=deep",
+    "timestamp": "2026-01-19 18:15:52.106025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/cached-packages/src/lib.rs] [Function: head_release_bundle()] [Non-deterministic deserialization] Does bcs::from_bytes guarantee deterministic deserialization across different Rust compiler versions or platforms, or can subtle differences in the deserialized ReleaseBundle cause validators to compute different state roots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46e2ae89-8817-4419-a8b6-87d0e1b126da?mode=deep",
+    "timestamp": "2026-01-19 18:16:18.851280",
+    "report_generated": false
+  }
+]
