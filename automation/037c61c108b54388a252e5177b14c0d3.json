@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: get_transaction()] [Integer overflow] Can an attacker query with Version = u64::MAX causing integer overflow in downstream operations that increment the version, potentially bypassing access controls or causing panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c0be745-e815-4213-918d-c0a2a2358085?mode=deep",
+    "timestamp": "2026-01-19 18:40:06.062816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Integer overflow] In the chunk_first_version calculation at line 98 (first_version + (chunk_size * chunk_index) as u64), can an attacker trigger integer overflow when chunk_size * chunk_index exceeds u64::MAX - first_version, causing version wraparound and overwriting existing transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae8401e4-7f53-4c3f-bfe6-9437a7c6484b?mode=deep",
+    "timestamp": "2026-01-19 18:40:18.889711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Integer overflow] At line 104 (chunk_first_version + i as u64), can overflow occur when processing large transaction batches, resulting in duplicate version assignments and state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d58e14da-69de-471b-8954-55ffce3d1874?mode=deep",
+    "timestamp": "2026-01-19 18:40:31.888478",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Version collision] If version parameter wraps around due to overflow, can an attacker overwrite historical transactions at the same version number, enabling transaction history manipulation and fund theft? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c986b130-685d-4f10-9979-b2405b1e549a?mode=deep",
+    "timestamp": "2026-01-19 18:40:45.606171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: get_transaction_iter()] [Integer overflow] In the expect_continuous_versions call at line 70, can start_version + num_transactions overflow u64, and is this properly validated before creating the iterator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7461b732-fde3-4ae3-beb7-298c9798757f?mode=deep",
+    "timestamp": "2026-01-19 18:41:00.596387",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: prune_transactions()] [Version range attack] Can an attacker cause integer overflow in the range begin..end (line 175) by providing begin=0 and end=u64::MAX, potentially causing a denial of service or incomplete pruning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e878d959-660c-48cf-82ae-0b1bd6d18747?mode=deep",
+    "timestamp": "2026-01-19 18:41:16.473888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Race condition] The parallel batch creation using par_chunks (lines 93-114) followed by sequential commits (lines 121-123) - can concurrent calls to commit_transactions cause race conditions where batches from different calls interleave, violating version continuity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55494f6b-601f-4ad0-8fbb-c729d4e6c882?mode=deep",
+    "timestamp": "2026-01-19 18:41:34.472493",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Atomicity violation] The comment at lines 116-118 mentions 'gaps' - can a crash or error between sequential batch commits create permanent version gaps, causing get_transaction_iter to fail and breaking consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f91ebb78-36fd-47a8-8dd0-79006135b5ab?mode=deep",
+    "timestamp": "2026-01-19 18:41:52.745029",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Data race] When multiple threads write to separate NativeBatch instances in parallel (lines 93-114), are there any shared state modifications that could cause data races despite the parallel processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31ad7b65-6aa1-41e0-b75c-96358bc27b4b?mode=deep",
+    "timestamp": "2026-01-19 18:42:11.246123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Batch ordering] If sequential commits are interrupted after committing some but not all batches, does the pruner progress get updated prematurely, leading to inconsistent state where some transactions appear committed but others don't? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ef30935-9830-47c4-8550-bf8cb6637af0?mode=deep",
+    "timestamp": "2026-01-19 18:42:31.682167",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Chunk boundary race] At chunk boundaries where chunk_size * chunk_index equals transaction count, can off-by-one errors in version assignment cause version collisions between adjacent chunks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ece80d5-21ed-440e-be11-083cbc70c976?mode=deep",
+    "timestamp": "2026-01-19 18:42:53.140146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Concurrent modification] If the underlying DB is shared (via Arc<DB> at line 28), can concurrent commit_transactions calls from different TransactionDb instances interfere with each other's batch commits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b7b60db-52ef-450c-a0c3-371ad3fc0068?mode=deep",
+    "timestamp": "2026-01-19 18:43:16.030097",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Hash collision] At line 162, TransactionByHashSchema maps transaction_hash to version - if a hash collision occurs (either accidental or via preimage attack), will the later transaction silently overwrite the earlier one's hash index, making the first transaction unfindable? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27aa0335-5998-4330-91c4-5549cab82725?mode=deep",
+    "timestamp": "2026-01-19 18:43:38.977845",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: get_transaction_version_by_hash()] [Hash collision exploitation] If two transactions have colliding hashes and both are stored, does this function at lines 74-83 return the first or last transaction's version, and can this be exploited to hide malicious transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_072be431-8e56-41eb-b355-26828b6a2552?mode=deep",
+    "timestamp": "2026-01-19 18:44:03.548328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Hash manipulation] Can an attacker craft a transaction with a specific hash value to collide with an existing transaction, then use get_transaction_version_by_hash to retrieve the wrong transaction, enabling transaction replay or double-spending? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b7d8de2-dfe3-424a-b2c6-cffd82560d39?mode=deep",
+    "timestamp": "2026-01-19 18:44:29.614289",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: prune_transaction_by_hash_indices()] [Hash orphaning] After pruning transaction hashes at lines 182-190, if the corresponding transaction data is not pruned atomically, can queries via get_transaction_version_by_hash return versions for non-existent transactions causing inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec92c483-8f33-4ebe-8cbd-05480395d6f1?mode=deep",
+    "timestamp": "2026-01-19 18:44:55.493103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Duplicate hash prevention] Is there any validation preventing insertion of transactions with duplicate hashes, or can an attacker deliberately create hash collisions to corrupt the TransactionByHashSchema index? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60fb771d-a2b7-4c8b-b395-135bdd3f86af?mode=deep",
+    "timestamp": "2026-01-19 18:45:20.356819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Schema inconsistency] Lines 138-163 update three different schemas (OrderedTransactionByAccountSchema, TransactionSummariesByAccountSchema, TransactionByHashSchema, TransactionSchema) - if the batch.put() for one schema fails but others succeed, will this create index inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_885dc414-aea7-4d8b-b7a6-5b5afc688f88?mode=deep",
+    "timestamp": "2026-01-19 18:45:48.025768",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Partial index failure] If OrderedTransactionByAccountSchema insertion at lines 140-143 succeeds but TransactionSchema insertion at line 163 fails, will the account index point to a non-existent transaction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b84af77-304d-49c6-8ebf-5eb6ca9ad81c?mode=deep",
+    "timestamp": "2026-01-19 18:46:13.763120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Index skipping] The skip_index flag at line 134 only affects OrderedTransactionByAccountSchema (lines 137-146) but not TransactionSummariesByAccountSchema (lines 150-160) - can this create inconsistencies where transaction summaries exist without corresponding account ordering? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38f1ea3e-5baa-4c0e-ad18-bea47fda9fa4?mode=deep",
+    "timestamp": "2026-01-19 18:46:39.644133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: prune_transactions()] [Orphaned indices] When deleting transactions at lines 169-178, are the corresponding TransactionByHashSchema, OrderedTransactionByAccountSchema, and TransactionSummariesByAccountSchema entries also deleted, or do orphaned indices remain? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c5e78ee-054b-4cae-80db-0e95796d9977?mode=deep",
+    "timestamp": "2026-01-19 18:47:06.903278",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: prune_transaction_by_hash_indices()] [Incomplete pruning] This function only prunes TransactionByHashSchema (lines 182-190) - if called without also pruning TransactionSchema entries, will this create dangling transaction data without hash indices? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f1da07d-e8ff-4747-87ac-8137b70dd12e?mode=deep",
+    "timestamp": "2026-01-19 18:47:32.762690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Schema order dependency] Does the order of schema writes (lines 140, 157, 162, 163) matter for consistency, and can reordering expose windows where indices are inconsistent during reads? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75c212b1-97ea-4d4b-a1b4-a64f4fb69503?mode=deep",
+    "timestamp": "2026-01-19 18:48:00.381257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Replay protection bypass] At lines 138-145, OrderedTransactionByAccountSchema is only populated if ReplayProtector is SequenceNumber - can an attacker exploit this by using nonce-based ReplayProtector to bypass sequence number ordering checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85116961-0e12-48bb-acea-5fb3a64f16bc?mode=deep",
+    "timestamp": "2026-01-19 18:48:27.734799",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Sequence number validation] The sequence number is extracted at line 139 but never validated against previous sequence numbers - can an attacker insert transactions with arbitrary sequence numbers causing out-of-order execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05726fc7-b0a9-44ed-b15c-730f9124f849?mode=deep",
+    "timestamp": "2026-01-19 18:48:55.882181",
+    "report_generated": false
+  }
+]
