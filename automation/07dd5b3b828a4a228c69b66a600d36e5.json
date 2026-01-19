@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Function: Deref::deref()] [Memory Safety] Can an attacker cause use-after-free by deserializing a Symbol from one process into another with a different pool layout, where the pointer address (stored as NonZeroU64) points to invalid or attacker-controlled memory? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_157cfca2-28cb-4332-9a4b-4754544754b3?mode=deep",
+    "timestamp": "2026-01-19 21:13:05.826398",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Function: Deref::deref()] [Memory Safety] Does the unsafe pointer dereference at line 74-76 validate that the pointer still points to valid Entry data, or can pool corruption/memory reuse cause dereferencing freed memory leading to crashes or information disclosure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42d2b58f-2ce0-4c57-8510-5fcbeb753858?mode=deep",
+    "timestamp": "2026-01-19 21:13:19.025635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Function: From<Cow<'a, str>>] [Integer Overflow] Can casting the Entry pointer to u64 at line 53 cause truncation on 32-bit systems or architectures where pointers don't fit in u64, creating invalid Symbol addresses that crash when dereferenced? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f422ec38-82a0-4272-bef5-0c1743704012?mode=deep",
+    "timestamp": "2026-01-19 21:13:32.511506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Function: From<Cow<'a, str>>] [Null Pointer] If Pool::insert() somehow returns a null pointer (despite NonNull), can the expect() at line 54 be bypassed through memory corruption, allowing creation of invalid Symbols that cause undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43d77186-8841-4c3d-9ba4-c930ca2f2c7c?mode=deep",
+    "timestamp": "2026-01-19 21:13:46.578594",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/lib.rs] [Test: test_serialization] [Memory Safety] The test at line 51 artificially resets the pool, invalidating all existing Symbol pointers - can this pattern occur in production through pool corruption, causing mass use-after-free vulnerabilities? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6424d7f3-fb67-4755-bab3-a97854b66185?mode=deep",
+    "timestamp": "2026-01-19 21:14:01.897421",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/lib.rs] [Static: SYMBOL_POOL] [Mutex Poisoning] If a thread panics while holding the SYMBOL_POOL mutex lock at line 52, does the expect() message expose the panic, and can subsequent Symbol creation attempts deadlock or fail, causing denial of service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62f23644-dfbf-4f8a-b568-e08fb114d936?mode=deep",
+    "timestamp": "2026-01-19 21:14:18.238322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Function: From<Cow<'a, str>>] [Race Condition] Between acquiring the mutex lock at line 52 and inserting the string, can concurrent threads cause the Pool to reallocate or corrupt, invalidating the returned pointer before the Symbol is constructed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd0df758-e39c-4b2d-9e07-4c53a2c56b50?mode=deep",
+    "timestamp": "2026-01-19 21:14:38.647667",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Race Condition] Is the linked list traversal and insertion at lines 88-114 atomic within the mutex lock, or can concurrent modifications to bucket entries cause lost updates or infinite loops? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c4c9611-4de6-49a4-9288-d7cae06d741d?mode=deep",
+    "timestamp": "2026-01-19 21:14:59.151422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/lib.rs] [Static: SYMBOL_POOL] [Deadlock] Can recursive or nested Symbol::from() calls within the same thread cause deadlock by attempting to re-acquire the non-reentrant Mutex at line 52? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99b71d7c-b4f9-4d77-a607-f543c6e50d4b?mode=deep",
+    "timestamp": "2026-01-19 21:15:19.374433",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Function: Deref::deref()] [Concurrency] Does dereferencing a Symbol at line 74-76 require any synchronization, or can concurrent Pool modifications cause the Entry pointer to become invalid mid-dereference, leading to data races? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7a086b1-344b-4300-8ade-1fdfc075ebb4?mode=deep",
+    "timestamp": "2026-01-19 21:15:40.656776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: hash()] [Hash Collision] Can an attacker craft strings with identical hash values using DefaultHasher (SipHash) to force all entries into a single bucket, degrading insertion performance to O(n) and causing denial of service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_805cde39-a26a-48de-a01e-21e7cf0a2712?mode=deep",
+    "timestamp": "2026-01-19 21:16:04.353483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Constant: BUCKET_MASK] [Hash Distribution] With only 4096 buckets (NB_BUCKETS at line 44), can an attacker create hash collisions by exploiting the modulo operation at line 87, causing bucket overflow and degraded performance in Move VM execution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f045c8ba-6cba-48e4-80f2-1370321ec0da?mode=deep",
+    "timestamp": "2026-01-19 21:16:29.027424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Hash Collision] At lines 97-98, when comparing hash values before string comparison, can hash collisions cause incorrect string equality checks, leading to distinct strings being treated as identical and breaking Move semantics? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a576a12-9b4e-4849-b15f-d23a9062bef0?mode=deep",
+    "timestamp": "2026-01-19 21:16:54.388215",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: hash()] [Determinism] Is DefaultHasher deterministic across different validator nodes, or can hash randomization cause different bucket assignments and non-deterministic Symbol pointer values, breaking consensus state verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8510eeb-a05e-4858-8553-c48a5a278d6d?mode=deep",
+    "timestamp": "2026-01-19 21:17:20.594270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/lib.rs] [Module Doc] [Memory Exhaustion] Since the pool documentation at line 10-11 states strings are never evicted and memory only grows, can an attacker flood the pool with unique strings to exhaust validator memory and cause crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76c8a9c2-c78e-41a5-8aba-1c96a84d1790?mode=deep",
+    "timestamp": "2026-01-19 21:17:47.963458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Memory Leak] Does the Box::new(Entry) allocation at line 105 have any bounds checking, or can an attacker create arbitrarily large strings to consume all available heap memory during Move bytecode execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_533013d3-a3f6-4e62-a6f7-6e017bcf4863?mode=deep",
+    "timestamp": "2026-01-19 21:18:14.819411",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Struct: Entry] [Memory Growth] With each Entry containing next: Bucket (line 55), can deeply nested linked lists in heavily-collided buckets cause stack overflow when traversing or deallocating the chain? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bccb3e4b-65a8-402b-bf65-1cbd3200f626?mode=deep",
+    "timestamp": "2026-01-19 21:18:42.973547",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: new()] [Memory Allocation] Does Pool::new() at line 64-68 allocating NB_BUCKETS (4096) buckets fail gracefully on memory-constrained systems, or can allocation failure crash validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5b00514-3f48-435f-a049-fcc50872ad98?mode=deep",
+    "timestamp": "2026-01-19 21:19:09.157520",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Unbounded Growth] Is there any limit on the total number of unique strings that can be stored in the pool across all buckets, or can an attacker create unlimited Symbols to exhaust memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_798272f7-0850-47ab-b913-626d435d3cfb?mode=deep",
+    "timestamp": "2026-01-19 21:19:36.173836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Trait: Serialize] [Cross-Process Attack] When serializing a Symbol at line 119, it serializes the string content rather than the pointer - but can an attacker craft malicious serialized data that deserializes into symbols pointing to sensitive memory regions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e09657c-b73a-4439-b101-18eb7344bd53?mode=deep",
+    "timestamp": "2026-01-19 21:20:05.178836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Trait: Deserialize] [Validation] Does deserialization at line 128 validate the string length or content, or can attackers inject arbitrarily large strings or special characters to bypass validation or cause memory issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2c275cc-157b-4d81-b51a-26573e936cff?mode=deep",
+    "timestamp": "2026-01-19 21:20:32.924147",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/lib.rs] [Test: test_serialization] [State Corruption] The test demonstrates that Symbols can be serialized/deserialized across pool resets - can this be exploited to create Symbols with stale pointers that reference wrong strings after pool state changes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37e36587-bab5-4a2a-97e6-bce39cc34356?mode=deep",
+    "timestamp": "2026-01-19 21:21:01.551709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Trait: Deserialize] [Determinism] When multiple validators deserialize the same Symbol from blockchain state, do they all get the same pointer value (NonZeroU64), or can ASLR or pool ordering differences cause non-deterministic state roots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef85382b-c54f-4222-be2a-347c9bc1453e?mode=deep",
+    "timestamp": "2026-01-19 21:21:29.765370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Function: From<Cow<'a, str>>] [Pointer Cast] Can the conversion of NonNull<Entry> pointer to u64 at line 53 produce values that conflict with valid memory addresses on certain architectures, causing aliasing or memory corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a00915b-fc3e-47f6-adce-6b5264f63ee6?mode=deep",
+    "timestamp": "2026-01-19 21:21:57.413244",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/symbol.rs] [Function: Deref::deref()] [Pointer Cast] When casting u64 back to *const Entry at line 74, are there any alignment requirements that could be violated, causing unaligned memory access and crashes on strict architectures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a11cd0e4-5651-4504-acb1-5803bcdeee2c?mode=deep",
+    "timestamp": "2026-01-19 21:22:24.077387",
+    "report_generated": false
+  }
+]
