@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_non_generic()] [Memory exhaustion] Can an attacker repeatedly deploy and call unique non-generic functions to fill function_instruction_caches without bound, each creating a new Rc<RefCell<FrameTypeCache>> that persists for the entire transaction block execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd610203-efca-4dc4-b236-770c8107ec64?mode=deep",
+    "timestamp": "2026-01-19 21:45:12.005867",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_generic()] [Generic explosion] Can an attacker create a generic function with many type parameters and call it with combinatorially many different type instantiations, causing generic_function_instruction_caches to grow exponentially and exhaust memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7c8338f-7cf2-4901-ad4f-b7cb01355d23?mode=deep",
+    "timestamp": "2026-01-19 21:45:24.548649",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_non_generic()] [FrameTypeCache creation cost] When FrameTypeCache::make_rc_for_function() is called on line 51, it allocates per_instruction_cache Vec - can an attacker create functions with extremely large bytecode to make each cache entry consume massive memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90e4ad4e-884d-4004-ab9c-1b62785185d4?mode=deep",
+    "timestamp": "2026-01-19 21:45:37.264197",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Struct: InterpreterFunctionCaches] [Cache size limits] Is there any maximum size enforcement for function_instruction_caches and generic_function_instruction_caches HashMaps? Can unlimited cache growth cause validators to run out of memory during parallel block execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3577fb45-3fb4-483a-b9a1-8875dbaeb666?mode=deep",
+    "timestamp": "2026-01-19 21:45:52.380500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache()] [Non-determinism] Since cache hit/miss behavior can vary based on execution order, if transaction ordering differs slightly across validators, can cache state divergence cause different validators to compute different state roots, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c667ad67-5be3-453d-ac25-922054394a97?mode=deep",
+    "timestamp": "2026-01-19 21:46:06.829348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Struct: InterpreterFunctionCaches] [HashMap ordering] Rust HashMap iteration order is non-deterministic - if cache iteration is exposed through any code path, can it cause non-deterministic execution results across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15f94b23-c058-4e93-a3a8-0c83659177f5?mode=deep",
+    "timestamp": "2026-01-19 21:46:22.105245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_non_generic()] [Pointer determinism] Since FunctionPtr uses raw pointer values as HashMap keys, and ASLR causes different pointer addresses across processes, can this cause non-deterministic cache behavior where validators disagree on cache state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85ac51e5-8931-4a51-9a51-695b2627eb1a?mode=deep",
+    "timestamp": "2026-01-19 21:46:37.985434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_generic()] [TypeVecId determinism] If TypeVecId generation is non-deterministic across validators, can different validators create incompatible GenericFunctionPtr keys, causing cache misses on some nodes but hits on others and leading to execution divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e63c526f-2f4a-4d46-b8f9-980475e246f8?mode=deep",
+    "timestamp": "2026-01-19 21:46:56.135447",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Struct: InterpreterFunctionCaches] [Cache timing] Can cache hits vs misses create observable timing differences that affect gas consumption calculations, causing validators to charge different gas amounts for the same transaction and breaking consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eedfcec1-98c0-474e-bcc9-1a0191d23d49?mode=deep",
+    "timestamp": "2026-01-19 21:47:14.499924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_non_generic()] [Gas bypass] When cache hits occur, is gas properly charged for the cached FrameTypeCache retrieval? Can an attacker exploit cache reuse to avoid gas costs for type checking operations that should be charged on every invocation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9e29a62-305c-43dc-b665-9eb63c8f1867?mode=deep",
+    "timestamp": "2026-01-19 21:47:33.218231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_generic()] [Gas inconsistency] If cache creation via FrameTypeCache::make_rc_for_function() has different gas costs than cache retrieval, can validators disagree on total gas consumed based on their cache state, causing consensus failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d71f21d-a8f4-44a3-80bb-d46d86aa09e6?mode=deep",
+    "timestamp": "2026-01-19 21:47:52.691981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache()] [Gas exploitation] Can an attacker front-run expensive transactions by pre-populating caches with cheap transactions, then execute expensive operations at reduced gas cost due to cache hits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d55725f-d936-4f1c-ae0c-edeb982d377a?mode=deep",
+    "timestamp": "2026-01-19 21:48:14.206340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Struct: InterpreterFunctionCaches] [Cache creation cost] When or_insert_with() creates new cache entries, is the allocation cost properly accounted in gas metering? Can unbounded cache allocation cause validators to consume more resources than gas paid covers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16153378-37a9-424b-b85a-be20288d1103?mode=deep",
+    "timestamp": "2026-01-19 21:48:36.170048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_non_generic()] [FrameTypeCache corruption] If FrameTypeCache::make_rc_for_function() on line 51 fails to properly initialize per_instruction_cache based on function.code_size(), can uninitialized cache entries cause type checking to be skipped, allowing type-unsafe operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc569454-787a-4b01-aa57-4bb7fcc6c229?mode=deep",
+    "timestamp": "2026-01-19 21:48:58.978507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_generic()] [Type cache mismatch] When a cached FrameTypeCache is retrieved on line 66, can it contain stale or incorrect type information if the function's type parameters changed, leading to incorrect type validation and potential resource theft? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d50ca8a-a6ac-4f76-a4ab-eca5ab1bca47?mode=deep",
+    "timestamp": "2026-01-19 21:49:22.615116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_non_generic()] [Cache size mismatch] If a function's bytecode is modified (e.g., via module upgrade) but the old cache entry persists, can mismatched per_instruction_cache size cause out-of-bounds access or incorrect instruction caching? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3876ad3-5cdc-4169-bac9-2e972dc33169?mode=deep",
+    "timestamp": "2026-01-19 21:49:47.450361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_generic()] [Generic cache pollution] Can FrameTypeCache internal state (BTreeMaps for struct/field types) accumulate entries from previous calls with different type parameters, causing cache pollution that affects subsequent calls with the same GenericFunctionPtr? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34d186cb-4316-4bd6-9e1e-8720e777dbd4?mode=deep",
+    "timestamp": "2026-01-19 21:50:12.846532",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Struct: InterpreterFunctionCaches] [Nested RefCell borrows] If FrameTypeCache stored in Rc<RefCell<>> is borrowed while processing an instruction that itself needs to access the cache, can nested borrow attempts cause RefCell panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0cb6c8a-059a-423d-b9bb-48731862a250?mode=deep",
+    "timestamp": "2026-01-19 21:50:39.380137",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Struct: InterpreterFunctionCaches] [Thread safety] The comment on line 16 says 'single-threaded' but Aptos uses parallel execution - can multiple transactions executing concurrently access the same InterpreterFunctionCaches instance, causing data races despite Rust's safety guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30a51b86-44c3-48d6-9f1f-1110accb1e38?mode=deep",
+    "timestamp": "2026-01-19 21:51:06.092739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_non_generic()] [Parallel mutation] During Block-STM parallel execution, can multiple threads call this function simultaneously, causing HashMap concurrent modification if &mut self is accessed from multiple threads? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9af8b4e-ad33-4d6d-885b-6a2d4ccce308?mode=deep",
+    "timestamp": "2026-01-19 21:51:34.682579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_generic()] [Cache coherence] If each parallel transaction has its own InterpreterFunctionCaches, but they're later merged or compared, can inconsistent cache states cause execution validation failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2972074-c56b-4bde-9042-542b85d9bde9?mode=deep",
+    "timestamp": "2026-01-19 21:52:03.569261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Struct: InterpreterFunctionCaches] [RefCell in parallel] Since Rc<RefCell<>> is not thread-safe, can parallel transaction execution attempt to share cached FrameTypeCache instances across threads, violating Rust's Send/Sync requirements and causing undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ee2aa1e-73d8-43f9-8940-6ea582db806c?mode=deep",
+    "timestamp": "2026-01-19 21:52:31.500909",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_non_generic()] [Panic in or_insert_with] If FrameTypeCache::make_rc_for_function() panics during cache creation on line 51, can the HashMap be left in an inconsistent state, causing subsequent cache operations to fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35d85f69-272b-46ec-af3c-3200c54693b6?mode=deep",
+    "timestamp": "2026-01-19 21:53:00.886347",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache_generic()] [Clone panic] If clone() on line 66 somehow panics (OOM, stack overflow), can the cache entry exist without a properly initialized FrameTypeCache, causing use-after-free on next access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edd45843-fa82-47a7-9e58-f67d0b00a5a3?mode=deep",
+    "timestamp": "2026-01-19 21:53:28.585343",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/interpreter_caches.rs] [Function: get_or_create_frame_cache()] [Error propagation] Since this function doesn't return Result, can errors in cache creation be silently swallowed, causing execution to continue with invalid or missing cache data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8ea3659-f5a2-43f6-a53c-320077b9092a?mode=deep",
+    "timestamp": "2026-01-19 21:53:57.235013",
+    "report_generated": false
+  }
+]
