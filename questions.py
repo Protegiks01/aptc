@@ -10,28 +10,18 @@ def get_cyclic_index(run_number, max_index=100):
 
 
 # Get the run number from environment
-run_number = os.environ.get('GITHUB_RUN_NUMBER', '1')
+run_number = os.environ.get('GITHUB_RUN_NUMBER', '0')
 
-# Convert to cyclic index (1-100)
-run_index = get_cyclic_index(run_number)
-
-# Format the URL with leading zeros
-repo_number = f"{run_index:03d}"
-BASE_URL = f"https://deepwiki.com/grass-dev-pa/aptos-core-{repo_number}"
+if run_number == "0":
+    BASE_URL = "https://deepwiki.com/aptos-labs/aptos-core"
+else:
+    # Convert to cyclic index (1-100)
+    run_index = get_cyclic_index(run_number)
+    # Format the URL with leading zeros
+    repo_number = f"{run_index:03d}"
+    BASE_URL = f"https://deepwiki.com/grass-dev-pa/aptos-core-{repo_number}"
 
 SOURCE_REPO = "aptos-labs/aptos-core"
-
-
-def get_questions():
-    try:
-        with open("all_questions.json", "r") as f:
-            return json.load(f)
-
-    except:
-        return []
-
-
-questions = get_questions()
 
 scope_files = [
     'aptos-core/api/openapi-spec-generator/src/fake_context.rs',
