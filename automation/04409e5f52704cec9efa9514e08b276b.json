@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: StreamHeader] [ID Space Exhaustion] With u32 request_ids, after 4.3 billion messages, IDs wrap - does the system handle this gracefully or could long-running validators encounter issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f77c8c8a-5fa4-46f0-9039-512c2a32d05e?mode=deep",
+    "timestamp": "2026-01-19 19:13:33.704184",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStream::append_fragment()] [Data Ownership] Vec::append() at lines 142-145 takes ownership of fragment.raw_data - if the fragment is accidentally cloned or shared, could append() be called twice causing duplication? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1abffeae-3632-4463-9ccd-1826cb3f4d78?mode=deep",
+    "timestamp": "2026-01-19 19:13:46.491977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::stream_message()] [Fragment Data Integrity] Vec::from(chunk) at line 228 creates a copy - but is there validation that the original message wasn't modified between split_off() and fragment creation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_011f859d-3713-440a-9d06-81e264ecd7ef?mode=deep",
+    "timestamp": "2026-01-19 19:13:59.365274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStream::append_fragment()] [Message Mutation] After appending fragments, the NetworkMessage is mutated in place - could this violate assumptions made by upstream code that expects immutable messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8821b1df-0197-4300-9cee-cd048c7b92aa?mode=deep",
+    "timestamp": "2026-01-19 19:14:12.759248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: StreamFragment] [Raw Data Integrity] No checksums or hashes validate fragment integrity - can network errors cause silent data corruption during transmission? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a59d31b1-cdcd-4df0-9fef-8308035a8d49?mode=deep",
+    "timestamp": "2026-01-19 19:14:27.154634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Derive: Serialize/Deserialize] [Version Compatibility] StreamHeader/StreamFragment derive Serialize (lines 14, 21, 30) - are these formats versioned? Could old/new nodes have incompatible serialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6fe95426-fe99-4baf-ac95-bdcbdc3680b3?mode=deep",
+    "timestamp": "2026-01-19 19:14:42.361714",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Derive: Serialize/Deserialize] [Deserialization Bomb] Can a malicious peer craft a serialized StreamHeader that expands to gigabytes when deserialized (e.g., compressed data)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9318d28-958c-4202-8ee9-a143d0559f11?mode=deep",
+    "timestamp": "2026-01-19 19:15:00.122212",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Attribute: serde_bytes] [Bypass Validation] The serde_bytes attribute (line 35) treats Vec<u8> specially - does this bypass serde's normal length limits allowing oversized fragments? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51216719-f232-4880-9cff-7c2498cf983b?mode=deep",
+    "timestamp": "2026-01-19 19:15:18.815630",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Derive: Arbitrary] [Fuzzing Coverage] proptest_derive::Arbitrary (lines 10, 15, 22, 31) generates random instances - does fuzzing cover all integer overflow/underflow cases? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dde73a26-a42d-426e-9a88-910603ed202f?mode=deep",
+    "timestamp": "2026-01-19 19:15:37.899694",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Type: MultiplexMessage] [Message Multiplexing] MultiplexMessage wraps StreamMessage (line 222) - can attacker interleave StreamMessages with other message types to confuse stream assembly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0254a065-37f7-4680-8140-c20e52b6827a?mode=deep",
+    "timestamp": "2026-01-19 19:15:58.287581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Type: NetworkMessage] [Message Type Validation] NetworkMessage has multiple variants (Error, RpcRequest, RpcResponse, DirectSendMsg) - does each variant have consistent size limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b8c695f-4517-4fb2-8237-223cf36e716f?mode=deep",
+    "timestamp": "2026-01-19 19:16:20.402738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::should_stream()] [Boundary Condition] Line 180 checks data_len() > max_frame_size - what about messages exactly equal to max_frame_size? Are they streamed unnecessarily? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60145d89-b670-4fea-b0e1-52e0d4b9d0e2?mode=deep",
+    "timestamp": "2026-01-19 19:16:42.634606",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::should_stream()] [Decision Logic] The decision to stream is based solely on size - but should certain message types (e.g., consensus votes) never be fragmented for performance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e5eb6b0-133e-401e-a2b7-8fc2cae1b1eb?mode=deep",
+    "timestamp": "2026-01-19 19:17:05.995668",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: InboundStreamBuffer] [Max Fragments Configuration] max_fragments (line 63) is configurable - what are safe bounds? Could too-large values enable memory exhaustion attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_409ddf4c-89df-434a-842b-162ff09c7dff?mode=deep",
+    "timestamp": "2026-01-19 19:17:30.142746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: OutboundStream] [Frame Size Configuration] max_frame_size is reduced by 64 bytes (line 164) - is this constant appropriate for all message types? Could some headers exceed 64 bytes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_421fce8c-c346-463a-b155-20392e3a19d6?mode=deep",
+    "timestamp": "2026-01-19 19:17:55.271573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: OutboundStream] [Message Size Limits] max_message_size (line 153) limits total message size - but is this enforced before or after serialization? Could serialization overhead cause actual network frames to exceed limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1c55b47-7803-4ef6-8124-fb098a7fb61c?mode=deep",
+    "timestamp": "2026-01-19 19:18:20.189809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::new()] [Configuration Validation] The assertion at line 165 validates configuration - should this be a runtime error instead of panic to allow graceful degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fce78627-4396-47dd-98c7-04d8286a6ff5?mode=deep",
+    "timestamp": "2026-01-19 19:18:44.409693",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Byzantine Attack] [Fragment Flooding] Can a Byzantine peer send thousands of headers without completing any streams, exhausting InboundStreamBuffer resources across all connections? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_850fd59b-df55-464b-93c1-283e172646bf?mode=deep",
+    "timestamp": "2026-01-19 19:19:10.445692",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Byzantine Attack] [Partial Stream Attack] Can a Byzantine peer send header + some fragments but never complete streams, causing memory to be held indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ab22c0d-0682-4f58-bcd5-ea70d64576f8?mode=deep",
+    "timestamp": "2026-01-19 19:19:36.979004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Byzantine Attack] [Request ID Prediction] If request_id generation is predictable (sequential U32IdGenerator), can an attacker pre-send fragments for future streams causing confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49d75587-0ec5-43bf-a3b5-d3fa032a05a5?mode=deep",
+    "timestamp": "2026-01-19 19:20:03.246797",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Byzantine Attack] [Fragment Duplication] Can an attacker send duplicate fragments with the same fragment_id to cause the check at line 133 to fail repeatedly, wasting CPU? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ba0452e-00e3-4a3a-8f80-75e1b55d56ab?mode=deep",
+    "timestamp": "2026-01-19 19:20:29.265769",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Byzantine Attack] [Stream Replacement DoS] By sending new headers repeatedly (exploiting line 77), can an attacker prevent any legitimate stream from completing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af11ce5e-81b5-460e-84d4-e768443299a5?mode=deep",
+    "timestamp": "2026-01-19 19:20:55.732685",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Consensus Impact] [Vote Message Fragmentation] If consensus vote messages are fragmented, could delayed fragment arrival cause timeout and consensus delays? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4d2bae4-a8ac-43d6-88d2-3c0a64959397?mode=deep",
+    "timestamp": "2026-01-19 19:21:20.946773",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Consensus Impact] [Block Proposal Streaming] Large block proposals might be streamed - if fragments arrive out of order or delayed, could this cause proposal timeout and leader rotation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a86fbe71-8fdb-476f-849e-23f14f3a561a?mode=deep",
+    "timestamp": "2026-01-19 19:21:46.603936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Consensus Impact] [Validator Communication] If stream assembly fails between validators, could this cause network partition-like symptoms affecting consensus liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27e9cf99-bf24-4b42-88bd-ff5e1364ffdb?mode=deep",
+    "timestamp": "2026-01-19 19:22:12.752640",
+    "report_generated": false
+  }
+]
