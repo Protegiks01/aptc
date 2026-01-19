@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: wait_for_startup()] [Time Measurement Precision] The function uses Instant::now() and elapsed() at lines 198-202 - can clock adjustments or system time changes cause incorrect timeout calculations, leading to premature or delayed timeout triggers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3efbf96c-4a82-4b07-aff1-d96616befc70?mode=deep",
+    "timestamp": "2026-01-19 19:12:38.749750",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Constant: MAX_WAIT_S] [Configuration Rigidity] MAX_WAIT_S is hardcoded to 120 seconds at line 18 - can this inflexible timeout cause issues in slow environments (CI, low-resource machines) where services legitimately need more time to start, or be too long in production causing unnecessary delays? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebe6525d-b3c0-4f26-be73-763c1552a921?mode=deep",
+    "timestamp": "2026-01-19 19:12:51.669395",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Constant: WAIT_INTERVAL_MS] [Polling Frequency] WAIT_INTERVAL_MS is 200ms at line 19 - can this frequent polling create excessive load on target services (HTTP endpoints, databases, gRPC services), potentially causing the services to fail under health check load? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b657d14-2f40-4a7e-b3ac-5a5c68dd9ff6?mode=deep",
+    "timestamp": "2026-01-19 19:13:05.217259",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Enum: HealthChecker] [Variant Exhaustiveness] The HealthChecker enum has 6 variants at lines 24-42 - if new service types are added without corresponding check() implementation, can this cause runtime panics or undefined behavior due to incomplete match statements? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a766ed33-bb73-47e9-8b4b-36f48a375849?mode=deep",
+    "timestamp": "2026-01-19 19:13:19.939455",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Enum: HealthChecker] [Serialize Trait Security] The enum derives Serialize at line 24 - can serialization of URLs, connection strings, or processor names leak sensitive information if the serialized data is logged, transmitted, or stored in an insecure manner? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1aa0f1aa-cedd-4fef-9854-d5d1b427ac23?mode=deep",
+    "timestamp": "2026-01-19 19:13:33.222320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Enum: HealthChecker] [Hash and Eq Traits] The enum derives Hash and Eq at line 24 - can hash collision attacks or equality comparison vulnerabilities be exploited if HealthChecker instances are used as HashMap keys in concurrent scenarios? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0208efcd-5fe7-40c1-965d-7c4ed64944a0?mode=deep",
+    "timestamp": "2026-01-19 19:13:48.787128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [General: Async Execution] [Concurrent Health Checks] If multiple check() calls are executed concurrently on the same HealthChecker instance, can race conditions in shared state (URL objects, connection pools) cause inconsistent results or resource conflicts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2b6e986-cbcf-4800-8cb2-0e2ab493287f?mode=deep",
+    "timestamp": "2026-01-19 19:14:05.656543",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [General: Error Handling] [Context Information Leakage] Error contexts added via with_context() throughout the file (lines 50, 81, 91, 97, 104) - do these contexts include sensitive information that could be exploited if errors are logged or exposed through APIs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ad1044c-fc83-4065-be24-a216d970a27c?mode=deep",
+    "timestamp": "2026-01-19 19:14:24.489025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [General: Clone Implementation] [Clone Safety] The enum derives Clone at line 24 - can cloning URL objects or connection strings cause unintended sharing of mutable state or security credentials across instances? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f06e2f2-3edf-444d-b133-dae4e54ecec1?mode=deep",
+    "timestamp": "2026-01-19 19:14:41.864410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [General: Dependency Security] [External Crate Vulnerabilities] The file depends on external crates (reqwest, diesel, tokio, etc.) - can vulnerabilities in these dependencies (CVEs in HTTP clients, SQL libraries, async runtime) be exploited through the health checker's usage patterns? (Variable)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e77abc9a-73e6-4f25-8963-b6252eda5ccb?mode=deep",
+    "timestamp": "2026-01-19 19:15:00.861837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: check() - Http variant] [HTTP Method Security] The reqwest::get() call at line 48 only uses GET requests - can services that require other HTTP methods (POST, PUT) for proper health checks be incorrectly reported as unhealthy, or can GET be abused to trigger state changes if the endpoint isn't idempotent? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0aeef22e-b65c-41d2-bd1e-b04c4c842c86?mode=deep",
+    "timestamp": "2026-01-19 19:15:21.414865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: check() - NodeApi variant] [Client Configuration] The aptos_rest_client::Client is created without explicit configuration at line 54 - does it use secure defaults for timeouts, retries, and TLS validation, or can default settings introduce security vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d07c96ff-cbaa-4bef-bc55-427bce1190a3?mode=deep",
+    "timestamp": "2026-01-19 19:15:42.633924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: check() - DataServiceGrpc variant] [Backoff::future::retry Error Handling] The retry mechanism at lines 64-84 uses backoff::future::retry - can an attacker force the retry logic into an infinite loop or cause exponential resource consumption by manipulating error types returned from get_chain_id()? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_328ef6fd-8845-42a3-9414-11cec6897e4f?mode=deep",
+    "timestamp": "2026-01-19 19:16:05.778946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: check() - Postgres variant] [Database Schema Assumption] The Postgres health check only verifies connection establishment at lines 88-92 - can an attacker provision a valid but empty database that passes the health check but lacks required schemas, causing downstream failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c13cecaf-9ae3-43ba-b940-e9da696d7225?mode=deep",
+    "timestamp": "2026-01-19 19:16:28.924621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: check() - Processor variant] [Diesel Query Injection] The diesel query at lines 98-101 uses eq() for filtering - is the processor_name parameter properly escaped by diesel, or can special characters in processor names cause SQL injection or query manipulation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c052b9c5-3334-4278-9d69-03af38aa159b?mode=deep",
+    "timestamp": "2026-01-19 19:16:51.676748",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: check() - Processor variant] [Optional Extension Handling] The .optional() call at line 103 converts query errors to None - can database errors (connection loss, permission denied) be silently converted to None, making the health check report 'processor not found' instead of revealing the real error? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00863967-4dca-4459-9152-c929e57ab311?mode=deep",
+    "timestamp": "2026-01-19 19:17:15.008073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: wait()] [Closure Capture] The wait() function passes a closure to wait_for_startup() at line 141 - can lifetime or ownership issues cause use-after-free or double-free vulnerabilities if the HealthChecker is moved or dropped during the wait? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08991f1b-1d38-41f1-bfc4-6c5e33b17794?mode=deep",
+    "timestamp": "2026-01-19 19:17:40.032510",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: address_str()] [URL AsRef String Lifetime] The function returns &str with lifetime bound to self at lines 157-166 - can dangling references occur if the HealthChecker is dropped while address_str() references are still in use? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15f18935-a19c-480d-ae42-cf0097a98892?mode=deep",
+    "timestamp": "2026-01-19 19:18:02.301200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: http_checker_from_port()] [Integer to String Conversion] The port is converted to string at line 171 using format!() macro - can very large port numbers cause format buffer overflows or unexpected behavior in URL construction? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93195573-6c5e-4ec2-9b73-8169beb328e5?mode=deep",
+    "timestamp": "2026-01-19 19:18:24.005990",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: wait_for_startup()] [Generic Future Bound] The function accepts generic Future types at lines 190-193 - can misuse of this API with non-cancellation-safe futures cause resource leaks or undefined behavior when timeouts occur? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd7590db-a205-4f23-a930-2e9e806a1b35?mode=deep",
+    "timestamp": "2026-01-19 19:18:45.931105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Function: wait_for_startup()] [Boolean Flag Race] The started_successfully boolean at line 199 is set in an async loop - can race conditions occur if multiple tasks wait on the same service, causing concurrent modifications to loop state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15b8e010-f8a3-4c85-bc30-0641444ddf55?mode=deep",
+    "timestamp": "2026-01-19 19:19:07.490751",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Module: Dependencies] [Import Security] The file imports from super::indexer_api at line 4 - can vulnerabilities in the parent module's indexer_api expose security issues through confirm_metadata_applied()? (Variable)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9275be12-b335-49dd-aeeb-c26e1089ec89?mode=deep",
+    "timestamp": "2026-01-19 19:19:30.501103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Module: Visibility] [Public API Surface] The HealthChecker enum and its methods are public - can external crates or malicious code abuse the public API to trigger health checks against unauthorized targets or cause denial of service? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_010f16a6-6e35-49eb-bff5-ed143377c703?mode=deep",
+    "timestamp": "2026-01-19 19:19:53.982726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Context: Local Testnet] [Production Misuse] This file is in local_testnet module - can this code be accidentally used in production environments where the hardcoded values (auth_token='notused', starting_version=0) and relaxed security would create serious vulnerabilities? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97f37d6e-e8c3-43c1-a84f-11f0aba94ec0?mode=deep",
+    "timestamp": "2026-01-19 19:20:18.282322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/health_checker.rs] [Context: Local Testnet] [Security Model Mismatch] The health checker uses 'notused' authentication tokens and skips various security checks appropriate for local testing - if deployed to staging or production, can these security gaps be exploited by attackers to compromise real infrastructure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3c5c974-ff9b-470b-b555-edd600507d73?mode=deep",
+    "timestamp": "2026-01-19 19:20:41.136159",
+    "report_generated": false
+  }
+]
