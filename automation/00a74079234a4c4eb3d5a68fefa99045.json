@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: save_batch_v2()] [Backward Compatibility] When saving V2 batches, is there any mechanism to maintain backward compatibility with validators still reading V1 format? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e5167ab-6f0a-4a1a-8974-80f0ff1d33af?mode=deep",
+    "timestamp": "2026-01-19 17:02:56.020936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: get_batch_v2()] [Enum Variant Access] When get_batch_v2() returns a BatchInfoExt, can calling code make incorrect assumptions about whether it's V1 or V2 variant, causing logic errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d0b3c51-1b04-4388-9f13-53385e1d5ca4?mode=deep",
+    "timestamp": "2026-01-19 17:03:08.952608",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: get_batch_v2()] [Schema Confusion] If get_batch_v2() is called for a digest that exists only in V1 schema, does it properly return None or could there be cross-schema leakage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdc5be25-e462-4b5a-957b-b19f3f9a7eb5?mode=deep",
+    "timestamp": "2026-01-19 17:03:22.469577",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: get_batch_v2()] [Extra Metadata Corruption] Can corrupted ExtraBatchInfo within a stored BatchInfoExt cause deserialization to fail or return garbage data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca4f650d-f484-44fe-ac8f-6d256a0c0eac?mode=deep",
+    "timestamp": "2026-01-19 17:03:35.904073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: delete_batch_id()] [Wrong Epoch Deletion] Can delete_batch_id() be called with the current epoch instead of an old epoch, prematurely deleting the active batch_id and causing loss of sequence tracking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b770634-f45a-4cb4-988e-28b1d3efe34f?mode=deep",
+    "timestamp": "2026-01-19 17:03:50.454663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: delete_batch_id()] [Race Condition] Can delete_batch_id() race with save_batch_id() such that a newly saved batch_id is immediately deleted, causing sequence number gaps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bafa1c0f-f115-453f-bbcb-3b493d08927b?mode=deep",
+    "timestamp": "2026-01-19 17:04:06.298517",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: delete_batch_id()] [Non-existent Epoch] What happens if delete_batch_id() is called for an epoch that was never saved? Does this cause errors or silent failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee426295-9412-4143-93d2-aaf6c4d2d2e4?mode=deep",
+    "timestamp": "2026-01-19 17:04:23.006718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: clean_and_get_batch_id()] [Assert Panic] The assert on line 171 'assert!(current_epoch >= epoch)' can panic if called with current_epoch less than a stored epoch - can this happen during epoch rollback or time manipulation attacks, causing validator crashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4929bba-150b-42bd-9f73-98a375794060?mode=deep",
+    "timestamp": "2026-01-19 17:04:41.504815",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: clean_and_get_batch_id()] [Race Condition Cleanup] If multiple threads call clean_and_get_batch_id() concurrently with the same current_epoch, can they race to delete old epochs, causing double-delete errors or inconsistent cleanup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2821dd4e-03e3-4d16-abc0-bb848c2815f1?mode=deep",
+    "timestamp": "2026-01-19 17:05:01.858658",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: clean_and_get_batch_id()] [Cleanup Failure Impact] If delete_batch_id() fails partway through cleanup (line 173), does clean_and_get_batch_id() continue or abort? Could partial cleanup cause storage leaks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_537ccde4-d29a-44fe-9ad8-934d3fe619bd?mode=deep",
+    "timestamp": "2026-01-19 17:05:22.561756",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: clean_and_get_batch_id()] [Multiple Current Epochs] The logic assumes at most one batch_id for current_epoch (line 175) - what if corrupted data has multiple entries for the same epoch? Could this return wrong batch_id? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9167b294-2fd3-49a0-83f3-3f99ce3e3413?mode=deep",
+    "timestamp": "2026-01-19 17:05:44.180960",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: clean_and_get_batch_id()] [Iterator Safety] Does the iterator properly handle database modifications during iteration (deletes called while iterating), or could this cause iterator invalidation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ad44a17-f5d3-4ce1-bfa5-2e8962c9b776?mode=deep",
+    "timestamp": "2026-01-19 17:06:07.740492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: clean_and_get_batch_id()] [Return Value Ambiguity] When None is returned, does this mean no batch_id exists for current_epoch, or that all epochs are old? Could this ambiguity cause initialization bugs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88bb928d-6207-4e48-bc2e-82b46765debf?mode=deep",
+    "timestamp": "2026-01-19 17:06:31.657049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: clean_and_get_batch_id()] [Epoch Jump] If current_epoch jumps by more than 1 from the last saved epoch (e.g., after network downtime), does cleanup properly handle the gap or could intermediate epochs leak? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f04cc421-8f14-4f16-a62b-d70ef51e99c0?mode=deep",
+    "timestamp": "2026-01-19 17:06:56.602746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: clean_and_get_batch_id()] [Deserialization During Iteration] If a stored BatchId is corrupted, can bcs::from_bytes() fail during the collect() operation, causing the entire function to fail instead of skipping the bad entry? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_773030c2-3ca5-416a-8f5f-e3efab3d3bdf?mode=deep",
+    "timestamp": "2026-01-19 17:07:23.095452",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: save_batch_id()] [Epoch Validation] Does save_batch_id() validate that the epoch is the current epoch? Can future or past epoch batch_ids be saved, causing temporal confusion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48f3dc77-8041-4deb-be0d-87e2c64052b8?mode=deep",
+    "timestamp": "2026-01-19 17:07:51.227335",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: save_batch_id()] [Duplicate Save] Can save_batch_id() be called multiple times for the same epoch with different BatchId values, overwriting the correct value and causing sequence number gaps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11244717-1516-4ea9-b4a5-ea9a45c111df?mode=deep",
+    "timestamp": "2026-01-19 17:08:20.161147",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: save_batch_id()] [BatchId Validation] Does save_batch_id() validate the BatchId structure (nonce, hash) is well-formed before persisting? Can corrupted batch_ids be saved? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3bfee32-2ca5-412d-8acd-713b290ac5e8?mode=deep",
+    "timestamp": "2026-01-19 17:08:49.234144",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Function: save_batch_id()] [Race with Cleanup] Can save_batch_id() race with clean_and_get_batch_id() such that a batch_id is saved and immediately cleaned up as old, losing tracking data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f01524a4-c18e-45c4-b6c5-e9cef45190df?mode=deep",
+    "timestamp": "2026-01-19 17:09:16.668578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Schema: BatchSchema] [BCS Deserialization] Can maliciously crafted BCS bytes in the database cause bcs::from_bytes() to panic, allocate excessive memory, or enter infinite loops during deserialization? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_349f724b-e701-40b8-9382-16aae0431164?mode=deep",
+    "timestamp": "2026-01-19 17:09:44.533911",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Schema: BatchV2Schema] [Version Confusion] Can V1 batch data be placed in BATCH_V2_CF_NAME or vice versa, causing type confusion when deserializing PersistedValue<BatchInfo> vs PersistedValue<BatchInfoExt>? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39bba55c-c849-4353-b2ea-3f2da422aa4a?mode=deep",
+    "timestamp": "2026-01-19 17:10:13.330059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Schema: BatchIdSchema] [Epoch Overflow] Can u64 epoch values overflow or wrap around, causing batch_ids from future epochs to appear as old epochs and get prematurely deleted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8447f10-67db-4b91-9bc7-bb8cd0ee010f?mode=deep",
+    "timestamp": "2026-01-19 17:10:42.191919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Schema: All] [Key Encoding] Can HashValue::to_vec() produce colliding byte representations for different hash values, causing key collisions in the database? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1e685d5-539c-4a80-bf9e-5cfcecb9677c?mode=deep",
+    "timestamp": "2026-01-19 17:11:09.276236",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Schema: All] [Column Family Namespace] Are column families properly isolated, or can data leak between BATCH_CF_NAME, BATCH_V2_CF_NAME, and BATCH_ID_CF_NAME? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8358a490-ab5c-46dd-a0ca-75b9fa2f4d6a?mode=deep",
+    "timestamp": "2026-01-19 17:11:35.764973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/quorum_store/quorum_store_db.rs] [Concurrency] [No Locking] The QuorumStoreDB has no explicit locks - can concurrent save_batch() and delete_batches() calls on the same digest cause race conditions where a batch is deleted then immediately re-added? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b6c64e4-736f-4b5d-b981-8d11cacf5c9c?mode=deep",
+    "timestamp": "2026-01-19 17:11:59.676950",
+    "report_generated": false
+  }
+]
