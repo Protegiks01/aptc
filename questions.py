@@ -1,7 +1,6 @@
-import json
 import os
 
-from decouple import config
+MAX_REPO = 100
 
 
 def get_cyclic_index(run_number, max_index=100):
@@ -16,7 +15,7 @@ if run_number == "0":
     BASE_URL = "https://deepwiki.com/aptos-labs/aptos-core"
 else:
     # Convert to cyclic index (1-100)
-    run_index = get_cyclic_index(run_number)
+    run_index = get_cyclic_index(run_number, MAX_REPO)
     # Format the URL with leading zeros
     repo_number = f"{run_index:03d}"
     BASE_URL = f"https://deepwiki.com/grass-dev-pa/aptos-core-{repo_number}"
