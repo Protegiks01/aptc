@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Derive: Debug] [Sensitive data exposure] Does the Debug trait implementation for DKGTranscriptRequest expose dealer_epoch in log messages, and if logs are publicly accessible, can this leak information about DKG protocol state to potential attackers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da843639-9062-4043-b312-6f7d3bd345b4?mode=deep",
+    "timestamp": "2026-01-19 16:54:51.738190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Derive: Debug] [Transcript leakage] When DKGMessage::TranscriptResponse is logged using Debug trait, does it expose the full transcript_bytes content, potentially leaking cryptographic secrets if DKG transcripts contain sensitive key material? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2dc15e5e-5109-4933-b775-221f628a4922?mode=deep",
+    "timestamp": "2026-01-19 16:55:04.485689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Struct: DKGTranscriptRequest] [Missing validation] Does any code path validate DKGTranscriptRequest fields before processing, or are dealer_epoch values trusted without bounds checking, potentially allowing wraparound or underflow in arithmetic operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ea31747-48fb-4837-b07d-96ee6a0d2f20?mode=deep",
+    "timestamp": "2026-01-19 16:55:17.755683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Enum: DKGMessage] [Envelope validation] Before dispatching to variant-specific handlers, is there validation that DKGMessage enum variant matches expected protocol state, or can out-of-sequence messages bypass state machine checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9293b405-d958-4dc2-a10a-5429070e4759?mode=deep",
+    "timestamp": "2026-01-19 16:55:31.182933",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Function: name()] [String injection] Although name() returns static strings, if these strings are used in constructing log messages or database queries without proper escaping, can they introduce injection vulnerabilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52765ebb-e3c2-4a98-93b7-286e34674024?mode=deep",
+    "timestamp": "2026-01-19 16:55:45.321250",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Enum: DKGMessage] [Transcript binding] Is the DKGTranscript in TranscriptResponse cryptographically bound to the dealer_epoch in the original TranscriptRequest, or can transcripts be malleably moved between epochs by Byzantine validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5aed1825-c12b-4ef6-a88f-514570ada4f5?mode=deep",
+    "timestamp": "2026-01-19 16:56:00.860192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Struct: DKGTranscriptRequest] [Request authentication] Does each DKGTranscriptRequest include a cryptographic signature from the requester, or can unsigned requests be accepted, allowing impersonation attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_547e2a3e-bd6d-4b17-b344-887d769be17d?mode=deep",
+    "timestamp": "2026-01-19 16:56:17.465831",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Enum: DKGMessage::TranscriptResponse] [Response integrity] Is there a MAC or signature covering the entire TranscriptResponse including metadata and transcript_bytes, or can attackers tamper with responses in-flight without detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_275c359c-4428-4c17-b56b-a2b4ab8710bd?mode=deep",
+    "timestamp": "2026-01-19 16:56:36.796825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Function: epoch()] [Epoch authenticity] Does the epoch value extracted by epoch() method come from a cryptographically authenticated source, or can man-in-the-middle attackers modify epoch values to cause validators to process messages in wrong epoch contexts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe02f968-cf7e-42cb-acdd-ab4cf45345e1?mode=deep",
+    "timestamp": "2026-01-19 16:56:56.562092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Struct: DKGTranscriptRequest] [Epoch arithmetic overflow] If downstream code performs dealer_epoch + 1 or dealer_epoch + offset calculations without overflow checks, can a DKGTranscriptRequest with dealer_epoch = u64::MAX - 1 cause integer overflow and wraparound to 0? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3469e6f7-b99f-4482-99f6-b20300d2c958?mode=deep",
+    "timestamp": "2026-01-19 16:57:17.205032",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Function: epoch()] [Epoch comparison safety] When comparing epochs from different message types, is there protection against integer comparison vulnerabilities where u64::MAX compares as less than 0 due to type coercion bugs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3d14ee4-882f-4190-925b-fd81fea49910?mode=deep",
+    "timestamp": "2026-01-19 16:57:38.116605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Struct: DKGTranscriptRequest] [Epoch subtraction underflow] If validation logic checks (current_epoch - request.dealer_epoch > threshold), can a request with dealer_epoch > current_epoch cause subtraction underflow that wraps to large positive value, bypassing threshold checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e891889-1a6e-4c26-8ada-40dfe6ae8da7?mode=deep",
+    "timestamp": "2026-01-19 16:57:59.903269",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Enum: DKGMessage] [Message size limits] Is there enforcement of maximum message size for DKGMessage instances before network transmission, or can attackers send multi-gigabyte TranscriptResponse messages to overwhelm network buffers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f55b8f48-4f86-4b93-ab36-926d26a8c68e?mode=deep",
+    "timestamp": "2026-01-19 16:58:22.839718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Struct: DKGTranscriptRequest] [Network partition exploitation] Can Byzantine validators send DKGTranscriptRequest only to specific validators to create network partitions where different validator subsets have different transcript views? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c09d1a2-7808-4281-8282-714b2d63e95a?mode=deep",
+    "timestamp": "2026-01-19 16:58:47.364759",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Enum: DKGMessage] [Message ordering assumptions] Does the DKG protocol assume FIFO or causal ordering of DKGMessage delivery, and if so, can Byzantine validators exploit network reordering to violate protocol invariants? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aaaeeafc-8505-489c-88d6-cefe28ce71ba?mode=deep",
+    "timestamp": "2026-01-19 16:59:11.939504",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Enum: DKGMessage] [Enum exhaustiveness] If new variants are added to DKGMessage in future without updating all match statements, can this cause panics or incorrect behavior in message handlers that assumed only two variants existed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6828f2a2-1a0b-4829-9120-93283617f879?mode=deep",
+    "timestamp": "2026-01-19 16:59:38.553741",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Struct: DKGTranscriptRequest] [Field visibility] Is dealer_epoch field intentionally public, and if so, can external code mutate it after construction, bypassing the new() constructor's intended initialization logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f45f7ab-7664-4b14-8412-c40ccc146e7b?mode=deep",
+    "timestamp": "2026-01-19 17:00:03.764120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Derive: CryptoHasher] [Derive macro safety] Does the CryptoHasher derive macro handle all field types correctly, or can adding new fields with special types in future cause the hash function to behave unpredictably? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4368ff96-41bd-499f-ab53-d5cbf442ee88?mode=deep",
+    "timestamp": "2026-01-19 17:00:27.941330",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Struct: DKGTranscriptRequest] [Zero epoch handling] Is dealer_epoch = 0 valid and handled correctly as genesis epoch, or does it cause special case bugs in epoch comparison and validation logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c983073a-dbe6-468d-a52b-9d3cda7a3406?mode=deep",
+    "timestamp": "2026-01-19 17:00:52.981501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Function: epoch()] [Metadata null handling] If DKGTranscript.metadata is somehow null or uninitialized during deserialization corruption, will accessing response.metadata.epoch cause a segfault or panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8845c10-688c-4d3c-a5d1-37c52e75fc48?mode=deep",
+    "timestamp": "2026-01-19 17:01:18.915095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Enum: DKGMessage] [Empty transcript handling] Can TranscriptResponse contain a DKGTranscript with empty transcript_bytes (length 0), and if so, does aggregation logic handle empty transcripts without causing division by zero or invalid state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ef56c8a-874e-408a-aa1d-8c15d4c8587f?mode=deep",
+    "timestamp": "2026-01-19 17:01:44.726179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Function: name()] [Name uniqueness] Are the string values returned by name() guaranteed to be unique across all enum variants, or could future variants introduce name collisions causing ambiguity in logging or metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_223adb74-0d09-4984-9174-019a91d2beb3?mode=deep",
+    "timestamp": "2026-01-19 17:02:11.560515",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Struct: DKGTranscriptRequest] [Request spam] Without rate limiting, can a single Byzantine validator send millions of DKGTranscriptRequest messages per second to exhaust honest validators' network bandwidth and CPU processing requests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38346ff7-6ac0-44ea-88b4-f80e386e9ed3?mode=deep",
+    "timestamp": "2026-01-19 17:02:39.744290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Enum: DKGMessage::TranscriptResponse] [Large transcript DoS] Can a malicious validator respond with DKGTranscript containing multi-gigabyte transcript_bytes to cause memory exhaustion when honest validators attempt to aggregate transcripts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a58189a0-04ca-4723-ad67-375de55bb9fc?mode=deep",
+    "timestamp": "2026-01-19 17:03:07.093111",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/types.rs] [Function: epoch()] [Epoch lookup overhead] If epoch() is called repeatedly in hot paths without caching, and transcript metadata access is expensive, can this cause performance degradation that slows down DKG protocol execution? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3974a85c-9316-49cc-bf15-527da46b7585?mode=deep",
+    "timestamp": "2026-01-19 17:03:35.083413",
+    "report_generated": false
+  }
+]
