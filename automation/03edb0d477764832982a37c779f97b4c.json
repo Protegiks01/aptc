@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Function: get_label()] [Label injection] Can a malicious peer craft a DataRequest variant that causes get_label() to return a string containing special characters or escape sequences that could be exploited in logging or metric systems, potentially causing log injection or metric pollution attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eff1d985-19a7-442f-ba38-5330b4ad1bb9?mode=deep",
+    "timestamp": "2026-01-19 18:58:49.102929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: StorageServiceRequest] [Resource exhaustion] Does the use_compression flag have any validation when set to true, or can an attacker set it to true for all requests to force the server to perform expensive compression operations, causing CPU exhaustion and validator slowdown? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b34014c1-3114-4073-ac42-d81bc2f0af85?mode=deep",
+    "timestamp": "2026-01-19 18:59:01.707943",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: StorageServiceRequest] [Decompression bomb] If use_compression is true, does the downstream handler properly limit decompression buffer sizes, or can an attacker send small compressed payloads that expand to gigabytes, causing memory exhaustion and node crashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04c68cfe-6dd5-4bed-a91c-7b105dd29f90?mode=deep",
+    "timestamp": "2026-01-19 18:59:14.532603",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Function: new()] [Type confusion] Can an attacker create a StorageServiceRequest with mismatched data_request and use_compression values that causes inconsistent behavior in request processing, potentially bypassing security checks or causing state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8232660-03ba-4b9b-b592-10353848178d?mode=deep",
+    "timestamp": "2026-01-19 18:59:27.901050",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: EpochEndingLedgerInfoRequest] [Integer overflow] Can an attacker set start_epoch to u64::MAX and expected_end_epoch to 0, causing an integer overflow when calculating the epoch range (end - start), leading to incorrect range validation or memory allocation issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8166f60-e16b-4461-8051-8f04f952a3b2?mode=deep",
+    "timestamp": "2026-01-19 18:59:42.079679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: EpochEndingLedgerInfoRequest] [Epoch manipulation] Can a Byzantine peer request start_epoch > expected_end_epoch to create an inverted range, potentially causing the server to enter an infinite loop, panic, or return incorrect epoch data that breaks consensus safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d4c3e67-54ba-4b82-81e2-882407dbd131?mode=deep",
+    "timestamp": "2026-01-19 18:59:57.162740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: EpochEndingLedgerInfoRequest] [Resource exhaustion] Can an attacker request start_epoch=0 and expected_end_epoch=u64::MAX to force the server to load all historical epoch data into memory, causing OOM crashes and loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b59615be-06f8-43b7-9c93-6b8dcbadedf6?mode=deep",
+    "timestamp": "2026-01-19 19:00:13.801179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: EpochEndingLedgerInfoRequest] [Denial of service] If start_epoch and expected_end_epoch span thousands of epochs, does the server properly rate-limit or chunk the response, or will it attempt to process the entire range at once, causing validator slowdown? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e69613d9-0633-45a8-a58f-9312f3223f81?mode=deep",
+    "timestamp": "2026-01-19 19:00:31.849296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: EpochEndingLedgerInfoRequest] [State inconsistency] Can an attacker request epochs that don't exist yet (future epochs) to cause the server to return partial or inconsistent data that could lead to state divergence across validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfee09f5-c0bc-490d-9e0a-393fc2bdf5cc?mode=deep",
+    "timestamp": "2026-01-19 19:00:50.992701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: NewTransactionOutputsWithProofRequest] [Known version manipulation] Can a malicious peer set known_version to u64::MAX to cause integer overflow when the server calculates the next version (known_version + 1), potentially skipping transactions or causing panics? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2703ff3c-eeae-4275-9728-d8fdddf22405?mode=deep",
+    "timestamp": "2026-01-19 19:01:11.342959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: NewTransactionOutputsWithProofRequest] [Epoch-version mismatch] Can an attacker provide known_version=1000 and known_epoch=0 where version 1000 doesn't actually belong to epoch 0, causing the server to return incorrect proofs that could break Merkle tree verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2948e604-43c8-4d31-8bd3-b857831b4491?mode=deep",
+    "timestamp": "2026-01-19 19:01:32.868390",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: NewTransactionOutputsWithProofRequest] [Optimistic fetch abuse] Since this is an optimistic fetch request (line 126-130), can an attacker repeatedly send requests with stale known_version values to force the server to regenerate the same proofs repeatedly, causing CPU exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8bac605-1a2a-4b67-8d59-b58916831242?mode=deep",
+    "timestamp": "2026-01-19 19:01:55.188579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: NewTransactionOutputsWithProofRequest] [Known epoch manipulation] Can an attacker set known_epoch to a value far in the future to cause the server to wait indefinitely or return empty responses, potentially stalling state synchronization and causing liveness issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c5e9d8a-b54d-42fb-80ed-b652b15da7b6?mode=deep",
+    "timestamp": "2026-01-19 19:02:19.111896",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: NewTransactionsWithProofRequest] [Version overflow] Can setting known_version to u64::MAX-1 cause arithmetic overflow when the server attempts to fetch transactions starting at known_version+1, leading to incorrect transaction ranges or panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad9a5e9c-21d8-467f-a40f-87814c1697ea?mode=deep",
+    "timestamp": "2026-01-19 19:02:43.470382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: NewTransactionsWithProofRequest] [Event inclusion DoS] Can an attacker set include_events=true for every request to force the server to include event data in all responses, significantly increasing response size and causing bandwidth exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2a3a598-02ff-4c94-9c9b-421991b57402?mode=deep",
+    "timestamp": "2026-01-19 19:03:08.569043",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: NewTransactionsWithProofRequest] [Epoch boundary attack] Can an attacker provide known_epoch that's at an epoch boundary, causing the server to return transactions from the wrong epoch with incorrect proofs, leading to state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_01e3079a-7a63-4016-b413-fb500f1ad91c?mode=deep",
+    "timestamp": "2026-01-19 19:03:34.840881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: NewTransactionsWithProofRequest] [State synchronization delay] Can a malicious peer continuously send requests with incrementing known_version values that are always slightly behind the ledger tip, forcing full nodes to waste resources on near-duplicate requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b231ad6-98e2-4b2e-80a0-f8764d9ea70e?mode=deep",
+    "timestamp": "2026-01-19 19:03:59.749437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: StateValuesWithProofRequest] [Index range overflow] Can an attacker set start_index=0 and end_index=u64::MAX to request all state values at a version, causing massive memory allocation and OOM crashes that halt the network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbfb6cc6-1c9a-4f21-b74f-de1861cc387f?mode=deep",
+    "timestamp": "2026-01-19 19:04:25.141262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: StateValuesWithProofRequest] [Inverted range] Can setting start_index > end_index cause the server to enter an infinite loop, return error states that crash the request handler, or return corrupted state data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fa9f56c-730e-428f-9fd1-a213e17163c3?mode=deep",
+    "timestamp": "2026-01-19 19:04:51.393031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: StateValuesWithProofRequest] [Version at boundary] Can requesting state values at version 0 or at an epoch transition version cause the server to return inconsistent state data or fail to generate valid Merkle proofs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b11109a-0057-4d96-a6ff-3de96dad814a?mode=deep",
+    "timestamp": "2026-01-19 19:05:16.281403",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: StateValuesWithProofRequest] [State value DoS] Can an attacker request a massive range (e.g., start_index=0, end_index=10^18) even if the actual number of state values is smaller, causing the server to allocate excessive memory buffers before realizing the range is invalid? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db7278e4-1cb5-4ade-b0df-d9fb6a578134?mode=deep",
+    "timestamp": "2026-01-19 19:05:40.410660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: StateValuesWithProofRequest] [Future version request] Can requesting state values at version > current_ledger_version cause the server to return partial or unproven data that could be used to construct fraudulent state proofs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5f4bf9e-2d1f-4a5a-b952-515f3d737e2a?mode=deep",
+    "timestamp": "2026-01-19 19:06:05.139264",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: StateValuesWithProofRequest] [Jellyfish Merkle tree attack] Can an attacker request specific state index ranges that cause pathological cases in the Jellyfish Merkle tree traversal, leading to exponential time complexity and validator slowdown? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_881c8949-5edd-4502-83bf-5def1335db1f?mode=deep",
+    "timestamp": "2026-01-19 19:06:29.440349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: TransactionOutputsWithProofRequest] [Proof version mismatch] Can an attacker set proof_version to be less than start_version, causing the server to generate invalid proofs that reference future state, potentially breaking cryptographic verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7cd3c605-32f8-4cc6-af9b-15d8bf96a292?mode=deep",
+    "timestamp": "2026-01-19 19:06:55.674845",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Struct: TransactionOutputsWithProofRequest] [Version range overflow] Can setting start_version=u64::MAX-1 and end_version=u64::MAX cause overflow when calculating range size (end - start + 1), leading to incorrect buffer allocations or underflows? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a84605e0-bc41-4506-a799-1684f918b800?mode=deep",
+    "timestamp": "2026-01-19 19:07:21.802351",
+    "report_generated": false
+  }
+]
