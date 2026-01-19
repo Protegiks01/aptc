@@ -1,0 +1,62 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: get_max_binary_format_version()] [Downgrade attack] At lines 478-490, the function returns the highest enabled VM version (V9 down to V5). Can an attacker disable newer version flags through governance to force validators to use older VM versions with known security vulnerabilities, enabling exploitation of patched bugs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_677f32c2-d062-45fa-b0bb-5a2967b1b666?mode=deep",
+    "timestamp": "2026-01-19 23:10:53.371444",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: get_max_binary_format_version()] [Version skipping] The function checks V9, V8, V7, V6 but skips checking if intermediate versions are disabled. If V9 is enabled but V8 and V7 are disabled, does this create an inconsistent VM state? Can validators that expect V8 support crash when encountering V9-only features? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea4ccf71-d8c5-48a8-85b2-efe216001cd4?mode=deep",
+    "timestamp": "2026-01-19 23:11:06.445510",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: get_max_binary_format_version()] [Consensus divergence] At line 479-489, validators call this function to determine which bytecode version to accept. If validators have inconsistent feature flag states due to replication lag, can they accept different transaction sets, causing consensus failure and chain splits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf9a8873-ed0b-4ae4-a482-dd9b77801ef5?mode=deep",
+    "timestamp": "2026-01-19 23:11:20.317004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [FeatureFlag: VM_BINARY_FORMAT_V6-V9] [Multiple version activation] At lines 24, 60, 132, 152, multiple VM version flags can be enabled simultaneously. Does the VM properly handle the case where V6, V7, V8, and V9 are all enabled? Can this cause bytecode interpretation confusion or enable features from multiple versions that conflict? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a82e0c6-a301-45c1-b5de-96afd78d4294?mode=deep",
+    "timestamp": "2026-01-19 23:11:33.986568",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: get_max_binary_format_version()] [Fallback to VERSION_5] At line 488, if no VM version flag is enabled, the function returns VERSION_5. Is VERSION_5 still supported in current VM implementations? Can disabling all version flags cause validators to reject all bytecode or crash due to unsupported version? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8588236-0b62-4ae5-8f8f-f35f658e21c6?mode=deep",
+    "timestamp": "2026-01-19 23:11:47.418513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [FeatureFlag: VM_BINARY_FORMAT_V6] [Metadata dependency] The comment at lines 168-169 states 'Feature flag V6 is used to enable metadata v1 format and needs to stay on, even if we enable a higher version'. Can disabling V6 while V9 is enabled cause metadata parsing failures, breaking module deployment? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40f28cb8-6418-43b2-8dcf-a19e05ec5580?mode=deep",
+    "timestamp": "2026-01-19 23:12:03.354655",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: get_max_binary_format_version()] [TOCTOU with bytecode execution] If get_max_binary_format_version() is called during transaction validation but feature flags change before execution, can validators validate transactions with one version but execute with another, causing state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b9e4ca5-ea89-4019-b360-bf8c1b1f70cd?mode=deep",
+    "timestamp": "2026-01-19 23:12:20.200917",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [FeatureFlag: ENABLE_ENUM_TYPES] [Type system bypass] The ENABLE_ENUM_TYPES flag at line 99 enables enum types in Move. If this flag is toggled after enums are deployed, can existing enum-based contracts fail to execute or behave unexpectedly, breaking deployed applications and potentially locking funds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b88443ff-9dcb-4c9e-b375-3a2e9ba95c4e?mode=deep",
+    "timestamp": "2026-01-19 23:12:38.840909",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [FeatureFlag: ENABLE_FUNCTION_VALUES] [Function pointer safety] The ENABLE_FUNCTION_VALUES flag at line 136 enables function values. If this advanced feature has bugs and is enabled prematurely, can attackers craft malicious function pointers that bypass type safety or execute arbitrary code? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e596fab6-3256-48ea-894f-6226246b7fae?mode=deep",
+    "timestamp": "2026-01-19 23:12:59.357229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: get_max_binary_format_version()] [No version validation] The function doesn't validate that enabled versions are compatible. Can enabling non-sequential versions (e.g., V6 and V9 but not V7, V8) cause the VM to incorrectly handle bytecode features that depend on intermediate versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4429f765-3285-410d-88cc-3a9ff618527c?mode=deep",
+    "timestamp": "2026-01-19 23:13:21.541560",
+    "report_generated": false
+  }
+]
