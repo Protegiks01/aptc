@@ -27,8 +27,8 @@ class IndexDeepwiki:
         self.options = webdriver.ChromeOptions()
 
         # --- Add these two lines here ---
-        # self.options.add_argument("--headless")
-        # self.options.add_argument("--window-size=1920,1080")
+        self.options.add_argument("--headless")
+        self.options.add_argument("--window-size=1920,1080")
         # ---------------------------------
 
         # removed headless so the browser window is visible
