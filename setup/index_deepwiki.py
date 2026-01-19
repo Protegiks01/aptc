@@ -30,8 +30,8 @@ class IndexDeepwiki:
         self.options = webdriver.ChromeOptions()
 
         # --- Add these two lines here ---
-        # self.options.add_argument("--headless")
-        # self.options.add_argument("--window-size=1920,1080")
+        self.options.add_argument("--headless")
+        self.options.add_argument("--window-size=1920,1080")
         # ---------------------------------
 
         # removed headless so the browser window is visible
@@ -87,7 +87,7 @@ class IndexDeepwiki:
             #                            textarea)
             textarea.send_keys(email)
             textarea.send_keys(Keys.ENTER)
-            time.sleep(5)
+            time.sleep(15)
         except Exception as a:
             print(f"There was an error in index : {a}")
 
@@ -106,8 +106,8 @@ def main():
         print(f"Found {total} questions in {repo_file}")
 
         # Process questions
-        bot = IndexDeepwiki(teardown=True)
         for i, question in enumerate(questions, 1):
+            bot = IndexDeepwiki(teardown=True)
             print(f"[{i}/{total}] Processing: {question[:50]}...")
             bot.index_repo(question)
 
