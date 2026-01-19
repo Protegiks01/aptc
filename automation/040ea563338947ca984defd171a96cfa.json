@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: extract_spec_modules()] [Address context confusion] At line 88, addr_ is extracted as Some(&a.addr.value) for modules inside Address blocks, but line 85 doesn't pass any address for top-level modules - can this inconsistency cause spec modules to merge with wrong targets if module definitions are moved between address contexts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bacfcf3e-ecb0-48e1-b5ef-a48d64a1b4ce?mode=deep",
+    "timestamp": "2026-01-19 19:04:05.477347",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: extract_spec_module()] [Address validation bypass] Lines 110 and 166-169 allow address_opt to be None, but there's no validation that the resulting module key is unambiguous - can attackers exploit None addresses to create ambiguous keys that match multiple target modules? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5a7b959-7221-4e42-b92f-9e7b61f6632c?mode=deep",
+    "timestamp": "2026-01-19 19:04:17.557122",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: module_key()] [LeadingNameAccess manipulation] The address is stored as LeadingNameAccess_ type at line 167 - can attackers craft malicious LeadingNameAccess values that appear different in source but resolve to the same address, enabling collision attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54adf595-3b19-481e-92f3-c8533abfd26f?mode=deep",
+    "timestamp": "2026-01-19 19:04:30.156365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: merge_spec_modules()] [Cross-package address exploitation] Lines 128-129 have TODO comments about checking package names and address mappings - without this validation, can spec modules from one package target modules in a different package by exploiting shared address spaces? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c69ea768-d3b4-42fc-adbf-351f8c3a85ea?mode=deep",
+    "timestamp": "2026-01-19 19:04:42.992773",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: extract_spec_modules()] [Named address map bypass] The named_address_map is included in PackageDefinition but never used in key generation (lines 78-82) - can attackers exploit named addresses to create ambiguous module references that resolve differently than expected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acb424c6-47c3-4266-9c1d-fc8dd995f3df?mode=deep",
+    "timestamp": "2026-01-19 19:04:56.585185",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: merge_spec_module()] [BTreeMap removal timing] At line 147, spec modules are removed from the BTreeMap during merging - can concurrent access or reentrancy cause a spec module to be removed but not merged, silently dropping security specifications? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9534d86-4d71-4077-a00c-38bf1185e0a4?mode=deep",
+    "timestamp": "2026-01-19 19:05:11.416679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Shared mutable state] The spec_modules BTreeMap is shared across extraction and merging phases (lines 33-56) - can modifications during iteration cause undefined behavior, skipped entries, or duplicate processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1efcf8f8-ed65-49f7-959b-eb0548b60094?mode=deep",
+    "timestamp": "2026-01-19 19:05:27.899530",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [BTreeMap exhaustion] Lines 34-35 extract from source_definitions then lib_definitions into the same BTreeMap - can attackers submit massive numbers of spec modules to exhaust memory in the BTreeMap, causing compilation DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acb32218-d10c-4dfe-90fd-79ff5a2b0c53?mode=deep",
+    "timestamp": "2026-01-19 19:05:44.615827",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: merge_spec_module()] [Partial merge state] If line 147 removes a spec module but merging fails or panics later, the spec module is lost from the BTreeMap - can this cause inconsistent compilation state where some files see merged specs and others don't? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5673d730-55b8-40f0-b3d9-26afc02d0fab?mode=deep",
+    "timestamp": "2026-01-19 19:06:02.105462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Unmerged spec module leakage] Lines 59-63 iterate over remaining spec_modules to report errors, but what happens to the data in these modules? Can unmerged spec modules leak sensitive information or persist in compiler state affecting future compilations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2f9994a-d004-4673-9603-6c1c5f8b5c95?mode=deep",
+    "timestamp": "2026-01-19 19:06:20.391269",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Validation timing window] Member validation occurs at lines 38-52 after extraction but before merging - can attackers modify the spec_modules BTreeMap between validation and merging to inject forbidden members that bypass the checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44251dd4-224a-4e3b-8bc4-c70865122a16?mode=deep",
+    "timestamp": "2026-01-19 19:06:39.674825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Function member validation] Line 41-43 prevents Functions in spec modules, but only adds a diagnostic without preventing compilation - can compilation proceed with invalid spec modules, and will these forbidden functions be merged into target modules at line 158? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47436d88-212e-4d73-b9ca-68a51cf2825c?mode=deep",
+    "timestamp": "2026-01-19 19:07:00.001120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Struct member validation] Lines 44 validates against Structs in spec modules - if an attacker bypasses this by injecting structs after validation, can these structs be merged into the target module, potentially defining types that conflict with or shadow existing definitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91110962-aa20-4541-ab4d-f199a7e0cc65?mode=deep",
+    "timestamp": "2026-01-19 19:07:21.004028",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Constant member validation] Lines 45-47 prevent Constants in spec modules - but constants might be critical for specification invariants, can attackers exploit the lack of constants to make specifications unverifiable or force use of hardcoded values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eef934f4-3bc4-4c31-9211-aa5a68dd273f?mode=deep",
+    "timestamp": "2026-01-19 19:07:42.723321",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Incomplete validation coverage] Lines 48 only validates four ModuleMember variants but continues on Use, Friend, and Spec - are there other ModuleMember variants that aren't covered? Can new variants be added that bypass this validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbc2990b-c8cd-487c-9a30-c9521c87b097?mode=deep",
+    "timestamp": "2026-01-19 19:08:05.521226",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Silent validation failure] Lines 38-52 add diagnostics for invalid spec module members but don't halt compilation - does compilation continue with invalid state? Can this lead to undefined behavior or security violations in later compiler stages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44ecf00d-fb5c-4b26-857c-9ecedc441481?mode=deep",
+    "timestamp": "2026-01-19 19:08:28.524573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Unmatched spec module handling] Lines 59-63 report errors for remaining spec modules but don't prevent them from persisting in compiler state - can unmatched spec modules affect subsequent compilation units or leak information? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8401e57-b144-4a11-9480-c7ea694028aa?mode=deep",
+    "timestamp": "2026-01-19 19:08:52.426716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: extract_spec_module()] [is_spec_module trust] Line 113 trusts the is_spec_module boolean field without independent verification - can attackers manipulate this field to cause regular modules to be treated as spec modules, dropping them from compilation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fae0d17a-cee2-41fc-b3f1-860f9e7e7bb0?mode=deep",
+    "timestamp": "2026-01-19 19:09:17.256493",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: merge_spec_module()] [Missing merge failure handling] Lines 147-159 assume merge operations succeed without error handling - what happens if attribute or member extension fails due to allocation errors, capacity limits, or other issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71cb9f34-d536-44e8-91d1-b695296a0d59?mode=deep",
+    "timestamp": "2026-01-19 19:09:41.891448",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: extract_spec_modules()] [filter_map error suppression] Lines 77-105 use filter_map which silently drops None values - can legitimate error conditions be masked if modules are accidentally filtered out? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b93ea72f-704d-4b6a-8b28-dd51499b0b18?mode=deep",
+    "timestamp": "2026-01-19 19:10:05.306681",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [CompilationEnv mutation] The compilation_env is passed as mutable reference and modified at lines 50 and 62 - can concurrent compilations interfere with each other through shared CompilationEnv state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13c1ea74-6ac3-497a-9746-5617e429a2e7?mode=deep",
+    "timestamp": "2026-01-19 19:10:28.369154",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Diagnostic injection] Lines 50 and 62 call compilation_env.add_diag() - can attackers trigger excessive diagnostic generation to exhaust memory or cause DoS through diagnostic accumulation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed9238d0-7be7-4e38-b111-d2fe09f53ce4?mode=deep",
+    "timestamp": "2026-01-19 19:10:52.073699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Program structure mutation] The function mutates source_definitions and lib_definitions in place (lines 34-35, 55-56) - can these mutations affect other compilation phases that expect immutable input? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5bdb2ee4-d716-45b0-b3db-76588862d790?mode=deep",
+    "timestamp": "2026-01-19 19:11:16.012185",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [named_address_maps passthrough] Lines 27 and 64-68 pass named_address_maps through unchanged - but the TODO comments at 75 and 127 mention checking these mappings, can unchecked address maps enable cross-package or cross-address attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42caf11f-e189-4925-a3c1-7da232bc93af?mode=deep",
+    "timestamp": "2026-01-19 19:11:41.709146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/legacy-move-compiler/src/parser/merge_spec_modules.rs] [Function: program()] [Program reconstruction] Lines 64-68 reconstruct the Program from mutated components - if mutation was incomplete or inconsistent, can the reconstructed Program have invalid invariants? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76d07ceb-9c1f-4764-966d-a4eff9a1f541?mode=deep",
+    "timestamp": "2026-01-19 19:12:06.225492",
+    "report_generated": false
+  }
+]
