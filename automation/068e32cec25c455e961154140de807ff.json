@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: ParkingLotIndex::remove()] [Partial Removal] If the (sequence_number, hash) tuple doesn't exist in the BTreeSet, remove() silently succeeds without decrementing size - can this cause size() to become permanently inflated, triggering false eviction policies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0231e51-9f89-4236-9cf8-caa12d5fe39b?mode=deep",
+    "timestamp": "2026-01-19 20:27:05.071375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: ParkingLotIndex::contains()] [Nonce False Negatives] contains() always returns false for Nonce transactions (line 633) - can this cause the caller to incorrectly assume a nonce transaction isn't parked when it might be tracked elsewhere, leading to duplicate processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22972814-875c-4977-87f1-76e990f403a7?mode=deep",
+    "timestamp": "2026-01-19 20:27:18.692632",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: ParkingLotIndex::get_poppable()] [Random Seed Manipulation] get_poppable() uses rand::thread_rng() for randomness - can an attacker predict or influence the random seed to ensure their parked transactions are never selected for eviction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b752ffc-bd1a-4ed3-ad48-4caf979f970f?mode=deep",
+    "timestamp": "2026-01-19 20:27:33.041278",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: ParkingLotIndex::get_poppable()] [Highest Sequence Bias] The function returns the highest sequence number for a randomly chosen account (lines 640-646) - can this eviction policy be exploited by submitting many low-sequence transactions that never get selected, while high-sequence ones are always evicted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0810e9a-7579-4e73-b8e2-8d873061c249?mode=deep",
+    "timestamp": "2026-01-19 20:27:47.523940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: ParkingLotIndex::get_addresses()] [Cast to u64] The function casts txns.len() to u64 (line 656) - on 32-bit systems with more than u32::MAX transactions per account, can this cast cause incorrect counts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfadd416-1b79-4e8a-9dda-7673b12fbc09?mode=deep",
+    "timestamp": "2026-01-19 20:28:03.555663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Multiple Indexes] [State Desynchronization] Transactions exist across multiple indexes (PriorityIndex, TTLIndex, TimelineIndex, ParkingLotIndex) - if a transaction is removed from one index but fails to be removed from others due to errors or race conditions, can this cause inconsistent state that breaks mempool invariants? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_513bdbec-671f-47e4-b395-a2f7b3151295?mode=deep",
+    "timestamp": "2026-01-19 20:28:20.356241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Multiple Indexes] [Insert Order Dependency] When inserting a transaction into multiple indexes, is there a required ordering - can inserting into TimelineIndex before PriorityIndex cause the transaction to be broadcast before it's available for block selection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f5cd578-1279-4679-998b-4236fddf7149?mode=deep",
+    "timestamp": "2026-01-19 20:28:38.424128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Multiple Indexes] [Partial Update Attack] Can an attacker trigger partial updates where a transaction's gas_ranking_score or expiration_time changes after being indexed, causing OrderedQueueKey and TTLOrderingKey to become stale and uncollectable garbage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4003da32-761d-497c-a050-cecdbba7766b?mode=deep",
+    "timestamp": "2026-01-19 20:28:59.567340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [AccountTransactions] [Capacity Management] Neither nonce_transactions nor sequence_number_transactions have size limits - can an attacker submit unlimited transactions per account to exhaust memory? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8fa9330-89c8-4337-9922-275c41b75505?mode=deep",
+    "timestamp": "2026-01-19 20:29:23.058658",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [PriorityIndex] [BTreeSet Growth] The PriorityIndex BTreeSet can grow unbounded - can memory exhaustion occur if transaction removal doesn't keep pace with insertion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5cc2d454-d628-4f35-9c36-26ac3998a334?mode=deep",
+    "timestamp": "2026-01-19 20:29:48.442740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [TimelineIndex] [Timeline ID Space Exhaustion] If timeline IDs increment from 1 indefinitely, will wrapping at u64::MAX cause older timeline IDs to collide with new ones, corrupting the chronological order? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a388c4f0-7c65-4b4b-b4fc-ba1007759dee?mode=deep",
+    "timestamp": "2026-01-19 20:30:13.330186",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: TTLIndex::gc()] [Saturating Subtraction] The gc function uses saturating_sub (line 250) - is this appropriate for all Duration edge cases, or can adversarial Duration values cause incorrect GC behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13818574-cae0-48ba-99cb-0e07a0fae8a4?mode=deep",
+    "timestamp": "2026-01-19 20:30:39.269638",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: TimelineIndex::insert()] [ID Increment] next_timeline_id += 1 (line 378) has no overflow check - in a long-running mempool, can this overflow after 2^64 transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_066ecff6-fce2-4594-bf56-e8d2bc39513b?mode=deep",
+    "timestamp": "2026-01-19 20:31:06.423257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: MultiBucketTimelineIndex::get_timeline()] [Binary Search Underflow] The expression unwrap_or_else(|i| i - 1) can underflow if i=0 - does the bucket_mins validation prevent this, or can edge cases trigger underflow? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a9ba50b-68a8-4a0c-b168-7c54528678e9?mode=deep",
+    "timestamp": "2026-01-19 20:31:35.112838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: ParkingLotIndex::size()] [Size Counter Drift] The size field is manually incremented/decremented - can bugs in insert/remove logic cause size to drift from the actual number of parked transactions, breaking capacity limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74595ff8-4ac5-4fe8-a352-806ade78c311?mode=deep",
+    "timestamp": "2026-01-19 20:32:04.807636",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Struct: AccountTransactions] [Clone Derive] AccountTransactions derives Clone - can cloning create aliased mutable access to the same underlying BTreeMaps if the struct is wrapped in Arc<Mutex>? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df38fb0b-8853-4c00-8228-c2d7f0e1aad8?mode=deep",
+    "timestamp": "2026-01-19 20:32:35.282703",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Struct: OrderedQueueKey] [Clone Derive] OrderedQueueKey derives Clone and is stored in BTreeSet - can the BTreeSet's internal structure be corrupted if OrderedQueueKey's Ord implementation is non-transitive? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_871fd795-7250-40ba-932a-28beb45d7564?mode=deep",
+    "timestamp": "2026-01-19 20:33:03.219986",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: AccountTransactions::append()] [Ownership Transfer] append() takes &mut other and transfers ownership of entries - can caller still access 'other' after append, potentially observing inconsistent state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f47c4568-b534-420a-950f-e9775713de34?mode=deep",
+    "timestamp": "2026-01-19 20:33:32.355582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Struct: OrderedQueueKey] [SystemTime Storage] OrderedQueueKey stores SystemTime for insertion_time - can SystemTime go backwards (e.g., NTP adjustments) causing comparison violations and BTreeSet corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddc0e023-c6bd-410f-a675-9d56be021f0a?mode=deep",
+    "timestamp": "2026-01-19 20:34:03.362931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Struct: TTLOrderingKey] [Duration Precision] TTLOrderingKey uses Duration which has nanosecond precision - can attackers craft transactions with expiration times differing by nanoseconds to create large TTL index churn? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e48b2c48-4784-4810-9333-58b9e8652ac7?mode=deep",
+    "timestamp": "2026-01-19 20:34:34.971141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: TimelineIndex::insert()] [Instant Monotonicity] insert() uses Instant::now() which is monotonic - but can Instant overflow or wrap on long-running systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75beb7fa-b759-47d1-8007-d80ca59167b2?mode=deep",
+    "timestamp": "2026-01-19 20:35:05.491924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: TimelineIndex::read_timeline()] [Before Filter] The 'before' parameter uses Instant comparison - can clock drift between the caller and callee cause transactions to be incorrectly filtered? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acf44d47-c2a2-42e7-ac61-3a19ec249854?mode=deep",
+    "timestamp": "2026-01-19 20:35:35.208660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Struct: OrderedQueueKey] [Hash as Tiebreaker] OrderedQueueKey uses transaction hash as the final ordering tiebreaker (line 214) - can an attacker perform hash grinding to ensure their transaction always appears before others with identical gas_ranking_score? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6681df72-30cb-4c2a-ad6e-53c3f3f8cb9a?mode=deep",
+    "timestamp": "2026-01-19 20:36:02.798333",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Function: ParkingLotIndex::insert()] [Hash in Tuple] Parking lot stores (sequence_number, hash) - can an attacker exploit HashValue implementation to create collisions that prevent legitimate transactions from being parked? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9994b97c-178a-4af2-a145-c082250971d2?mode=deep",
+    "timestamp": "2026-01-19 20:36:30.820331",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/index.rs] [Struct: AccountTransactions] [Dual Protector Storage] Transactions are stored in either nonce_transactions OR sequence_number_transactions - can a malicious transaction with custom ReplayProtector implementation get stored in neither map, becoming untrackable? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e29b3cf-c944-4553-8eda-73f4e7d054b0?mode=deep",
+    "timestamp": "2026-01-19 20:37:00.768368",
+    "report_generated": false
+  }
+]
