@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: garbage_collect()] [Premature vote deletion] At lines 162-170, votes are removed if their round <= highest_ordered_round. Can a malicious node manipulate highest_ordered_round to be artificially high, causing premature deletion of valid pending votes and preventing quorum formation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1371d2c-e0e6-462e-a8b6-9e7505869db6?mode=deep",
+    "timestamp": "2026-01-19 18:25:26.111168",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: garbage_collect()] [Round number manipulation] At lines 164-169, the round number is extracted from either LedgerInfoWithSignatures or SignatureAggregator. Can an attacker craft votes with manipulated round numbers in the LedgerInfo to bypass garbage collection and persist invalid votes indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_034e6886-5577-4226-83d8-8ed73bdf320d?mode=deep",
+    "timestamp": "2026-01-19 18:25:38.751252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: garbage_collect()] [State inconsistency after GC] At line 163, the retain() operation mutates the HashMap. If insert_order_vote() is called concurrently during garbage collection, can this cause race conditions leading to partial vote sets or corrupted state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2588025-fb88-43b6-b77a-2ef5f7ec88f2?mode=deep",
+    "timestamp": "2026-01-19 18:25:52.255565",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: garbage_collect()] [Loss of valid votes] If garbage_collect() is called with an incorrect highest_ordered_round value due to a bug or attack, can this permanently delete votes that are still needed for consensus, causing liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_212e3571-7884-4803-9c4a-9ea8cab95d49?mode=deep",
+    "timestamp": "2026-01-19 18:26:06.670952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: garbage_collect()] [Denial of quorum] Can a Byzantine validator coordinate vote timing such that votes arrive just before garbage_collect() runs with an aggressive highest_ordered_round, preventing quorum formation by deleting votes before they can be aggregated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0c73d2b-128d-4ecf-a7be-d2dca651e1c6?mode=deep",
+    "timestamp": "2026-01-19 18:26:21.187143",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Unknown author bypass] At lines 96-101, if a validator is unknown, UnknownAuthor is returned but the vote may have already been partially processed. Can this leave the SignatureAggregator in an inconsistent state, affecting subsequent vote processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db81fb17-ce9b-4b2c-9538-9564521f0627?mode=deep",
+    "timestamp": "2026-01-19 18:26:36.656374",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Panic on expect()] At lines 75-76 and 104, expect() is used which will panic if the condition fails. Can an attacker trigger these panics by providing a None verified_quorum_cert or manipulating validator set state, crashing the validator node? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45b1bf69-43a9-4d6a-b8d0-1cd3131de369?mode=deep",
+    "timestamp": "2026-01-19 18:26:53.685372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Error silencing] At lines 106-111, zero voting power votes are logged with warn! but processing continues. Can Byzantine validators exploit this by overwhelming logs with zero-power votes while hiding genuine attack patterns in the noise? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3dac1d67-3f8a-4ff4-ba39-b81e1e5e5a59?mode=deep",
+    "timestamp": "2026-01-19 18:27:11.569805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [TooLittleVotingPower handling] At lines 139-141 and 145-146, TooLittleVotingPower errors are treated as normal cases. Can an attacker trigger this error path maliciously to prevent proper error detection and logging of actual consensus failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5eb4cdcb-e01d-404a-9e05-98bc5cdf95d8?mode=deep",
+    "timestamp": "2026-01-19 18:27:30.929488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Generic error handling] At lines 148-154, verification errors are logged with error! but processing continues. Can critical security violations (like invalid signatures) be disguised as generic errors, allowing Byzantine behavior to go undetected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22b85e82-cc17-4dd6-9bb2-eda9cb8702ff?mode=deep",
+    "timestamp": "2026-01-19 18:27:50.817797",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Struct: PendingOrderVotes] [Missing synchronization] The struct at lines 40-46 contains a HashMap but no explicit Mutex or RwLock. If accessed concurrently from multiple threads, can this cause data races, corrupted state, or undefined behavior in the vote aggregation logic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ae6048f-180c-4fe7-9e2c-da08d29f82b7?mode=deep",
+    "timestamp": "2026-01-19 18:28:11.975422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Non-atomic state updates] At lines 132-137, the status is updated and then a result is returned. Can concurrent calls interleave between the status update and result return, causing some threads to see stale state and form inconsistent views of quorum status? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97e8c299-a18d-4370-88b2-c4d2482b4fdc?mode=deep",
+    "timestamp": "2026-01-19 18:28:34.749876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [HashMap entry race] At lines 72-82, entry().or_insert_with() is used. Can two threads simultaneously inserting votes for the same ledger info create a race where one thread's QuorumCert overwrites another's, leading to consensus inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42c9b28e-8a56-4a56-a891-f84b01700b0f?mode=deep",
+    "timestamp": "2026-01-19 18:28:57.735977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Signature aggregator race] At lines 92-156, the sig_aggregator is accessed mutably. If multiple threads process votes for the same ledger info concurrently, can they corrupt the aggregator's internal state by racing on add_signature() calls? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd311553-22c6-469d-9c58-a9e91afc055d?mode=deep",
+    "timestamp": "2026-01-19 18:29:21.918073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: garbage_collect()] [GC/insert race] At line 163, retain() mutates the HashMap while insert_order_vote() may be adding entries. Without proper locking, can this race condition cause votes to be lost, duplicated, or the HashMap to enter a corrupted state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db13dfcd-5908-4f43-b432-317260b45623?mode=deep",
+    "timestamp": "2026-01-19 18:29:46.300939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Validator set desync] At lines 65 and 94-95, the same ValidatorVerifier instance is used. If the validator set changes between these calls (epoch transition), can this cause voting power to be calculated inconsistently, leading to invalid quorum certificates? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65b61bb4-8b68-40da-a7a6-7f9e3dd118a4?mode=deep",
+    "timestamp": "2026-01-19 18:30:11.807158",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Stale verifier exploitation] If the ValidatorVerifier passed at line 65 is from a previous epoch but votes are for a future epoch's ledger info, can this allow validators who are no longer in the set to contribute to quorum formation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2e4dd36-c8ff-4f0e-8c87-0087dcae4585?mode=deep",
+    "timestamp": "2026-01-19 18:30:38.012410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Pessimistic verify set manipulation] At lines 334-339 in tests, pessimistic_verify_set() is checked. Can an attacker manipulate which signatures go into the pessimistic verify set to bypass full cryptographic verification while still reaching the voting power threshold? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_738adce2-e7aa-4c7e-860a-0d111dce58e0?mode=deep",
+    "timestamp": "2026-01-19 18:31:06.311189",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Quorum voting power race] At lines 116-117, quorum_voting_power() is called on the ValidatorVerifier. Can the quorum threshold change between this check and the actual aggregation at line 124, allowing QCs to form with less than the true required voting power? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ff84e3e-6ee5-444d-8eb6-ae6f16d2b0b0?mode=deep",
+    "timestamp": "2026-01-19 18:31:35.097507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: has_enough_order_votes()] [Verifier bypass] At lines 173-180, this function checks quorum status without re-validating against a ValidatorVerifier. Can an attacker exploit this by modifying the validator set after a QC is formed, making previously invalid QCs appear valid? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0f5403d-f2ab-4d1a-94c5-35b3881d6522?mode=deep",
+    "timestamp": "2026-01-19 18:32:04.862241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [LedgerInfo tampering] At line 79, the LedgerInfo is cloned from the OrderVote. Can an attacker modify the LedgerInfo between vote creation and vote processing to make votes for different ledger infos appear to be for the same digest? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_832bcf24-4adb-4120-9f5e-0a7e63c2848a?mode=deep",
+    "timestamp": "2026-01-19 18:32:33.061500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: garbage_collect()] [Round overflow] At lines 165 and 168, round numbers are compared. Can an attacker submit votes with round numbers near u64::MAX causing integer overflow in round comparisons, preventing garbage collection or causing premature deletion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f50e5fae-7a48-4013-9dd3-870d4087599d?mode=deep",
+    "timestamp": "2026-01-19 18:33:01.344592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Round mismatch exploitation] If votes arrive for ledger infos with inconsistent round numbers (e.g., votes claim round 100 but LedgerInfo contains round 50), can this confusion be exploited to bypass round-based safety checks in the broader consensus protocol? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71a77606-de04-44a9-a508-ca34cd900c84?mode=deep",
+    "timestamp": "2026-01-19 18:33:30.692537",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: has_enough_order_votes()] [Stale quorum check] At lines 174-175, the function checks if EnoughVotes status exists but doesn't validate that the votes are still valid for the current epoch/validator set. Can stale QCs from previous epochs be mistakenly accepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58faf257-f97d-435f-aaeb-8d4d4c01bdca?mode=deep",
+    "timestamp": "2026-01-19 18:33:58.711424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pending_order_votes.rs] [Function: insert_order_vote()] [Epoch boundary attack] If votes span an epoch boundary where the validator set changes, can Byzantine validators exploit the transition to get votes from the old set counted toward quorum in the new set, breaking consensus safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d895565-b6a0-4059-a993-1fe6ca204829?mode=deep",
+    "timestamp": "2026-01-19 18:34:25.941623",
+    "report_generated": false
+  }
+]
