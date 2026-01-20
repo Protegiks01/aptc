@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: MetadataCacheOpt::cache_dir()] [Path Traversal] Can an attacker provide a malicious `dir` path containing directory traversal sequences (../, symlinks, or absolute paths) to write metadata cache files outside the intended cache directory, potentially overwriting critical system files or validator configuration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e56d8ead-2e25-4930-bd23-5b2d2591f15c?mode=deep",
+    "timestamp": "2026-01-20 04:42:39.963809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: MetadataCacheOpt::cache_dir()] [Symlink Attack] If the `dir` parameter points to a symlink controlled by an attacker, can they redirect cache operations to arbitrary filesystem locations, enabling metadata manipulation or information disclosure through cache poisoning? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1160d05-9659-480a-bb85-f45143e75fc3?mode=deep",
+    "timestamp": "2026-01-20 04:42:53.276071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: MetadataCacheOpt::cache_dir()] [Race Condition] Between checking and using the cache directory path, can an attacker exploit a TOCTOU vulnerability by replacing the directory with a symlink to escalate privileges or corrupt validator state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7758b8c6-1506-4829-a6ab-cbef85e44946?mode=deep",
+    "timestamp": "2026-01-20 04:43:06.548515",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Struct: MetadataCacheOpt] [Cache Reuse Attack] The documentation warns that 'Cache content can be messed up if used across devnet, testnet and mainnet' - can an attacker intentionally reuse a cache directory from a different network to inject malicious metadata, causing state corruption or consensus failures when validators load incompatible backup metadata? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d2d5ccb-4a0d-4027-832b-a07fdc731ac9?mode=deep",
+    "timestamp": "2026-01-20 04:43:20.805225",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: MetadataCacheOpt::new()] [Input Validation] Does the constructor perform any validation on the `dir` parameter, or can attackers pass null bytes, control characters, or excessively long paths to trigger filesystem vulnerabilities or buffer overflows in underlying system calls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d97c710b-e49c-4dd1-bda8-be1215db0aa0?mode=deep",
+    "timestamp": "2026-01-20 04:43:35.615625",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: initialize_identity()] [Weak Randomness] Does the `Metadata::new_random_identity()` call use cryptographically secure randomness, or can an attacker predict or brute-force the identity hash to impersonate backup storage instances and inject malicious metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a30eb75d-607e-4c7d-b38d-1ce590c9c5ac?mode=deep",
+    "timestamp": "2026-01-20 04:43:52.008522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: initialize_identity()] [Race Condition] If multiple backup processes call `initialize_identity()` concurrently on the same storage, can this create race conditions leading to identity conflicts, metadata corruption, or the ability to overwrite another process's identity metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08b875dc-621b-48a1-897b-69158a6fb8ce?mode=deep",
+    "timestamp": "2026-01-20 04:44:09.320688",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: initialize_identity()] [Authentication Bypass] The function doesn't verify if an identity already exists before creating a new one - can an attacker repeatedly call this to overwrite legitimate identity metadata, disrupting backup integrity tracking or enabling metadata replay attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13e3e682-6936-4697-9c4f-87fa1c3aa899?mode=deep",
+    "timestamp": "2026-01-20 04:44:28.875830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: initialize_identity()] [Error Handling] If `save_metadata_line()` fails silently or returns Ok but doesn't persist the identity, can this lead to inconsistent backup state where the system believes an identity exists but subsequent operations fail, potentially causing validator node crashes during restore? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6c011dc-a86f-4c9f-a2f9-9c31dbae308f?mode=deep",
+    "timestamp": "2026-01-20 04:44:50.108042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: download_file()] [Path Traversal] If `local_tmp_file` is constructed from untrusted FileHandle data without sanitization, can an attacker craft malicious file handles containing '../' sequences to write downloaded files outside the cache directory, overwriting critical validator binaries or configuration files? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0698f87f-6259-4052-98fb-59f68571a6e6?mode=deep",
+    "timestamp": "2026-01-20 04:45:12.734220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: download_file()] [Symlink Attack] Between the `create_new(true)` check and the actual write operation, can an attacker create a symlink at `local_tmp_file` path to redirect the download to an arbitrary location, enabling privilege escalation or state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_717edd22-c19d-4809-a0fe-9d8fc5caa2cf?mode=deep",
+    "timestamp": "2026-01-20 04:45:36.152550",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: download_file()] [Resource Exhaustion] Does `tokio::io::copy` enforce any size limits on the downloaded file, or can a malicious backup storage return arbitrarily large files to exhaust disk space, crash the validator node, and cause consensus liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81398dcc-68a7-44f2-9586-47410c7c978c?mode=deep",
+    "timestamp": "2026-01-20 04:46:00.929711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: download_file()] [Denial of Service] If the `storage_ref.open_for_read()` returns an infinite stream or extremely slow data transfer, can this block the async task indefinitely, preventing cache synchronization and causing validator nodes to operate with stale or missing backup metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95484741-3220-4e03-859e-fff0a9f7e85f?mode=deep",
+    "timestamp": "2026-01-20 04:46:28.051695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: download_file()] [TOCTOU Race] The `create_new(true)` flag prevents overwriting existing files, but if an attacker can delete the target file between the open and write operations, can they inject malicious content into the cache, compromising backup integrity verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_852b7eae-c74a-4f21-be0e-65bac5a0dcf1?mode=deep",
+    "timestamp": "2026-01-20 04:46:56.122093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: download_file()] [Error Information Leak] The error handling with `err_notes(file_handle)` may expose sensitive information about backup storage paths and internal file structure - can attackers use this to map the backup infrastructure and identify targets for subsequent attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_262f09a1-2dbf-429a-ba69-8d3a0514cf49?mode=deep",
+    "timestamp": "2026-01-20 04:47:24.356648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: download_file()] [Incomplete Download] If `tokio::io::copy` fails partway through downloading a large file, does the function properly clean up the partially written temporary file, or can accumulation of incomplete downloads exhaust disk space over time? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ba061f8-8e29-44df-b420-ffa285090e7c?mode=deep",
+    "timestamp": "2026-01-20 04:47:52.103027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Directory Creation Race] The `create_dir_all(&cache_dir)` call on line 98 doesn't check ownership or permissions - can an attacker pre-create the directory with overly permissive rights, enabling unauthorized access to cached metadata containing sensitive backup information? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_701db4a7-0429-46f9-9afa-84f2d8e281a3?mode=deep",
+    "timestamp": "2026-01-20 04:48:20.792934",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Symlink Attack] If `cache_dir` is a symlink to an attacker-controlled location, can they read all cached metadata as it's written, extract sensitive validator state information, and use it to craft targeted attacks on the consensus layer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0d1e054-96de-44bf-b130-3f319fda9d9a?mode=deep",
+    "timestamp": "2026-01-20 04:48:48.514220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Integer Overflow] On line 131, `NUM_META_FILES.set(remote_hashes.len() as i64)` performs an unchecked cast - can an attacker cause the backup storage to return an extremely large number of metadata files (> i64::MAX) leading to integer overflow, incorrect metrics, and potential panic conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b56d16ff-86f3-40a5-8846-3f57b014fda6?mode=deep",
+    "timestamp": "2026-01-20 04:49:16.315399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Resource Exhaustion] The `read_dir()` and `ReadDirStream` on lines 101-112 load all local file names into memory - can an attacker pre-populate the cache directory with millions of files to exhaust memory, crash the validator, and cause consensus liveness loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29d395a6-7d6e-4e30-9813-bbe612bd0865?mode=deep",
+    "timestamp": "2026-01-20 04:49:43.318607",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Panic Vulnerability] The `filter_map` on line 103 silently ignores errors when reading directory entries - if critical errors occur (e.g., permission denied, corrupted filesystem), can this lead to incomplete cache state where the system believes it has all files but is missing critical metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4e67669-cb34-4934-96aa-3042de90d924?mode=deep",
+    "timestamp": "2026-01-20 04:50:11.768464",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Authentication Bypass] On lines 116-124, if `list_metadata_files()` returns empty and `initialize_identity()` is called, can an attacker who controls network access trigger this path repeatedly to flood the backup storage with identity metadata, or manipulate the initialization process to inject malicious identity data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e4b2f5b-b47c-4461-a522-cabdd87facee?mode=deep",
+    "timestamp": "2026-01-20 04:50:40.277108",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Error Context Leak] The error message on lines 118-122 reveals that the system checks authentication by listing files - can attackers use this information to refine authentication bypass attempts or infer the backup storage structure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5c42734-c281-45fe-9135-4f7739782000?mode=deep",
+    "timestamp": "2026-01-20 04:51:08.775191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [Hash Collision] On lines 125-129, the `file_handle_hash()` is used as a key in the HashMap - if the non-cryptographic hash function produces collisions, can an attacker craft FileHandles that map to the same hash, causing metadata files to be incorrectly overwritten or skipped during synchronization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88e82e26-9255-4027-802c-60b870c76a60?mode=deep",
+    "timestamp": "2026-01-20 04:51:36.405509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/cache.rs] [Function: sync_and_load()] [TOCTOU Race Condition] Between computing `stale_local_hashes` on line 134 and removing files on line 140, can an attacker modify the cache directory to add new files or create symlinks, causing the cleanup logic to delete legitimate metadata or follow symlinks to delete system files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a444f3c-0f00-40d3-b20f-89398562c346?mode=deep",
+    "timestamp": "2026-01-20 04:52:00.117597",
+    "report_generated": false
+  }
+]
