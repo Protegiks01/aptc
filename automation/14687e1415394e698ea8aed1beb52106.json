@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: From<Transaction>::from()] [Signature bypass] In the From trait implementation, can an attacker craft a Transaction variant that bypasses signature verification by exploiting the pattern match that only verifies UserTransactions while automatically marking all other variants as Valid? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f07a1bb8-cebe-4808-bb31-cea2acaa430e?mode=deep",
+    "timestamp": "2026-01-20 06:04:31.675665",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: From<Transaction>::from()] [Signature verification failure handling] When verify_signature() returns an Err, the transaction is wrapped as Invalid but still preserved - can this Invalid transaction be later executed or committed to state, potentially allowing unsigned transactions to modify blockchain state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1cf705a-b728-476d-978b-d55c59a3e491?mode=deep",
+    "timestamp": "2026-01-20 06:04:44.101717",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: From<Transaction>::from()] [Type confusion] Can an attacker construct a non-UserTransaction (BlockMetadata, StateCheckpoint, ValidatorTransaction) that gets automatically marked as Valid without any cryptographic checks, then inject malicious payloads that execute with elevated privileges? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f55cb7ef-bfd6-4976-bdea-179684bff3bc?mode=deep",
+    "timestamp": "2026-01-20 06:04:56.717429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: From<Transaction>::from()] [Race condition] If multiple threads call from() on the same Transaction concurrently, can race conditions in the signature verification process lead to inconsistent Valid/Invalid determinations across different nodes, causing consensus divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d134fba-9b48-44e4-ba12-c2934aca45d4?mode=deep",
+    "timestamp": "2026-01-20 06:05:09.817119",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: From<Transaction>::from()] [Replay attack] Does the signature verification at line 132 check transaction sequence numbers and expiration times, or can an attacker replay old signed transactions after converting them back from SignatureVerifiedTransaction to Transaction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b57e23a3-e3eb-4239-bcae-71980dcdfcdb?mode=deep",
+    "timestamp": "2026-01-20 06:05:23.785098",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: From<Transaction>::from()] [Cryptographic downgrade] If the underlying verify_signature() method has vulnerabilities (e.g., accepts weak signature schemes), does this wrapper provide any additional validation, or does it blindly trust the verification result allowing forged signatures to pass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fda2dde8-7bcf-4fa1-9903-7b2cf5c0deff?mode=deep",
+    "timestamp": "2026-01-20 06:05:39.079728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: From<Transaction>::from()] [Error suppression] The Err result from verify_signature() is silently converted to Invalid variant without logging or propagating error details - can this mask critical cryptographic failures (corrupted keys, algorithm mismatches) that should halt processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b10dc7f-1467-4ca8-b86e-7e46812fdd82?mode=deep",
+    "timestamp": "2026-01-20 06:05:55.658193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: From<Transaction>::from()] [Time-of-check-time-of-use] After signature verification passes at line 132, the Transaction is reconstructed - can the underlying SignedTransaction be mutated between verification and wrapping, invalidating the cryptographic guarantee? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d0cce9c-b449-46e9-8360-bd0848c5152a?mode=deep",
+    "timestamp": "2026-01-20 06:06:12.554000",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: PartialEq::eq()] [DoS via panic] The PartialEq implementation panics when comparing Valid vs Invalid variants - can an attacker trigger this panic by submitting transactions that cause mixed-variant comparisons in consensus, mempool, or execution, halting validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5ae8ebb-a591-426e-b068-c8ce56857913?mode=deep",
+    "timestamp": "2026-01-20 06:06:31.034048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: PartialEq::eq()] [Consensus safety] If consensus code uses equality checks to deduplicate or verify transactions, can the panic at lines 35-36 cause validators to crash during block validation, breaking liveness and potentially causing network partition? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5987d86d-0854-4841-ae20-9a7eb05555bc?mode=deep",
+    "timestamp": "2026-01-20 06:06:51.461226",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: PartialEq::eq()] [State machine violation] What happens if transaction ordering or DAG construction code attempts to compare Valid and Invalid transactions during parallel execution scheduling - can this panic corrupt the execution state machine? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98745e91-06c2-4189-ac0e-60458f58ff95?mode=deep",
+    "timestamp": "2026-01-20 06:07:11.548090",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: PartialEq::eq()] [Resource exhaustion] Can an attacker flood the mempool with carefully crafted transactions that trigger repeated panic/recovery cycles in comparison operations, exhausting CPU and memory resources across validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84b7b013-8e9f-4ea8-9fc2-bf2e8f1b4994?mode=deep",
+    "timestamp": "2026-01-20 06:07:33.106507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: PartialEq::eq()] [Determinism break] If different validators receive transactions in different Valid/Invalid states due to network timing, can the comparison panic occur on some nodes but not others, causing non-deterministic execution and consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5df380b-3d40-4334-86c0-e2b38447e0ad?mode=deep",
+    "timestamp": "2026-01-20 06:07:55.914081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: expect_valid()] [DoS via panic] The expect_valid() method panics if called on an Invalid transaction - can an attacker craft transactions that pass initial validation but become Invalid during processing, causing panics in execution engine code that calls expect_valid()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00a6927e-408d-420c-bc9b-fe9181be9712?mode=deep",
+    "timestamp": "2026-01-20 06:08:18.961446",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: expect_valid()] [Error propagation] Are there code paths in consensus or execution that incorrectly call expect_valid() without first checking is_valid(), allowing Invalid transactions to crash validators during block execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d6c3437-a808-4eb6-8501-1b46a4e464a6?mode=deep",
+    "timestamp": "2026-01-20 06:08:42.629361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: expect_valid()] [Batch processing] In block execution, if expect_valid() is called in a loop over transactions and one Invalid transaction triggers a panic, can this abort processing of the entire block, causing validators to get stuck and lose consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1fd8c72-8e03-49bd-bc0d-cac8c6cd9328?mode=deep",
+    "timestamp": "2026-01-20 06:09:10.361046",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: expect_valid()] [Type safety violation] Does the code that calls expect_valid() have proper error handling for the panic case, or can unhandled panics propagate to critical consensus or state commitment code, corrupting blockchain state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0844c68f-31fd-4b32-8733-08a73a9f6d1a?mode=deep",
+    "timestamp": "2026-01-20 06:09:36.672376",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: is_valid()] [Invalid transaction leakage] Can Invalid transactions propagate through the system if is_valid() is not consistently checked before execution, gas charging, or state writes, allowing unsigned transactions to modify state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b62c9b8-0afd-473e-8ac8-448879d72cc3?mode=deep",
+    "timestamp": "2026-01-20 06:10:03.718910",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: is_valid()] [Gas economics bypass] Are Invalid transactions charged gas fees, or can an attacker spam the network with Invalid transactions that consume validator resources without paying, enabling economic DoS attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c89496c3-e594-4e21-a270-40feb8c24f58?mode=deep",
+    "timestamp": "2026-01-20 06:10:31.694128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: is_valid()] [Mempool pollution] Can Invalid transactions enter the mempool and stay there indefinitely, consuming memory and preventing Valid transactions from being processed, leading to transaction censorship? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d16ff43-ade6-4f65-8b9a-7469cd9dde00?mode=deep",
+    "timestamp": "2026-01-20 06:10:58.751169",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: is_valid()] [Consensus inclusion] If consensus proposes a block containing Invalid transactions, do all validators reject it uniformly, or can disagreement on validity cause chain splits between validators with different validation states? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b640cb3a-20a4-4ce7-bb21-be05e5005bf4?mode=deep",
+    "timestamp": "2026-01-20 06:11:25.367951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: is_valid()] [State checkpoint inconsistency] Can Invalid transactions affect StateCheckpoint hash calculations or Merkle tree updates, causing state root mismatches between validators even though they're not executed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e73401b-c38c-41ac-9f84-788125460723?mode=deep",
+    "timestamp": "2026-01-20 06:11:51.680997",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: sender()] [Invalid sender extraction] The sender() method returns None for Invalid transactions - can code that expects a sender address crash or mishandle None, leading to authorization bypasses or incorrect fee charging? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_803cd815-eb80-4d06-9fa7-b0b55f481784?mode=deep",
+    "timestamp": "2026-01-20 06:12:17.981690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: sender()] [Non-user transaction handling] For Valid non-UserTransaction types (BlockMetadata, StateCheckpoint), sender() returns None - can this be exploited to attribute system transactions to wrong accounts or bypass access control checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ee98bcb-f057-47c0-8aab-3e0dea873a8d?mode=deep",
+    "timestamp": "2026-01-20 06:12:43.834983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: types/src/transaction/signature_verified_transaction.rs] [Function: sender()] [Fee payer confusion] In multi-agent or fee-payer transactions, does sender() return the actual fee payer or just the primary sender, potentially causing incorrect gas deduction from the wrong account? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11e14b79-8920-42d6-bb33-09178a47f7f1?mode=deep",
+    "timestamp": "2026-01-20 06:13:09.824590",
+    "report_generated": false
+  }
+]
