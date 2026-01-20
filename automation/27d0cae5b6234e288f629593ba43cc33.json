@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: log_certify_start()] [Input Validation] Does the UTF-8 conversion at line 17 (String::from_utf8(payload.issuer.clone()).ok()) silently ignore malformed UTF-8 in issuer names, potentially allowing attackers to inject binary data that bypasses issuer-based access controls or creates ambiguous issuer identities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aba85365-12df-4063-a619-51c3da2a6968?mode=deep",
+    "timestamp": "2026-01-20 20:41:02.219151",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: log_certify_start()] [Information Disclosure] Can malicious validators craft issuer names with control characters or ANSI escape codes that, when logged via String::from_utf8() at line 17, manipulate log output to hide malicious activity or create false audit trails? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ed60c62-0c94-44af-911d-1bc4666790e0?mode=deep",
+    "timestamp": "2026-01-20 20:41:15.322753",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: log_certify_done()] [Input Validation] Does the UTF-8 conversion at line 33 (String::from_utf8(qc.update.issuer.clone()).ok()) handle null bytes or invalid UTF-8 sequences safely, or can attackers create issuers that appear identical in logs but are treated differently by the consensus protocol? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50277dab-ae2d-430f-bb34-ca89664d67ea?mode=deep",
+    "timestamp": "2026-01-20 20:41:28.666464",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: session_key_from_qc()] [Issuer Validation] Does line 40 (qc.update.issuer.clone()) perform any validation on the issuer bytes before using it as a session key, or can Byzantine validators create QuorumCertifiedUpdates with empty, oversized, or malformed issuer values that cause HashMap collisions or memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e0ca273-58c2-4cde-87a3-1705cf443592?mode=deep",
+    "timestamp": "2026-01-20 20:41:42.653872",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: new_rb_request()] [Resource Exhaustion] Does the issuer clone at line 26 (payload.issuer.clone()) have any size limits, allowing Byzantine validators to broadcast ObservedUpdateRequests with multi-megabyte issuer names that exhaust memory across all validators during reliable broadcast? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfb26fbc-cb77-4e31-ad81-a13ad292da58?mode=deep",
+    "timestamp": "2026-01-20 20:41:57.446757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: session_key_from_qc()] [Resource Exhaustion] Can attackers exploit the issuer clone at line 40 to create excessive memory copies during session key extraction, especially if the same QuorumCertifiedUpdate is processed repeatedly across multiple consensus sessions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4e30580-8c75-459f-b6f0-311f5af1c0bc?mode=deep",
+    "timestamp": "2026-01-20 20:42:13.584925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: log_certify_start()] [Resource Exhaustion] Does the issuer clone at line 17 combined with String::from_utf8() allow attackers to trigger expensive UTF-8 validation on maliciously large byte sequences during every certification attempt? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b52f028d-3a0f-40e3-990d-4779b7cb46f3?mode=deep",
+    "timestamp": "2026-01-20 20:42:30.377585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: new_rb_request()] [Epoch Confusion] Does line 25 blindly copy the epoch parameter into ObservedUpdateRequest without validation, allowing validators to create requests for future or past epochs that could bypass epoch-based access controls or cause stale JWK updates to be accepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2449e60-4e14-451f-84d0-2d347fc90e7f?mode=deep",
+    "timestamp": "2026-01-20 20:42:49.601775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: log_certify_start()] [Epoch Validation] Can attackers exploit missing epoch validation at line 14 to log certification attempts for arbitrary epochs, creating false audit trails that suggest JWK consensus occurred when it did not? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87e23451-1c71-450a-a64f-156846d6c6c5?mode=deep",
+    "timestamp": "2026-01-20 20:43:09.991220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: log_certify_done()] [Epoch Inconsistency] Does the logging at line 30 ensure the epoch parameter matches the epoch in the QuorumCertifiedUpdate, or can Byzantine validators create inconsistent logs that claim different epochs for the same QC? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_962fc077-774d-4525-8e23-7ca1acfb1aa7?mode=deep",
+    "timestamp": "2026-01-20 20:43:32.463161",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: log_certify_start()] [Version Manipulation] Can malicious validators set payload.version to u64::MAX at line 18, potentially causing integer overflow in downstream version comparison logic or preventing legitimate updates from ever being accepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_145d7bf2-fe31-4249-989d-5de38bfeb4b5?mode=deep",
+    "timestamp": "2026-01-20 20:43:55.491737",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: log_certify_done()] [Version Rollback] Does logging at line 34 verify that qc.update.version represents a forward progression, or can attackers certify downgrades that rollback JWK versions and reintroduce compromised keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4071e9eb-05a1-4a4e-8387-dc0579614522?mode=deep",
+    "timestamp": "2026-01-20 20:44:20.056748",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: new_rb_request()] [Error Handling] Does the Ok() wrapper at line 24 prevent proper error propagation, masking validation failures that should reject malformed ProviderJWKs payloads? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1e92a84-21b0-4a80-9e0d-92cae9e71e63?mode=deep",
+    "timestamp": "2026-01-20 20:44:45.335287",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: session_key_from_qc()] [Error Handling] Does the Ok() wrapper at line 40 prevent detection of invalid QuorumCertifiedUpdates, allowing corrupted session keys to propagate through the consensus system? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0aca6260-351e-42ba-a02c-3e2c4dbb0d60?mode=deep",
+    "timestamp": "2026-01-20 20:45:12.506647",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: new_rb_request()] [Type Safety] Is there any validation before constructing ObservedUpdateRequest at lines 24-27, or can callers pass inconsistent epoch/payload combinations that violate consensus invariants? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_547c338d-1313-4108-bf14-d6caa6fa8170?mode=deep",
+    "timestamp": "2026-01-20 20:45:40.850382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: session_key_from_qc()] [Session Key Collision] Since line 40 uses raw issuer bytes as the session key, can attackers create multiple issuers with identical byte representations (e.g., through different encodings) to cause HashMap collisions in states_by_issuer, overwriting legitimate consensus sessions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b03fda2-9926-4995-a0fd-2762308be675?mode=deep",
+    "timestamp": "2026-01-20 20:46:10.573801",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Type: ConsensusSessionKey] [Key Collision] Does the type alias at line 11 (type ConsensusSessionKey = Issuer) provide sufficient uniqueness guarantees, or can multiple concurrent consensus sessions for the same issuer interfere with each other? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ba34b40-7906-4386-977f-32edbc015647?mode=deep",
+    "timestamp": "2026-01-20 20:46:41.220432",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: session_key_from_qc()] [Race Condition] Can concurrent calls to session_key_from_qc() with different QuorumCertifiedUpdates for the same issuer create race conditions in the IssuerLevelConsensusManager's states_by_issuer HashMap? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3733b980-4958-45d7-bdcc-99fca506eadb?mode=deep",
+    "timestamp": "2026-01-20 20:47:11.722845",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: new_rb_request()] [Reliable Broadcast Attack] Can Byzantine validators create ObservedUpdateRequests at lines 24-27 that bypass reliable broadcast verification, allowing them to inject fake observations without proper quorum? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38e7060c-c84e-49e9-b0aa-6dd61dfb7dbf?mode=deep",
+    "timestamp": "2026-01-20 20:47:42.151310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Type: ReliableBroadcastRequest] [Type Safety] Does the type alias at line 12 (type ReliableBroadcastRequest = ObservedUpdateRequest) ensure proper conversion into JWKConsensusMsg, or can type confusion attacks bypass message validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68d0f876-67eb-4d9f-ba37-5932e7c96805?mode=deep",
+    "timestamp": "2026-01-20 20:48:11.905890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: new_rb_request()] [Request Forgery] Can attackers exploit the simple construction at lines 24-27 to create valid ObservedUpdateRequests without actually observing JWK updates from OIDC providers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_238f1e53-056c-4c3d-9bc7-2c5401ba8039?mode=deep",
+    "timestamp": "2026-01-20 20:48:40.822991",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: new_rb_request()] [JWK Validation] Does line 26 validate that payload.issuer is non-empty and properly formatted, or can empty issuer values create ambiguous consensus sessions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1bb4027-f224-4cc7-8e5a-6fab646724c0?mode=deep",
+    "timestamp": "2026-01-20 20:49:10.947281",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: log_certify_start()] [JWK Validation] Are the jwks within payload validated before logging at line 14, or can malformed JWKMoveStruct entries cause downstream execution failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7df9b14-2e3c-40a1-b327-8b94b38cf038?mode=deep",
+    "timestamp": "2026-01-20 20:49:42.461204",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/mode/per_issuer.rs] [Function: new_rb_request()] [Payload Integrity] Does the implementation ensure payload.issuer matches the actual OIDC provider being observed, or can validators create cross-issuer attacks by misattributing JWKs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4930e41f-316b-47f0-989c-b3897d1a7a17?mode=deep",
+    "timestamp": "2026-01-20 20:50:12.675055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-labs/aptos-core",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05a44de1-2018-46cd-a389-fd768c0b6425?mode=deep",
+    "timestamp": "2026-01-20 20:50:42.143285",
+    "report_generated": false
+  }
+]
