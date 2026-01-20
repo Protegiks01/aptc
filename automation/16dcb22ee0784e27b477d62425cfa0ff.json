@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Phase ownership leak] If PipelinePhase instances are dropped without calling start(), do their internal channels get properly cleaned up or can they leak resources? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e651720-37ce-4d3e-b694-d7d69aefc59c?mode=deep",
+    "timestamp": "2026-01-20 07:48:56.954100",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [BufferManager multiple start] Can BufferManager be started multiple times if the calling code doesn't enforce single-start, causing duplicate processing of the same blocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f713cc99-99dc-43f2-974c-38a46a597155?mode=deep",
+    "timestamp": "2026-01-20 07:49:09.985882",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Counter manipulation] Can the ongoing_tasks counter be manipulated by creating CountedRequests directly without going through BufferManager, causing incorrect task counting and premature reset? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9eecded-5803-4a5d-ac07-6417f7864023?mode=deep",
+    "timestamp": "2026-01-20 07:49:23.890719",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Guard lifetime mismatch] If TaskGuard in CountedRequest is dropped before the actual request processing completes, can ongoing_tasks decrement prematurely allowing reset while work is still active? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63492fdf-6bce-4ce5-ad03-26207322cfc4?mode=deep",
+    "timestamp": "2026-01-20 07:49:37.925849",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Spawn chain attack] Can an attacker use CountedRequest.spawn() to create deeply nested request chains that artificially inflate ongoing_tasks and prevent pipeline reset? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9ce9f04-ef0e-4409-b030-ee43cb635d81?mode=deep",
+    "timestamp": "2026-01-20 07:49:52.787171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Sender-receiver mismatch] If commit_msg_tx and commit_msg_rx are from different network instances or epochs, can messages be lost or routed incorrectly causing commit vote loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b331e23-1d23-4993-90ac-a29a3fbdb6f2?mode=deep",
+    "timestamp": "2026-01-20 07:50:08.908565",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Network sender clone race] Since commit_msg_tx is cloned for both PersistingPhase and BufferManager, can race conditions cause duplicate commit messages to be broadcast confusing peers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8fe8397e-685b-4f04-ba61-4349190941b4?mode=deep",
+    "timestamp": "2026-01-20 07:50:28.164566",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Receiver stealing] If commit_msg_rx is shared or cloned before being passed to BufferManager, can another component steal messages preventing BufferManager from receiving commit votes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9066c588-073e-470c-8039-0c1909838db3?mode=deep",
+    "timestamp": "2026-01-20 07:50:47.531944",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Block ordering attack] Can OrderedBlocks in block_rx arrive out-of-order due to network delays, causing BufferManager to process blocks in wrong sequence and violate consensus safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8250199a-3e53-4184-9604-5ee15ccb9931?mode=deep",
+    "timestamp": "2026-01-20 07:51:08.853728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Sync injection] Can a malicious component inject ResetRequest into sync_rx without proper authorization, forcing BufferManager to reset and lose uncommitted work? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8d7dd41-3702-4e60-8203-3af3de25dc29?mode=deep",
+    "timestamp": "2026-01-20 07:51:32.686794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Block duplication] If the same OrderedBlocks are sent multiple times through block_rx, does BufferManager detect and reject duplicates, or can it double-process blocks causing state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7888ac5-f823-4562-ad2e-6834fc9fcc65?mode=deep",
+    "timestamp": "2026-01-20 07:51:56.397218",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Sync reset race] If multiple ResetRequests arrive concurrently in sync_rx, can they cause BufferManager to reset multiple times leading to corrupted state or panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89248299-a8fd-4a40-a226-3366ce72327a?mode=deep",
+    "timestamp": "2026-01-20 07:52:21.329117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Reset propagation delay] When reset_flag is set, is there a guaranteed order in which phases observe it, or can ExecutionWaitPhase continue processing while SigningPhase has already stopped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3bb2210-dc11-4694-a18a-a553076f26b9?mode=deep",
+    "timestamp": "2026-01-20 07:52:47.950956",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Reset without cleanup] If reset_flag is set but phases don't properly clean up their state, can stale data from previous runs leak into the next epoch causing Byzantine behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_338ea8ed-e45e-4183-97c1-16730593d6ae?mode=deep",
+    "timestamp": "2026-01-20 07:53:15.192964",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Reset flag visibility] Does reset_flag use proper memory ordering (SeqCst), or can weaker ordering cause phases on different cores to observe stale values and continue processing after reset? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75f2e8ff-42da-47f2-a0b9-15f295680d47?mode=deep",
+    "timestamp": "2026-01-20 07:53:43.325921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [False reset] Can reset_flag be accidentally set to true due to memory corruption or unsafe code elsewhere, causing spurious resets that halt consensus? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1294290-e12b-4025-9833-de39e355aeef?mode=deep",
+    "timestamp": "2026-01-20 07:54:12.127539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Processor swap] Since processors are Box<T>, can the boxed implementations be swapped out or replaced with malicious implementations after pipeline initialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0622a1e4-6041-4983-8adb-361473eea0a6?mode=deep",
+    "timestamp": "2026-01-20 07:54:39.824081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [ExecutionSchedulePhase malicious impl] Can ExecutionSchedulePhase::new() return a compromised implementation that doesn't actually schedule execution but reports success, bypassing block execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fb43d3b-beb2-40f1-9067-faffa50e7bfe?mode=deep",
+    "timestamp": "2026-01-20 07:55:07.820108",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [ExecutionWaitPhase bypass] Since ExecutionWaitPhase is a unit struct with no state, can it be trivially bypassed or replaced with no-op implementation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46d4dd9e-31d2-49b3-b46b-4399b620d313?mode=deep",
+    "timestamp": "2026-01-20 07:55:36.606212",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [PersistingPhase manipulation] Can PersistingPhase::new(commit_msg_tx.clone()) be given a malicious NetworkSender that doesn't actually persist blocks but claims success? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34292199-abee-4b85-b8d4-1e90dfbafa75?mode=deep",
+    "timestamp": "2026-01-20 07:56:05.000228",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Round number overflow] If highest_committed_round is close to u64::MAX, can round number comparisons in BufferManager overflow causing it to accept very old blocks as new ones? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49dc057a-425c-4a97-aeed-e2d5b50168c0?mode=deep",
+    "timestamp": "2026-01-20 07:56:34.498251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Cache size overflow] If max_pending_rounds_in_commit_vote_cache is set to u64::MAX, can arithmetic on it overflow when calculating cache capacity limits? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc28b122-e7b4-4345-93b8-bd6538456967?mode=deep",
+    "timestamp": "2026-01-20 07:57:05.857284",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Trait object polymorphism] Since safety_rules is Arc<dyn CommitSignerProvider>, can vtable manipulation or type confusion allow calling wrong methods or bypassing safety checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eac14f75-4c2b-42eb-a849-4658303fa713?mode=deep",
+    "timestamp": "2026-01-20 07:57:37.783837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Dynamic dispatch overhead] Can an attacker exploit trait object dynamic dispatch in CommitSignerProvider to cause performance degradation or timing side-channels? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c0dba8d-783e-4cfd-8b80-7807a9bb021d?mode=deep",
+    "timestamp": "2026-01-20 07:58:09.143254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/decoupled_execution_utils.rs] [Function: prepare_phases_and_buffer_manager()] [Arc aliasing] Since reset_flag and ongoing_tasks are Arc-wrapped and cloned multiple times, can improper synchronization cause data races despite atomic operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a19a8079-801f-4b47-9dfe-5dcd1d5ecb9e?mode=deep",
+    "timestamp": "2026-01-20 07:58:37.673438",
+    "report_generated": false
+  }
+]
