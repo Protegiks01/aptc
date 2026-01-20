@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Division by zero] When inverting the zero element (identity for addition) in any field structure, the arkworks Field::inverse() returns None - can an attacker exploit the false return value at line 31 to cause state inconsistencies by treating failed inversions as valid zero handles, potentially breaking cryptographic proofs or signature verifications across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3719336b-da4c-4224-bcaa-82be34e55439?mode=deep",
+    "timestamp": "2026-01-20 23:03:31.230559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Resource exhaustion] Does the macro at lines 26-32 properly handle the case where inverse() returns None for zero elements without consuming excessive gas? Can an attacker repeatedly call inversion on zero elements to drain gas from transactions or cause computational DoS affecting validator performance? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf8f7b2b-25cf-4195-b2b5-c26accbaddcc?mode=deep",
+    "timestamp": "2026-01-20 23:03:43.827421",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: inv_internal] [Determinism violation] When Field::inverse() returns None (line 26), the function returns Value::bool(false) and Value::u64(0) - across different validator nodes running different CPU architectures or arkworks library versions, could there be subtle timing or computational differences that cause non-deterministic behavior in the None case, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b33eb407-0fd7-43d7-846f-73576f289614?mode=deep",
+    "timestamp": "2026-01-20 23:03:57.024666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [State corruption] When inverse fails and returns (false, 0) at line 31, the handle value of 0 is returned - if the Move code doesn't properly check the boolean flag and uses handle 0, could this cause access to the wrong element in AlgebraContext.objs vector, leading to type confusion or incorrect cryptographic operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05326167-aabd-4c5a-b3d9-e634c102bd83?mode=deep",
+    "timestamp": "2026-01-20 23:04:10.379728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Cryptographic vulnerability] If the zero element inverse is attempted during critical operations like BLS signature verification, threshold decryption, or zkSNARK proof verification, and the boolean check is missed in Move code, could attackers forge signatures or break cryptographic protocols by manipulating the failed inverse state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8e92b99-3357-436b-a0a1-ee1686289d34?mode=deep",
+    "timestamp": "2026-01-20 23:04:24.598240",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Memory safety] At line 23, the handle is cast from u64 to usize with 'as usize' - on 32-bit systems or when handle values exceed usize::MAX, could this truncation cause the handle to wrap around and access unintended elements in the AlgebraContext.objs vector, leading to type confusion or information disclosure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7859a7c-fe65-4031-833a-ecd72e18b996?mode=deep",
+    "timestamp": "2026-01-20 23:04:39.910394",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Bounds checking] The safe_borrow_element macro at line 24 retrieves element from context - if an attacker provides a handle value that's been deliberately set to usize::MAX or a very large value, could this bypass bounds checks or cause integer overflow when used as a vector index, potentially triggering panic or accessing invalid memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2aa91bb-9899-4bf3-80e1-4e44d1c77d01?mode=deep",
+    "timestamp": "2026-01-20 23:04:56.205237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Use-after-free] After safe_borrow_element clones the Rc pointer at line 24, if the original element in AlgebraContext.objs is dropped or modified by another concurrent operation, could the cloned reference become invalid, causing use-after-free or reading stale cryptographic material that breaks security properties? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a5a67eb-f669-43c2-86db-1a12690213e7?mode=deep",
+    "timestamp": "2026-01-20 23:05:14.233649",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: inv_internal] [Out-of-bounds access] The safely_pop_arg macro at line 23 extracts u64 handle from args - if Move bytecode is malformed or a compiler bug allows invalid u64 values, could handle values like u64::MAX cause out-of-bounds vector access when cast to usize, triggering validator crashes or undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d6d09ab-7618-43be-9b96-1ccb9af1fe6f?mode=deep",
+    "timestamp": "2026-01-20 23:05:32.724161",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Double-fetch vulnerability] Between retrieving the element pointer at line 24 and computing inverse at line 26, if another thread modifies the AlgebraContext through shared mutable reference, could this create a time-of-check-time-of-use (TOCTOU) race condition where the inverse is computed on different data than validated? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4edc96f1-b7f7-4539-854f-ca777368095a?mode=deep",
+    "timestamp": "2026-01-20 23:05:53.856231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Type confusion] The safe_borrow_element macro downcasts to specific types like ark_bls12_381::Fr (line 47), but if an attacker passes a handle pointing to a different algebraic structure (e.g., G1 element instead of Fr), could the downcast_ref fail silently or succeed with invalid data, causing cryptographic operations on mismatched types? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f58cd472-df71-4421-89ae-dc91fe52477d?mode=deep",
+    "timestamp": "2026-01-20 23:06:14.635775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: inv_internal] [Structure mismatch] The structure_from_ty_arg macro at line 41 derives the structure from type arguments, but if Move's type system has a bug or bytecode verification fails, could mismatched Structure enum values be passed, causing inverse operations on wrong field types (e.g., computing BLS12381Fr inverse on BN254Fr element)? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd4e56b8-a48b-4bb4-bbc2-674f4b229cf4?mode=deep",
+    "timestamp": "2026-01-20 23:06:37.260061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Rc downcast failure] If the Rc<dyn Any> downcast at line 230-232 of safe_borrow_element fails due to type mismatch, the abort_invariant_violated error is returned - but could there be edge cases where downcast succeeds for compatible but semantically different types, causing silent corruption of cryptographic state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f5f77ba-ce4b-4756-bcad-cef6d781ccd0?mode=deep",
+    "timestamp": "2026-01-20 23:07:00.061017",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: inv_internal] [Enum exhaustiveness] The match statement at lines 43-68 handles specific Structure variants but uses catch-all '_' at line 65 - if new structures are added to the Structure enum without updating this match, could unimplemented structures slip through with MOVE_ABORT_CODE_NOT_IMPLEMENTED, but could this abort code be confused with feature flag disabled state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bef21d5e-eb76-4047-a608-d406963c27a6?mode=deep",
+    "timestamp": "2026-01-20 23:07:23.495033",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Field element size assumptions] Different field types (Fr, Fq, Fq12) have vastly different memory sizes - if the downcast succeeds but the actual object size doesn't match expected size, could this cause reading beyond allocated memory or misinterpreting field element bytes, leaking sensitive cryptographic material? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b5df2f3-07dd-4e9d-9111-8cbe57e86a61?mode=deep",
+    "timestamp": "2026-01-20 23:07:49.025959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Gas front-running] Gas is charged at line 25 AFTER retrieving the element but BEFORE computing inverse - if the inverse operation fails (returns None), gas is still charged - can attackers exploit this by repeatedly calling inverse on zero elements to drain gas without producing useful work, or manipulate gas costs to front-run transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9103848d-357b-4e25-b279-2742c01f8b71?mode=deep",
+    "timestamp": "2026-01-20 23:08:15.029766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: inv_internal] [Gas inconsistency] Different structures charge different gas amounts (BLS12381Fr: 215450 at line 48, BN254Fr: 222216 at line 57, Fq12: higher) - if an attacker can cause type confusion or structure mismatch, could they perform expensive Fq12 inversions while being charged for cheaper Fr inversions, breaking gas economics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35cb0184-af13-4652-946a-5a23428904a1?mode=deep",
+    "timestamp": "2026-01-20 23:08:41.317192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Gas exploitation after failure] When context.charge($gas) succeeds at line 25 but element.inverse() returns None, the function returns success with (false, 0) - does the Move layer properly refund gas for failed operations, or can attackers grief others by forcing gas consumption without actual computation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e447e279-ee0d-451a-807a-f5c1d8ba99a1?mode=deep",
+    "timestamp": "2026-01-20 23:09:07.375004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: inv_internal] [Gas parameter manipulation] If the gas parameters ALGEBRA_ARK_BLS12_381_FR_INV etc. are set via on-chain governance, could malicious validators or governance attacks set these to zero or extremely high values, either making inversion free (breaking DoS protection) or impossibly expensive (breaking liveness)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77d76b43-7c32-40ac-ab4f-1e52fc818a54?mode=deep",
+    "timestamp": "2026-01-20 23:09:33.699793",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Gas charging order] Gas is charged at line 25 before checking if inverse succeeds - if store_element at line 28 fails due to memory limit (E_TOO_MUCH_MEMORY_USED), does gas get refunded, or do attackers pay for inverse computation but waste the result, creating economic inefficiency? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d520f62e-ad9d-42b9-af24-29daa4114506?mode=deep",
+    "timestamp": "2026-01-20 23:09:59.417600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Memory exhaustion] The store_element macro at line 28 checks if new_handle storage exceeds MEMORY_LIMIT_IN_BYTES (1MB) - but the inverse operation creates a new field element before checking - if inverse of large Fq12 elements temporarily allocates more memory during computation, could repeated calls exhaust validator memory before the limit check triggers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67e8f148-a141-4f07-86f4-7606ce6da594?mode=deep",
+    "timestamp": "2026-01-20 23:10:25.709752",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Memory accounting] When Some(new_element) is stored at line 28, does std::mem::size_of_val accurately account for heap-allocated data within the field element? For Fq12 tower extensions, could internal allocations bypass the memory limit check, allowing attackers to exceed 1MB limit? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_caae9885-9627-4454-80a0-6962bc1dd157?mode=deep",
+    "timestamp": "2026-01-20 23:10:53.503767",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Handle exhaustion] Each successful inverse creates a new handle (line 28), incrementing the AlgebraContext.objs vector - if an attacker performs millions of inverse operations staying under memory limit, could the vector length approach usize::MAX, causing handle allocation to fail or wrap around, breaking handle uniqueness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87c42308-af9a-48ce-96f9-1f1f5131cffa?mode=deep",
+    "timestamp": "2026-01-20 23:11:20.258834",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: ark_inverse_internal macro] [Rc reference leakage] The safe_borrow_element clones Rc at line 24, and store_element pushes new Rc at line 249 - if Move code holds handles indefinitely without dropping them, could Rc reference counts prevent deallocation, causing memory to grow unboundedly across transactions within a session? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_417f9333-8b0e-489a-8e7d-0aa845c46baa?mode=deep",
+    "timestamp": "2026-01-20 23:11:45.061923",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/inv.rs] [Function: inv_internal] [Session state leakage] AlgebraContext is session-scoped (cleared on SessionListener::start) - if a validator node crashes or restarts between transactions, could stale handles from previous sessions become accessible, causing use of invalidated cryptographic material or state inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_608c2322-242a-40b0-b7b2-c471e2347c08?mode=deep",
+    "timestamp": "2026-01-20 23:12:09.423000",
+    "report_generated": false
+  }
+]
