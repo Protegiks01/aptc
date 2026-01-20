@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Executor coupling] The same thread pool is used by NativeVMBlockExecutor, AptosVMParallelUncoordinated, and NativeParallelUncoordinated - can mixing different executor types on the same pool cause work queue contamination where transaction parsing tasks block transaction execution tasks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17d744ed-2113-4071-aa8e-b83d75bbe0ce?mode=deep",
+    "timestamp": "2026-01-20 04:02:46.006531",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: get_concurrency_level()] [Configuration mismatch] The value returned at line 28-32 is used to configure BlockExecutorLocalConfig - can a mismatch between this value and the actual thread pool size (if pool was initialized before set_concurrency_level_once) cause BlockSTM to use incorrect parallelism assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a29054e-c525-4d11-8b44-751b899185e6?mode=deep",
+    "timestamp": "2026-01-20 04:02:58.078485",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [install() recursion] When executors call NATIVE_EXECUTOR_POOL.install() for nested parallel operations (like parsing then executing), can this cause work-stealing deadlock if the pool is too small and all threads are waiting for sub-tasks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b03b54e9-691a-4fda-8b32-fdb27f1401df?mode=deep",
+    "timestamp": "2026-01-20 04:03:10.325621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: get_concurrency_level()] [AptosVM mismatch] Both NativeConfig and AptosVM have separate concurrency settings - can they be set to different values causing one executor type to use different parallelism than another, making benchmark comparisons invalid? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99bc5738-eca2-4c28-8391-1f356eec011d?mode=deep",
+    "timestamp": "2026-01-20 04:03:24.025451",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [First access latency] The Lazy<> initialization at line 9-17 occurs on first access - can this cause the first benchmark run to include thread creation overhead, skewing timing measurements and making cold-start performance non-representative? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f499254b-631e-450a-9141-9d746888ec04?mode=deep",
+    "timestamp": "2026-01-20 04:03:37.950394",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Initialization ordering] If NATIVE_EXECUTOR_POOL is accessed before main() sets concurrency_level, it locks in the default value of 1 forever - can this happen during static initialization of other modules that depend on this pool? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86e24ee1-821e-4b7c-9240-f6c3d15eb5ea?mode=deep",
+    "timestamp": "2026-01-20 04:03:52.268000",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: Lazy::new()] [Blocking initialization] The Lazy::new() closure at line 9-17 blocks the first thread that accesses NATIVE_EXECUTOR_POOL until ThreadPoolBuilder completes - can this cause unexpected latency spikes or timeouts in time-sensitive benchmark operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78cb6bdb-ffd0-437d-82d4-ae4b9e537bd8?mode=deep",
+    "timestamp": "2026-01-20 04:04:07.586299",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Deferred panic] If ThreadPoolBuilder::build() fails but the panic is deferred until first access of NATIVE_EXECUTOR_POOL, can this cause benchmark failures deep in execution logic rather than at initialization, making debugging extremely difficult? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b136e33e-0077-4a79-a722-cd4e5b690be2?mode=deep",
+    "timestamp": "2026-01-20 04:04:23.180664",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: ThreadPoolBuilder::build()] [Platform limits] Different operating systems have different thread limits (Linux: /proc/sys/kernel/threads-max, Windows: job object limits) - can benchmarks succeed on one platform but fail on another due to unchecked thread creation at line 14-15? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a45ec40-a0cb-4f6f-a637-0d0845980040?mode=deep",
+    "timestamp": "2026-01-20 04:04:39.382245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Container constraints] In containerized environments (Docker/Kubernetes), CPU quota limits may not match available CPU count - can setting concurrency_level based on num_cpus() cause over-subscription and severe performance degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17cb11d9-09d8-4d52-bf28-8b51823a8096?mode=deep",
+    "timestamp": "2026-01-20 04:04:57.612854",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: set_concurrency_level_once()] [Test isolation] If multiple benchmark tests run in the same process, the first test to call set_concurrency_level_once() locks the value for all subsequent tests - can this cause test interference where early tests affect later test configurations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afffe3f4-b163-429d-b0c1-af563f682290?mode=deep",
+    "timestamp": "2026-01-20 04:05:15.547675",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Signal handling] If a signal (SIGTERM, SIGINT) arrives during thread pool initialization, can it leave threads in partially-initialized state that later cause undefined behavior in executor operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1e1a288-b9c4-47b7-ae29-0ca1f59fc089?mode=deep",
+    "timestamp": "2026-01-20 04:05:33.883869",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: set_concurrency_level_once()] [No return value] The function returns () and silently ignores errors via .ok() (line 25) - can callers mistakenly assume their configuration was applied when it was actually ignored due to prior initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27e19b2c-979e-4e9f-8ae3-103accbb0c5c?mode=deep",
+    "timestamp": "2026-01-20 04:05:53.150891",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_CONCURRENCY_LEVEL] [Public mutability] Although OnceCell enforces write-once, the static is pub allowing any code to attempt setting it - can malicious or buggy code repeatedly call set_concurrency_level_once() expecting dynamic reconfiguration, causing confusion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7976c1cf-9f45-4271-b0de-c0f4aaae8fee?mode=deep",
+    "timestamp": "2026-01-20 04:06:12.902599",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: get_concurrency_level()] [Unsafe assumptions] Callers may assume this returns the configured value, but if called before setting it returns 1 (line 31) - can this cause benchmarks to silently run in degraded single-threaded mode without any warning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab4972c5-3e01-489f-9fe4-19bd688b6e91?mode=deep",
+    "timestamp": "2026-01-20 04:06:32.947829",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Arc cloning overhead] Every access to NATIVE_EXECUTOR_POOL requires cloning the Arc (line 99 in native_vm.rs) - can frequent cloning in hot paths cause reference count contention and performance degradation in highly concurrent benchmarks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ac51ade-0d17-4d06-b2bc-b7e0bf926263?mode=deep",
+    "timestamp": "2026-01-20 04:06:54.170999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Shared resource] The thread pool is globally shared with no access control - can untrusted benchmark code submit arbitrary closures to the pool for execution, potentially running malicious code in benchmark infrastructure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c39a47c-9513-43ee-9aba-3d6cc454dd49?mode=deep",
+    "timestamp": "2026-01-20 04:07:14.613590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: set_concurrency_level_once()] [No authentication] There is no validation of who calls this function - can benchmark adversaries call it early with value 1 to sabotage competing benchmark runs by forcing single-threaded execution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55ab775d-94bd-4eaf-aa7e-ea46963c39b0?mode=deep",
+    "timestamp": "2026-01-20 04:07:37.839595",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Information leakage] Thread pool statistics (active workers, queued tasks) might be observable through side channels - can attackers infer sensitive benchmark workload characteristics by monitoring pool state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c147cf5c-5f65-42a3-8cdf-9b5a124c4353?mode=deep",
+    "timestamp": "2026-01-20 04:07:58.184760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_CONCURRENCY_LEVEL] [Configuration tampering] If benchmark scripts can modify this before binary startup via environment variables or config files, can they force degraded performance to hide scaling issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2ecaa3f-d3c0-49a0-aa34-8b652488a1b2?mode=deep",
+    "timestamp": "2026-01-20 04:08:17.445676",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Non-deterministic scheduling] Rayon's work-stealing scheduler is non-deterministic - can this cause transaction execution order to vary between benchmark runs, making it impossible to reproduce specific timing-dependent bugs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57dcf749-40eb-4ae7-bd36-86b5ebd8d542?mode=deep",
+    "timestamp": "2026-01-20 04:08:36.837812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: get_concurrency_level()] [Environmental dependency] The returned value depends on when set_concurrency_level_once() was called - can this make benchmark results non-reproducible if initialization order changes across runs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_078cc1b6-bb82-4bdb-8edc-36feca0c76a2?mode=deep",
+    "timestamp": "2026-01-20 04:08:56.590583",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Global: NATIVE_EXECUTOR_POOL] [Thread ID reuse] When threads complete tasks, their IDs may be reused - can this cause confusion in debugging or logging where the same thread ID appears to execute unrelated transactions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca63be16-b931-4762-9b2a-ff0a8a071690?mode=deep",
+    "timestamp": "2026-01-20 04:09:15.363662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: thread_name()] [Non-unique names] Thread names like 'native_exe_0' might conflict with other thread pools in the process - can this cause monitoring/profiling tools to conflate threads from different pools? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_372d95c1-24c6-4d2e-9d40-c544d0078821?mode=deep",
+    "timestamp": "2026-01-20 04:09:34.391094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-benchmark/src/native/native_config.rs] [Function: set_concurrency_level_once()] [Resource bomb] Setting concurrency_level to 1,000,000 (line 22) would cause ThreadPoolBuilder to attempt creating 1M threads, each with ~2MB stack, requiring 2TB of virtual memory - can this immediately OOM kill the benchmark process? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_981ebac2-d7bc-4cfb-9f30-a9ec972cae09?mode=deep",
+    "timestamp": "2026-01-20 04:09:53.523216",
+    "report_generated": false
+  }
+]
