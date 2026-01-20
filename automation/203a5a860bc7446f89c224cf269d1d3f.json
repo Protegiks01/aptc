@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Module: env_pipeline] [Missing verification step] The processors listed at lines 11-27 include checkers and transformers, but there's no final verification processor to ensure transformations preserved safety properties - can incorrect transformations go undetected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66988e6b-1f85-445e-8b80-605889e2eb23?mode=deep",
+    "timestamp": "2026-01-20 14:43:02.000980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Error accumulation overflow] At line 53, env.has_errors() is checked after each processor - if GlobalEnv accumulates errors from many failed processors, can this cause memory exhaustion or performance degradation from storing thousands of error messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_089a0e67-0b5a-4b51-abf2-a836e8680573?mode=deep",
+    "timestamp": "2026-01-20 14:43:15.462877",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Error clearing vulnerability] If a processor maliciously or accidentally clears errors from GlobalEnv after detecting them, can subsequent processors fail to detect the error state, allowing invalid code to compile? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb03f347-bbbd-41e6-8b6a-dad3944431be?mode=deep",
+    "timestamp": "2026-01-20 14:43:29.685788",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [False positive suppression] If early processors generate false positive errors that are later determined to be benign, but the pipeline already terminated at line 54, can this prevent legitimate Move code from compiling? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea82a62d-cfcf-44d6-ba97-9e682d0db50c?mode=deep",
+    "timestamp": "2026-01-20 14:43:44.320427",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Debug trace buffer overflow] At lines 49, 52, trace!() macros log potentially unbounded env.dump_env() output - can extremely large GlobalEnv dumps cause log buffer overflows or disk exhaustion if trace logging is enabled? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_185250d2-2ba0-41ea-b12b-47b2c3e37a4d?mode=deep",
+    "timestamp": "2026-01-20 14:43:59.781900",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run_and_record()] [Writer injection attack] The run_and_record() method at line 62 accepts impl Write - if a malicious Write implementation is passed, can it intercept and modify the dumped GlobalEnv data, causing test falsification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1413de41-ff17-4f7f-ac78-34055cf7b2ab?mode=deep",
+    "timestamp": "2026-01-20 14:44:16.662865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run_and_record()] [Format string vulnerabilities] At lines 63, 65, 69, 71, format!() and writeln!() construct log messages - while Rust's formatting is memory-safe, can extremely large format outputs cause resource exhaustion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88730321-6963-4128-827e-84ef3befc822?mode=deep",
+    "timestamp": "2026-01-20 14:44:35.297325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Module: acquires_checker] [Acquires validation bypass] If acquires_checker processor (imported at line 11) isn't added to the pipeline or executes after inliner, can malicious Move code avoid declaring acquired resources, violating Move's resource safety and enabling double-spending? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ae72152-9ab7-4b37-bb85-e092f5c191bc?mode=deep",
+    "timestamp": "2026-01-20 14:44:56.728119",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Module: recursive_struct_checker] [Infinite type recursion] If recursive_struct_checker (imported at line 22) fails to detect cyclic struct definitions due to incorrect pipeline ordering, can compiled Move modules create unbounded stack growth during runtime, causing validator crashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15020c21-7701-4f91-80a4-cd50ed6d4c44?mode=deep",
+    "timestamp": "2026-01-20 14:45:19.490779",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Module: cyclic_instantiation_checker] [Generic instantiation attack] If cyclic_instantiation_checker (imported at line 15) runs before type inference is complete, can malicious generic type parameters create exponential compilation time or runtime instantiation, causing DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f49948c1-2a15-48e4-bcd6-2a03a07b04cd?mode=deep",
+    "timestamp": "2026-01-20 14:45:45.699725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Module: closure_checker] [Closure escape analysis] If closure_checker (imported at line 13) executes in wrong order relative to lambda_lifter (line 20), can closures capture references with incorrect lifetimes, leading to use-after-free in compiled bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22f661ac-b317-44a8-8822-828ab387b57f?mode=deep",
+    "timestamp": "2026-01-20 14:46:11.868929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Module: inliner] [Unbounded inlining] If inliner (imported at line 18) runs without proper resource limits, can mutually recursive functions or deeply nested calls cause exponential code expansion, memory exhaustion, or extremely large bytecode modules? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1212eb7-7236-46a0-9cfc-7db1d0a8782f?mode=deep",
+    "timestamp": "2026-01-20 14:46:39.630324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Module: spec_checker] [Specification bypass] If spec_checker (imported at line 25) is omitted or runs after code transformation, can malicious contracts include specifications that don't match actual implementation, breaking formal verification guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0becc37-69ef-4b41-80e6-edf8a9d1b8ed?mode=deep",
+    "timestamp": "2026-01-20 14:47:08.649773",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Bytecode generation mismatch] If processors at line 51 leave GlobalEnv in an inconsistent state but run() returns true at line 57, can bytecode generation produce code that doesn't match the source Move program, potentially introducing exploitable vulnerabilities? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8b6e871-2cd8-4015-8c8c-4d44ace5614b?mode=deep",
+    "timestamp": "2026-01-20 14:47:41.438539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Gas metering bypass] Can incorrect processor ordering allow Move functions to be inlined or transformed in ways that cause gas metering to undercount operations, enabling DoS attacks by executing expensive operations for low gas cost? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00051506-1e97-4c5b-bff0-5ab26844763a?mode=deep",
+    "timestamp": "2026-01-20 14:48:10.288166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Resource safety violation] If acquires_checker and other resource-safety processors execute on transformed code instead of original code, can transformations introduce resource manipulation bugs that violate Move's linear type system? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b47b76a0-a65a-4084-a0f0-207b9c342099?mode=deep",
+    "timestamp": "2026-01-20 14:48:39.348684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Consensus divergence] If different validators compile the same Move module with slightly different processor configurations or ordering, can this produce different bytecode, causing consensus failures when trying to execute the module? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbc038a8-0911-4960-81dd-5affe27122b1?mode=deep",
+    "timestamp": "2026-01-20 14:49:06.706451",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Cross-compilation contamination] If the same EnvProcessorPipeline instance is reused to compile multiple unrelated Move modules, can state from one compilation leak into another through processor closures that capture mutable state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b7e6e6c-2b48-40c5-831e-5829dcff403d?mode=deep",
+    "timestamp": "2026-01-20 14:49:36.455386",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Cached state poisoning] If processors cache intermediate results in captured variables, can a malicious module intentionally corrupt these caches to affect the compilation of subsequent legitimate modules? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39c41f83-1fac-4ebc-89ad-bea3edddac3b?mode=deep",
+    "timestamp": "2026-01-20 14:50:06.675573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Struct: EnvProcessorPipeline] [Lifetime extension attack] The pipeline lifetime 'a at line 31 bounds processor lifetimes - can processors that outlive their intended scope access deallocated GlobalEnv data from previous compilations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc89379e-1626-4234-a339-8aa9b36563a2?mode=deep",
+    "timestamp": "2026-01-20 14:50:39.307315",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Misleading success indication] The run() method returns bool where true means success at line 57 - but if processors modify GlobalEnv to remove errors after detection, can the return value incorrectly indicate success for actually-failed compilation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cae8e338-6a5d-4421-9aaa-51bc68d353c1?mode=deep",
+    "timestamp": "2026-01-20 14:51:11.774331",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run_and_record()] [Result type confusion] The run_and_record() returns Ok(bool) where Ok(false) indicates compilation failure at line 74 - can this confusing Result<bool> semantics lead to incorrect error handling by callers who treat Ok(_) as success? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5cde6d8a-1df4-4208-95f9-5d6198470ef0?mode=deep",
+    "timestamp": "2026-01-20 14:51:44.306600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Early return handling] At line 54, the pipeline returns false on first error - but does calling code properly distinguish between",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aea9932a-d68b-4694-b7db-fb748fbf9dc4?mode=deep",
+    "timestamp": "2026-01-20 14:52:18.547037",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: run()] [Conditional processor execution] If future modifications allow processors to skip execution based on GlobalEnv state, can attackers craft Move code that causes critical security checkers to be skipped while allowing benign-looking code through? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dcc0df27-0066-4ba7-bbfc-560cbc226afe?mode=deep",
+    "timestamp": "2026-01-20 14:52:52.811334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-compiler-v2/src/env_pipeline/mod.rs] [Function: add()] [Empty pipeline vulnerability] Since add() at line 39 allows building empty pipelines, can production code accidentally use an unconfigured pipeline that runs zero processors, compiling arbitrary Move code without any validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e9486af-5fa2-4bd6-a594-99a8a14f9699?mode=deep",
+    "timestamp": "2026-01-20 14:53:28.480788",
+    "report_generated": false
+  }
+]
