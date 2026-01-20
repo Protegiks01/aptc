@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: new()] [Resource exhaustion] Can an attacker cause memory exhaustion by triggering the creation of the DataStreamingService with extremely large config values for max_data_stream_channel_sizes, causing unbounded channel allocation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_421197ec-033f-4c84-b8e0-b6827e59f5e4?mode=deep",
+    "timestamp": "2026-01-20 14:24:59.330656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: start_service()] [Infinite loop] In the main service loop using futures::select!, can a malicious client send requests at a rate that starves the progress_check_interval, preventing legitimate stream progress checks and causing streams to hang indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa3570b1-4733-4483-ac5e-7da5cf92e935?mode=deep",
+    "timestamp": "2026-01-20 14:25:13.231014",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: handle_stream_request_message()] [Race condition] When processing StreamRequest::TerminateStream, is there a race condition where a stream could be terminated while simultaneously being accessed by check_progress_of_all_data_streams(), leading to inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_964709fe-63a5-4b69-b813-5e1ab4030dbe?mode=deep",
+    "timestamp": "2026-01-20 14:25:27.228766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: process_terminate_stream_request()] [Authorization bypass] Can an attacker terminate arbitrary data streams by guessing or brute-forcing stream IDs, since there's no verification that the termination request comes from the stream owner? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52afe08a-7514-41b7-91b3-b6fd3ca04b86?mode=deep",
+    "timestamp": "2026-01-20 14:25:41.864715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: process_terminate_stream_request()] [Invalid notification feedback] When processing notification_and_feedback, if sent_notification() returns true but handle_notification_feedback() fails, is the stream still removed, potentially causing inconsistent feedback state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7536bd9a-e944-43bf-a6c8-7cf437c612cb?mode=deep",
+    "timestamp": "2026-01-20 14:25:57.995666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: process_terminate_stream_request()] [Error handling] At line 238-242, if a notification_id doesn't match any sent notifications, an UnexpectedErrorEncountered error is returned but the stream is still removed at line 221. Can this lead to incomplete cleanup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55e2d17f-87ad-474e-800c-0bad4899b816?mode=deep",
+    "timestamp": "2026-01-20 14:26:15.439201",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: process_new_stream_request()] [Integer overflow] When calling stream_id_generator.next() to generate stream IDs, if the U64IdGenerator wraps around after reaching u64::MAX, could duplicate stream IDs cause stream collision and data corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3d5ab6c-8506-424c-99f3-e6fefbec44d4?mode=deep",
+    "timestamp": "2026-01-20 14:26:34.446363",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: process_new_stream_request()] [State inconsistency] At line 291-295, if data_streams.insert() finds a duplicate stream_id, an error is returned. However, has the stream_listener already been created and sent to the client, causing a dangling listener? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bebe2457-82e1-4a8a-8578-bb74ab67a3a8?mode=deep",
+    "timestamp": "2026-01-20 14:26:55.242836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: check_progress_of_all_data_streams()] [Denial of service] If a malicious client creates thousands of streams, will iterating through all stream IDs and calling update_progress_of_data_stream() for each cause unbounded CPU consumption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d5c7271-e420-41e7-89f0-e747368cecf1?mode=deep",
+    "timestamp": "2026-01-20 14:27:18.328881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: update_progress_of_data_stream()] [Premature termination] At line 350-365, if send_failure() is true, the stream is immediately removed. Can an attacker trigger send failures (e.g., by dropping the listener) to force premature stream termination and disrupt state sync? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bdee045-a437-414d-819d-8fe692eb2241?mode=deep",
+    "timestamp": "2026-01-20 14:27:42.773690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: update_progress_of_data_stream()] [Incomplete initialization] If initialize_data_requests() fails after setting sent_data_requests to Some(), is the stream left in an inconsistent half-initialized state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3aac2c7-d45c-4104-9995-70c828d1f211?mode=deep",
+    "timestamp": "2026-01-20 14:28:08.170156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: get_data_stream()] [Type safety] This function returns a mutable reference to DataStream but doesn't verify the stream is in a valid state for modification. Can concurrent access through multiple mutable references cause undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d814ec46-60be-4b83-9ff5-f46693b1ed8c?mode=deep",
+    "timestamp": "2026-01-20 14:28:36.366902",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: spawn_global_data_summary_refresher()] [Infinite task] The spawned task runs in an infinite loop calling refresh_global_data_summary() and sleeping. If an error occurs that's not properly handled, could this task spin indefinitely consuming resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c3c26c6-9994-4a39-a081-74115257e451?mode=deep",
+    "timestamp": "2026-01-20 14:29:06.868708",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: refresh_global_data_summary()] [Stale data] If fetch_global_data_summary() fails at line 437-451, the cached summary is not updated and remains stale. Can prolonged stale data cause streams to make invalid requests based on outdated network state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b65f6ba-3364-47e1-a19b-4d48cf2a49c8?mode=deep",
+    "timestamp": "2026-01-20 14:29:37.368945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Function: verify_optimal_chunk_sizes()] [Zero chunk size] At line 479-491, this function checks if any chunk size is 0 and returns an error. However, what if a chunk size is 1? Can extremely small chunk sizes cause excessive network requests and DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a387b92a-5539-4060-aaaf-179c309b968b?mode=deep",
+    "timestamp": "2026-01-20 14:30:06.235590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Struct: DataStreamingService] [Global state mutation] The global_data_summary is wrapped in Arc<ArcSwap<GlobalDataSummary>>. Can rapid concurrent updates to this shared state cause ABA problems or lost updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37a33759-8769-404d-9908-53e23be1e78e?mode=deep",
+    "timestamp": "2026-01-20 14:30:36.087189",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Struct: DataStreamingService] [HashMap iteration] The data_streams HashMap is iterated in check_progress_of_all_data_streams(). If streams are being added/removed concurrently during iteration, could this cause use-after-free or inconsistent iteration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56774bcf-4dcd-4ea9-aa10-498d8a2faea4?mode=deep",
+    "timestamp": "2026-01-20 14:31:06.227874",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/streaming_service.rs] [Struct: StreamUpdateNotification] [Channel overflow] Stream update notifications use QueueStyle::LIFO with size 1. If multiple streams send notifications rapidly, are older notifications dropped, potentially causing streams to never make progress? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b500f4d-0269-4281-b57d-b91d04a92e26?mode=deep",
+    "timestamp": "2026-01-20 14:31:37.042139",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/data_stream.rs] [Function: new()] [Channel sizing] At line 141-142, notification channels are created with max_data_stream_channel_sizes from config. Can an attacker set this to u64::MAX during initialization, causing memory exhaustion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_398697f1-dcc0-4f1a-8644-56ba30143c77?mode=deep",
+    "timestamp": "2026-01-20 14:32:06.322340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/data_stream.rs] [Function: clear_sent_data_requests_queue()] [Task abortion] At line 184, all spawned_tasks are aborted when clearing the queue. Can aborting tasks mid-execution leave the aptos_data_client in an inconsistent state with pending network requests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e17c494-3bfc-41ab-8ce3-024e40876500?mode=deep",
+    "timestamp": "2026-01-20 14:32:33.729158",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/data_stream.rs] [Function: initialize_data_requests()] [Double initialization] If initialize_data_requests() is called twice, the second call sets sent_data_requests = Some(VecDeque::new()), overwriting the existing queue. Can this cause memory leaks from lost PendingClientResponses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2c48da4-a0d7-44e7-823a-47865bf0bf21?mode=deep",
+    "timestamp": "2026-01-20 14:33:01.783130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/data_stream.rs] [Function: sent_notification()] [Notification ID collision] At line 223-232, this checks if a notification_id was sent. If notification IDs wrap around due to U64IdGenerator overflow, could false positives occur, accepting invalid feedback? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b3e5979-9eae-4c45-bd3f-f44b7deff164?mode=deep",
+    "timestamp": "2026-01-20 14:33:30.796773",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/data_stream.rs] [Function: handle_notification_feedback()] [Invalid feedback mapping] At line 251-259, if notifications_to_responses doesn't contain the notification_id, an error is returned. Can this be exploited to identify which notifications are still tracked, leaking timing information? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59dfb49f-682e-4990-b69f-30957c35e66d?mode=deep",
+    "timestamp": "2026-01-20 14:33:59.099017",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/data_stream.rs] [Function: create_and_send_client_requests()] [Integer underflow] At line 274-279, num_in_flight_requests is calculated as num_pending_requests.saturating_sub(num_complete_pending_requests). If num_complete_pending_requests is corrupted and exceeds num_pending_requests, saturating_sub returns 0. Can this cause excessive request creation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_204ab665-374d-4a36-a331-a22fa0fb7c62?mode=deep",
+    "timestamp": "2026-01-20 14:34:27.674966",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/data-streaming-service/src/data_stream.rs] [Function: send_client_request()] [Timeout calculation overflow] At line 357-360, request_timeout_ms is calculated as response_timeout_ms * (2^request_failure_count). If request_failure_count is large, can this overflow and wrap to a very small timeout? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3609e10-3552-48dc-b1ba-42a80b55e900?mode=deep",
+    "timestamp": "2026-01-20 14:34:55.042231",
+    "report_generated": false
+  }
+]
