@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: get_state_value()] [Error handling] The unwrap() at line 23 will panic on deserialization errors - can an attacker corrupt the TOTAL_SUPPLY_STATE_KEY state to trigger this panic and crash all validator nodes simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2404da86-2f29-404c-bcfd-a5f377feeda8?mode=deep",
+    "timestamp": "2026-01-20 12:34:23.668477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: get_state_value()] [None handling] If get_state_value_bytes() returns None at line 20, the function returns None - but at line 212 this is unwrapped, can an attacker delete the TOTAL_SUPPLY_STATE_KEY to trigger a panic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae2fc137-f8b6-40ba-a86f-e3e8cab2cc7c?mode=deep",
+    "timestamp": "2026-01-20 12:34:36.142903",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: get_state_value()] [State poisoning] Can a malicious validator or transaction manipulate state_view to return crafted bytes that deserialize to extreme u128 values (0 or u128::MAX), corrupting the base_val_delta calculation at line 213? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da040955-44fa-48df-a95c-f0f262707231?mode=deep",
+    "timestamp": "2026-01-20 12:34:49.197859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: get_state_value()] [Determinism] Does bcs::from_bytes() at line 22 guarantee deterministic deserialization across all validators, or can different Rust/BCS library versions produce different values, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e52ffa6-8252-4de7-8121-758f4d758eb6?mode=deep",
+    "timestamp": "2026-01-20 12:35:02.506282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: get_state_value()] [Resource exhaustion] Can an attacker provide extremely large serialized state that causes bcs::from_bytes() to consume excessive memory during deserialization, leading to validator OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a34e1a9-59d5-4860-9a34-1d90bd65a0db?mode=deep",
+    "timestamp": "2026-01-20 12:35:16.740578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: get_state_value()] [No validation] Lines 15-24 perform no validation on the deserialized value - can this allow injection of invalid total supply values that break economic invariants? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d06c8304-0ba3-4b68-8116-35f0bc0c54cc?mode=deep",
+    "timestamp": "2026-01-20 12:35:31.661429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Array indexing] The calculation at line 224 uses (round * num_shards + shard_id) to index aggr_total_supply_delta - can an out-of-bounds access occur if num_shards or round values are manipulated, causing memory corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4d1d2c4-461f-46d0-be5b-2df98ca74a6c?mode=deep",
+    "timestamp": "2026-01-20 12:35:48.366116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Integer overflow] At line 179, the vector size is (num_shards * num_rounds + 1) - can multiplication overflow with large num_shards/num_rounds values, allocating a smaller-than-needed vector and causing out-of-bounds writes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97ae8185-258f-4e21-b3f8-86c9815eaf66?mode=deep",
+    "timestamp": "2026-01-20 12:36:05.149297",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Off-by-one error] The aggr_ts_idx starts at 1 (line 183) and is incremented at line 200 - can this cause an off-by-one indexing error when accessing aggr_total_supply_delta, leading to reading/writing wrong delta values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_376fe38f-9e19-4116-971d-d19e83258537?mode=deep",
+    "timestamp": "2026-01-20 12:36:23.206666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [State inconsistency] Lines 174-175 assume all shards have the same num_rounds by accessing sharded_output[0].len() - can mismatched round counts across shards cause incorrect aggregation or panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_abc991e1-0bf3-4b18-b6f7-a2e24ef43ebe?mode=deep",
+    "timestamp": "2026-01-20 12:36:42.238578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Missing bounds check] Line 198 assigns to aggr_total_supply_delta[aggr_ts_idx] but there's no explicit bounds check - can aggr_ts_idx exceed the vector size if the loop logic is incorrect? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b4e225b-72bf-48d9-9136-16117ca65c3b?mode=deep",
+    "timestamp": "2026-01-20 12:37:01.469845",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Cumulative delta error] At line 199, each shard's delta is added to the previous cumulative delta - can accumulated overflow in this cumulative addition cause total supply to diverge significantly from true value? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_642bb7b5-5d5b-4be6-bbe0-45c5d17325e7?mode=deep",
+    "timestamp": "2026-01-20 12:37:21.892541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Reverse iteration] Lines 191-197 iterate in reverse to find the last transaction with total supply - can this logic be exploited by placing malicious transactions at the end to inject fake delta values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_173d0dd5-928d-43a4-9d82-fbe3822566cb?mode=deep",
+    "timestamp": "2026-01-20 12:37:43.315710",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Missing transaction] If no transaction in a round has total supply (all return None at line 192), curr_delta remains default (0) - can an attacker exploit this to bypass delta accumulation for certain rounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d4dbba8-0c3f-4167-ba0f-5698e75d55d9?mode=deep",
+    "timestamp": "2026-01-20 12:38:05.599010",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [TOTAL_SUPPLY_AGGR_BASE_VAL dependency] Line 194 subtracts TOTAL_SUPPLY_AGGR_BASE_VAL from last_txn_total_supply - if this constant is incorrect or can be manipulated, can it corrupt all delta calculations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31159a9e-191f-4360-a4eb-eabd9011fc6f?mode=deep",
+    "timestamp": "2026-01-20 12:38:28.666826",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Mutable reference safety] The function takes &mut Vec parameters - can concurrent access to sharded_output or global_output during execution cause data races despite Rust's safety guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a04741aa-2842-41b2-b57d-2f78c5b621d4?mode=deep",
+    "timestamp": "2026-01-20 12:38:52.903005",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Base value corruption] Line 212 reads total_supply_base_val from state_view and unwraps - if this value is corrupted or missing, can it cause immediate panic or incorrect delta calculations affecting all transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d05e9bf-bf22-4b46-a6eb-8b47b38c9126?mode=deep",
+    "timestamp": "2026-01-20 12:39:17.760970",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Delta application] At line 234, delta_for_round.add_delta(txn_total_supply) is called - can overflow in this operation corrupt individual transaction total supply values without detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9f32c85-dce2-43d3-8dc5-837cd83af9e8?mode=deep",
+    "timestamp": "2026-01-20 12:39:43.917373",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Global shard delta] Line 242 computes delta_for_global_shard using the last element of aggr_total_supply_delta - can an indexing error here apply the wrong cumulative delta to global transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58614573-ae5b-45d7-93fc-1a586ac9ac12?mode=deep",
+    "timestamp": "2026-01-20 12:40:10.249490",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Update_total_supply] Line 233 calls txn_output.update_total_supply() - does this function validate the new total supply, or can invalid values (negative, exceeding cap) be written? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79f2cb9c-5889-4c34-8362-4f9123645668?mode=deep",
+    "timestamp": "2026-01-20 12:40:37.675784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Option handling] Lines 230-236 only update if get_total_supply() returns Some - can this selective update create inconsistencies if some transactions have total supply and others don't? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4723f9d7-62d3-45b5-b4f5-f730f7fd2c15?mode=deep",
+    "timestamp": "2026-01-20 12:41:06.182406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Race condition] Lines 217-240 use executor_thread_pool.scope() with par_iter_mut() - can concurrent mutations to sharded_output across different shards cause data races or inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d957061-46d6-4982-a1f4-ca898ddc15fa?mode=deep",
+    "timestamp": "2026-01-20 12:41:35.489925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Shared state access] Line 215 creates aggr_total_supply_delta_ref which is shared across threads - can concurrent reads from this reference while it's being computed (lines 184-202) cause reading of partially updated values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6cb47f7-3777-46bf-9c55-0616b84a8228?mode=deep",
+    "timestamp": "2026-01-20 12:42:03.471032",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Non-atomic updates] Lines 233-235 update txn_output.update_total_supply() in parallel - if this function is not atomic, can interleaved updates from different threads corrupt the total supply value? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d343327-c869-4d79-a51c-2b801f00349f?mode=deep",
+    "timestamp": "2026-01-20 12:42:31.802045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_aggregator_service.rs] [Function: aggregate_and_update_total_supply()] [Rayon parallelization] The par_iter_mut() at lines 219 and 226 executes in parallel - can the rayon work-stealing scheduler cause non-deterministic execution order that leads to different results across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1eac9b3-08ba-441e-aab0-20e9f517f565?mode=deep",
+    "timestamp": "2026-01-20 12:43:00.783666",
+    "report_generated": false
+  }
+]
