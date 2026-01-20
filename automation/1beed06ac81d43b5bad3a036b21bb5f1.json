@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Struct: PendingBlockStore] [State Inconsistency] Can an attacker exploit the dual-store design (blocks_without_payloads and blocks_without_payloads_by_hash) by causing insertions to succeed in one store but fail in the other, leading to permanent state desynchronization that could cause consensus observers to accept or reject blocks incorrectly? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85677a86-a56f-4547-9c4a-86430825a138?mode=deep",
+    "timestamp": "2026-01-20 11:31:42.193293",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 67-72] [Memory Exhaustion] Can a malicious validator flood the consensus observer with unique blocks that have different (epoch, round) tuples but identical hashes, causing both BTreeMaps to grow unboundedly until memory exhaustion crashes the observer node? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61edb057-5c1b-4221-b0cf-e1b2705b3f19?mode=deep",
+    "timestamp": "2026-01-20 11:31:55.156401",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Struct: PendingBlockWithMetadata] [Metadata Manipulation] Can an attacker manipulate the block_receipt_time timestamp to cause time-based attacks, such as making old blocks appear recent to bypass timeout mechanisms or prioritization logic in the consensus observer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bafafac3-64a9-4255-b36b-7d7cf5980607?mode=deep",
+    "timestamp": "2026-01-20 11:32:08.534998",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 24-28] [Clone Attack] Does the Arc wrapper in PendingBlockWithMetadata prevent all forms of deep copying attacks, or can an attacker create multiple Arc references to the same block and manipulate shared mutable state through interior mutability patterns? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed6bbd77-9de6-408f-9ea7-aac1d07d176d?mode=deep",
+    "timestamp": "2026-01-20 11:32:22.083764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: insert_pending_block()] [Race Condition] Can concurrent calls to insert_pending_block() from multiple threads cause a race condition where Entry::Vacant checks pass simultaneously for both stores, but only one insertion completes, resulting in the two stores having different numbers of entries as detected in line 163-170? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5234e6e3-dc58-4bd4-8045-d4a6c6117832?mode=deep",
+    "timestamp": "2026-01-20 11:32:36.666148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 118-132] [Block Replacement] When insert_pending_block() finds an Entry::Occupied in blocks_without_payloads (line 119), it logs a warning but doesn't update the entry - can an attacker exploit this by sending an earlier version of a block first, preventing the legitimate updated block from ever being stored? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04a8bd7f-3190-4d4a-a9b2-53abc91b7196?mode=deep",
+    "timestamp": "2026-01-20 11:32:52.016677",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 134-150] [Hash Collision] If two different blocks have the same hash due to a hash collision or malicious crafting, will insert_pending_block() silently drop one block (line 139), potentially causing the observer to miss critical consensus blocks and fall out of sync? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f120e1d-d249-400c-b39f-c566604fd06a?mode=deep",
+    "timestamp": "2026-01-20 11:33:08.745073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: insert_pending_block()] [DoS via Warnings] Can an attacker intentionally trigger the warning conditions in lines 121-126 and 139-144 repeatedly to flood the logs and cause I/O-based DoS, potentially masking other attacks or consuming disk space? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03267a32-b7d2-4134-b3da-eba07fc27a40?mode=deep",
+    "timestamp": "2026-01-20 11:33:28.102456",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 112-154] [Atomic Insertion Failure] If insert_pending_block() successfully inserts into blocks_without_payloads (line 130) but then the process crashes before inserting into blocks_without_payloads_by_hash (line 148), will this cause permanent inconsistency between the stores that violates the invariant checked in lines 163-170? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87d717ca-212f-497a-91ae-e97d4e2bfdf2?mode=deep",
+    "timestamp": "2026-01-20 11:33:48.178253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: insert_pending_block()] [Garbage Collection Timing] Does calling garbage_collect_pending_blocks() at line 153 after every insertion create a timing window where an attacker can observe which blocks get garbage collected and use this information to manipulate the observer's state or predict future behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea821fb0-92ea-4be7-947b-5fa523e1b945?mode=deep",
+    "timestamp": "2026-01-20 11:34:09.964444",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: garbage_collect_pending_blocks()] [Integer Overflow] Can an attacker cause num_pending_blocks (line 161) to overflow when casting from usize to u64, or cause saturating_sub (line 174) to behave unexpectedly if max_num_pending_blocks is set to 0 or u64::MAX? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27aeb51a-67c8-46f1-ae25-45127894139d?mode=deep",
+    "timestamp": "2026-01-20 11:34:32.458038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 177-194] [Inconsistent Removal] In garbage_collect_pending_blocks(), blocks are removed from blocks_without_payloads using pop_first() (line 178-179) but then removed from blocks_without_payloads_by_hash using a separate remove() call (line 191-192) - can a race condition cause these operations to be non-atomic, leaving orphaned entries in the hash store? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97bac00d-8096-4035-a252-2e880be77a94?mode=deep",
+    "timestamp": "2026-01-20 11:34:56.394622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 163-170] [Error Handling] When garbage_collect_pending_blocks() detects that the two stores have different numbers of entries (line 163), it only logs an error but continues execution - can an attacker exploit this inconsistent state to cause undefined behavior in subsequent operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5aea7d06-fc56-4b81-8155-56b41fbd589c?mode=deep",
+    "timestamp": "2026-01-20 11:35:21.065185",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: garbage_collect_pending_blocks()] [Epoch Boundary Attack] Does the garbage collection logic that removes oldest blocks based on (epoch, round) tuple (line 178) properly handle epoch transitions, or can an attacker craft blocks with manipulated epoch values to prevent legitimate blocks from being garbage collected while causing newer blocks to be removed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ab736b4-e298-4345-aa66-d2f6f650efa8?mode=deep",
+    "timestamp": "2026-01-20 11:35:47.004216",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 172-174] [Configuration Attack] Can an attacker manipulate consensus_observer_config.max_num_pending_blocks to be set to a very low value (e.g., 1) through configuration injection, causing aggressive garbage collection that removes all pending blocks and prevents the observer from functioning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24b7ef8f-cac0-4dac-9e3b-5c2351723127?mode=deep",
+    "timestamp": "2026-01-20 11:36:13.743207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: garbage_collect_pending_blocks()] [Selection Bias] Does removing the oldest blocks by (epoch, round) tuple in pop_first() (line 178) create a bias where blocks from newer epochs are never garbage collected even if they're malicious, allowing an attacker to permanently occupy store space with invalid blocks from future epochs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81db2465-9668-4b22-9e39-3807c25dba62?mode=deep",
+    "timestamp": "2026-01-20 11:36:41.933231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: remove_ready_block()] [Arithmetic Overflow] Can an attacker cause saturating_add(1) at line 207 to overflow when received_payload_round is u64::MAX, resulting in split_round being 0 due to wraparound, causing all blocks to be incorrectly categorized as lower rounds and dropped? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47ed97ce-224a-44bf-a4f3-ecd6f66f89de?mode=deep",
+    "timestamp": "2026-01-20 11:37:08.744089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 210-212] [Split Attack] Can an attacker manipulate received_payload_epoch and received_payload_round parameters to split_off() at line 210-212 to cause an incorrect split that moves legitimate ready blocks into blocks_at_higher_rounds, preventing them from being processed and causing liveness issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46514f75-a296-44b2-8a60-10857f948257?mode=deep",
+    "timestamp": "2026-01-20 11:37:35.512141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 217-228] [Payload Verification Bypass] In remove_ready_block(), if all_payloads_exist() returns false (line 219), the block is only re-inserted if last_pending_block_round > received_payload_round (line 224) - can an attacker exploit this by sending payloads in a specific order to cause blocks to be permanently dropped without being processed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7eabc1ab-f05f-4724-839f-7989a38a1bd3?mode=deep",
+    "timestamp": "2026-01-20 11:38:01.438284",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: remove_ready_block()] [Out-of-Date Block Attack] The function drops all blocks before the received_payload_round with only an info log (lines 231-239) - can a malicious peer send a payload with an artificially high round number to cause all legitimate pending blocks to be incorrectly marked as out-of-date and dropped? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d227387b-d3fc-45f6-9332-b69395be4649?mode=deep",
+    "timestamp": "2026-01-20 11:38:27.564218",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 243-252] [Inconsistency Window] Between clear_missing_blocks() (line 244) and rebuilding blocks_without_payloads_by_hash (lines 247-252), there's a window where the stores are inconsistent - can a concurrent read operation during this window observe an invalid state and make incorrect decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82a35d31-cc75-4190-b8da-b9a41bb6e554?mode=deep",
+    "timestamp": "2026-01-20 11:38:53.865830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: remove_ready_block()] [Performance Attack] The TODO comment at line 241 indicates this flow needs optimization - can an attacker exploit the current inefficient implementation that clears and rebuilds the entire hash store to cause performance degradation that affects consensus observer responsiveness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5047fc4f-1afa-4777-8100-69a98e9bd0bc?mode=deep",
+    "timestamp": "2026-01-20 11:39:21.095167",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 217-228] [Double Processing] If pop_last() returns a block (line 217) and all_payloads_exist() returns true (line 219), but then the same block exists in blocks_at_higher_rounds due to a race condition, can the block be processed twice causing state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d696b71-3fc9-419a-a312-80b9b5e557c7?mode=deep",
+    "timestamp": "2026-01-20 11:39:47.932590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: remove_ready_block()] [Epoch Mismatch] Does remove_ready_block() validate that received_payload_epoch matches the epoch of blocks being processed, or can an attacker send payloads from a different epoch to cause epoch confusion and incorrect block removal? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8adf2e70-3fd0-46ac-a239-82e16d9a454c?mode=deep",
+    "timestamp": "2026-01-20 11:40:14.880651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: existing_pending_block()] [TOCTOU Race] Can an attacker exploit a time-of-check-time-of-use race between existing_pending_block() check (lines 91-99) and subsequent insert_pending_block() call, where the block state changes between the check and the insertion, causing unexpected behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65c035e6-33d2-4ba2-8564-72d2cf27db42?mode=deep",
+    "timestamp": "2026-01-20 11:40:43.823046",
+    "report_generated": false
+  }
+]
