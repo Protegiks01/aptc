@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: ark_msm_window_size()] [Integer overflow] At line 75, the calculation (log2_ceil(num_entries).unwrap() * 69 / 100) + 2 assumes log2_ceil succeeds, but for num_entries = 0 or MAX_USIZE, can this cause unwrap() to panic or produce incorrect window sizes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_692aa7b0-255a-4729-963e-6231e5c1e3cf?mode=deep",
+    "timestamp": "2026-01-20 12:48:21.027305",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: ark_msm_window_size()] [Threshold bypass] The threshold at line 72 treats num_entries < 32 specially—can an attacker craft exactly 31 elements to get suboptimal window size (3) and cause inefficient computation that doesn't match gas charges? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4167b38c-dd78-4984-823d-33d2134b0a7c?mode=deep",
+    "timestamp": "2026-01-20 12:48:34.660807",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Macro: ark_msm_bigint_wnaf_cost!] [div_ceil overflow] At line 84, 255_usize.div_ceil(window_size) assumes window_size > 0, but if ark_msm_window_size returns 0 due to edge cases, can this cause division by zero or incorrect cost calculation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c42cc31f-eabe-4aa5-9a95-8a51f9b09093?mode=deep",
+    "timestamp": "2026-01-20 12:48:47.987658",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Macro: ark_msm_bigint_wnaf_cost!] [Exponential cost] At line 85, num_buckets = 1_usize << window_size can cause exponential growth—for large window sizes (e.g., 20+), can this cause integer overflow, incorrect gas charges, or memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b15cd324-a341-4dd8-ae98-75dc59124f80?mode=deep",
+    "timestamp": "2026-01-20 12:49:01.952335",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: ark_msm_window_size()] [Warning violation] Line 70 warns about unwrap() safety—if the if-statement at lines 72-76 is modified incorrectly, can log2_ceil return None for edge case inputs, causing panics in production? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c56d19cc-f539-407a-a769-649186f3086f?mode=deep",
+    "timestamp": "2026-01-20 12:49:17.071895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: scalar_mul_internal()] [BigInteger conversion] At line 62, the conversion (*scalar).into() to BigInteger256 assumes the scalar fits in 256 bits, but can larger field elements (e.g., from Fq instead of Fr) cause truncation, overflow, or incorrect scalar values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cae900a5-9281-494e-852b-963df67e3ada?mode=deep",
+    "timestamp": "2026-01-20 12:49:33.337227",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: scalar_mul_internal()] [Type argument mismatch] At line 96, assert_eq!(2, ty_args.len()) verifies argument count, but can an attacker provide ty_args with valid length but incorrect type ordering (scalar, group instead of group, scalar), bypassing type checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e21982ba-4862-454c-9aae-6864601bc289?mode=deep",
+    "timestamp": "2026-01-20 12:49:48.386531",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: scalar_mul_internal()] [Structure enum exhaustion] At lines 97-98, structure_from_ty_arg! extracts Structure enums, but if new Structure variants are added without updating the match at lines 100-184, can this cause the default case at line 181-183 to execute for valid new curves? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_979a99de-d39b-407a-aba3-8a5e1958e8f2?mode=deep",
+    "timestamp": "2026-01-20 12:50:08.677856",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Macro: ark_scalar_mul_internal!] [Cross-curve type confusion] If the macro is instantiated with mismatched types (e.g., G1Projective but Fr from a different curve), does Rust's type system prevent this at compile time, or can runtime type erasure in the Move VM allow cross-curve operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd32d5b9-2cd1-493f-a0db-ed16ba2ac4c5?mode=deep",
+    "timestamp": "2026-01-20 12:50:30.068552",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: multi_scalar_mul_internal()] [Scalar clone safety] At line 221, scalars.push(scalar.clone()) assumes Clone is safe for field elements, but can cloning expose internal state or cause double-free if the arkworks types have unsafe Clone implementations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_901e0363-3de7-4f47-ba6d-295fe331f53e?mode=deep",
+    "timestamp": "2026-01-20 12:50:52.978652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: scalar_mul_internal()] [Unhandled structure combinations] At lines 181-183, if group_opt and scalar_field_opt contain Some() but don't match any case, MOVE_ABORT_CODE_NOT_IMPLEMENTED is returned—can validators disagree on what's implemented, causing consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afc82560-bfaf-444c-957e-0d87dc7ab484?mode=deep",
+    "timestamp": "2026-01-20 12:51:17.465782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: multi_scalar_mul_internal()] [MSM unwrap panic] At line 229, VariableBaseMSM::msm().unwrap() assumes MSM never fails, but can malformed inputs (NaN field elements, invalid points, edge cases) cause arkworks to panic, crashing the validator? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1d31690-842e-415f-bad9-9f09fbe7b729?mode=deep",
+    "timestamp": "2026-01-20 12:51:42.086916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: multi_scalar_mul_internal()] [Inconsistent error handling] The default case at lines 289-292 returns NOT_IMPLEMENTED, but earlier cases may panic or abort differently—can inconsistent error handling cause state corruption when some validators abort while others return errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b0eafb7-88ee-4539-82ec-e8a5c4e62600?mode=deep",
+    "timestamp": "2026-01-20 12:52:07.519011",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Macro: ark_msm_internal!] [Borrow failure cascade] If safe_borrow_element! fails at line 209-215 for any handle, does the error propagate cleanly, or can partial processing leave the AlgebraContext in an inconsistent state affecting subsequent operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a1cdcd9-d53e-40a1-ba92-169ade981594?mode=deep",
+    "timestamp": "2026-01-20 12:52:35.255108",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: scalar_mul_internal()] [Store element failure] At line 65 and 141, store_element! might fail due to memory limits—if this happens after gas is charged but before the result is returned, is gas refunded, or does the validator lose resources? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3069849-d1be-47fb-b499-e656f6b0a05e?mode=deep",
+    "timestamp": "2026-01-20 12:53:03.359458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: scalar_mul_internal()] [Timing side-channel] At line 64, does mul_bigint use constant-time scalar multiplication, or can timing variations leak information about private scalars, enabling side-channel attacks on cryptographic protocols using this primitive? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b71bddf-2502-46fa-b4ea-1840d540deeb?mode=deep",
+    "timestamp": "2026-01-20 12:53:31.666781",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: scalar_mul_internal()] [Fq12 pow timing] At lines 140 and 177, the pow() operation on Fq12 elements may have scalar-dependent timing—can attackers measure execution time to extract bits of private exponents used in pairing-based protocols? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e199679d-1c10-43ca-bf8c-0db23ec690ba?mode=deep",
+    "timestamp": "2026-01-20 12:54:01.068770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: multi_scalar_mul_internal()] [MSM timing leak] At line 229, VariableBaseMSM::msm() may have input-dependent timing based on scalar distributions—can attackers craft scalar patterns that leak information about other users' scalars in batched signature verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24276250-6526-4dc3-8e10-9d849d65e6d7?mode=deep",
+    "timestamp": "2026-01-20 12:54:30.054774",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Macro: ark_scalar_mul_internal!] [Cache-timing attack] Can an attacker exploit CPU cache timing during element borrowing at lines 60-61 to determine if specific handles are accessed frequently, leaking information about other transactions' cryptographic operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36a016bf-8acb-49e3-9e10-ba6aec15dd77?mode=deep",
+    "timestamp": "2026-01-20 12:55:00.886772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: multi_scalar_mul_internal()] [Affine conversion timing] At line 216, into_affine() conversion time may depend on the input point representation—can timing differences reveal information about the internal state of cryptographic operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cb76a2c-2582-40e3-8904-2d778cfc88f1?mode=deep",
+    "timestamp": "2026-01-20 12:55:31.711563",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Macro: ark_msm_internal!] [Memory limit bypass] At line 206, Vec::with_capacity(num_elements) allocates memory, but does this respect the MEMORY_LIMIT_IN_BYTES constant defined in the parent module, or can large num_elements bypass memory limits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45339998-919c-4997-b72c-f165b076ef67?mode=deep",
+    "timestamp": "2026-01-20 12:56:02.393939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Macro: ark_msm_internal!] [Double allocation] At lines 206 and 218, both bases and scalars vectors are allocated separately—can the combined allocation exceed memory limits even if each individual allocation is within bounds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9677d0dd-81d9-46d7-82a1-8cd3e5dda3be?mode=deep",
+    "timestamp": "2026-01-20 12:56:31.821044",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Macro: ark_msm_internal!] [Clone vs reference] At line 221, scalars.push(scalar.clone()) creates a copy, but bases.push(element.into_affine()) at line 216 may also copy—can the total memory footprint of cloned field elements exceed available memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72a356c6-bfcc-4467-af52-121439f00ab1?mode=deep",
+    "timestamp": "2026-01-20 12:56:59.808907",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Function: multi_scalar_mul_internal()] [Post-MSM memory] After MSM completes at line 229, the bases and scalars vectors go out of scope—can delayed deallocation cause memory pressure, and are there race conditions if another transaction allocates before these are freed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_450f64a5-ba56-4171-bf6f-f41c94baff5d?mode=deep",
+    "timestamp": "2026-01-20 12:57:30.453145",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/scalar_mul.rs] [Macro: ark_msm_internal!] [Memory leak via handle] If store_element! at line 230 succeeds but the handle is never freed by the Move code, can repeated MSM calls leak memory in the AlgebraContext, eventually exhausting validator memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42c94cf1-cf30-45fe-8207-1b495dd9ad2f?mode=deep",
+    "timestamp": "2026-01-20 12:57:59.580932",
+    "report_generated": false
+  }
+]
