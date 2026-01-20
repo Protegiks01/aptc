@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/lib.rs] [Module: compiler] [Access control] The compiler module is exposed as public - can malicious external code directly call compilation functions to generate invalid bytecode that bypasses Move VM safety checks, potentially leading to arbitrary code execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2e3d88a-a42d-470f-aedb-bf3da4bb5084?mode=deep",
+    "timestamp": "2026-01-20 21:26:20.543586",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/lib.rs] [Module: context] [Information leakage] The context module is private but used by public compiler - can internal compilation state leak through error messages or side channels, exposing validator private keys or sensitive blockchain state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1320cd94-e587-46fb-93b9-4cbc5990b032?mode=deep",
+    "timestamp": "2026-01-20 21:26:33.075192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/lib.rs] [Module: parser] [Input validation] The parser module is public - can attackers supply maliciously crafted IR input that causes parser to generate invalid AST, leading to type confusion and bypassing Move's resource safety during compilation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_826905db-ab53-49c1-a302-7169ecdf0069?mode=deep",
+    "timestamp": "2026-01-20 21:26:45.741265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/lib.rs] [Module: compiler] [Determinism] Since compiler is public, can different nodes compile the same IR differently due to environment-dependent behavior, causing consensus failures and chain splits across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c678bc2b-69d6-4618-ab42-e2c6f1dbba12?mode=deep",
+    "timestamp": "2026-01-20 21:26:58.967590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: FunctionFrame::push()] [Integer overflow] The stack depth tracking uses i64 and checks for i64::MAX overflow - can an attacker craft deeply nested expressions that cause integer overflow before reaching i64::MAX, corrupting stack accounting and bypassing gas metering? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_147b361d-4cb0-4851-8ee7-d1cca22ea08b?mode=deep",
+    "timestamp": "2026-01-20 21:27:12.928045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: FunctionFrame::push()] [Stack overflow] At line 148-150, the function bails on i64::MAX but the actual bytecode format uses u16 for stack depth - can attacker create functions with stack depth between u16::MAX and i64::MAX that compile successfully but crash the VM during execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9adb189-0f65-43ea-9fb8-7a6af146f421?mode=deep",
+    "timestamp": "2026-01-20 21:27:28.132415",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: FunctionFrame::pop()] [Stack underflow] Lines 156-161 check for i64::MIN underflow but don't validate against actual stack contents - can compiler generate bytecode with negative logical stack depth that causes VM to read from invalid memory? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33078701-ca05-4d56-ab2b-5fa865a419ad?mode=deep",
+    "timestamp": "2026-01-20 21:27:44.047004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: compile_expression()] [Stack accounting mismatch] Multiple expression compilation functions call push() but may fail before matching pop() - can error paths leave stack accounting in inconsistent state, causing subsequent bytecode to have incorrect stack depth and crash validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5e62fc4-aa50-43ba-b6c6-e4dbcdcea4e8?mode=deep",
+    "timestamp": "2026-01-20 21:28:01.994926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Struct: FunctionFrame] [Race condition] Stack depth fields max_stack_depth and cur_stack_depth are not synchronized - in concurrent compilation scenarios, can race conditions cause stack depth miscalculation leading to buffer overflows in VM execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_846b14ad-42cd-4f6e-853f-85d009b887ad?mode=deep",
+    "timestamp": "2026-01-20 21:28:21.314254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: verify_move_function_body()] [Label bypass] Lines 225-257 verify labels are declared and used correctly - can attacker insert duplicate labels with zero-width unicode characters that pass duplicate detection but reference different code locations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f149abb-96c2-4840-91e5-cadbf6857ada?mode=deep",
+    "timestamp": "2026-01-20 21:28:41.225206",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: verify_bytecode_function_body()] [Branch target manipulation] Lines 260-293 verify bytecode labels - can malicious IR specify branch targets that point outside function boundaries, causing VM to jump to arbitrary code locations and achieve RCE? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a516ea56-22f6-4998-9c60-698be3740c80?mode=deep",
+    "timestamp": "2026-01-20 21:29:02.061201",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: label_verification_error()] [Error handling bypass] Lines 195-223 format error messages for label issues - can attackers craft label names that cause format string vulnerabilities or inject code through error message display? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76b1f01e-4394-4092-bfd9-6200d1ca8863?mode=deep",
+    "timestamp": "2026-01-20 21:29:23.879800",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: verify_function()] [Incomplete validation] Lines 298-304 only verify label correctness but not stack balance or type safety - can functions with correct labels but invalid bytecode sequences bypass verification and cause VM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ccd5b18a-85df-48c9-a551-bd93b3bb3cda?mode=deep",
+    "timestamp": "2026-01-20 21:29:46.996561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: compile_blocks()] [Label resolution] Lines 920-939 remap fake label indices to actual offsets - can integer overflow in label_to_index HashMap cause labels to map to wrong offsets, creating unintended control flow that bypasses security checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80fc6dc1-64cf-41a4-93fd-017142a33556?mode=deep",
+    "timestamp": "2026-01-20 21:30:11.068171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: remap_branch_offsets()] [Offset corruption] Lines 1930-1939 update branch offsets in-place - if fake_to_actual mapping is incomplete, can unmapped offsets remain unchanged, causing branches to wrong locations and potential code execution exploits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0c631c7-7813-4436-b202-a264d2241e8d?mode=deep",
+    "timestamp": "2026-01-20 21:30:36.516595",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: compile_type()] [Type confusion] Lines 661-707 compile IR types to signature tokens - can attacker specify malformed generic types that compile to wrong SignatureToken variants, bypassing Move's type safety and allowing arbitrary resource access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_924e2465-75bc-483f-af20-828a35a24b32?mode=deep",
+    "timestamp": "2026-01-20 21:31:02.354554",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: compile_type()] [Reference safety bypass] Lines 681-688 compile reference types - can mutable references be compiled as immutable or vice versa, allowing write access to supposedly read-only resources and breaking Move's borrow semantics? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df98917f-d583-410c-be1a-a2c98617b6c0?mode=deep",
+    "timestamp": "2026-01-20 21:31:29.471617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: compile_types()] [Type parameter confusion] Lines 651-659 compile type lists - can type parameter indices get confused between function and struct type parameters, causing generic instantiation with wrong types and breaking resource safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_caefc970-c787-411e-85dd-8ec79433c83c?mode=deep",
+    "timestamp": "2026-01-20 21:31:55.613413",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: type_parameter_indexes()] [Index overflow] Lines 609-623 assign TypeParameterIndex by casting usize to u16 - can functions with more than 65535 type parameters cause index overflow, resulting in duplicate type parameter bindings that break type system? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8927114c-78fb-4aeb-a18a-61b5767ca43b?mode=deep",
+    "timestamp": "2026-01-20 21:32:21.330745",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: compile_type()] [Recursive type exploit] Lines 676-680 handle Vector types recursively - can attackers create deeply nested vector types that cause stack overflow during compilation, DoSing validator nodes during transaction verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_498968b8-26d6-4901-b07b-e0798b0c68d9?mode=deep",
+    "timestamp": "2026-01-20 21:32:46.451918",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: struct_type_parameters()] [Phantom type bypass] Lines 625-633 process phantom type parameters - can non-phantom types be marked as phantom to bypass ability checks, allowing storage of non-storable types and breaking Move's resource model? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c4da105-e3c7-4d5a-98e9-4e7cbde66977?mode=deep",
+    "timestamp": "2026-01-20 21:33:11.106655",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: abilities()] [Ability escalation] Lines 635-640 fold abilities from AST - can malicious IR specify conflicting abilities (e.g., Copy but not Drop) that compiler accepts but VM rejects, causing transaction failures that waste gas and DoS validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d45f9b8-5933-48f7-9442-b844a1f5eba4?mode=deep",
+    "timestamp": "2026-01-20 21:33:36.636031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: compile_constant()] [Type layout mismatch] Lines 1571-1596 serialize constants using type layouts - can attacker provide constants whose serialized representation doesn't match their declared type, causing VM to deserialize wrong type and achieve type confusion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40df9fdc-cc59-4860-b5de-04a52ba1f8e4?mode=deep",
+    "timestamp": "2026-01-20 21:34:03.143411",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: compile_constant()] [Struct constant bypass] Line 1588-1590 explicitly disallows struct constants - can attacker use alternative compilation paths to inject struct constants, potentially embedding malicious code or breaking resource uniqueness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df514c69-6e7b-456c-84ca-f070722c5bce?mode=deep",
+    "timestamp": "2026-01-20 21:34:29.700157",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-ir-compiler/move-ir-to-bytecode/src/compiler.rs] [Function: compile_constant()] [Reference constant] Lines 1584-1585 reject reference constants - but can reference-like values be encoded through other types (e.g., U256 addresses) that VM interprets as references, bypassing borrow checking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cc4553f-5d73-46fb-894b-3c844b952e9d?mode=deep",
+    "timestamp": "2026-01-20 21:34:57.217552",
+    "report_generated": false
+  }
+]
