@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: record_node_info_response()] [Race condition] Can concurrent calls to record_node_info_response() from different threads cause inconsistent state where request_tracker shows success but recorded_node_info_response contains stale or partially written data due to non-atomic operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3665dd2b-783a-42ad-9189-c92110bf48da?mode=deep",
+    "timestamp": "2026-01-20 10:48:13.121001",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: record_node_info_response()] [State inconsistency] Does the two-step process of write().record_response_success() followed by assignment to recorded_node_info_response create a window where the tracker state and actual response are inconsistent, allowing Byzantine peers to trigger incorrect monitoring decisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25e72463-7819-4b2d-a1bb-5ceefa32f0d9?mode=deep",
+    "timestamp": "2026-01-20 10:48:26.060060",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_request_failure()] [Deadlock] Can concurrent read locks on request_tracker from get_request_tracker() combined with write locks from handle_request_failure() create deadlock scenarios that halt peer monitoring and affect validator liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5950861b-6ac2-459d-b3d9-74673dff16b5?mode=deep",
+    "timestamp": "2026-01-20 10:48:38.993315",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Struct: NodeInfoState] [Memory leak] Does the Arc<RwLock<RequestTracker>> with clone() in get_request_tracker() create reference cycles or prevent proper cleanup when peers disconnect, potentially causing memory exhaustion over time? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a2806c8-e5f3-4b05-9e05-95a9d13efaa6?mode=deep",
+    "timestamp": "2026-01-20 10:48:52.814635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: get_latest_node_info_response()] [TOCTOU race] Is there a time-of-check-time-of-use vulnerability where get_latest_node_info_response() returns Some(response) but the response is immediately overwritten by concurrent record_node_info_response(), causing stale data to be used for critical decisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ee90ca9-eb7f-46e7-8fec-bfce89713d84?mode=deep",
+    "timestamp": "2026-01-20 10:49:07.552462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_monitoring_service_response()] [Type confusion] Can a malicious peer send a crafted PeerMonitoringServiceResponse that matches the NodeInformation variant but contains invalid or malicious NodeInformationResponse data that bypasses validation and corrupts state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac3a05ac-96d2-40e9-b204-25f10c6b5f7b?mode=deep",
+    "timestamp": "2026-01-20 10:49:23.257874",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_monitoring_service_response()] [Missing validation] Does the code validate that NodeInformationResponse fields (highest_synced_epoch, highest_synced_version, ledger_timestamp_usecs, lowest_available_version) are logically consistent, or can Byzantine peers inject impossible values that break monitoring logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54d95533-b54d-4b88-99ff-01c6358fbbb1?mode=deep",
+    "timestamp": "2026-01-20 10:49:40.252713",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_monitoring_service_response()] [Monotonicity violation] Can a Byzantine peer send decreasing highest_synced_version or epoch values that violate blockchain monotonicity invariants, potentially causing monitoring to incorrectly assess peer health or trigger false alarms? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96a66c14-fbe1-4a45-a58f-ae38dd3a876a?mode=deep",
+    "timestamp": "2026-01-20 10:49:58.407691",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_monitoring_service_response()] [Version range attack] Can malicious peers provide lowest_available_version > highest_synced_version creating invalid version ranges that could crash downstream consumers or cause state sync failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a362128-6318-4387-b6d4-256143d7a708?mode=deep",
+    "timestamp": "2026-01-20 10:50:17.556441",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_monitoring_service_response()] [Timestamp manipulation] Can Byzantine peers inject ledger_timestamp_usecs values far in the future or past to manipulate time-based monitoring decisions or metrics, potentially affecting validator selection or peer scoring? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27f6415e-7a8a-4c12-a5ae-9f1986945a9f?mode=deep",
+    "timestamp": "2026-01-20 10:50:38.085220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: update_peer_state_metrics()] [Integer overflow] Can an attacker provide Duration uptime values that cause node_uptime.as_secs_f64() / 3600.0 to overflow or produce NaN/Infinity when converted to hours, corrupting metrics or causing panics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bcbaa769-88f6-49d9-aa71-1ca77dd17366?mode=deep",
+    "timestamp": "2026-01-20 10:50:59.452873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: update_peer_state_metrics()] [Precision loss] Does converting Duration to f64 hours lose precision for very large uptime values (>292 years in microseconds), potentially causing metrics to wrap around or become inaccurate for long-running validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d24f619-b652-44b2-9d61-b83a7555ee5d?mode=deep",
+    "timestamp": "2026-01-20 10:51:21.675670",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_monitoring_service_response()] [Arithmetic overflow] Can highest_synced_epoch, highest_synced_version, or ledger_timestamp_usecs be crafted to overflow u64 boundaries when used in calculations elsewhere in the monitoring system, causing incorrect peer assessments? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2f1288e-94a3-4c88-b0bd-17a6710c8c38?mode=deep",
+    "timestamp": "2026-01-20 10:51:45.833784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: new()] [Configuration bypass] Can malicious node_monitoring_config values (e.g., node_info_request_interval_ms=0 or u64::MAX) bypass rate limiting or cause infinite request loops that overwhelm peers and degrade network performance? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f271645d-a821-4eb4-afca-d480822f203d?mode=deep",
+    "timestamp": "2026-01-20 10:52:10.279607",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: get_request_timeout_ms()] [Timeout manipulation] Can node_monitoring_config.node_info_request_timeout_ms be set to extremely low values that cause all requests to timeout, or extremely high values that block monitoring indefinitely, affecting validator operation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f3f25ff-6426-45c4-aaca-3271560e953f?mode=deep",
+    "timestamp": "2026-01-20 10:52:34.620475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: new()] [Uninitialized state] Does starting with recorded_node_info_response=None create security issues where early monitoring decisions are made without any peer data, potentially causing incorrect validator set updates or peer bans? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_beca295f-235a-4c12-bca3-c5568a863850?mode=deep",
+    "timestamp": "2026-01-20 10:52:59.894240",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Struct: NodeInfoState] [Clone safety] Does the Clone implementation for NodeInfoState properly handle the Arc<RwLock<RequestTracker>> reference counting, or can clone operations create shared mutable state that violates Rust's safety guarantees? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9155db84-8f79-4286-a5fa-070d7865621f?mode=deep",
+    "timestamp": "2026-01-20 10:53:25.669839",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: get_latest_node_info_response()] [Clone overhead] Can repeated calls to get_latest_node_info_response() with clone() on NodeInformationResponse cause memory pressure or performance degradation when handling many peers, potentially affecting validator operation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6d6f07e-faea-4dc9-a590-32904d147292?mode=deep",
+    "timestamp": "2026-01-20 10:53:52.420682",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: get_request_tracker()] [Reference leak] Does returning Arc<RwLock<RequestTracker>> clones allow external code to hold locks indefinitely, creating potential for deadlocks or preventing proper state updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcddbd92-6045-4e34-b4ea-1106296805e9?mode=deep",
+    "timestamp": "2026-01-20 10:54:17.414606",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_monitoring_service_response()] [Silent failure] When receiving unexpected response types, does only logging a warning and calling handle_request_failure() allow Byzantine peers to repeatedly send invalid responses without being banned or penalized? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72777a23-3196-4dcd-b304-57ed86dfea58?mode=deep",
+    "timestamp": "2026-01-20 10:54:43.221688",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_monitoring_service_response_error()] [Error disclosure] Do the warn! log messages in handle_monitoring_service_response_error() expose sensitive network topology or validator information that could aid targeted attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92023561-b8a1-4b34-b6d7-4cefbcdb8430?mode=deep",
+    "timestamp": "2026-01-20 10:55:09.673920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: handle_request_failure()] [Failure tracking bypass] Can an attacker cause request_tracker.record_response_failure() to be called without actual failures by sending malformed responses, artificially inflating failure counts and causing legitimate peers to be incorrectly marked as unhealthy? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc44b500-0eb3-4fb9-a62c-5dfc83c61ff5?mode=deep",
+    "timestamp": "2026-01-20 10:55:35.670692",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: update_peer_state_metrics()] [Metric poisoning] Can Byzantine peers send extreme uptime values (Duration::MAX or Duration::ZERO) to poison NODE_UPTIME metrics, causing incorrect peer reputation scores or validator selection decisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3352ef52-bfd8-4d2d-986e-2f56a01f4d30?mode=deep",
+    "timestamp": "2026-01-20 10:56:01.791003",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: update_peer_state_metrics()] [Metric manipulation] Does the lack of bounds checking on uptime_in_hours allow attackers to inject values that skew aggregated metrics and mislead monitoring dashboards about network health? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1871ff67-f7ac-4d58-90c7-478477c2a568?mode=deep",
+    "timestamp": "2026-01-20 10:56:28.373837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/node_info.rs] [Function: update_peer_state_metrics()] [Missing metrics] Are there critical peer health indicators (e.g., version consistency, epoch alignment) that should be tracked but aren't, creating blind spots in validator monitoring? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ccadffc1-6617-4089-bf04-0e72b643e1a7?mode=deep",
+    "timestamp": "2026-01-20 10:56:54.858744",
+    "report_generated": false
+  }
+]
