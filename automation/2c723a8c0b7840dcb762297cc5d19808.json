@@ -1,0 +1,32 @@
+[
+  {
+    "question": "[File: aptos-core/state-sync/state-sync-driver/src/continuous_syncer.rs] [Function: reset_active_stream()] [Concurrent Reset] Can multiple threads call reset_active_stream() simultaneously, and if so, are the operations properly synchronized? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34f12ad1-c6f8-42d3-8461-2fcbbe1fd605?mode=deep",
+    "timestamp": "2026-01-20 23:39:36.040924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/state-sync-driver/src/continuous_syncer.rs] [Function: fetch_next_data_notification()] [Configuration Mutation] Can max_stream_wait_time_ms or max_num_stream_timeouts be modified in driver_configuration during execution, causing inconsistent timeout behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cedc62e5-5612-41b6-947b-7288a77b49cd?mode=deep",
+    "timestamp": "2026-01-20 23:39:48.534092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/state-sync-driver/src/continuous_syncer.rs] [Function: process_active_stream_notifications()] [Configuration Limits] Can max_consecutive_stream_notifications be set to 0 or very large values, causing either immediate loop exit or resource exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c7a2649-cf01-4708-9809-2f781f5664e9?mode=deep",
+    "timestamp": "2026-01-20 23:40:01.189906",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/state-sync-driver/src/continuous_syncer.rs] [Function: verify_proof_ledger_info()] [Version Boundary] At the exact version where sync_request_version == proof_version, is the ledger info properly accepted, or does the strict less-than check at line 440 reject valid proofs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aaaeb955-b11a-4812-abd3-da8295bc3af1?mode=deep",
+    "timestamp": "2026-01-20 23:40:14.343521",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/state-sync-driver/src/continuous_syncer.rs] [Function: verify_proof_ledger_info()] [Signature Aggregation] Does verify\n\n### Citations\n\n**File:** state-sync/state-sync-driver/src/continuous_syncer.rs (L1-544)\n```rust\n// Copyright © Aptos Foundation\n// Parts of the project are originally copyright © Meta Platforms, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{\n    driver::DriverConfiguration,\n    error::Error,\n    metrics,\n    metrics::ExecutingComponent,\n    notification_handlers::ConsensusSyncRequest,\n    storage_synchronizer::{NotificationMetadata, StorageSynchronizerInterface},\n    utils,\n    utils::{OutputFallbackHandler, SpeculativeStreamState, PENDING_DATA_LOG_FREQ_SECS},\n};\nuse aptos_config::config::ContinuousSyncingMode;\nuse aptos_data_streaming_service::{\n    data_notification::{DataNotification, DataPayload, NotificationId},\n    data_stream::DataStreamListener,\n    streaming_client::{DataStreamingClient, Epoch, NotificationAndFeedback, NotificationFeedback},\n};\nuse aptos_infallible::Mutex;\nuse aptos_logger::{prelude::*, sample, sample::SampleRate};\nuse aptos_storage_interface::DbReader;\nuse aptos_types::{\n    ledger_info::LedgerInfoWithSignatures,\n    transaction::{TransactionListWithProofV2, TransactionOutputListWithProofV2, Version},\n};\nuse std::{sync::Arc, time::Duration};\n\n/// A simple component that manages the continuous syncing of the node\npub struct ContinuousSyncer<StorageSyncer, StreamingClient> {\n    // The currently active data stream (provided by the data streaming service)\n    active_data_stream: Option<DataStreamListener>,\n\n    // The config of the state sync driver\n    driver_configuration: DriverConfiguration,\n\n    // The handler for output fallback behaviour\n    output_fallback_handler: OutputFallbackHandler,\n\n    // The speculative state tracking the active data stream\n    speculative_stream_state: Option<SpeculativeStreamState>,\n\n    // The client through which to stream data from the Aptos network\n    streaming_client: StreamingClient,\n\n    // The interface to read from storage\n    storage: Arc<dyn DbReader>,\n\n    // The storage synchronizer used to update local storage\n    storage_synchronizer: StorageSyncer,\n}\n\nimpl<\n        StorageSyncer: StorageSynchronizerInterface + Clone,\n        StreamingClient: DataStreamingClient + Clone,\n    > ContinuousSyncer<StorageSyncer, StreamingClient>\n{\n    pub fn new(\n        driver_configuration: DriverConfiguration,\n        streaming_client: StreamingClient,\n        output_fallback_handler: OutputFallbackHandler,\n        storage: Arc<dyn DbReader>,\n        storage_synchronizer: StorageSyncer,\n    ) -> Self {\n        Self {\n            active_data_stream: None,\n            driver_configuration,\n            output_fallback_handler,\n            speculative_stream_state: None,\n            streaming_client,\n            storage,\n            storage_synchronizer,\n        }\n    }\n\n    /// Checks if the continuous syncer is able to make progress\n    pub async fn drive_progress(\n        &mut self,\n        consensus_sync_request: Arc<Mutex<Option<ConsensusSyncRequest>>>,\n    ) -> Result<(), Error> {\n        if self.active_data_stream.is_some() {\n            // We have an active data stream. Process any notifications!\n            self.process_active_stream_notifications(consensus_sync_request)\n                .await\n        } else if self.storage_synchronizer.pending_storage_data() {\n            // Wait for any pending data to be processed\n            sample!(\n                SampleRate::Duration(Duration::from_secs(PENDING_DATA_LOG_FREQ_SECS)),\n                info!(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aff86ce2-4d43-433c-88e5-8f15a29d9072?mode=deep",
+    "timestamp": "2026-01-20 23:40:28.357760",
+    "report_generated": false
+  }
+]
