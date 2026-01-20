@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [System account funding] Does receiver validation check if the resolved AccountAddress is a system address (0x1, 0x2, etc.) that should never be funded, or can attackers drain faucet funds to system accounts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f220a707-4498-4dc9-a60e-ac5c144d7002?mode=deep",
+    "timestamp": "2026-01-20 03:48:28.160802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Zero address funding] Can attackers request funding for the zero address (0x0), potentially causing undefined behavior in downstream transaction creation or account creation logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8202357-bef8-4ebd-b54f-69232a17fb06?mode=deep",
+    "timestamp": "2026-01-20 03:48:40.350780",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Receiver uniqueness] If multiple requests target the same receiver concurrently, does CheckerData track this properly, or can race conditions in checker state cause double-funding before rate limits update? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44dfdfe2-a94a-4b43-bc46-0f7a78cfb59d?mode=deep",
+    "timestamp": "2026-01-20 03:48:52.877272",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Header map clone overhead] HeaderMap is cloned into Arc for every request - can attackers send requests with enormous header maps (e.g., 1000+ headers) to cause memory exhaustion or slow down request processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17878cf0-7307-46c0-9930-135c5f33e249?mode=deep",
+    "timestamp": "2026-01-20 03:49:05.736976",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Time skew exploitation] get_current_time_secs() is used for time_request_received_secs - if system time is manipulated or skewed, can attackers exploit time-based rate limiting by setting system clock backwards? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5b94217-284c-49f0-a345-a9a85cd67e88?mode=deep",
+    "timestamp": "2026-01-20 03:49:19.233819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [CheckerData immutability] CheckerData is cloned for each checker/bypasser - if checkers modify shared state referenced by Arc<HeaderMap>, can concurrent modifications cause race conditions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c6688bd-c49b-424b-b0c2-415dc2333415?mode=deep",
+    "timestamp": "2026-01-20 03:49:33.971837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Bypasser privilege escalation] If any bypasser returns true, the request bypasses ALL checkers and storage - can attackers exploit vulnerabilities in a single weak bypasser to completely circumvent rate limiting, IP blocking, and captcha? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_284c1d15-a0ea-4409-8001-3c537e21f72a?mode=deep",
+    "timestamp": "2026-01-20 03:49:49.699029",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Bypasser error handling] BypasserError is returned if request_can_bypass fails - does this leak information about internal bypasser logic that attackers can use to craft bypass-eligible requests? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89edcc06-66f9-4e8d-9617-694c6a74fafc?mode=deep",
+    "timestamp": "2026-01-20 03:50:05.605122",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Bypasser short circuit] The function returns immediately when a bypasser says yes - can attackers exploit this to avoid triggering defensive logging that would occur if checkers ran? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0b295f2-7c40-4d6f-b34c-969c297a8149?mode=deep",
+    "timestamp": "2026-01-20 03:50:22.842084",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Bypasser order dependency] Bypassers are checked in Vec order - can attackers exploit differences in bypasser evaluation order by crafting requests that satisfy later bypassers after earlier ones fail? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1eec169f-1019-45d0-9840-6e0bd3f3c76b?mode=deep",
+    "timestamp": "2026-01-20 03:50:40.380683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Bypasser state corruption] If a bypasser has internal state (e.g., whitelist cache), can attackers exploit race conditions in async bypasser execution to corrupt this state across concurrent requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0811798f-2bc0-4271-b5fa-b9bb1765ab14?mode=deep",
+    "timestamp": "2026-01-20 03:50:58.991221",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Checker accumulation] rejection_reasons.extend() accumulates all checker failures - can attackers learn about all active checkers by intentionally triggering every rejection reason, enabling them to craft targeted bypass attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9366c04-3f25-48b7-8281-0faddbd0c1fd?mode=deep",
+    "timestamp": "2026-01-20 03:51:18.397088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Early return exploitation] When return_rejections_early is true, checking stops after first rejection - does this create a side channel where attackers can determine checker ordering and focus attacks on early checkers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e8b47f5-2ea4-403b-bdf1-be47002e6358?mode=deep",
+    "timestamp": "2026-01-20 03:51:38.452461",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Checker error vs rejection] Checker.check() can return error OR rejection_reasons - can attackers distinguish between checker failures (CheckerError) and intentional rejections to probe system health? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc6b96e4-7c66-423d-8746-a8db45b68a2e?mode=deep",
+    "timestamp": "2026-01-20 03:51:59.760051",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Dry run state pollution] The dry_run parameter is passed to checker.check() - do checkers properly avoid modifying persistent state during dry runs, or can attackers use is_eligible to pollute rate limiting databases? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d08ce021-b349-49d7-b2d1-c79f48ec95e9?mode=deep",
+    "timestamp": "2026-01-20 03:52:21.554892",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Checker order exploitation] Checkers run in Vec order - can attackers exploit checker ordering to bypass rate limits by ensuring cheaper checkers (IP-based) run before expensive ones (captcha) and get rejected differently? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d9464c0-5bdb-4d03-baf6-d470ca411bfd?mode=deep",
+    "timestamp": "2026-01-20 03:52:44.527585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Partial checker failure] If some checkers succeed and others fail, does the rejection reasons list expose which specific checkers passed, allowing attackers to incrementally learn about security controls? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3367288-5ebe-481e-8c0e-979db4264363?mode=deep",
+    "timestamp": "2026-01-20 03:53:07.527424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::preprocess_request()] [Checker state races] Multiple concurrent requests from same IP/account hit different checkers in parallel - can race conditions in checker state updates allow N concurrent requests to each see N-1 prior requests as not yet rate-limited? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd42d886-ff22-4229-a624-8d1a3fd626bd?mode=deep",
+    "timestamp": "2026-01-20 03:53:29.420004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::fund_inner()] [Bypass flag persistence] The bypass flag from preprocessing is passed to funder.fund() - if bypass=true, does this completely skip all funding preconditions including account existence checks, allowing creation of duplicate accounts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d013b510-3eb7-460a-905b-342a5708e7a8?mode=deep",
+    "timestamp": "2026-01-20 03:53:51.034803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::fund_inner()] [Asset parameter trust] The asset parameter is passed directly to funder without validation - can attackers specify assets that the funder is not authorized to mint/transfer, causing unauthorized token creation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b69e483-844b-474a-a2d5-d8614da66e54?mode=deep",
+    "timestamp": "2026-01-20 03:54:12.475712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::fund_inner()] [Amount enforcement bypass] If fund_request.amount is set to Some(u64::MAX), does the funder properly cap this to the configured maximum, or can attackers drain the entire faucet balance in one request? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e514378-6614-4649-a074-5c066f5c7590?mode=deep",
+    "timestamp": "2026-01-20 03:54:34.103836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::fund_inner()] [Check_only flag confusion] The check_only=false flag ensures transactions are submitted - but if an attacker can manipulate this to false during is_eligible calls, could they receive funds through the eligibility endpoint? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56e2ec05-ce29-4e1d-9139-1ea99f9ef054?mode=deep",
+    "timestamp": "2026-01-20 03:54:56.742356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::fund_inner()] [Transaction hash extraction] txn_hashes are extracted from both Ok and Err results - if an error occurs mid-transaction, can partially successful transactions be hidden in the error path while funds are still transferred? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8700c8b2-bc69-435c-a517-7dff79fa6778?mode=deep",
+    "timestamp": "2026-01-20 03:55:17.773373",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::fund_inner()] [JWT sub logging] jwt_sub() is called but errors are silently ignored with .ok() - can attackers exploit JWT parsing errors to avoid proper request attribution in logs, hindering forensic analysis? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2bc26ec-17e3-42a9-8a26-a33dd17e12a8?mode=deep",
+    "timestamp": "2026-01-20 03:55:37.486110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundApiComponents::fund_inner()] [Success flag manipulation] The success = fund_result.is_ok() log field can be misleading if transaction submission succeeds but on-chain execution fails - can this cause incorrect rate limit updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12c63639-b8cc-4c8e-a4c1-872fa7944378?mode=deep",
+    "timestamp": "2026-01-20 03:55:58.491982",
+    "report_generated": false
+  }
+]
