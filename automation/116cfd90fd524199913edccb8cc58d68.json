@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: start_new_epoch()] [vtxn_pool sharing] At lines 234 and 244, the same vtxn_pool is cloned and passed to both consensus manager types. Can concurrent writes to the VTxnPoolState cause race conditions, especially during epoch transition when old and new managers might overlap? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a4f0804-aacb-4fc3-a944-3c324e3a55c8?mode=deep",
+    "timestamp": "2026-01-20 03:52:09.715436",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: start_new_epoch()] [Private key sharing] At lines 230 and 240, Arc::new(my_sk) creates a shared reference to the private key. If multiple consensus managers are created (e.g., due to rapid epoch transitions), can they perform concurrent signing operations, potentially violating safety rules or causing nonce reuse? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f26d9686-c9cb-4a53-aa31-4727ec4f5bd7?mode=deep",
+    "timestamp": "2026-01-20 03:52:22.468674",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: start_new_epoch()] [ReliableBroadcast configuration] At lines 204-212, ReliableBroadcast is configured with hardcoded values (5ms backoff, 1000ms timeout, 8 executors). Are these values safe for all network conditions? Can a well-timed network partition exploit these timeouts to prevent reliable broadcast of critical JWK updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a68a9ffe-0d7b-4e6d-ac50-4569daff08c7?mode=deep",
+    "timestamp": "2026-01-20 03:52:35.558718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: shutdown_current_processor()] [Incomplete cleanup] At lines 266-274, only jwk_manager_close_tx and jwk_updated_event_txs are cleaned up. The jwk_rpc_msg_tx at line 57 is never set to None. Can RPC messages continue to be queued in the old channel after shutdown, causing memory leaks or processing of stale messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_576b3ddb-d7e9-4869-b67b-f0f2d1e1a28d?mode=deep",
+    "timestamp": "2026-01-20 03:52:49.844640",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: shutdown_current_processor()] [Shutdown timeout] At line 270, ack_rx.await waits indefinitely for acknowledgment from the consensus manager. If the manager is stuck in an infinite loop or deadlock, can this cause the entire epoch transition to hang, preventing the network from progressing to the next epoch? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc976742-e910-41fa-8295-73b997ac9f55?mode=deep",
+    "timestamp": "2026-01-20 03:53:04.455580",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: shutdown_current_processor()] [Double shutdown] If shutdown_current_processor() is called multiple times rapidly (e.g., during concurrent epoch transitions), the take() at line 267 returns None on subsequent calls. Can this cause the second shutdown to skip the acknowledgment wait, leaving the old manager running and causing two managers to operate simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47145792-0174-4e3e-8388-7fd8ef01e999?mode=deep",
+    "timestamp": "2026-01-20 03:53:20.318206",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: shutdown_current_processor()] [Channel drop timing] At line 273, jwk_updated_event_txs is set to None, potentially dropping the sender while the consensus manager's receiver is still active. Can this cause a race where the manager receives a partial message, leading to corruption or panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_561b2001-da2a-4d73-b525-6476dab68411?mode=deep",
+    "timestamp": "2026-01-20 03:53:37.953770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: on_new_epoch()] [Non-atomic transition] At lines 260-262, shutdown and restart are separate operations. Can a validator crash between these operations, leaving it in a state where the old epoch is shutdown but the new epoch never starts, requiring manual intervention to recover? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec8e4fa6-7a1e-4f69-a43a-ce400c629529?mode=deep",
+    "timestamp": "2026-01-20 03:53:56.717698",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: shutdown_current_processor()] [Acknowledgment forgery] The shutdown acknowledgment mechanism at lines 268-270 uses a oneshot channel. If the consensus manager is malicious or compromised, can it send acknowledgment without actually shutting down, causing the epoch manager to proceed while the old manager continues running? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fa57309-f37a-4f3b-8b02-3693c774e6c6?mode=deep",
+    "timestamp": "2026-01-20 03:54:17.198581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Struct: EpochManager] [Channel ordering] At lines 55-58, three separate Option<Channel> fields are used. Can these channels get out of sync during epoch transitions, where jwk_rpc_msg_tx is Some but jwk_updated_event_txs is None, causing inconsistent message delivery to the consensus manager? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d030cfe-b044-46de-9b07-848a4047e98f?mode=deep",
+    "timestamp": "2026-01-20 03:54:38.299015",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: start_new_epoch()] [KLAST vs FIFO policy] At line 220, QueueStyle::KLAST is used for JWK events (keeping only latest), while line 222 uses FIFO for RPC messages. Can this policy difference cause consensus managers to have inconsistent views where some see the latest JWK state but others process events in order? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9d39d37-7168-4fa1-b9db-1d17027ae466?mode=deep",
+    "timestamp": "2026-01-20 03:55:00.786067",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: start_new_epoch()] [Channel buffer overflow] The RPC message channel at line 222 has capacity 100. During periods of high network activity or Byzantine flooding attacks, can this buffer fill up, causing subsequent messages to be dropped silently at line 101 and breaking consensus progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c8ff210-b2e8-44f4-a450-4adbd9a06017?mode=deep",
+    "timestamp": "2026-01-20 03:55:24.131965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: process_rpc_request()] [Priority inversion] RPC messages are pushed with peer_id as priority key at line 101. Can a Byzantine validator with a specific AccountAddress exploit the priority ordering to ensure their malicious messages are processed before honest validators' messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c7f7fe6-6b5d-417d-bceb-fc4931c6c915?mode=deep",
+    "timestamp": "2026-01-20 03:55:48.205090",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: process_onchain_event()] [Event loss] At line 115, events are pushed to a channel with capacity 1 (KLAST). If multiple JWK update events arrive rapidly, only the latest is kept. Can this cause validators to miss intermediate state transitions that are critical for consensus safety? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e7b1676-1001-47b8-a0a5-2fdf4f7cddff?mode=deep",
+    "timestamp": "2026-01-20 03:56:13.497707",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Struct: EpochManager] [Sender reference counting] All channels use Option<aptos_channel::Sender<...>>. When set to None during shutdown, does the Sender properly close the channel, or can the receiver keep receiving old buffered messages from the previous epoch? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5b292ee-8b8b-458e-9385-3cd0a41ac45c?mode=deep",
+    "timestamp": "2026-01-20 03:56:39.840675",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Struct: EpochManager] [Self-sender loop] At line 61, self_sender allows sending messages to oneself. Can a malicious consensus manager use this to inject fake RPC messages that appear to come from the network, bypassing network layer authentication? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60a31d96-81a1-4f64-a815-8a2cd87c9b40?mode=deep",
+    "timestamp": "2026-01-20 03:57:06.898724",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: start_new_epoch()] [Network sender cloning] At lines 199-203, a NetworkSender is created with clones of network_sender and self_sender. If the original senders are updated (e.g., during network reconfiguration), will the cloned senders in the consensus manager become stale, causing message delivery failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13fc2473-af7a-4d4f-b272-e0ceed3372a8?mode=deep",
+    "timestamp": "2026-01-20 03:57:35.431630",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Struct: EpochManager] [Network sender sharing] The network_sender at line 62 is shared across all epochs. Can messages from old epochs be routed to validators who have transitioned to new epochs, causing protocol confusion or message replay attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23dd77d4-459c-40a5-9d23-13d4963f4e11?mode=deep",
+    "timestamp": "2026-01-20 03:58:05.214261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: start_new_epoch()] [ReliableBroadcast address list] At line 206, get_ordered_account_addresses() provides the validator list. If this list includes the validator's own address, can the ReliableBroadcast send messages to itself, creating feedback loops or infinite message amplification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09dd185a-3b4a-4464-b324-55837039ff19?mode=deep",
+    "timestamp": "2026-01-20 03:58:36.793076",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: start_new_epoch()] [Network layer bypass] The NetworkSender is wrapped in Arc at line 207 and passed to ReliableBroadcast. Can the consensus manager bypass the ReliableBroadcast and send messages directly via the NetworkSender, avoiding broadcast guarantees and causing inconsistent message delivery? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d76bfc6-c6a4-46b8-93ea-908bd2f6fabd?mode=deep",
+    "timestamp": "2026-01-20 03:59:06.747951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: process_rpc_request()] [Result ignored] At line 104, Ok(()) is always returned regardless of whether message forwarding succeeded. Can callers incorrectly assume the message was processed, leading to logic errors or inconsistent state tracking? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e6a72fc-7f97-478b-ba0b-f2aaccb8ca11?mode=deep",
+    "timestamp": "2026-01-20 03:59:38.467404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: process_onchain_event()] [Result ignored] Similarly at line 119, Ok(()) is always returned. If try_from() fails at line 113 for critical events, is this failure properly communicated to callers, or does silent failure cause consensus divergence? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38a3b59c-db88-49be-99a0-e5650496d654?mode=deep",
+    "timestamp": "2026-01-20 04:00:10.733143",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: start()] [Error logging only] At lines 137-139, all errors from processing are logged but not handled. Can repeated errors cause the error! macro to consume excessive resources, or are there attacks that deliberately trigger errors to spam logs and mask genuine issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f7e30cb-47c3-47aa-b80c-4c138f860dfb?mode=deep",
+    "timestamp": "2026-01-20 04:00:42.440881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: await_reconfig_notification()] [Unwrap panic] At line 151, unwrap() is called on the result of start_new_epoch(). If epoch initialization fails (e.g., corrupted config, key extraction failure), the entire validator node panics. Is this acceptable, or should there be graceful error recovery? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_096af9c2-2e96-4b28-95a3-ad0ec00706b7?mode=deep",
+    "timestamp": "2026-01-20 04:01:09.967683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/epoch_manager.rs] [Function: await_reconfig_notification()] [Expect panic] At line 148, expect() will panic if reconfig_events stream ends. Can a network issue or malicious actor close this stream, causing all validators to panic simultaneously and creating a network-wide outage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fc50b31-5a1f-477b-b7e4-dc5558e4b65b?mode=deep",
+    "timestamp": "2026-01-20 04:01:36.854809",
+    "report_generated": false
+  }
+]
