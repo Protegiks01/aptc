@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: add()] [TOCTOU Race Condition] In the add() function, there's a check-then-insert pattern where get_loc() is called before insert(). Could a race condition occur in concurrent compilation scenarios where two threads pass the uniqueness check simultaneously, allowing duplicate keys to be inserted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92a90c44-139b-4100-a866-0250c2194aac?mode=deep",
+    "timestamp": "2026-01-20 17:11:35.245835",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: add()] [Logic Error] The add() function uses assert!(old_value.is_none()) after insertion. If this assertion fails due to a logic bug, could it cause a panic that crashes the compiler, potentially during critical compilation of governance or staking modules? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7043404e-83d4-45da-8a3f-c64f9536e5ee?mode=deep",
+    "timestamp": "2026-01-20 17:11:47.765455",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: add()] [Uniqueness Bypass] Could an attacker craft Move source code with keys that have different TName representations but identical K::Key values after drop_loc(), bypassing the uniqueness check and allowing duplicate function/struct definitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_080f8259-52ed-46c0-8d81-8a30a72805a1?mode=deep",
+    "timestamp": "2026-01-20 17:12:00.705596",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: add()] [Error Handling] If get_loc() returns Some but the subsequent insert() somehow succeeds (logic error), the assertion at line 35 would fail. Could this inconsistent state lead to undefined behavior or memory unsafety in unsafe code blocks elsewhere? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9aba66e0-a441-4317-9ddd-4785a73672fc?mode=deep",
+    "timestamp": "2026-01-20 17:12:14.030340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: add()] [Type Safety] The add() function calls key.drop_loc() which consumes the key. If the TName trait implementation is incorrect, could this lead to use-after-free or double-free issues when the error path returns the key? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a0bc2bc-b274-4e93-8394-48232859eeaa?mode=deep",
+    "timestamp": "2026-01-20 17:12:28.019422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: get()] [Borrow Lifetime] The get() function returns Option<&V> with an implicit lifetime tied to self. Could incorrect lifetime management in calling code lead to dangling references if the UniqueMap is modified while a reference is held? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2e28838-406f-4fbf-9dcd-f16d821d09ad?mode=deep",
+    "timestamp": "2026-01-20 17:12:43.147343",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: get_mut()] [Aliasing Violation] If get_mut() is called while other immutable references exist from get(), could this violate Rust's aliasing rules and lead to undefined behavior in unsafe code that manipulates the returned mutable reference? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2252699f-1450-43a2-b343-d7b0318bc2a3?mode=deep",
+    "timestamp": "2026-01-20 17:12:58.885287",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: get_loc()] [Location Spoofing] Could an attacker manipulate source code to create keys with crafted location information that get_loc() returns, potentially leading to misleading compiler error messages that hide actual security issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d02002bf-df79-4fa4-85b8-599e3c88dda2?mode=deep",
+    "timestamp": "2026-01-20 17:13:17.028859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: contains_key()] [TOCTOU] If contains_key() is used to check existence before calling add(), is there a TOCTOU window where the map state could change between the check and the insertion, allowing duplicate keys in multi-threaded compilation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_218c49f4-88a9-4ce8-ac17-b5becdb75cdb?mode=deep",
+    "timestamp": "2026-01-20 17:13:36.053200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: contains_key_()] [Key Representation] The contains_key_() function operates directly on K::Key. Could there be keys that are equal according to K::Key's Eq but represent different semantic entities, leading to false positives in duplicate detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0978ee86-848d-4019-a844-93fbe54dc16e?mode=deep",
+    "timestamp": "2026-01-20 17:13:56.074857",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: remove()] [State Consistency] If remove() is called during iteration, could this invalidate iterators and cause use-after-free or skip elements, potentially causing the compiler to miss analyzing certain definitions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5dc91f4-1160-428e-acfd-c0a2238a17d1?mode=deep",
+    "timestamp": "2026-01-20 17:14:16.515439",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: remove_()] [Memory Leak] The remove_() function returns only the value, discarding the location. If the value type V has destructor logic that depends on location information, could this lead to resource leaks or incorrect cleanup? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df41fe82-2c12-430b-b537-6ecbc742b739?mode=deep",
+    "timestamp": "2026-01-20 17:14:38.216884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: map()] [Closure Safety] The map() function applies a closure to transform values. If the closure F panics for certain inputs, could this leave the UniqueMap in a partially transformed state, causing compiler corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6e48d59-3f76-4e3e-9c9f-81272e71a229?mode=deep",
+    "timestamp": "2026-01-20 17:14:59.864047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: map()] [Key Reconstruction] The map() function calls K::add_loc(loc, k_.clone()) to reconstruct keys. If the TName implementation's add_loc is not the inverse of drop_loc, could this create keys with incorrect metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f745acd-71a8-4cfe-9139-85b4d185a2bb?mode=deep",
+    "timestamp": "2026-01-20 17:15:22.538650",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: map()] [Order Preservation] Does map() preserve the iteration order from the underlying BTreeMap? If not, could dependent compilation phases that rely on deterministic ordering produce non-deterministic bytecode? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_907f3a12-239e-4648-b5ca-7277fa77cb8d?mode=deep",
+    "timestamp": "2026-01-20 17:15:46.992793",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: filter_map()] [Predicate Safety] If the filter_map() closure returns None for all elements, it creates an empty map. Could this cause downstream compiler phases to incorrectly handle empty scopes or namespaces? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_957169cb-5d61-470a-85bc-e9ef97feef94?mode=deep",
+    "timestamp": "2026-01-20 17:16:09.965770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: filter_map()] [Uniqueness After Filter] After filter_map() removes some entries, does the resulting map maintain all uniqueness invariants? Could there be edge cases where filtered keys create ambiguity in the remaining entries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_841ab10a-def4-416d-9b97-f37b21f62be9?mode=deep",
+    "timestamp": "2026-01-20 17:16:33.266809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: ref_map()] [Key Cloning] The ref_map() function clones keys with k_.clone(). If K::Key has expensive or fallible Clone implementation, could this cause performance issues or panics during compilation of large modules? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e18b718a-22fb-47f8-b278-f592b23e535a?mode=deep",
+    "timestamp": "2026-01-20 17:16:56.397371",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: ref_map()] [Borrow Lifetime] The ref_map() function takes &V but produces owned V2. Could incorrect lifetime assumptions in the closure lead to dangling pointers if V2 contains references to V? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6cb283a-0448-4fcd-8372-7faa27393d77?mode=deep",
+    "timestamp": "2026-01-20 17:17:19.450377",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: union_with()] [Assertion Failure] The union_with() function has assert!(joined.add(k, v).is_ok()) at lines 143 and 148. If these assertions fail, could it indicate a logic error in the merge algorithm that causes compiler crashes during module merging? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_400d486b-fa97-466e-8574-e940ae6a10ec?mode=deep",
+    "timestamp": "2026-01-20 17:17:42.885622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: union_with()] [Merge Conflict] When union_with() encounters the same key in both maps, it calls the closure f to resolve conflicts. Could a malicious closure or incorrect merge logic lead to loss of important semantic information? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e6c0ad3-724a-49aa-8d91-9334d5b7ed29?mode=deep",
+    "timestamp": "2026-01-20 17:18:06.340394",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: union_with()] [Determinism] Does union_with() process keys in deterministic order? Could non-deterministic merging lead to different compilation results across runs, breaking reproducible builds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd9e11c2-6eec-4928-b822-a005f0d3a8c8?mode=deep",
+    "timestamp": "2026-01-20 17:18:29.888383",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: union_with()] [Clone Requirement] The union_with() requires V: Clone. If cloning has side effects or can fail in V's implementation, could this cause unexpected behavior during module imports? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8606a876-1ead-4241-9bb4-3b56119b2351?mode=deep",
+    "timestamp": "2026-01-20 17:18:52.982292",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Struct: IntoIter] [Size Hint Mismatch] The IntoIter struct manually tracks size in field 1 (usize). If this size gets out of sync with the actual iterator state, could size_hint() return incorrect values causing buffer overflows in code that pre-allocates based on size_hint? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_501104ac-be0b-4655-ac14-2f5894a0ba83?mode=deep",
+    "timestamp": "2026-01-20 17:19:17.064411",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/legacy-move-compiler/src/shared/unique_map.rs] [Function: IntoIter::next()] [Underflow] The next() implementation decrements self.1 even if it's already 0. Could this cause integer underflow in the size tracking, leading to incorrect iteration counts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bd36d26-7689-4503-ad37-bb392ce62ddc?mode=deep",
+    "timestamp": "2026-01-20 17:19:42.092533",
+    "report_generated": false
+  }
+]
