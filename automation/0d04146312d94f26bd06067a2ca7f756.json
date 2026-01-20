@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: dequeue_rand_ready_prefix()] [Unwrap Safety] Line 122 uses unwrap() on pop_first() - while comment claims safety, can concurrent thread empty queue between check and pop causing panic and validator crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2de7c0e-a427-4767-a7b7-8e48b9aeefab?mode=deep",
+    "timestamp": "2026-01-20 00:53:33.297686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: dequeue_rand_ready_prefix()] [Debug Assert Bypass] Line 127-130 debug_assert! only runs in debug builds - can production build allow blocks without randomness to be dequeued, violating protocol invariant and causing execution failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_828ae730-adb7-458b-b5e4-a2b69fa9ec3f?mode=deep",
+    "timestamp": "2026-01-20 00:53:47.052090",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: dequeue_rand_ready_prefix()] [Prefix Attack] Function assumes first items in BTreeMap form valid prefix - can attacker manipulate round numbers to place malicious blocks at front, getting them dequeued before legitimate blocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41e8b4a9-a5f3-48c8-b85b-8c2e3b28ae3e?mode=deep",
+    "timestamp": "2026-01-20 00:54:01.307061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: dequeue_rand_ready_prefix()] [DropGuard Drop Timing] When QueueItem is dropped at line 126, broadcast_handle DropGuards abort tasks - can premature abort cause in-flight randomness broadcasts to fail, breaking consensus agreement? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6cb641f1-3a27-45cd-a84e-0698e3f9391b?mode=deep",
+    "timestamp": "2026-01-20 00:54:16.229476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: dequeue_rand_ready_prefix()] [Observability Race] Line 124 logs BlockStage::RAND_READY for blocks - can race between logging and actual dequeue cause timing inconsistencies in performance monitoring? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12f89ecc-54b6-4fd8-af9a-3d251b0d73b1?mode=deep",
+    "timestamp": "2026-01-20 00:54:32.636564",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: item_mut()] [Range Query Inefficiency] Lines 142-145 use range_mut(0..=round).last() which scans all items up to round - can attacker spam low round numbers to make lookups O(n) causing validator slowdown? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecd54239-760a-4007-9479-f9a230064a72?mode=deep",
+    "timestamp": "2026-01-20 00:54:50.309965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: item_mut()] [Mutable Aliasing] item_mut() returns &mut QueueItem allowing caller to mutate offsets_by_round or num_undecided_blocks directly - can this break invariants if caller bypasses set_randomness() validation logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_935e35a4-5d75-420f-a7d6-79b1cbbe006b?mode=deep",
+    "timestamp": "2026-01-20 00:55:10.280431",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: item_mut()] [Filter Logic Bug] Line 145 filters by offsets_by_round.contains_key(&round) after finding last item - can off-by-one error in range query return wrong QueueItem if rounds span multiple items? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d07b7b38-0f5f-4337-8469-27fef1929dab?mode=deep",
+    "timestamp": "2026-01-20 00:55:33.921380",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: item_mut()] [Concurrent Modification] While holding mutable reference from item_mut(), can another thread call push_back() or dequeue_rand_ready_prefix() causing UB through aliasing violations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_872c9199-352c-4155-a2e6-6c8db604b96e?mode=deep",
+    "timestamp": "2026-01-20 00:55:58.400580",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: BlockQueue::set_randomness()] [Silent Failure] Lines 149-155 return false if item_mut() returns None without logging - can Byzantine validators silently inject randomness for non-existent rounds to confuse honest nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_611c0a82-750d-4d32-b022-c21bedc0eb68?mode=deep",
+    "timestamp": "2026-01-20 00:56:25.463713",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: BlockQueue::set_randomness()] [No Authentication] set_randomness() doesn't verify the caller has authority to set randomness for the given round - can any component call this to inject malicious randomness values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe594328-d584-4942-bf69-ebdc0cb10184?mode=deep",
+    "timestamp": "2026-01-20 00:56:54.077240",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: BlockQueue::set_randomness()] [Replay Attack] No check if randomness was already set with different value - can attacker repeatedly call set_randomness() with different Randomness objects attempting to replace valid randomness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bdba44cc-5a20-42d3-88f6-319c67b3e468?mode=deep",
+    "timestamp": "2026-01-20 00:57:23.970766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Struct: QueueItem] [Counter Desync] num_undecided_blocks counter at line 20 can desync from actual block state if set_randomness() is called without going through proper validation - can this cause dequeue_rand_ready_prefix() to hang forever? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bf9dc17-8b0e-4226-b433-b2f75299ca6c?mode=deep",
+    "timestamp": "2026-01-20 00:57:53.318888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Struct: QueueItem] [HashMap Consistency] offsets_by_round HashMap at line 19 is built once in constructor but blocks can be modified - can block replacement cause offsets to point to wrong indices? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f1b4727-0463-4b13-a5cc-f865fc34f83f?mode=deep",
+    "timestamp": "2026-01-20 00:58:23.918362",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Struct: BlockQueue] [BTreeMap Invariant] BTreeMap keys are first_round() values - if blocks are reordered after insertion, can key no longer match actual first round causing lookup failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c46a5506-1ad4-434a-8652-22d71ff9db56?mode=deep",
+    "timestamp": "2026-01-20 00:58:56.239166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Struct: BlockQueue] [Missing Synchronization] BlockQueue has no Mutex or RwLock - can concurrent access from multiple consensus threads cause data races on BTreeMap modifications? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d45c330-8c54-416e-9ee8-6adee4382dce?mode=deep",
+    "timestamp": "2026-01-20 00:59:33.142663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Struct: QueueItem] [Arc Mutation] blocks_mut() at line 88-90 returns &mut [Arc<PipelinedBlock>] - can mutation of Arc contents violate Rust's aliasing rules if other threads hold clones? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df555fa6-f770-4eff-bbf9-150b21b67678?mode=deep",
+    "timestamp": "2026-01-20 01:00:06.941037",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: set_randomness()] [TOCTOU Window] Between checking has_randomness() and calling set_randomness() on PipelinedBlock, can another thread set different randomness causing assertion failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0bbdfd3-8930-4ea2-b022-f36ad645f9a2?mode=deep",
+    "timestamp": "2026-01-20 01:00:42.073909",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: set_randomness()] [Underflow Wrap] num_undecided_blocks -= 1 at line 77 without bounds check - can underflow wrap to MAX_USIZE causing dequeue to never trigger? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56077519-1604-4ce4-b5e2-18a8fb876af6?mode=deep",
+    "timestamp": "2026-01-20 01:01:19.866862",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: QueueItem::new()] [Offset Overflow] enumerate() index at line 31 can overflow usize on 32-bit systems with huge block vectors - can this cause offset() to return wrong values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a9c057d-86e3-488a-a28d-dc789fc44e8f?mode=deep",
+    "timestamp": "2026-01-20 01:01:57.670970",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: num_blocks()] [Len Overflow] blocks().len() at line 43 assumes vector length fits in usize - can extremely large OrderedBlocks cause len overflow on 32-bit platforms? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fbf5df38-b47f-4e86-83ab-150356c9e839?mode=deep",
+    "timestamp": "2026-01-20 01:02:34.968017",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Struct: QueueItem] [DropGuard Leak] broadcast_handle Option<Vec<DropGuard>> at line 21 - if QueueItem is never dropped, do DropGuards leak preventing task abortion and resource cleanup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53c30384-ed44-4882-8c6b-30bdad3bdfc8?mode=deep",
+    "timestamp": "2026-01-20 01:03:09.248757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: push_back()] [Unbounded Growth] No maximum queue size enforced - can Byzantine validator flood with OrderedBlocks causing unbounded memory growth until OOM? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88609040-aba9-46a8-a7cc-dd7733b74f52?mode=deep",
+    "timestamp": "2026-01-20 01:03:43.784272",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Function: all_rand_metadata()] [Allocation Attack] Creating Vec with collect() allocates new vector - can repeated calls with large QueueItems cause memory pressure and allocation failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8585aa8c-cea3-41b2-8952-f987df35214e?mode=deep",
+    "timestamp": "2026-01-20 01:04:15.747386",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/block_queue.rs] [Struct: BlockQueue] [BTreeMap Memory] BTreeMap nodes allocate heap memory - can attacker insert many small QueueItems to fragment heap and degrade allocator performance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_485b31da-832d-4096-9af2-b2b77e8dfad9?mode=deep",
+    "timestamp": "2026-01-20 01:04:48.404407",
+    "report_generated": false
+  }
+]
