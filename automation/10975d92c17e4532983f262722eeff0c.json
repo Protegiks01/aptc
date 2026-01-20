@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Status Response Handling] At lines 190-192, Response::Status is silently ignored with continue - can a malicious fullnode send only status responses to prevent any transaction data from being processed, causing an infinite loop that never completes the backfill? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6387bdc1-10d5-4186-8fa2-fe907fc9cf3c?mode=deep",
+    "timestamp": "2026-01-20 03:21:29.106775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Panic on gRPC Error] At lines 195-197, a panic! is triggered on any gRPC error - can a malicious fullnode intentionally close the connection to crash the backfiller, or can transient network issues cause unnecessary process termination? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0361222f-bb03-4c45-bbb3-204d7b4b2d82?mode=deep",
+    "timestamp": "2026-01-20 03:21:42.031931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Transaction Data Validation] At line 182, transactions are passed directly to buffer_and_maybe_dump without validating signatures, version ordering, or data integrity - can a malicious fullnode inject fake or corrupted transactions into the file store? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0494cfc6-1d66-4feb-b1d7-0cf8bf542d67?mode=deep",
+    "timestamp": "2026-01-20 03:21:55.495236",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [No Fullnode Authentication] At lines 161-162, create_grpc_client is called without any authentication - can an attacker perform a man-in-the-middle attack to redirect the backfiller to a malicious fullnode that serves fake transaction data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e73049a-dc5c-4369-8305-46b4e48530b3?mode=deep",
+    "timestamp": "2026-01-20 03:22:10.148847",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Transaction Count Mismatch] At line 165, transactions_count is set to num_transactions_per_folder, but there's no verification that exactly this many transactions are received - can receiving fewer transactions cause incomplete batches that corrupt file store metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fcfb8a9-1428-4125-b395-dbc7eab1570b?mode=deep",
+    "timestamp": "2026-01-20 03:22:24.612563",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [Empty Transaction Vector] At line 232, transactions.first().unwrap() is called - can an empty transaction vector be passed from buffer_and_maybe_dump, causing a panic when unwrapping None? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f26eac36-7584-46e4-9b65-385bd6af9996?mode=deep",
+    "timestamp": "2026-01-20 03:22:40.167113",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [Path Collision] At lines 234-236, the file path is generated using first_version and backfill_id - can concurrent backfill operations with the same backfill_id overwrite each other's files, causing data loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a7e3423-e413-497b-9e74-89d1bd07f7f6?mode=deep",
+    "timestamp": "2026-01-20 03:22:57.417022",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [Batch Metadata Race] At lines 245-256, batch metadata is uploaded only when end_batch is true - can race conditions cause the metadata to be written before all data files are uploaded, creating inconsistent state if the process crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9bdf746-9b19-40a9-8ebb-0cac6da51549?mode=deep",
+    "timestamp": "2026-01-20 03:23:17.050991",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [Metadata Suffix Injection] At line 249, batch_metadata.suffix is set to Some(self.backfill_id) - can an attacker manipulate the backfill_id to inject a malicious suffix that overwrites normal indexer files or creates path traversal vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b276f36a-da02-4619-9674-e3e191cc758c?mode=deep",
+    "timestamp": "2026-01-20 03:23:37.654323",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [File Store Write Failure] At lines 241-243 and 250-255, save_raw_file failures are propagated with ? - if file upload fails partway through a batch, can this leave orphaned data files without corresponding metadata, corrupting the file store structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d5efa5f-9ba0-4c0b-be50-c76030035d85?mode=deep",
+    "timestamp": "2026-01-20 03:23:58.742085",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [Compression Format Vulnerability] At line 239, FileEntry::from_transactions uses Lz4CompressedProto - can maliciously crafted transaction data exploit compression algorithm vulnerabilities (zip bombs, decompression bombs) to cause memory exhaustion when files are later read? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39300e91-48d9-4631-84e2-fb160e7cf809?mode=deep",
+    "timestamp": "2026-01-20 03:24:21.299145",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [Transaction Version Ordering] At line 232, only the first transaction's version is used for the file path - if transactions are out of order, can this cause files to be stored with incorrect version labels, breaking indexer queries? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62bc31be-7055-419e-a891-4c583ae51a91?mode=deep",
+    "timestamp": "2026-01-20 03:24:43.954644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [Batch Metadata Mutation] At line 229, batch_metadata is passed as mut - can modifications to this metadata after file upload but before metadata upload create inconsistencies between data files and their metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eca3e8bb-a1dd-45ca-848e-bcc3bd433f1d?mode=deep",
+    "timestamp": "2026-01-20 03:25:07.845863",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [Serialization Error Handling] At line 253, serde_json::to_vec error is wrapped with anyhow::Error::msg - can serialization failures be silently ignored, causing batch metadata to never be written and leaving batches incomplete? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bbc15dc-5c22-42f2-a72d-ad9b3634bb2c?mode=deep",
+    "timestamp": "2026-01-20 03:25:31.924927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: do_upload()] [No Atomic Upload] The function uploads data file first (lines 241-243) then metadata (lines 250-255) - if the process crashes between these operations, can the system be left with data files that have no corresponding metadata, causing them to be invisible to readers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_231aaefd-4ef3-4c58-b120-e915a86b730f?mode=deep",
+    "timestamp": "2026-01-20 03:25:57.151868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Version Increment Overflow] At line 207, version += self.num_transactions_per_folder could overflow if version is close to u64::MAX - can this cause version to wrap to 0, restarting the backfill from the beginning and overwriting existing data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e0d0671-0e70-4a14-9354-4bc77ce2776b?mode=deep",
+    "timestamp": "2026-01-20 03:26:23.341981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Task Count Multiplication] At line 142, task_version + self.num_transactions_per_folder is computed for display - can this overflow if task_version is near u64::MAX, causing incorrect logging or potential arithmetic issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a5650c4-891c-40bb-961c-02255ce1c42e?mode=deep",
+    "timestamp": "2026-01-20 03:26:49.295568",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Loop Termination Bypass] At line 126, the while condition checks version < self.ending_version - if version overflows and wraps around, can this create an infinite loop that never terminates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_593c49db-be30-428d-afdc-d4116dfc1121?mode=deep",
+    "timestamp": "2026-01-20 03:27:15.651387",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: new()] [Modulo by Zero] At line 69, starting_version % num_transactions_per_folder is computed - although checked at line 64, can a race condition or external modification set num_transactions_per_folder to 0 between checks, causing a division by zero panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_adef5525-461f-4a1f-a5c4-af76cfc42c5a?mode=deep",
+    "timestamp": "2026-01-20 03:27:40.638530",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Subtraction Underflow] If ending_version < starting_version due to misconfiguration, the loop at lines 126-221 should not execute, but can integer underflow in comparison logic cause unexpected behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6a7a279-658c-4063-a039-049984492c47?mode=deep",
+    "timestamp": "2026-01-20 03:28:06.495507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Constant: MAX_SIZE_PER_FILE] [Memory Allocation] At line 31, MAX_SIZE_PER_FILE is set to 50MB - can accumulated buffers from multiple concurrent tasks (backfill_processing_task_count) exceed available system memory, causing OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_933d1fb7-77d2-4be0-9012-43e826affc9e?mode=deep",
+    "timestamp": "2026-01-20 03:28:32.101234",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Unbounded Stream Processing] At lines 173-199, the gRPC stream is processed without timeout - can a slow or stalled fullnode cause the backfiller to hang indefinitely, never completing the backfill operation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_689870e5-1d2f-4b75-b621-fa7f49a4c60e?mode=deep",
+    "timestamp": "2026-01-20 03:28:55.461061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [File Descriptor Leak] Multiple FileStoreOperatorV2 instances are created at lines 133-138 - can failure to properly close these lead to file descriptor exhaustion over long-running backfills? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdc011f6-27a8-44a4-946b-fb95a9afb31c?mode=deep",
+    "timestamp": "2026-01-20 03:29:18.458904",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Disk Space Exhaustion] There's no check for available disk space before writing files - can the backfiller fill the entire disk, causing system-wide failures and potential data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a433e4c0-b8b3-429a-8062-88aa7a66a1db?mode=deep",
+    "timestamp": "2026-01-20 03:29:42.452255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-v2-file-store-backfiller/src/processor.rs] [Function: backfill()] [Channel Buffer Memory] At line 149, the channel capacity is 10, and each message contains Vec<Transaction> - can very large transaction batches cause each channel message to consume gigabytes of memory, leading to OOM? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e90e6c3-9921-42f3-97d8-a653b9bf217b?mode=deep",
+    "timestamp": "2026-01-20 03:30:05.905419",
+    "report_generated": false
+  }
+]
