@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_head()] [Root invalidation] At lines 497-502, execution_root and signing_root are set to None if they match popped item - but these roots may have been advanced to point to other items - can this logic incorrectly nullify valid roots, stalling pipeline progression? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba4521b4-fa90-4eca-b194-875c1f9b85bf?mode=deep",
+    "timestamp": "2026-01-20 13:02:28.660802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: start()] [Head cursor assumption] At line 751, buffer.find_elem_by_key(*self.buffer.head_cursor(), target_block_id) assumes head_cursor is always valid - can empty buffer cause head_cursor() to return invalid cursor, leading to panic in find operation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98a16ffd-e917-4e73-bb61-5e53b9a0e9e2?mode=deep",
+    "timestamp": "2026-01-20 13:02:42.277425",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: try_add_pending_commit_proof()] [Proof verification bypass] At lines 308-333, pending commit proofs are added with only round checking (round > highest_committed_round) but no signature verification - can Byzantine attacker inject forged commit proofs that get cached and later used to advance buffer items to aggregated state without proper quorum? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_532a498e-0a35-4c39-8c91-ea29c3b4be6c?mode=deep",
+    "timestamp": "2026-01-20 13:02:56.590560",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: drain_pending_commit_proof_till()] [Wrong proof selection] At lines 363-378, this function returns the last proof from split range using pop_last() - if multiple pending proofs exist for rounds <= target round, can returning only the last one cause earlier proofs with valid quorums to be ignored, breaking commit ordering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5bd74d1-499a-4611-becd-b9ed9689afed?mode=deep",
+    "timestamp": "2026-01-20 13:03:11.170071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_ordered_blocks()] [Pending vote matching] At lines 412-421, pending_commit_votes are matched by block.round() and vote.commit_info().id() - can Byzantine validators submit votes for incorrect block IDs at the correct round, causing honest votes to be rejected due to ID mismatch while malicious votes are accepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_919f5084-ec5d-4f1a-a2ff-165431b50175?mode=deep",
+    "timestamp": "2026-01-20 13:03:26.937715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_execution_response()] [Pending proof drain timing] At line 667, drain_pending_commit_proof_till(round) is called after execution completes - can Byzantine validators race to submit commit proofs before execution finishes, exploiting the pending proof cache to commit blocks with invalid execution results? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2338e700-8533-4456-a69a-5830cad57532?mode=deep",
+    "timestamp": "2026-01-20 13:03:44.228115",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Struct: BufferManager] [Pending block memory leak] At lines 172-173, pending_commit_blocks stores Arc<PipelinedBlock> after persisting but only clears on successful persistence at line 972 - if persisting_phase_rx never returns success for some blocks, can pending_commit_blocks grow unbounded causing memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22e89eae-455c-4ca8-8529-76f589ca938d?mode=deep",
+    "timestamp": "2026-01-20 13:04:03.877638",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: start()] [Pending state cleanup] At lines 970-972, pending_commit_votes and pending_commit_blocks are split_off at (round+1) after persistence succeeds - can blocks that fail persistence have their pending state leaked, and can subsequent retries reference this stale pending state causing double-commitment? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acd9dd40-f087-4b60-be54-bd9be7959a2e?mode=deep",
+    "timestamp": "2026-01-20 13:04:25.574318",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: need_back_pressure()] [Backpressure bypass] At lines 906-910, back pressure activates when highest_committed_round + MAX_BACKLOG(20) < latest_round - can Byzantine proposer flood with blocks for future rounds that don't trigger backpressure check, exhausting buffer memory before backpressure activates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42c1f422-515c-4929-98ab-43b9e5c96601?mode=deep",
+    "timestamp": "2026-01-20 13:04:48.002709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: start()] [Channel starvation] At lines 938-944, block_rx processing is conditional on !self.need_back_pressure() - if backpressure is always active due to slow persistence, can ordered blocks never be processed, causing complete pipeline stall and permanent liveness failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6eed3048-f736-4ff5-bd37-123e2bd0426c?mode=deep",
+    "timestamp": "2026-01-20 13:05:12.670643",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_ordered_blocks()] [Unbounded channel] At lines 407-410, execution_schedule_phase_tx.send() is unbounded - can malicious ordering generate unlimited execution requests faster than they can be processed, causing OOM crash via channel buffer exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98e9164b-427d-4fd0-930b-104a1351520e?mode=deep",
+    "timestamp": "2026-01-20 13:05:36.724022",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: advance_signing_root()] [Channel blocking] At lines 482-486, signing_phase_tx.send() can fail but only logs error with expect() - can malicious signing phase close the channel causing expect() panic and validator crash, breaking liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5dfef06-a260-4a2e-9f49-c9fca4ca3786?mode=deep",
+    "timestamp": "2026-01-20 13:06:02.850920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: spawn_retry_request()] [Unbounded retries] At lines 293-306, retry requests are spawned with exponential backoff but no max retry limit - can persistent channel failures cause infinite retry tasks to accumulate, exhausting system resources and causing OOM? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cadbaef-9d2e-4941-a398-abbdb92a41f7?mode=deep",
+    "timestamp": "2026-01-20 13:06:30.237606",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: start()] [Message verification bypass] At lines 919-934, commit messages are verified in a separate spawned task - can the verification task be overwhelmed with invalid messages, causing legitimate commit votes to be delayed and breaking liveness due to missed quorum deadlines? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df95f172-7748-45a9-b703-aa50c70df514?mode=deep",
+    "timestamp": "2026-01-20 13:06:59.442899",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: create_new_request()] [Task tracking overflow] At line 290, CountedRequest increments ongoing_tasks atomic counter - can integer overflow of AtomicU64 after 2^64 requests cause counter to wrap to 0, breaking reset() synchronization at line 573 which waits for ongoing_tasks == 0? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9be7abf-f759-4635-9c08-b3029a3367c7?mode=deep",
+    "timestamp": "2026-01-20 13:07:30.152768",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: reset()] [Incomplete pipeline abort] At lines 552-558, buffer items are popped and aborted, but execution_schedule_phase_rx and execution_wait_phase_rx are not drained - can pending execution responses arrive after reset(), operating on cleared buffer state and causing panic or corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0729e5f4-4072-4f09-86f3-8b247c303235?mode=deep",
+    "timestamp": "2026-01-20 13:08:02.132502",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: reset()] [Race with block_rx] At lines 565-571, block_rx is purged using try_next() but this is non-blocking - can concurrent OrderedBlocks be sent to block_rx during reset(), causing these blocks to be processed immediately after reset completes with stale epoch state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84a9de0f-056c-4f55-9a49-a93493edf1f4?mode=deep",
+    "timestamp": "2026-01-20 13:08:35.888285",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: reset()] [Ongoing tasks race] At lines 573-575, reset waits for ongoing_tasks to reach 0 by polling every 10ms - can CountedRequest tasks that are waiting on channel sends indefinitely prevent reset from completing, causing permanent hang and requiring node restart? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46b47431-2026-4d15-9ece-1a1b3d4ec6ec?mode=deep",
+    "timestamp": "2026-01-20 13:09:10.628466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_reset_request()] [Ack timing] At line 594, ResetAck is sent only after reset() completes - can the caller timeout waiting for ack if reset hangs on ongoing_tasks wait, causing caller to assume reset failed while reset is still in progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c826f191-0c52-4659-aba2-e6acf35eaaf9?mode=deep",
+    "timestamp": "2026-01-20 13:09:46.335715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: reset()] [Reliable broadcast cleanup] At line 563, commit_proof_rb_handle is dropped, aborting ongoing broadcasts - can this cause partially sent commit votes to be lost mid-flight, preventing other validators from achieving quorum and breaking liveness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97fa5216-d26d-4313-8bd6-4f7e98e2d441?mode=deep",
+    "timestamp": "2026-01-20 13:10:19.898678",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: reset()] [Cursor state inconsistency] At lines 560-561, execution_root and signing_root are set to None, but buffer is recreated at line 559 - can reset() be called while roots point to valid cursors, causing subsequent root advancement logic to incorrectly restart from buffer head instead of resuming progress? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d62d5d1f-ed63-4f57-a7fa-42f71547977f?mode=deep",
+    "timestamp": "2026-01-20 13:10:54.524596",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_reset_request()] [Stop flag race] At line 584, self.stop is set to true for ResetSignal::Stop but start() loop checks stop at line 935 - can race between setting stop and loop check cause one more select iteration to execute, processing messages with stopped state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5b384f0-00d8-4aa3-83f4-4889cde74bcd?mode=deep",
+    "timestamp": "2026-01-20 13:11:29.492635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_execution_response()] [Error handling] At lines 617-626, executor errors are logged but item remains in Ordered state - can repeated execution errors for the same block cause it to block pipeline progress indefinitely, as advance_execution_root() will keep returning the same failed block? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7e3575d-7703-4240-b78c-77f6c335ad17?mode=deep",
+    "timestamp": "2026-01-20 13:12:03.821795",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_execution_response()] [Block ID mismatch] At lines 634-641, response block_id is compared to current_item.block_id() and mismatches are logged and ignored - can Byzantine executor send execution results for different block IDs to confuse buffer manager and prevent correct blocks from being executed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d52c075-9395-4ff4-a329-07c966949bb4?mode=deep",
+    "timestamp": "2026-01-20 13:12:37.040728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/pipeline/buffer_manager.rs] [Function: process_execution_response()] [Reconfiguration detection] At lines 646-657, end_epoch_timestamp is set on first reconfiguration block found - can Byzantine executor manipulate has_reconfiguration() flag in execution results to prematurely trigger epoch end, causing subsequent valid blocks to be rejected? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67aec9c8-a13d-4f9c-bb6c-3d486630eb67?mode=deep",
+    "timestamp": "2026-01-20 13:13:10.006584",
+    "report_generated": false
+  }
+]
