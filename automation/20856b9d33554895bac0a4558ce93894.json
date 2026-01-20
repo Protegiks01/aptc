@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: FILE_PATH] [Path Injection] Can an attacker set MOVE_VM_TRACE environment variable to an arbitrary path (e.g., '/etc/passwd', '../../../sensitive_data') to overwrite critical system files or validator configuration, potentially compromising validator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f640a11-a91b-45f6-a698-38cfd1e79275?mode=deep",
+    "timestamp": "2026-01-20 14:54:06.547579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: FILE_PATH] [Path Traversal] Does the FILE_PATH initialization properly sanitize the MOVE_VM_TRACE environment variable, or can an attacker use path traversal sequences (../, symlinks) to write trace data to unauthorized locations causing file system corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5553831-5d43-4752-996e-bf90bfdabc7f?mode=deep",
+    "timestamp": "2026-01-20 14:54:19.035169",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: FILE_PATH] [Symbolic Link Attack] If MOVE_VM_TRACE points to a symbolic link created by an attacker, could trace data be redirected to overwrite critical validator files (consensus state, private keys, blockchain data) leading to total validator compromise? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_546c8abc-ae4c-4713-ae28-a970e53d5de5?mode=deep",
+    "timestamp": "2026-01-20 14:54:31.988255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: FILE_PATH] [Device File Attack] Can MOVE_VM_TRACE be set to special device files (/dev/null, /dev/random, /dev/zero, named pipes) to cause resource exhaustion, hang the validator process, or create covert channels for information exfiltration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba5cdecc-a31f-4fc9-8948-e84a3d6718e4?mode=deep",
+    "timestamp": "2026-01-20 14:54:45.239779",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: FILE_PATH] [Race Condition TOCTOU] Is there a time-of-check-time-of-use race between Lazy initialization of FILE_PATH and file opening in LOGGING_FILE_WRITER where an attacker could swap the target file, causing traces to be written to malicious locations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40ca1f7e-3af8-4d7b-946e-b6b03a585f3a?mode=deep",
+    "timestamp": "2026-01-20 14:54:59.415657",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: LOGGING_FILE_WRITER] [Panic DoS] The OpenOptions::open() call uses unwrap() - can an attacker manipulate file permissions, disk space, or file system state to trigger a panic that crashes the entire validator node causing total loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb5677ef-e249-4a89-96fa-96b612039eef?mode=deep",
+    "timestamp": "2026-01-20 14:55:14.448933",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: LOGGING_FILE_WRITER] [Resource Exhaustion] The BufWriter uses a 4096KB (4MB) buffer - can an attacker trigger continuous tracing to exhaust memory across all validators, causing OOM kills and network-wide consensus failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ced57fcd-d8bf-443d-a291-0faeb95e5c9e?mode=deep",
+    "timestamp": "2026-01-20 14:55:31.151284",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: LOGGING_FILE_WRITER] [Disk Exhaustion] Does trace file growth have any bounds checking, or can an attacker submit transactions that trigger excessive tracing to fill validator disk space, preventing block storage and causing consensus halt? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a863a7d5-68c9-4cb4-aee7-4ebaa936266c?mode=deep",
+    "timestamp": "2026-01-20 14:55:49.206206",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: LOGGING_FILE_WRITER] [File Descriptor Leak] If the file handle from OpenOptions is never properly closed (append mode keeps it open), can repeated Lazy reinitialization or error paths leak file descriptors causing validator to hit OS limits and crash? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74cea07f-fc27-4348-bf01-338d32387d59?mode=deep",
+    "timestamp": "2026-01-20 14:56:08.165782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: LOGGING_FILE_WRITER] [Concurrent Write Corruption] While Mutex protects the writer, if multiple threads panic while holding the lock or during unwrap failures, can this leave the log file in a corrupted state that prevents future validator restarts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_448dad6e-6869-407d-ad65-eb5fcee090e0?mode=deep",
+    "timestamp": "2026-01-20 14:56:27.909449",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: LOGGING_FILE_WRITER] [Append Mode Security] The file is opened with .append(true) - if the target file already exists with sensitive data (validator keys, consensus state), does tracing append to it exposing that data in trace logs accessible to attackers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_676f8cc2-0367-4ae0-94e0-f448ee263c8b?mode=deep",
+    "timestamp": "2026-01-20 14:56:48.631979",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: LOGGING_FILE_WRITER] [Initialization Race] Can concurrent calls to trace() from parallel transaction execution trigger race conditions in Lazy::new() initialization where multiple threads simultaneously try to create the file writer, causing file handle corruption or double-initialization bugs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_718b09b9-5d3c-41bd-b81a-32c19df722b1?mode=deep",
+    "timestamp": "2026-01-20 14:57:11.325173",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: DEBUG_CONTEXT] [Initialization Race] If DEBUG_CONTEXT Lazy initialization races with concurrent trace() calls during parallel Move VM execution, can this cause DebugContext to be in an inconsistent state leading to incorrect debugging behavior or validator crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eeb7606e-91f7-46e9-80c9-911b2ea3eb20?mode=deep",
+    "timestamp": "2026-01-20 14:57:34.026458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [All Statics] [Initialization Ordering] Are there implicit dependencies between the five Lazy statics (FILE_PATH, TRACING_ENABLED, DEBUGGING_ENABLED, LOGGING_FILE_WRITER, DEBUG_CONTEXT) where initialization order could cause race conditions or use-before-init bugs in high-concurrency scenarios? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef8d863d-2ab4-47a8-8840-d5001569e74f?mode=deep",
+    "timestamp": "2026-01-20 14:57:57.776415",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: TRACING_ENABLED] [Environment Variable Race] Can the MOVE_VM_TRACE environment variable be modified after process start (via setenv in parallel threads) causing TRACING_ENABLED check to behave inconsistently across different validator threads leading to non-deterministic execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_858fc70b-71a0-4308-b43b-bdaa73a18878?mode=deep",
+    "timestamp": "2026-01-20 14:58:23.017117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: DEBUGGING_ENABLED] [Environment Variable Race] Similarly, can runtime modification of MOVE_VM_STEP environment variable cause DEBUGGING_ENABLED to have different values across validator threads, breaking deterministic consensus execution requirements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94e4d857-008c-4401-8ab4-cca69651acec?mode=deep",
+    "timestamp": "2026-01-20 14:58:49.435168",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Function: trace()] [Deadlock] The trace() function locks LOGGING_FILE_WRITER then potentially calls debug_loop which might lock DEBUG_CONTEXT - is there any code path where DEBUG_CONTEXT is locked first then LOGGING_FILE_WRITER, creating a classic lock ordering deadlock that halts all validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc5f99e5-68f5-47c5-955c-90b9f5ec321b?mode=deep",
+    "timestamp": "2026-01-20 14:59:16.061790",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Function: trace()] [Lock Poisoning] If a panic occurs while holding the Mutex lock on LOGGING_FILE_WRITER (e.g., in write_fmt or flush), does lock poisoning prevent all future trace calls from succeeding, effectively disabling debugging and potentially hiding subsequent attack attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_943c3c1a-c15a-48eb-b803-4860b98a5fd8?mode=deep",
+    "timestamp": "2026-01-20 14:59:41.682074",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Function: trace()] [Lock Contention DoS] In parallel transaction execution, can an attacker craft transactions that maximize calls to trace(), creating severe lock contention on LOGGING_FILE_WRITER that serializes execution and reduces transaction throughput below consensus requirements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd2b65b6-32aa-4a06-88d5-194aa7dcc099?mode=deep",
+    "timestamp": "2026-01-20 15:00:05.645128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Function: trace()] [Lock Holding Duration] The flush() call inside the locked section performs blocking I/O - can slow disk writes or network-mounted filesystems cause threads to hold the lock for extended periods, starving other transaction executions and breaking liveness guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_847c60c9-3a20-4d71-ad09-2c9a9588d6e9?mode=deep",
+    "timestamp": "2026-01-20 15:00:30.665267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Static: DEBUG_CONTEXT] [Lock Contention] If debug_loop() performs expensive operations (user interaction, slow computations) while holding the DEBUG_CONTEXT lock, can this create lock contention that delays transaction execution and causes validators to fall out of sync? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d896959-9005-4416-b95d-59201b19b554?mode=deep",
+    "timestamp": "2026-01-20 15:00:54.458564",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Function: trace()] [Panic Chain] The function contains three unwrap() calls in sequence (lock, write_fmt, flush) - can an attacker trigger any of these panics to crash the Move VM mid-execution, leaving the validator in an inconsistent state with partial transaction application? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdb67ff2-aaf9-4369-a628-3040a385ba77?mode=deep",
+    "timestamp": "2026-01-20 15:01:17.417382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Function: trace()] [Write Failure Panic] If write_fmt() fails (disk full, I/O error, broken pipe), the unwrap() causes a panic - does this panic occur during critical transaction execution phases where it could corrupt the blockchain state or cause consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10d5318a-734b-4489-aeb9-06eb2dbc4c9b?mode=deep",
+    "timestamp": "2026-01-20 15:01:40.558270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Function: trace()] [Flush Failure Panic] The flush() unwrap can fail on filesystem errors - if this occurs during parallel transaction execution using Block-STM, can it cause partial transaction commits leading to state inconsistencies across validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_014f2dea-bf22-4d10-9ffd-9d3f5958cd7e?mode=deep",
+    "timestamp": "2026-01-20 15:02:04.519960",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/tracing.rs] [Function: trace()] [Lock Unwrap Panic] If the Mutex is poisoned from a previous panic, lock().unwrap() will panic - can this create a cascading failure where one transaction's tracing panic prevents all subsequent transactions from executing causing total consensus halt? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a3a6659-06f0-417e-8538-43f152b318b4?mode=deep",
+    "timestamp": "2026-01-20 15:02:27.913055",
+    "report_generated": false
+  }
+]
