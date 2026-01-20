@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Memory exhaustion] Can an attacker repeatedly call send_bytes() with payloads just under TARGET_BATCH_SIZE (10KB) to cause unbounded buffer growth in the BytesMut buffer, leading to OOM and validator node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e391850b-845a-4c03-aab9-c6b38b96b849?mode=deep",
+    "timestamp": "2026-01-20 23:35:55.233277",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Resource exhaustion] If send_bytes() is called with 9KB payloads repeatedly while the channel receiver is slow/blocked, can the buffer field accumulate gigabytes of data before flush_buffer() is triggered, exhausting node memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_670c505d-8364-4935-bcb1-240e32f96496?mode=deep",
+    "timestamp": "2026-01-20 23:36:07.928283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Struct: BytesSender] [Memory leak] Does the BytesMut buffer have any maximum size limit enforcement, or can malicious backup requests cause unlimited memory allocation by never reaching TARGET_BATCH_SIZE threshold? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd8104cb-c82f-4fa6-b43d-0b2a1c80b62c?mode=deep",
+    "timestamp": "2026-01-20 23:36:20.833758",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [DoS attack] Can an attacker trigger thousands of concurrent backup requests that each allocate separate BytesSender instances with large buffers, collectively exhausting validator memory and causing service denial? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1a961f1-7c71-439c-a72b-6190dff98213?mode=deep",
+    "timestamp": "2026-01-20 23:36:35.334542",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Buffer overflow] When buffer.extend(bytes) is called at line 46, are there any checks to prevent integer overflow in buffer.len() if extremely large Bytes objects are passed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91f2f16a-2396-4b44-8d45-2de36b6233c9?mode=deep",
+    "timestamp": "2026-01-20 23:36:49.666550",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Integer overflow] When converting record_bytes.len() to u32 at line 60, can an attacker craft a serialized record larger than u32::MAX (4GB) causing silent truncation and data corruption in the size prefix? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c40d5b77-a2ad-4078-8698-09657be119e6?mode=deep",
+    "timestamp": "2026-01-20 23:37:04.885474",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Size mismatch] If record_bytes.len() exceeds u32::MAX and gets truncated to a smaller u32 value, will the receiver read only partial data thinking the record is complete, causing state corruption in backup restoration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ab25790-1c7f-4497-bc4a-c06a03712260?mode=deep",
+    "timestamp": "2026-01-20 23:37:22.619539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Metrics overflow] At line 71, bytes.len() is cast to u64 for THROUGHPUT_COUNTER - can this overflow if buffer contains more than u64::MAX bytes (unlikely but theoretically possible with unbounded growth)? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f9b2e7d-0631-4067-8e85-55d0439d1268?mode=deep",
+    "timestamp": "2026-01-20 23:37:40.618886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Allocation attack] At line 62, BytesMut::with_capacity(size_bytes.len() + record_bytes.len()) - can integer overflow in the addition cause allocation of a smaller buffer than needed, leading to buffer overflow? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83d1156d-d90e-44ec-875d-396a3e194a66?mode=deep",
+    "timestamp": "2026-01-20 23:37:56.611473",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Comparison bypass] At line 48, if self.buffer.len() overflows to a value less than TARGET_BATCH_SIZE due to wraparound, could flush_buffer() never be called, causing infinite memory growth? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b6cde8f-1b0f-4ac9-b3d5-959bf7a7012e?mode=deep",
+    "timestamp": "2026-01-20 23:38:16.728258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_res()] [Deadlock] The blocking_send() call at line 86 blocks the current thread until channel has capacity - can this cause deadlocks if the receiver is blocked waiting for the sender thread, creating circular dependency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30eb6c53-7e2f-4c9b-b484-7015086a6147?mode=deep",
+    "timestamp": "2026-01-20 23:38:38.532969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_res()] [Thread starvation] If blocking_send() blocks indefinitely because the receiver is dropped or slow, can this exhaust the tokio blocking thread pool causing validator operations to stall? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfca05fe-33c6-4b2b-bdfb-0297c81f88e5?mode=deep",
+    "timestamp": "2026-01-20 23:39:01.203444",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Constant: MAX_BATCHES] [Backpressure bypass] The channel size of 100 at line 23 - can an attacker send 100 large batches (each ~10KB per TARGET_BATCH_SIZE) causing the sender to block while consuming 1MB+ of channel buffer memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_394e0b76-7d3d-4867-9658-23444518556a?mode=deep",
+    "timestamp": "2026-01-20 23:39:25.170660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_res()] [Panic handling] If bytes_tx.blocking_send() panics due to channel closure, is the panic properly caught or does it crash the entire backup task/thread? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_142d3512-8835-44ac-a2a8-d917736ef191?mode=deep",
+    "timestamp": "2026-01-20 23:39:52.571280",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Error propagation] When send_res() returns an error at line 73, the error is propagated but the buffer was already cleared via split() at line 70 - is this data loss acceptable or could it corrupt backup state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acaa85ef-759a-4c59-9556-6e5f2dd9dcc1?mode=deep",
+    "timestamp": "2026-01-20 23:40:18.276390",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Malicious serialization] Can an attacker pass a maliciously crafted Record type that causes bcs::to_bytes() to consume excessive CPU or memory during serialization, DoSing the backup service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b279491-33ef-489b-964f-8b8c7065d065?mode=deep",
+    "timestamp": "2026-01-20 23:40:44.919873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Deserialization attack] Are there any size limits on serialized records, or can an attacker trigger serialization of multi-gigabyte Move resources causing OOM during bcs::to_bytes()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7da1069b-95ee-45c4-b5e6-fcf5deb0ab37?mode=deep",
+    "timestamp": "2026-01-20 23:41:09.532365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Type confusion] Does bcs::to_bytes() at line 59 validate the Record type, or can type confusion attacks cause serialization of unexpected data structures leading to backup corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_521fbe47-1640-4fc1-862c-474f1c0e4522?mode=deep",
+    "timestamp": "2026-01-20 23:41:35.058190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Error handling] If bcs::to_bytes() returns an error at line 59, is the error properly handled or could partial/corrupted data remain in the buffer from previous operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_539defef-f6e7-4f12-9891-f52d9e46eba8?mode=deep",
+    "timestamp": "2026-01-20 23:41:59.859588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Size prefix attack] The u32 size prefix at line 60 is written in big-endian (to_be_bytes) - is this consistent with the receiver's expectations, or could endianness mismatches cause backup restoration to read wrong sizes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97a9bf0b-11c6-432b-a9a8-26c9b7029563?mode=deep",
+    "timestamp": "2026-01-20 23:42:25.761071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Struct: BytesSender] [Race condition] BytesSender takes &mut self in methods but is there any guarantee it's not accessed concurrently from multiple threads, potentially causing data races in the buffer field? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3751e9b2-5d68-4c28-8f0b-465ccc7fe769?mode=deep",
+    "timestamp": "2026-01-20 23:42:51.810854",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: finish()] [Race condition] The finish() method at line 76 consumes self and calls flush_buffer() - if another thread is simultaneously calling send_bytes(), could this cause use-after-free or double-free? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6476b978-116b-4164-973e-2f8958c76d43?mode=deep",
+    "timestamp": "2026-01-20 23:43:19.538017",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: abort()] [Race condition] The abort() method at line 80 consumes self - can concurrent access from multiple threads cause the sender to be used after being aborted, sending data to a closed channel? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f79687c7-4ded-44c8-ae9c-d58319256bd8?mode=deep",
+    "timestamp": "2026-01-20 23:43:47.581827",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_res()] [Channel race] If bytes_tx is closed by the receiver while send_res() is being called from multiple code paths (flush, abort, finish), can this cause race conditions in error handling? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5b72372-e7e3-45bd-bc0f-2053a18e861b?mode=deep",
+    "timestamp": "2026-01-20 23:44:12.593061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [TOCTOU] Between checking buffer.len() >= TARGET_BATCH_SIZE at line 48 and calling flush_buffer(), can the buffer size change due to concurrent modifications, causing incorrect behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df70fd7d-91f4-491b-a5ee-697e3f2ec796?mode=deep",
+    "timestamp": "2026-01-20 23:44:36.821884",
+    "report_generated": false
+  }
+]
