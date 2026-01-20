@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Input validation] Can an attacker craft a GenesisTransaction or StateCheckpointTransaction that bypasses the early return at line 38, causing the indexer to process invalid staking events and corrupt the delegated_staking_activities table? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b96cc92-a0c3-457b-a942-a5faa30679e2?mode=deep",
+    "timestamp": "2026-01-20 04:51:18.316042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Type confusion] Does the match statement at lines 33-39 properly handle all APITransaction variants, or could new transaction types be added to aptos_api_types::Transaction without updating this code, leading to silent failures in staking event indexing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79a7c7e3-2d7f-453a-85ce-0bf4ce1e67ee?mode=deep",
+    "timestamp": "2026-01-20 04:51:31.033177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Transaction version overflow] At line 34, the transaction version is cast from u64 to i64 - can an attacker create a transaction with version > i64::MAX causing integer overflow and creating negative transaction_version values that corrupt database queries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8350b78a-7e76-4e59-8914-1b53fc1d2604?mode=deep",
+    "timestamp": "2026-01-20 04:51:43.985096",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Transaction version overflow] At line 36, BlockMetadataTransaction version is similarly cast to i64 - can malicious validators craft block metadata with extremely high version numbers causing signed integer overflow and database constraint violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff304130-30be-48d9-b35e-373ccd50c2d0?mode=deep",
+    "timestamp": "2026-01-20 04:51:58.901382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Event index overflow] At line 42, the enumerate() index is cast from usize to i64 - can an attacker create a transaction with more than i64::MAX events causing integer overflow and duplicate/negative event_index values breaking the primary key constraint? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_272d8783-f294-4212-9168-40b290beb192?mode=deep",
+    "timestamp": "2026-01-20 04:52:13.079839",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Event ordering manipulation] Does the code at lines 40-42 guarantee that event indices are processed in deterministic order, or could concurrent processing or event reordering cause the same event to be assigned different indices across different indexer instances? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_799df63f-63fc-4752-b42f-b23633e07d60?mode=deep",
+    "timestamp": "2026-01-20 04:52:28.580386",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Memory exhaustion] Can an attacker create a transaction with billions of events causing the iteration at line 40 to consume excessive memory when building the delegator_activities vector, leading to indexer crash? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6261fe95-7090-4ffb-947c-760d905c7bfd?mode=deep",
+    "timestamp": "2026-01-20 04:52:45.258733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Type string injection] At line 41, event.typ.to_string() converts the event type - can an attacker craft malformed MoveStructTag with special characters, null bytes, or extremely long strings that bypass validation in StakeEvent::from_event() causing SQL injection or storage corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_979aa7ac-a930-46c7-b031-ab916d6738c5?mode=deep",
+    "timestamp": "2026-01-20 04:53:04.608362",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Type string length] The event_type field at line 41 has no length validation before being stored as Text in the database - can attackers create events with multi-megabyte type names causing database bloat or query performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e2257a9-c891-4fd7-b045-bdcbfcc9ccbb?mode=deep",
+    "timestamp": "2026-01-20 04:53:24.358903",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Error propagation] At line 44, StakeEvent::from_event() returns Result with ? operator - if this fails, does the entire transaction indexing fail, or could partial state be committed causing inconsistent delegator_activities records for only some events in the transaction? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78d97d51-2904-4df8-a02e-840ae4479cf1?mode=deep",
+    "timestamp": "2026-01-20 04:53:44.951828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [None handling] When StakeEvent::from_event() returns None at line 43-45, the code continues to the next event - can an attacker craft events that intentionally return None to skip validation while still affecting on-chain state, causing indexer data to diverge from actual chain state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0438d83b-7615-4050-abb8-44153e9b35dc?mode=deep",
+    "timestamp": "2026-01-20 04:54:07.257685",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Deserialization attacks] The StakeEvent::from_event() call at line 44 deserializes untrusted event.data JSON - could malformed JSON with deeply nested objects, circular references, or extremely large numbers cause panic or undefined behavior in the serde_json deserializer? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e9ede9d-5207-4f90-91a7-969dfaa34531?mode=deep",
+    "timestamp": "2026-01-20 04:54:31.209069",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Pattern matching gap] The match statement at lines 46-88 only handles 5 StakeEvent variants and uses _ => continue at line 87 - does this mean GovernanceVoteEvent at line 175 of stake_utils.rs is silently ignored, potentially missing critical governance-related stake activities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2f873ff-aa21-4c46-ad09-cad9201753a2?mode=deep",
+    "timestamp": "2026-01-20 04:54:55.124754",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Event type exhaustiveness] If new staking event types are added to the StakeEvent enum in stake_utils.rs, will they be silently ignored by the wildcard pattern at line 87, causing missing staking activity records without any error indication? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fa50699-18d0-4c18-b333-4321420b9f1f?mode=deep",
+    "timestamp": "2026-01-20 04:55:20.846757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Address validation bypass] At line 50, standardize_address() is called on inner.delegator_address - but if the original address from AddStakeEvent is malformed or contains invalid hex, could standardize_address() silently produce an incorrect 66-char address that doesn't match the actual on-chain delegator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c051480-c525-41d5-a105-c0902e5cd881?mode=deep",
+    "timestamp": "2026-01-20 04:55:46.337319",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Pool address spoofing] At line 51, standardize_address() processes inner.pool_address without validation - can an attacker emit AddStakeEvent with a pool_address that standardizes to a different validator's address, causing stake to be credited to the wrong pool in indexer queries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1ba2bc0-58aa-4033-9490-b495f66d3731?mode=deep",
+    "timestamp": "2026-01-20 04:56:11.971266",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Amount overflow] At line 53, u64_to_bigdecimal() converts inner.amount_added - but what if amount_added is u64::MAX? Could this cause precision loss or overflow when later used in BigDecimal arithmetic for stake calculations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6e62cae-6ba7-4d39-be4c-caa01a91fc60?mode=deep",
+    "timestamp": "2026-01-20 04:56:37.598794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Event type cloning] At line 52, event_type.clone() creates a new String - could memory exhaustion occur if processing thousands of AddStakeEvent events in a single transaction, each cloning potentially long event type strings? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5b2f9cc-e30e-4f6d-965a-0af646ff5646?mode=deep",
+    "timestamp": "2026-01-20 04:57:05.398310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Unlock amount validation] At line 61, u64_to_bigdecimal(inner.amount_unlocked) is used without checking if amount_unlocked is zero - can attackers spam zero-amount unlock events to bloat the delegated_staking_activities table without actual stake movement? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4be2514-cb10-4f9a-986f-8e120b70c40a?mode=deep",
+    "timestamp": "2026-01-20 04:57:33.819141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Address consistency] Lines 58-59 use standardize_address() for delegator and pool addresses - but if the same logical address is represented differently in AddStakeEvent vs UnlockStakeEvent, could address standardization fail to match them, breaking stake tracking queries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5de21b18-ec79-4eca-a194-bd23f2878ce5?mode=deep",
+    "timestamp": "2026-01-20 04:58:02.685398",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Unlock without stake] Does the code validate that UnlockStakeEvent at lines 55-62 corresponds to a previous AddStakeEvent for the same delegator/pool pair, or can attackers emit unlock events for non-existent stakes causing incorrect negative balance calculations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46c5a450-2545-400c-acd9-cf66f02345c1?mode=deep",
+    "timestamp": "2026-01-20 04:58:29.414500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Withdrawal amount manipulation] At line 69, amount_withdrawn is converted to BigDecimal - can an attacker emit WithdrawStakeEvent with amount_withdrawn > actual unlocked stake, and does the indexer validate this against previous unlock events to prevent showing false withdrawal records? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35afa5bd-1473-4f9d-b934-669f7bf99e09?mode=deep",
+    "timestamp": "2026-01-20 04:58:55.827251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Double withdrawal tracking] If the same withdrawal is emitted twice (duplicate events), does the indexer at lines 63-70 properly detect this via the (transaction_version, event_index) primary key, or could on_conflict do_nothing at line 198 of stake_processor.rs silently hide duplicate withdrawal attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a182408-d4fa-460d-9952-5852500c5513?mode=deep",
+    "timestamp": "2026-01-20 04:59:22.048520",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Withdrawal address validation] Lines 66-67 standardize addresses - but what if inner.delegator_address in WithdrawStakeEvent is empty string or all zeros? Could this create withdrawal records with invalid addresses that break queries filtering by delegator? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45fbfcff-e303-4108-ae67-5bf7d5ac782f?mode=deep",
+    "timestamp": "2026-01-20 04:59:47.392241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_activities.rs] [Function: from_transaction()] [Reactivation amount limit] At line 77, amount_reactivated is converted without bounds checking - can an attacker reactivate more stake than was previously unlocked by emitting ReactivateStakeEvent with inflated amounts, causing indexer to show incorrect active stake totals? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b78f615-b828-4c34-a0f0-665d79a0e91d?mode=deep",
+    "timestamp": "2026-01-20 05:00:11.267727",
+    "report_generated": false
+  }
+]
