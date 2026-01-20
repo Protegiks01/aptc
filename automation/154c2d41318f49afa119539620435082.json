@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Enum: TransactionChunkFormat] [Version confusion] Can an attacker create a backup mixing V0 and V1 format chunks, passing manifest validation but causing inconsistent transaction interpretation during restore, potentially allowing double-spending or state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_100d5c0e-d040-4207-8c60-509999235755?mode=deep",
+    "timestamp": "2026-01-20 06:40:11.741113",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Enum: TransactionChunkFormat] [Migration bypass] Does the system properly handle backups created during format migration (some chunks V0, some V1), or can an attacker exploit this to provide chunks with wrong format tags that parse incorrectly and corrupt restored state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc26b056-d78b-4cf5-87c9-42076367c2d4?mode=deep",
+    "timestamp": "2026-01-20 06:40:24.073951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Enum: TransactionChunkFormat] [Backward compatibility] If V1 format includes PersistedAuxiliaryInfo that V0 lacks, can an attacker craft a V0-tagged chunk with V1 data or vice versa, causing the restore process to skip auxiliary data validation and accept invalid transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb1a6dc4-9696-4ae3-b4bd-5070936b7c38?mode=deep",
+    "timestamp": "2026-01-20 06:40:36.793589",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Function: default_to_v0()] [Legacy exploit] Can an attacker exploit the default-to-V0 behavior at line 37 to downgrade V1 backups to V0 interpretation by omitting the format field, potentially bypassing new security checks introduced in V1 format? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f500bb6a-e7d5-4638-b2a1-6a4e6b7c752d?mode=deep",
+    "timestamp": "2026-01-20 06:40:49.853594",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Enum: TransactionChunkFormat] [Future version] What happens if an attacker provides a format field with a value beyond V1 (e.g., manually crafted BCS with discriminant 2)? Does deserialization fail safely or could it cause undefined behavior in match statements expecting only V0/V1? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44ca9188-eead-465e-9ffe-ff25ab47fa31?mode=deep",
+    "timestamp": "2026-01-20 06:41:03.618764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Path traversal] Does the FileHandle type at lines 26 and 32 validate file paths to prevent directory traversal attacks (../../etc/passwd), or can an attacker craft manifests that reference arbitrary files on the validator filesystem during restore? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74abff2d-84ec-479d-a82c-81ea23d9f90c?mode=deep",
+    "timestamp": "2026-01-20 06:41:18.653358",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Symlink attack] If FileHandle permits symbolic links, can an attacker create a backup manifest pointing to symlinks that redirect to sensitive validator files, potentially leaking private keys or validator configuration during backup/restore operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46e924b0-6100-4c00-911c-93db4b427431?mode=deep",
+    "timestamp": "2026-01-20 06:41:35.385905",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [File size validation] Does verify() check that referenced transaction and proof files have reasonable sizes, or can an attacker reference terabyte-sized files that cause disk exhaustion when validators attempt restoration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bf0eb40-791f-44d4-a464-a85b9639b82d?mode=deep",
+    "timestamp": "2026-01-20 06:41:52.871711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Duplicate file references] Can an attacker provide multiple chunks referencing the same FileHandle for transactions or proofs, causing incorrect transaction counts, validation bypasses, or resource exhaustion from repeated file access? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cca67eb7-0102-41bb-9ca3-05acbe2a0760?mode=deep",
+    "timestamp": "2026-01-20 06:42:11.510033",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Missing file handling] If a FileHandle references a non-existent file, does verify() catch this, or does validation pass only to fail during actual restore operations, potentially leaving the validator in an inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17626d33-fb75-4670-a61d-3f773f56cf1c?mode=deep",
+    "timestamp": "2026-01-20 06:42:30.880056",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Proof tampering] The proof field at line 32 contains TransactionAccumulatorRangeProof and LedgerInfoWithSignatures, but verify() doesn't validate them - can an attacker provide invalid proofs that pass manifest validation but fail cryptographic verification only during restore, causing state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e73e32f-cf85-4a89-9f64-fa928d4cf3b4?mode=deep",
+    "timestamp": "2026-01-20 06:42:50.748890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Proof-transaction mismatch] Can an attacker provide a proof that validates correctly but for different transactions than in the transactions FileHandle, passing manifest checks but allowing injection of unauthorized transactions during restoration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1183dd6d-ae4f-4c92-8904-03cba4b9c452?mode=deep",
+    "timestamp": "2026-01-20 06:43:12.129569",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Range proof manipulation] Does verify() ensure the TransactionAccumulatorRangeProof covers exactly [first_version, last_version], or can an attacker provide proofs for different ranges that appear valid but don't match the chunk's version claims? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34715e5e-bbdc-44eb-ace2-ec6f1d697c59?mode=deep",
+    "timestamp": "2026-01-20 06:43:34.576764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Signature verification bypass] Since LedgerInfoWithSignatures verification requires validator set from EpochEndingBackup (comment lines 30-31), can an attacker create backups without corresponding epoch backups, making proof verification impossible and forcing blind trust in backup data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dda38e74-98e5-41b4-b70e-98352bc2f53c?mode=deep",
+    "timestamp": "2026-01-20 06:43:57.874728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Epoch mismatch] Can an attacker provide chunks with proofs from different epochs mixed together, bypassing epoch boundary validation and allowing restoration of transactions with wrong validator set signatures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e522b3a-a5f6-4f63-91c5-a8b3c6d5100b?mode=deep",
+    "timestamp": "2026-01-20 06:44:21.530712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Function: verify()] [Race condition] If verify() is called concurrently on the same TransactionBackup instance while another thread modifies self.chunks vector, can race conditions cause TOCTOU bugs where validation passes but data changes before restoration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddce4dd2-49e0-40d6-af4c-ee3e1a58ee01?mode=deep",
+    "timestamp": "2026-01-20 06:44:46.131053",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Function: verify()] [Concurrent modification] Does TransactionBackup use interior mutability (RefCell, Mutex) that could allow modification during verify() execution, causing the validation logic at lines 51-89 to operate on inconsistent data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99497b0f-6555-483a-9c5d-33eec074ff95?mode=deep",
+    "timestamp": "2026-01-20 06:45:12.605779",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionBackup] [Thread safety] Is TransactionBackup Send/Sync safe for multi-threaded restoration processes, or can concurrent access to chunks vector during iteration at line 64 cause data races or undefined behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0669d5c-f163-414c-9165-697aa1d0b4cd?mode=deep",
+    "timestamp": "2026-01-20 06:45:39.170771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Function: verify()] [Atomic validation] Are the multiple validation checks at lines 53-86 atomic, or can an attacker exploit timing windows between checks to modify backup state and bypass subsequent validations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13df46e4-3a0d-4a29-ac8b-a9dd0fbd8302?mode=deep",
+    "timestamp": "2026-01-20 06:46:05.731245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Shared state] If multiple TransactionChunk instances reference the same FileHandle, can concurrent restoration operations cause file access races, corruption, or inconsistent reads? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1daf64e-a157-4ac0-97b8-2858c2cdbd1e?mode=deep",
+    "timestamp": "2026-01-20 06:46:32.460310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Function: verify()] [Partial restore] If restoration fails midway through chunks, does the system properly rollback, or can an attacker craft backups that pass verify() but intentionally fail during restoration, leaving validators in inconsistent states? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a516d4c-1b7e-4531-9a39-3c17616de38b?mode=deep",
+    "timestamp": "2026-01-20 06:47:00.111843",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionBackup] [Checkpoint bypass] Can an attacker provide a backup that passes verify() but contains transactions from multiple ledger checkpoints, causing Merkle tree inconsistencies when restored without proper checkpoint handling? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73275242-c446-44c0-a864-a3d8b9fcc196?mode=deep",
+    "timestamp": "2026-01-20 06:47:28.257825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionBackup] [Version divergence] Can an attacker create backups with version ranges that appear valid but diverge from canonical chain history, causing restored validators to fork from the main network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cef20245-60d3-41b8-a762-72b4e7d80ec8?mode=deep",
+    "timestamp": "2026-01-20 06:47:57.000773",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Function: verify()] [Historical manipulation] Does verify() ensure that first_version is consistent with existing ledger state, or can an attacker restore older backups over newer state, causing transaction history rewriting? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b816536-48a9-4606-9e39-39d6d1e5a431?mode=deep",
+    "timestamp": "2026-01-20 06:48:25.588757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/transaction/manifest.rs] [Struct: TransactionChunk] [Duplicate transactions] Can an attacker provide multiple chunks or backups containing overlapping version ranges that pass verify() independently but cause duplicate transaction writes during restoration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f3be748-c5c9-4a32-a6c2-b36c6a94a4c4?mode=deep",
+    "timestamp": "2026-01-20 06:48:53.043755",
+    "report_generated": false
+  }
+]
