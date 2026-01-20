@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper] [Interface contract] Does the TransactionDeduper trait enforce any ordering guarantees on the returned deduplicated transactions, or can implementations arbitrarily reorder transactions within a block, potentially breaking sequence number ordering and causing execution failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84a01213-904b-46b0-861f-3c5d7e4e38ea?mode=deep",
+    "timestamp": "2026-01-20 18:01:59.066065",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Determinism violation] Is there any guarantee that different validator nodes calling dedup() on identical transaction vectors will return results in the same order, or could non-deterministic deduplication lead to state divergence and consensus failure across the network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e862a84c-e715-4b74-a4ad-328ffb92d07e?mode=deep",
+    "timestamp": "2026-01-20 18:02:11.385173",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Input validation] Does the trait contract specify maximum input size bounds for the txns vector, or can a malicious block proposer include millions of transactions causing unbounded memory allocation and validator crashes during deduplication? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6a0491c-7e23-42f1-9e20-6c299d1db476?mode=deep",
+    "timestamp": "2026-01-20 18:02:24.067520",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Ownership semantics] Does the trait consume the input Vec<SignedTransaction> by value, potentially causing unnecessary cloning in callers, or could this lead to use-after-free vulnerabilities if implementations don't properly handle ownership? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d6531a4-38f3-4083-b152-e29373d2965a?mode=deep",
+    "timestamp": "2026-01-20 18:02:37.806023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper] [Panic safety] Does the trait guarantee panic-free execution for all valid inputs, or can malformed transactions in the input vector trigger panics that crash validator nodes during consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c5b2df7-93e7-4040-8a98-74eef3096c20?mode=deep",
+    "timestamp": "2026-01-20 18:02:51.770825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Struct: NoOpDeduper] [Double-spending] When NoOpDeduper is active, does the system allow multiple identical transactions with the same sender, sequence number, and signature within a single block, enabling double-spending attacks if mempool doesn't deduplicate? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3450e170-dd62-4a4b-a7fc-04032575ffd9?mode=deep",
+    "timestamp": "2026-01-20 18:03:06.588018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: NoOpDeduper::dedup()] [Replay attack] Can an attacker exploit NoOpDeduper's pass-through behavior to include replayed transactions from previous blocks, bypassing sequence number checks if those checks happen after deduplication? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56a550c1-0708-4570-9dba-06414c291e44?mode=deep",
+    "timestamp": "2026-01-20 18:03:22.451415",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: NoOpDeduper::dedup()] [Resource exhaustion] Does NoOpDeduper allow duplicate transactions to reach execution stage, causing redundant gas consumption and state access operations that could slow down block processing and affect consensus liveness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d6f3708-c508-4ab2-bb0d-467bc2c5dd25?mode=deep",
+    "timestamp": "2026-01-20 18:03:40.336372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Struct: NoOpDeduper] [Backward compatibility] Is NoOpDeduper maintained only for backward compatibility, and if so, could enabling it after a protocol upgrade cause safety violations if newer transaction formats assume deduplication has occurred? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b7c5851-d795-472a-9fc4-a0e227161f24?mode=deep",
+    "timestamp": "2026-01-20 18:03:58.137921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Configuration bypass] Can a malicious validator manipulate the deduper_type parameter to force NoOpDeduper when TxnHashAndAuthenticatorV1 should be active, bypassing critical security checks and enabling duplicate transaction attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b5c7246-b690-4faa-8c58-4e942d171ed4?mode=deep",
+    "timestamp": "2026-01-20 18:04:17.505424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Type confusion] Does the function validate that the deduper_type matches the expected on-chain configuration, or can deserialization errors or type mismatches cause validators to use different deduper implementations leading to state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77416770-e693-4885-b39b-615131460250?mode=deep",
+    "timestamp": "2026-01-20 18:04:37.007761",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Arc thread safety] Is the Arc<dyn TransactionDeduper> safely shared across multiple threads in the consensus pipeline, or can concurrent dedup() calls lead to race conditions in the underlying implementation's internal state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eea3e2ee-c4ac-49b0-bc7c-3a17c617be3a?mode=deep",
+    "timestamp": "2026-01-20 18:04:57.994200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Logging side effects] Does the info! logging call for TxnHashAndAuthenticatorV1 selection create any timing side channels that could leak information about which deduper is active to network observers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76a69b75-30dd-4508-82c4-c0f3eff69df5?mode=deep",
+    "timestamp": "2026-01-20 18:05:19.541295",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Memory leaks] Could the Arc allocation combined with trait object dynamic dispatch lead to memory leaks if the deduper is not properly dropped during epoch transitions or consensus reconfigurations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce0e46e1-1a5b-434d-9f4b-446c69a9cdc0?mode=deep",
+    "timestamp": "2026-01-20 18:05:41.729597",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Governance attack] Can a malicious governance proposal change TransactionDeduperType from TxnHashAndAuthenticatorV1 to NoDedup mid-epoch, allowing attackers to exploit the window where deduplication is disabled to double-spend? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_954d16d6-bd18-4c0a-bc15-f58700eb7de4?mode=deep",
+    "timestamp": "2026-01-20 18:06:05.076323",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Type: TransactionDeduperType] [Upgrade path] If new deduper types are added in future versions, could validators running different versions use incompatible dedupers, causing consensus failures and network partitions during protocol upgrades? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c04e1bf-9c28-4b5a-bba2-176b414edcec?mode=deep",
+    "timestamp": "2026-01-20 18:06:28.922009",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Enum exhaustiveness] Does the match statement on TransactionDeduperType cover all possible enum variants, or could a new variant added via on-chain config cause panics if not all validators are updated simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9829032-75e9-441f-ae07-3263d5f2c5f0?mode=deep",
+    "timestamp": "2026-01-20 18:06:53.812224",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Deserialization attack] Can a Byzantine validator provide a malformed TransactionDeduperType that deserializes successfully but represents an unexpected value, bypassing the match arms and causing undefined behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6bc2e8a8-42d8-48f8-af31-7afcb155fa07?mode=deep",
+    "timestamp": "2026-01-20 18:07:19.309258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper] [Block preparation] In the BlockPreparer integration, is dedup() called before or after transaction signature verification, and could this ordering allow unverified transactions with forged signatures to affect deduplication logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_029ad2da-a8f8-483c-890b-55f78a405ca3?mode=deep",
+    "timestamp": "2026-01-20 18:07:45.067252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Async safety] Is dedup() called within a tokio::task::spawn_blocking context as seen in block_preparer.rs, and could blocking operations in dedup implementations deadlock the consensus pipeline if not properly isolated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2dbf27f6-4cd9-4206-97fd-8377262b2c84?mode=deep",
+    "timestamp": "2026-01-20 18:08:11.183243",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper] [Transaction ordering] After deduplication, does the system preserve the original proposal order for remaining transactions, or could reordering break dependencies between transactions from the same sender? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62a31093-f027-4e11-96e1-84a9b2870107?mode=deep",
+    "timestamp": "2026-01-20 18:08:38.139317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Error handling] Does dedup() return a Result type or just Vec<SignedTransaction>, and if the latter, how are deduplication errors communicated, potentially masking critical failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8322ad3-7934-4256-a199-f4e26ff141ee?mode=deep",
+    "timestamp": "2026-01-20 18:09:04.824584",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper] [State consistency] If dedup() filters different subsets of transactions on different validators due to race conditions or timing differences, could this cause validators to execute different transaction sets and produce divergent state roots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5317d405-98af-420d-a911-98a7b55e2536?mode=deep",
+    "timestamp": "2026-01-20 18:09:31.401071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: NoOpDeduper::dedup()] [Performance regression] Does NoOpDeduper's zero-cost pass-through create a performance baseline expectation, and could switching to TxnHashAndAuthenticatorV1 cause unexpected latency increases that affect consensus timing assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85a6672a-197d-4c52-b918-676774491aef?mode=deep",
+    "timestamp": "2026-01-20 18:09:59.744931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Vector capacity] Does the implementation allocate a new vector for deduplicated transactions, and could this cause performance issues or memory spikes for blocks with thousands of transactions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4516aa59-9cec-4f15-b795-23b0db4f366d?mode=deep",
+    "timestamp": "2026-01-20 18:10:30.725742",
+    "report_generated": false
+  }
+]
