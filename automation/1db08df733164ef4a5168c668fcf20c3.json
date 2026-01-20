@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Race condition] Can a race condition occur between line 49 (polling the future) and line 54 (polling the delay) where the future completes but the delay also expires simultaneously, causing non-deterministic behavior in consensus timeout handling that could lead to validator disagreement on round progression? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6da3ef68-5ca6-489f-9fe5-4ecae4ef3ebe?mode=deep",
+    "timestamp": "2026-01-20 12:47:20.663731",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Polling order manipulation] Does the hardcoded polling order (future first at line 49, then delay at line 54) create an attack surface where a malicious validator can exploit timing to always poll futures before timeouts expire, effectively bypassing timeout protections in consensus round management? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cc89821-ac47-4004-8db6-727ef84c4b43?mode=deep",
+    "timestamp": "2026-01-20 12:47:33.212267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Waker registration] When this.future.poll(cx) at line 49 returns Poll::Pending, is the waker properly registered such that if the future completes after the delay expires, the timeout doesn't incorrectly return Elapsed instead of the future's value? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9881dece-2a0d-4bf6-babc-4e74901f0c38?mode=deep",
+    "timestamp": "2026-01-20 12:47:45.924035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Waker leak] If the future at line 49 registers a waker but then the delay at line 54 immediately returns Poll::Ready, is there a waker leak where the future's registered waker is never cleaned up, potentially causing memory exhaustion in long-running consensus nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd85b57d-0b1a-47a6-a72b-b343d6ace0a6?mode=deep",
+    "timestamp": "2026-01-20 12:47:59.054169",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Double waker registration] Can both this.future.poll(cx) at line 49 and this.delay.poll(cx) at line 54 register wakers simultaneously, and if the delay expires first, does the future's waker get spuriously woken causing unnecessary CPU usage that could slow down validator performance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e54b0d3-840c-4a5c-9f2e-3ef7f1e54d88?mode=deep",
+    "timestamp": "2026-01-20 12:48:13.084802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Atomicity violation] Is there any guarantee that the operations between line 49 and line 54 execute atomically? Could a task be preempted between these lines, allowing another task to observe inconsistent timeout state in consensus round managers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75a6e746-2694-47d8-b6a6-6e381e5c5cf2?mode=deep",
+    "timestamp": "2026-01-20 12:48:28.628848",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Early return bypass] At line 50, when the future returns Poll::Ready(v), does returning immediately without checking the delay state create a vulnerability where timeouts that should have expired are ignored, potentially allowing consensus operations to exceed their allocated time windows? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d35e267c-6d48-460e-8a0a-bc1422fd824b?mode=deep",
+    "timestamp": "2026-01-20 12:48:45.410890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Delay polling order] Since this.delay.poll(cx) at line 54 only executes if the future is Pending, can an attacker craft futures that oscillate between Ready and Pending to prevent the delay from ever being polled, effectively disabling timeout functionality in consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9717ae11-d270-409e-b95f-889763022885?mode=deep",
+    "timestamp": "2026-01-20 12:49:03.507464",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Pin projection] At line 46, does self.project() using pin_project maintain proper pinning invariants when projecting to both future and delay fields? Could incorrect pin projection allow memory unsafety if either the future or delay contain self-referential types? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea97dcde-9e7f-4e44-8301-a8d6481c3f04?mode=deep",
+    "timestamp": "2026-01-20 12:49:22.772626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Struct: Timeout] [Unpin trait] Is the Timeout<F> struct at line 24 incorrectly implementing Unpin when F might not be Unpin? Could this allow moving the timeout after it's been pinned, breaking safety guarantees and potentially causing use-after-free in consensus timeout tracking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c409a1e-3aa6-43b7-8e03-c200b4be0276?mode=deep",
+    "timestamp": "2026-01-20 12:49:42.608939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Attribute: pin_project] [Projection safety] Does the #[pin_project] macro at line 22 correctly handle both the #[pin] future at line 26 and #[pin] delay at line 28? Could improper projection allow accessing unpinned mutable references to pinned data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e99ecc6f-d49f-4cd1-a0f6-5451d263230c?mode=deep",
+    "timestamp": "2026-01-20 12:50:03.756835",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: new()] [Initialization] Does the new() constructor at line 32 properly initialize both future and delay fields? Could uninitialized memory be accessed if either field has Drop implementation that reads uninitialized data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44c794af-791a-4fc8-a87c-e7fcfd88c749?mode=deep",
+    "timestamp": "2026-01-20 12:50:25.501960",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: new()] [Delay validation] Does new() at line 32 validate that the delay parameter is a valid Sleep future? Could passing a zero-duration or already-elapsed Sleep cause immediate Elapsed errors, disrupting consensus timeout logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bb04704-96b9-4ff2-b599-810724c37085?mode=deep",
+    "timestamp": "2026-01-20 12:50:48.067897",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: into_inner()] [Resource leak] When into_inner() at line 37 consumes self and returns only the future, what happens to the delay field? Is the Sleep future properly cleaned up, or could this leak waker registrations that accumulate in the time service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e440438-23d2-49a1-887c-90ff0438054e?mode=deep",
+    "timestamp": "2026-01-20 12:51:12.250509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: into_inner()] [Partial move] Does into_inner() at line 37 create a partial move situation where the delay is dropped but future is moved out? Could this violate Drop ordering guarantees if delay's Drop implementation depends on future still being present? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f1b3c4d-f1c2-4730-9495-80e0b5305263?mode=deep",
+    "timestamp": "2026-01-20 12:51:36.984849",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Struct: Timeout] [Drop implementation] When a Timeout<F> is dropped (e.g., when a consensus operation is cancelled), are both the future and delay properly cancelled? Could dropping leave dangling waker registrations in the time service that keep the time service alive indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_636bbe72-e024-429c-a918-1aa89520b157?mode=deep",
+    "timestamp": "2026-01-20 12:52:01.575016",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Struct: Timeout] [Async cancellation] If a Timeout future is dropped while being polled (between lines 49 and 54), are both the inner future and delay futures safely cancelled, or could this cause a panic or memory corruption in the time service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30feccd2-0198-4338-bf7d-f45a67fe859b?mode=deep",
+    "timestamp": "2026-01-20 12:52:26.450406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Struct: Timeout] [Partial cancellation] Can an attacker force a Timeout to be dropped after line 49 polls the future but before line 54 polls the delay, causing the delay timer to remain active and consume resources even though the timeout is cancelled? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b72f8ba4-ccf6-4084-a514-55df406050c9?mode=deep",
+    "timestamp": "2026-01-20 12:52:51.387232",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Type: Elapsed] [Error type] Is the Elapsed error at line 17 sufficient to distinguish between different timeout scenarios? Could lack of context (e.g., which operation timed out) make it impossible for consensus to properly handle timeout errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_420db7f6-cc7e-4f72-aaac-12478c464817?mode=deep",
+    "timestamp": "2026-01-20 12:53:15.213253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Error propagation] At line 54, when the delay returns Poll::Ready, does mapping to Err(Elapsed) properly propagate all necessary error context? Could losing information about why the timeout occurred make it impossible to detect malicious timeout manipulation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9fb9df14-31a6-4be8-bbae-599b9abb69b4?mode=deep",
+    "timestamp": "2026-01-20 12:53:37.892557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Type: Elapsed] [Error equality] Does implementing Eq and PartialEq for Elapsed at line 15 make sense when there's no state to compare? Could this lead to incorrect timeout comparisons in consensus where different timeout instances should be treated as distinct? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b1e7cd4-554a-4e38-b686-586d2958031b?mode=deep",
+    "timestamp": "2026-01-20 12:54:00.896973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Liveness attack] In consensus round management, if a Byzantine validator can control the Sleep delay passed to new() at line 32, can they set extremely long timeouts to stall consensus progress and cause loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0263acc-d0ed-4656-98f2-e37c981f7028?mode=deep",
+    "timestamp": "2026-01-20 12:54:24.314853",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Timing manipulation] Can a malicious validator exploit the fact that poll() at line 49 checks the future before the delay at line 54, allowing them to complete futures just before timeouts expire to gain unfair advantages in leader election or block proposal timing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b892008-41a5-4a55-8b09-3e696da395aa?mode=deep",
+    "timestamp": "2026-01-20 12:54:49.140130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Function: poll()] [Round synchronization] If validators use Timeout for consensus round timeouts, can slight differences in polling order (future first vs delay first) cause validators to disagree on whether a round timed out, leading to network partition? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdcdaee0-d8fa-4b97-bbdc-708222df5259?mode=deep",
+    "timestamp": "2026-01-20 12:55:14.651696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/timeout.rs] [Struct: Timeout] [Timeout racing] Can validators exploit race conditions between multiple concurrent Timeout instances to cause non-deterministic timeout behavior, where some validators see operations as timed out while others see them as completed, breaking consensus safety? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_01a9711c-41f5-45d9-a547-9a4d5a1745db?mode=deep",
+    "timestamp": "2026-01-20 12:55:37.642733",
+    "report_generated": false
+  }
+]
