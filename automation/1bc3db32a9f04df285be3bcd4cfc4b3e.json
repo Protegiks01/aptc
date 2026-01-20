@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [CachedStateView corruption] The CachedStateView created at line 125 uses the latest state from ledger_summary. Can a corrupted state root cause the view to return malicious state values that affect genesis execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3d7881a-40e2-4cb9-a2b5-21422f6c665d?mode=deep",
+    "timestamp": "2026-01-20 11:29:11.936840",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Epoch determination logic] At lines 131-135, epoch is set to GENESIS_EPOCH if genesis_version is 0, otherwise retrieved from state. Can an attacker manipulate genesis_version to be non-zero but with corrupted state to inject arbitrary epoch values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f312b0be-29d2-4478-9d1a-c3d609232886?mode=deep",
+    "timestamp": "2026-01-20 11:29:24.357973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [get_state_epoch vulnerability] When calling get_state_epoch(&base_state_view) at line 134 for non-zero genesis_version, can deserialization of ConfigurationResource fail or return manipulated epoch values from corrupted state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9fd56111-e5a8-4b72-a6c6-cfe65032ce85?mode=deep",
+    "timestamp": "2026-01-20 11:29:36.935741",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Transaction execution bypass] At line 137, DoGetExecutionOutput::by_transaction_execution is called with vec![genesis_txn.clone().into()]. Can an attacker exploit the .into() conversion to modify the transaction before execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad0ffc97-8a81-4549-95ac-f9e6b4b738b3?mode=deep",
+    "timestamp": "2026-01-20 11:29:50.590542",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Empty auxiliary info] At line 142, AuxiliaryInfo::new_empty() is used. The comment mentions hard fork scenarios might need auxiliary info. Can this omission allow hard fork attacks that bypass transaction validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39caf3bd-9188-44c5-9669-c220b6117003?mode=deep",
+    "timestamp": "2026-01-20 11:30:04.091409",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [BlockExecutorConfigFromOnchain bypass] Using BlockExecutorConfigFromOnchain::new_no_block_limit() at line 145, does removing block limits allow resource exhaustion attacks during genesis execution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_194ab540-ff14-44c5-955c-a7fe2f4442b9?mode=deep",
+    "timestamp": "2026-01-20 11:30:18.693699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [TransactionSliceMetadata unknown] TransactionSliceMetadata::unknown() at line 146 indicates missing metadata. Can this cause incorrect parallel execution assumptions or bypass transaction ordering requirements? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_daf00348-9c9e-4955-8adb-6ac9d12315ec?mode=deep",
+    "timestamp": "2026-01-20 11:30:34.215146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Execution output validation] At line 148-151, it checks num_transactions_to_commit() != 0. Can an attacker craft a genesis transaction that successfully executes but commits 0 transactions, bypassing this check through off-by-one errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_554a0075-928a-4de9-be80-b41ef69e9a0c?mode=deep",
+    "timestamp": "2026-01-20 11:30:51.506308",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Reconfig event requirement] At line 152-155, it ensures next_epoch_state.is_some(). Can a malicious genesis transaction omit the reconfig event while still appearing valid, preventing proper validator set initialization? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3277a45a-ae11-43aa-8c62-159a68479141?mode=deep",
+    "timestamp": "2026-01-20 11:31:08.907920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [ApplyExecutionOutput integrity] ApplyExecutionOutput::run() at line 157 processes execution results. Can race conditions or corrupted execution_output cause inconsistent state application during genesis? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b626ef7-3f96-483a-8a8f-d309904124f3?mode=deep",
+    "timestamp": "2026-01-20 11:31:27.581102",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Timestamp determination logic] At lines 158-175, timestamp is set differently for genesis_version 0 vs non-zero. Can an attacker manipulate genesis_version to control which timestamp logic is used, potentially setting invalid timestamps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9da3ff80-37a8-42e8-b19c-d66d823197cf?mode=deep",
+    "timestamp": "2026-01-20 11:31:47.017048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [GENESIS_TIMESTAMP_USECS hardcoded] At line 160, GENESIS_TIMESTAMP_USECS is used without validation. Can this hardcoded value conflict with on-chain timestamp requirements or enable timestamp manipulation attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3c30a9b-f0fc-449f-962e-1778e6e1580b?mode=deep",
+    "timestamp": "2026-01-20 11:32:07.482117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Second CachedStateView creation] At line 162, a second CachedStateView is created from result_state(). Can inconsistencies between base_state_view and this new view cause state divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67d23d43-2dca-4216-bfcb-caaf9363dc51?mode=deep",
+    "timestamp": "2026-01-20 11:32:29.632188",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Epoch increment overflow] At line 167-169, epoch.checked_add(1) is used but can this check be bypassed if epoch is manipulated to be u64::MAX before increment? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9c24111-4e7a-40fb-b5f6-8d0162e718bd?mode=deep",
+    "timestamp": "2026-01-20 11:32:52.234891",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Epoch bump verification] At line 170-173, it ensures next_epoch equals get_state_epoch(). Can timing attacks or race conditions cause this check to pass with incorrect epoch values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1b0ac44-b53d-4741-913e-68ac78dbc4c8?mode=deep",
+    "timestamp": "2026-01-20 11:33:14.534345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [get_state_timestamp vulnerability] When calling get_state_timestamp(&state_view) at line 174, can BCS deserialization of TimestampResource be exploited to return arbitrary timestamps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90589c4b-85f7-47d0-984d-bcec1b31f607?mode=deep",
+    "timestamp": "2026-01-20 11:33:37.639278",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [LedgerInfoWithSignatures construction] At line 177, LedgerInfoWithSignatures::new() creates genesis ledger info. Can any of the BlockInfo fields be manipulated through execution output to create invalid ledger state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f7c52b9-7bcf-4651-8912-868c4a1aa2e4?mode=deep",
+    "timestamp": "2026-01-20 11:34:01.283013",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [BlockInfo epoch field] BlockInfo at line 179 uses the calculated epoch. Can epoch manipulation earlier in the function cause this to create blocks with invalid epoch values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bb1aea5-76d6-4230-abc1-91bc3ba232a0?mode=deep",
+    "timestamp": "2026-01-20 11:34:26.693496",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [GENESIS_ROUND hardcoded] GENESIS_ROUND at line 180 is a constant. Can conflicts between this hardcoded value and on-chain round state cause consensus issues after genesis? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c055c3da-c234-4a91-9495-0e3f5c30d365?mode=deep",
+    "timestamp": "2026-01-20 11:34:52.762083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [genesis_block_id consistency] genesis_block_id() is called at line 181 and 191. Can inconsistency in this value between block_id and consensus_data_hash cause fork detection failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f42da96-513d-4e50-a173-269ffd6ff721?mode=deep",
+    "timestamp": "2026-01-20 11:35:19.014655",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Transaction accumulator root] At line 184-186, ensure_ledger_update_output()?.transaction_accumulator.root_hash() is used. Can a malformed execution output pass ensure_ledger_update_output() but have corrupted accumulator root? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9db7a622-2ee7-4dd6-b69c-2a7cf6b58202?mode=deep",
+    "timestamp": "2026-01-20 11:35:45.731135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Genesis version field] BlockInfo uses genesis_version at line 187. Can this version mismatch with the actual committed version if save_transactions modifies it? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_427af28d-d0c7-482e-b240-45b816c65cd3?mode=deep",
+    "timestamp": "2026-01-20 11:36:12.774040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Timestamp usecs field] timestamp_usecs at line 188 comes from earlier logic. Can integer overflow in timestamp calculations cause invalid block timestamps? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_837c1fe1-3b4d-455e-8486-e4af405b25c6?mode=deep",
+    "timestamp": "2026-01-20 11:36:39.850057",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [next_epoch_state clone] execution_output.next_epoch_state.clone() at line 189 is used. Can this clone hide ownership issues that allow next_epoch_state modification after BlockInfo creation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53ea65f0-9514-48bc-b843-3476d3e47205?mode=deep",
+    "timestamp": "2026-01-20 11:37:06.852880",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/db_bootstrapper/mod.rs] [Function: calculate_genesis()] [Empty AggregateSignature] At line 193, AggregateSignature::empty() is used for genesis. Can later validation code incorrectly assume all LedgerInfoWithSignatures have valid signatures, allowing unsigned block acceptance? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df572aee-fae2-4f08-98e2-db52ff2147f5?mode=deep",
+    "timestamp": "2026-01-20 11:37:34.129063",
+    "report_generated": false
+  }
+]
