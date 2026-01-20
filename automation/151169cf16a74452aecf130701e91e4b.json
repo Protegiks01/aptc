@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Null CDN URI Handling] At line 28, cdn_image_uri.unwrap_or_default() converts None to empty string. Can clients distinguish between 'CDN upload pending' (None) and 'CDN URL is empty string' (Some('')), potentially causing incorrect retry logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cce1bdac-1603-4d02-abfe-1bffe05a904a?mode=deep",
+    "timestamp": "2026-01-20 06:26:04.658251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Status Code Zero] If status_code in the database is 0 (which is not a valid HTTP status code), it won't match StatusCode::OK (200) at line 25, so it's treated as an error. Is this intentional, or should status_code=0 be validated to prevent confusion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b4f73f6-d9e1-4c50-9809-6e1ef12ce73c?mode=deep",
+    "timestamp": "2026-01-20 06:26:17.314409",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Unbounded Result Set] If the database query at line 23 returns millions of rows (e.g., due to a wildcard match or missing WHERE clause), the for loop at line 24 will allocate unbounded memory in status_response. Can this cause out-of-memory crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a46a365-3226-48d9-bc6e-cc38a3735638?mode=deep",
+    "timestamp": "2026-01-20 06:26:30.175100",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Large Error Message Arrays] At line 33, error_messages is Option<Vec<Option<String>>>. If the database contains extremely large error message arrays (e.g., thousands of entries), does this consume excessive memory when loaded into the response? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49f45abf-8b67-4b0f-b862-0cae0a53a61e?mode=deep",
+    "timestamp": "2026-01-20 06:26:44.297391",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Asset URI Key Size] The AHashMap at line 22 uses asset_uri strings as keys. If asset_uri values are very long (e.g., data URIs with embedded images), can this cause memory exhaustion or HashMap performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f9458d4-84d6-427b-8842-bc8818c9fa47?mode=deep",
+    "timestamp": "2026-01-20 06:26:58.496343",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Success with Empty CDN URI] At line 26-29, a row with status_code=200 but cdn_image_uri=None returns Success with empty cdn_image_uri. Is this a valid state, or does it indicate a bug where uploads succeeded but CDN upload failed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_333fab45-fd8a-4a8d-b3ff-bfce06970e42?mode=deep",
+    "timestamp": "2026-01-20 06:27:14.026031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Error Status Validation] At line 30-35, any status_code != 200 is treated as an error. But what if status_code is a 3xx redirect or 1xx informational? Should these be handled differently from 4xx/5xx errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d08566a7-02c1-4834-9775-a4cbf8ebdaae?mode=deep",
+    "timestamp": "2026-01-20 06:27:31.467148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Mixed Status Codes] If the database contains multiple rows for the same idempotency_tuple with different status_codes (some 200, some 500), the HashMap will only contain the last processed status. Is this the intended behavior, or should all statuses be aggregated? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_740231cd-0e7b-44f6-8950-105ae0d69a5c?mode=deep",
+    "timestamp": "2026-01-20 06:27:49.788743",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Primary Key Constraint] The database schema shows a composite primary key (idempotency_key, application_id, asset_uri). Can the query at line 47-50 (which filters only by idempotency_key and application_id) return duplicate asset_uri values if the constraint is violated? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f625d897-2b74-4676-a8c3-5dc8be33bc9b?mode=deep",
+    "timestamp": "2026-01-20 06:28:09.573474",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Missing Index] If the asset_uploader_request_statuses table lacks an index on (idempotency_key, application_id), does the query at line 47-50 perform a sequential scan that degrades performance as the table grows? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f61723c8-e8fc-42b5-9ae1-bf6d045bad1f?mode=deep",
+    "timestamp": "2026-01-20 06:28:29.745888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Diesel Type Mismatch] If the database schema changes (e.g., status_code becomes VARCHAR instead of Int8), will Diesel's load() at line 55 return a type error, or could it silently coerce types in unexpected ways? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_878e428f-1d76-42c5-b6ba-e3b7d959a61e?mode=deep",
+    "timestamp": "2026-01-20 06:28:49.824235",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Connection Transaction State] Does the PooledConnection from pool.get() have any active transaction state that could affect query isolation or cause phantom reads when query.load() executes at line 55? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d784dbc5-3135-4d37-bfd9-35a341a4c7a3?mode=deep",
+    "timestamp": "2026-01-20 06:29:09.923936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Response Size Limit] If status_response contains thousands of asset URIs with long CDN URIs and error messages, can the serialized response exceed HTTP payload limits or cause timeout errors when returned to clients? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56bc2dc5-60f9-4b13-bbce-782ddc9cc0ee?mode=deep",
+    "timestamp": "2026-01-20 06:29:30.498729",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [HashMap Ordering] AHashMap at line 22 provides no ordering guarantees. Can clients rely on any ordering of results, or should the API document that asset URIs are returned in arbitrary order? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08d9fd11-7bf0-41cb-bb89-db8add9aabc7?mode=deep",
+    "timestamp": "2026-01-20 06:29:52.605899",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Unicode Asset URIs] If asset_uri contains Unicode characters, emoji, or RTL text, does the AHashMap key comparison and insertion at line 26/31 work correctly across different Unicode normalization forms? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3514235-13c0-436e-9150-47edda5d9905?mode=deep",
+    "timestamp": "2026-01-20 06:30:15.540704",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Null Bytes in Strings] Can idempotency_key, application_id, or asset_uri contain null bytes (\\\\0) that could cause string truncation or query errors in PostgreSQL? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a314ea52-c2d3-4718-a07b-64918ae56710?mode=deep",
+    "timestamp": "2026-01-20 06:30:37.295621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Database Connection Timezone] If the database connection has a different timezone setting than expected, could this affect the timestamp fields (request_received_at, inserted_at) in AssetUploaderRequestStatusesQuery, even though they're not used in this function? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f852815-e140-4a27-a719-ff79ce1313c6?mode=deep",
+    "timestamp": "2026-01-20 06:30:58.189282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Idempotency Violation] If the same idempotency_key is reused with a different application_id (or vice versa), does get_status() return the correct status, or could it leak information about unrelated upload requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bca855ee-e231-4ee0-9c93-8885266768b1?mode=deep",
+    "timestamp": "2026-01-20 06:31:19.593433",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Status Code Type Safety] StatusCode::OK is from axum::http::StatusCode. If the database stores status codes from a different HTTP library or custom values, could the comparison at line 25 fail to match valid 200 responses? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c0ae963-a68b-41c6-8c6d-df3eda442908?mode=deep",
+    "timestamp": "2026-01-20 06:31:41.213703",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Error Message Injection] If error_messages in the database contain malicious HTML, JavaScript, or SQL, and clients render these messages without sanitization, could this lead to XSS or injection attacks in downstream systems? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_695d87a7-ecd3-4d98-94be-68e14c6a3afd?mode=deep",
+    "timestamp": "2026-01-20 06:32:02.015937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Connection Pool Configuration] If the Pool is misconfigured with max_size=1, can concurrent get_status() calls cause severe contention and timeouts at pool.get() line 21? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ade42e26-de23-473c-a52e-57403de6687b?mode=deep",
+    "timestamp": "2026-01-20 06:32:23.751350",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [CDN URI Validation] The cdn_image_uri from the database is returned directly to clients at line 28. If this contains malicious URLs (e.g., javascript:, data:, file:), could clients be vulnerable to URL-based attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbb98ab4-14ed-4d56-963f-8dcdda613b79?mode=deep",
+    "timestamp": "2026-01-20 06:32:44.533178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Query Parameter Binding] Does Diesel's .eq() method at line 49-50 properly parameterize the query, or could special SQL characters in idempotency_key or application_id affect query behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44e17b1d-55c6-4ddf-b1ee-dc4585040b07?mode=deep",
+    "timestamp": "2026-01-20 06:33:05.799430",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [HashMap Capacity] AHashMap::new() at line 22 starts with default capacity. If the query returns thousands of rows, does the HashMap resize multiple times, causing performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da43ce99-f735-409d-b68b-2f3d705ad33e?mode=deep",
+    "timestamp": "2026-01-20 06:33:27.689211",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Error Message Nested Optionality] error_messages has type Option<Vec<Option<String>>> at line 33. Can this complex nesting cause confusion where Some(vec![None]) is treated differently from None, leading to incorrect error handling? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d09e400e-8ea1-42e5-900f-bc2deae4ed8a?mode=deep",
+    "timestamp": "2026-01-20 06:33:50.309243",
+    "report_generated": false
+  }
+]
