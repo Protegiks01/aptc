@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Equivocation bypass] In the equivocation detection logic at lines 288-310, can a Byzantine validator submit votes with identical LedgerInfo digests but different vote data to bypass the equivocation check, allowing them to vote multiple times for the same round without triggering EquivocateVote? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_469216c5-8566-4846-8b21-b1d1204e9e50?mode=deep",
+    "timestamp": "2026-01-20 20:45:44.936594",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Race condition] At lines 288-317, if two votes from the same author arrive concurrently, can both pass the author_to_vote.get() check before either is inserted, allowing duplicate votes to both be counted toward quorum formation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79fb778a-73d1-4d46-b4b5-4ed6cb774232?mode=deep",
+    "timestamp": "2026-01-20 20:45:57.572424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [State inconsistency] At line 316-317, the author_to_vote HashMap is updated with vote.clone() - can a malicious validator exploit timing between the equivocation check and HashMap insertion to inject conflicting votes during concurrent processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed42d076-48cc-470c-b457-11ec640be4ec?mode=deep",
+    "timestamp": "2026-01-20 20:46:10.655224",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Duplicate vote exploitation] At lines 292-298, the code allows a new timeout vote even if a previous non-timeout vote exists for the same LedgerInfo - can an attacker exploit this to artificially inflate timeout certificate voting power by converting regular votes to timeout votes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58a76f00-510e-4b0d-b0ca-c4c6c35bbf32?mode=deep",
+    "timestamp": "2026-01-20 20:46:24.142226",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Memory exhaustion] The author_to_vote HashMap at line 174 has no size limit - can a Byzantine validator flood the system with votes from compromised validator keys to cause unbounded memory growth and node crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb5a7661-ca28-494c-9c6f-eb60f26f81e9?mode=deep",
+    "timestamp": "2026-01-20 20:46:38.825425",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Zero voting power bypass] At lines 332-342, when validator_voting_power returns None or 0, the code logs a warning but continues processing - can attackers exploit this to inject votes from non-validators or zero-stake validators that still affect TC formation or echo timeout triggering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f435473-0127-45a1-9840-cf52ab34fffb?mode=deep",
+    "timestamp": "2026-01-20 20:46:54.441280",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [Voting power validation] At lines 203-211, zero voting power only triggers a warning - can a Byzantine coordinator accept timeout votes from validators with zero stake to manipulate f+1 threshold calculations for echo timeouts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64252e0e-246a-4e97-a5d6-1ce43b8472db?mode=deep",
+    "timestamp": "2026-01-20 20:47:12.438771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Unknown author handling] At lines 334-337, UnknownAuthor is returned but vote processing continues to line 338 where validator_voting_power is unwrapped with expect() - is there a code path where this expect() can panic if get_voting_power returns None despite the previous check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2575dc3-8b55-49d6-aef2-8e02ce1c4ed3?mode=deep",
+    "timestamp": "2026-01-20 20:47:30.826373",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Voting power integer overflow] At lines 345-346, validator_verifier.quorum_voting_power() is cast to f64 for metrics - can an attacker cause integer overflow in voting power calculations if total stake exceeds u128::MAX or cause precision loss in quorum threshold calculations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_abd6b684-536c-48d7-b802-b20eaf644b8a?mode=deep",
+    "timestamp": "2026-01-20 20:47:50.570111",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [QC premature formation] At lines 360-366, if VoteStatus is already EnoughVotes, a new QC is immediately returned without verifying the incoming vote's signature - can an attacker repeatedly retrieve the same QC by sending invalid votes, potentially causing consensus confusion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80183051-bae6-4d23-b354-72dba5d9a7c7?mode=deep",
+    "timestamp": "2026-01-20 20:48:10.700279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Signature aggregation bypass] At lines 372-402, the code checks voting power before signature aggregation - can a Byzantine validator exploit a race condition where voting power crosses the threshold but signature aggregation fails, leaving the system in an inconsistent state where votes are counted but QC cannot be formed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbd7e6a9-4ce0-4ca8-a22b-e4ff0817b8cc?mode=deep",
+    "timestamp": "2026-01-20 20:48:31.873237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [State mutation race] At line 392, VoteStatus is mutated to EnoughVotes after successful verification - can concurrent vote insertions cause multiple threads to simultaneously attempt this state transition, potentially creating multiple conflicting QCs for the same LedgerInfo? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74971ff2-b1df-444e-8ddb-f46e71eb96b9?mode=deep",
+    "timestamp": "2026-01-20 20:48:54.197602",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Hash collision attack] At line 282, li_digest is computed as vote.ledger_info().hash() - can an attacker craft two different LedgerInfos with colliding hashes to merge votes intended for different blocks, allowing QC formation for an invalid block? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2107c8eb-080c-4f65-beff-00aaaa573385?mode=deep",
+    "timestamp": "2026-01-20 20:49:18.119140",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Aggregation error handling] At lines 397-401, if TooLittleVotingPower is returned despite earlier check at line 372 succeeding, the voting power is returned - can this condition occur legitimately, and could it lead to vote counting inconsistencies where votes are accepted but never form a QC? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bdc8b5b-ceab-4f9b-b9a2-e50f729bd562?mode=deep",
+    "timestamp": "2026-01-20 20:49:43.279536",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Multiple LedgerInfo attack] At lines 168-170, li_digest_to_votes can contain multiple LedgerInfos for the same round - can a Byzantine proposer create numerous conflicting proposals to fragment voting power and prevent any QC from forming, causing liveness failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3183e8e7-d238-4dc0-9fb0-eaf9d02841f5?mode=deep",
+    "timestamp": "2026-01-20 20:50:08.753486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [len calculation vulnerability] At line 323, len is computed as self.li_digest_to_votes.len() + 1 before insertion - can this cause hash_index values to be incorrect if concurrent insertions occur, leading to improper vote tracking in metrics or logic errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_288c711c-b572-47b8-a6e7-c0c3a329cff9?mode=deep",
+    "timestamp": "2026-01-20 20:50:35.579883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [SignatureAggregator initialization] At lines 325-330, a new SignatureAggregator is created with vote.ledger_info().clone() - can an attacker exploit differences between the cloned LedgerInfo and the original to cause signature verification failures when the QC is later used? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6e3bbd1-5be2-4e0a-8cb1-e3bcb2f83fc7?mode=deep",
+    "timestamp": "2026-01-20 20:51:02.164472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [TC voting power race] At lines 236-254, TC voting power is checked and if sufficient, aggregate_signatures() is called - can concurrent timeout insertions cause multiple threads to simultaneously trigger TC formation, creating duplicate TCs with different signature aggregations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3caca99-778f-440b-985b-68b9afcc761f?mode=deep",
+    "timestamp": "2026-01-20 20:51:29.419422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [TwoChainTimeoutVotes initialization] At lines 225-227, maybe_2chain_timeout_votes is initialized with get_or_insert_with() using timeout.clone() - if timeouts from different validators have conflicting data (different rounds/epochs), can this cause the initial timeout to be used incorrectly for validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de7b3a55-6627-4544-ab52-f0369db449ec?mode=deep",
+    "timestamp": "2026-01-20 20:51:56.731162",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Timeout signature bypass] At lines 423-475, timeout processing only occurs if vote.two_chain_timeout() returns Some - can a validator submit a regular vote, then later upgrade it to include timeout data, and have both the vote and timeout counted separately to double-count voting power? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f325d63-08d3-4240-883b-d2e0a07755d9?mode=deep",
+    "timestamp": "2026-01-20 20:52:24.551346",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [Echo timeout manipulation] At lines 257-265, echo timeout triggers when tc_voting_power >= f_plus_one where f_plus_one = total - quorum + 1 - can a Byzantine attacker manipulate this calculation by causing validator set changes or stake updates during vote processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d9802ed-5f99-4661-86f1-990e49e7c346?mode=deep",
+    "timestamp": "2026-01-20 20:52:52.405402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Dual vote/timeout counting] At lines 434-442, two_chain_votes.add() is called without checking if this author already contributed to the TC via insert_round_timeout() - can a validator submit both a RoundTimeout and a Vote with timeout to have their voting power counted twice? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_867ffdae-c87c-4231-a8f7-461d7744127b?mode=deep",
+    "timestamp": "2026-01-20 20:53:21.626412",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [TC aggregation error recovery] At lines 239-244, if aggregate_signatures() returns Err, ErrorAggregatingTimeoutCertificate is returned - does this error leave the partial_tc in an inconsistent state where subsequent timeouts cannot be properly aggregated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d444a05-3466-47af-9b02-b17bbe039f37?mode=deep",
+    "timestamp": "2026-01-20 20:53:49.262570",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Partial TC mutation race] At line 444, partial_2chain_tc_mut() returns a mutable reference - can concurrent vote insertions cause data races when multiple threads attempt to add signatures to the partial TC simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17d5593c-8bde-4031-a8f5-b175f2f3a6f7?mode=deep",
+    "timestamp": "2026-01-20 20:54:18.400038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [Signature verification timing] At lines 237-254, check_voting_power() is called before aggregate_signatures() - can an attacker exploit timing differences between these calls to inject invalid signatures that pass the voting power check but fail aggregation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_407f0d9c-d57c-4ec6-a59e-a0640ebb4264?mode=deep",
+    "timestamp": "2026-01-20 20:54:46.399213",
+    "report_generated": false
+  }
+]
