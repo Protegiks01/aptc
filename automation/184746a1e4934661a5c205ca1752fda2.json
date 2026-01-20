@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [Chain ID mismatch attack] Can an attacker manipulate the chain_id parameter during initialization to mismatch with existing metadata, causing the ensure! check at line 84 to fail after metadata has already been uploaded, potentially corrupting cross-chain indexer state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b418c4ba-6ad5-4888-8117-da4f58d682a0?mode=deep",
+    "timestamp": "2026-01-20 08:39:28.471803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [Race condition] Between lines 63-82, if multiple processor instances initialize simultaneously and metadata doesn't exist, can they race to create conflicting metadata files with different chain_ids or versions, breaking state consistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e42c4a50-fd52-4408-afb8-c07d01cbfbc0?mode=deep",
+    "timestamp": "2026-01-20 08:39:40.600018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [Metadata corruption] In the metadata creation loop at lines 67-79, if update_file_store_metadata_with_timeout() succeeds but the subsequent get_file_store_metadata() at line 82 returns different data due to race conditions, can this cause chain_id validation bypass? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21a0de4c-811d-450b-a572-bdba3fa4acd3?mode=deep",
+    "timestamp": "2026-01-20 08:39:52.999720",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [Integer overflow] When setting batch_start_version from metadata.version at line 85, if metadata.version is near u64::MAX, can this cause overflow in subsequent version arithmetic in run(), leading to incorrect batch processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f947621-2c2e-463c-96da-bfa51f371920?mode=deep",
+    "timestamp": "2026-01-20 08:40:06.039342",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [TOCTOU vulnerability] Between checking metadata existence at line 65 and uploading new metadata at lines 67-79, can another process create metadata, causing both to upload conflicting metadata and break version continuity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2573f0fe-449b-498e-8680-575f727bf60e?mode=deep",
+    "timestamp": "2026-01-20 08:40:19.327776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [Cache poisoning] At lines 88-95, when cache chain_id doesn't exist and is set by this instance, can a malicious actor race to set a different chain_id in cache before line 93 executes, bypassing the validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_345671bc-cfe1-416b-bdaa-f33a044f375b?mode=deep",
+    "timestamp": "2026-01-20 08:40:33.336801",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [Denial of service] In the infinite retry loop at lines 67-79, if update_file_store_metadata_with_timeout() consistently fails due to storage issues, can this cause the processor to hang indefinitely during initialization without timeout, blocking service startup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_158d59a0-53fd-4c4f-998e-55ebc500091d?mode=deep",
+    "timestamp": "2026-01-20 08:40:48.571433",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [State inconsistency] At line 97, update_file_store_latest_version() updates cache with batch_start_version from metadata, but if metadata is stale (from line 82), can this cause cache to have incorrect version, leading to transaction skipping or duplication? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da154b7e-b7ac-40ec-95df-cae14405dd09?mode=deep",
+    "timestamp": "2026-01-20 08:41:04.940787",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [Unwrap panic] Line 82 uses unwrap() assuming metadata exists after creation, but if file store has consistency issues or delays, can this panic and crash the processor during initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b29f53d4-23b4-4c86-b508-b34a136d712b?mode=deep",
+    "timestamp": "2026-01-20 08:41:22.155529",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: new()] [Redis connection failure] If the Redis connection at lines 44-58 succeeds initially but fails between cache_setup_if_needed() at line 87 and subsequent cache operations, can this cause partial initialization with inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22251f07-c503-467b-988d-4b06e47e7207?mode=deep",
+    "timestamp": "2026-01-20 08:41:39.951912",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run()] [Chain ID drift] At lines 116-121, the processor only checks chain_id once at startup by reading file store metadata, but if metadata is externally modified during the infinite loop, can chain_id mismatch go undetected, causing cross-chain data corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b31bacd-73fe-43ed-8066-32344782e57b?mode=deep",
+    "timestamp": "2026-01-20 08:41:58.708235",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run()] [Metadata staleness] The metadata is fetched once at line 116-120 and used to initialize batch_start_version, but never re-validated in the loop. Can external metadata updates cause version desynchronization leading to transaction gaps or duplicates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be724b2b-013a-46c4-b20b-a02845715a7e?mode=deep",
+    "timestamp": "2026-01-20 08:42:18.626717",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run()] [Unwrap panic on metadata] Line 120 uses unwrap() on metadata retrieval - if file store becomes temporarily unavailable or metadata is deleted externally, can this crash the processor and halt indexing permanently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f34f2b8f-fdcc-43ee-b61c-ddc449b4f6ac?mode=deep",
+    "timestamp": "2026-01-20 08:42:39.426740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run()] [Version initialization attack] If batch_start_version at line 123 is initialized from corrupted metadata with an arbitrary value, can an attacker cause the processor to skip critical transactions by setting a high version number? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b77804a-16a2-44e4-94e2-ab07d995cc17?mode=deep",
+    "timestamp": "2026-01-20 08:43:00.616131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run()] [Race condition in batch calculation] At lines 131-139, batches vector is built by incrementing start_version, but if cache_worker_latest changes between line 128 and the while loop, can this cause inconsistent batch boundaries or missing transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4cf8e167-7c4a-430f-a040-b2653446e9e5?mode=deep",
+    "timestamp": "2026-01-20 08:43:23.238712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run()] [Integer overflow in batch loop] At line 133, the condition 'start_version + FILE_ENTRY_TRANSACTION_COUNT < cache_worker_latest' doesn't check for overflow. If start_version approaches u64::MAX, can overflow cause the loop to terminate prematurely or create invalid batches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15b4b78d-f96d-4140-9928-316b6190b0d9?mode=deep",
+    "timestamp": "2026-01-20 08:43:45.749367",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run()] [Unbounded batch array] The MAX_CONCURRENT_BATCHES limit at line 136 caps batches.len() at 50, but if FILE_ENTRY_TRANSACTION_COUNT is modified to a small value, can this cause excessive memory consumption from large batches arrays? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19e07f97-3f9f-4a8b-b687-16a0c8a5edd8?mode=deep",
+    "timestamp": "2026-01-20 08:44:08.923652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run()] [Empty batch vulnerability] At lines 141-152, if batches is empty, the processor sleeps and continues. Can an attacker manipulate cache_worker_latest to stay just below required thresholds, causing indefinite processing delays and indexer liveness issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e2d4bea-6eb5-4185-adad-46e16955d3a8?mode=deep",
+    "timestamp": "2026-01-20 08:44:32.693714",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run()] [Concurrent task spawn bombing] At lines 157-203, tasks are spawned with tokio::spawn for each batch without rate limiting beyond MAX_CONCURRENT_BATCHES. Can rapid cache updates cause memory exhaustion from too many concurrent async tasks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23701f18-6503-439b-81d8-1052cd10c8e7?mode=deep",
+    "timestamp": "2026-01-20 08:44:56.988725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run() - async task] [Unwrap panic in task] At line 165, get_transactions().await.unwrap() can panic if Redis connection fails or transactions are missing. Since this is in tokio::spawn, can task panics cause silent data loss without crashing the main processor? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5cf2400a-7dba-4a15-b64d-4da094fb232d?mode=deep",
+    "timestamp": "2026-01-20 08:45:20.918742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run() - async task] [Transaction ordering attack] At lines 179-181, transactions are validated with assert_eq! for version sequence, but if cache is corrupted or manipulated, can malformed version sequences crash all spawned tasks and halt processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_013b4097-a30b-4702-8ac2-fede730557bd?mode=deep",
+    "timestamp": "2026-01-20 08:45:42.688957",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run() - async task] [Last transaction extraction] At line 166, transactions.last().unwrap() assumes the array is non-empty, but if get_transactions() returns an empty vector due to cache issues, can this panic and crash async tasks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c3005bc-4092-4efa-bf2f-eff976cc8f4c?mode=deep",
+    "timestamp": "2026-01-20 08:46:05.475892",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run() - async task] [Clone() vulnerabilities] At lines 158-159, cache_operator and file_store_operator are cloned for each task. Can resource exhaustion occur if cloning creates excessive connections or file handles, especially with 50 concurrent batches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_509b9c38-4411-4196-8965-f7c91d4e2db6?mode=deep",
+    "timestamp": "2026-01-20 08:46:28.450996",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run() - async task] [Upload unwrap panic] At line 186, upload_transaction_batch().await.unwrap() will panic if file store upload fails. Can transient storage issues cause all 50 concurrent tasks to panic simultaneously, losing transaction batches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56bef34a-2d78-44c9-9c6a-f8ba74351d37?mode=deep",
+    "timestamp": "2026-01-20 08:46:50.163239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-store/src/processor.rs] [Function: run() - async task] [Chain ID injection] At line 184, chain_id is passed to upload_transaction_batch() but not validated within the task. Can a modified chain_id in the closure cause transactions to be uploaded to wrong chain buckets? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f385a6ef-9193-464e-b578-f6814b0f39b3?mode=deep",
+    "timestamp": "2026-01-20 08:47:10.971265",
+    "report_generated": false
+  }
+]
