@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Struct: VersionData] [Integer Overflow] Can the state_items field (usize) overflow when processing a malicious sequence of transactions that continuously add state items without bounds checking, potentially causing state tracking to wrap around to zero and incorrectly report storage usage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17c9feb4-b299-46b3-98c0-f1e43c69c050?mode=deep",
+    "timestamp": "2026-01-20 00:58:25.675296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Struct: VersionData] [Integer Overflow] Can the total_state_bytes field (usize) overflow when accumulating large state values, causing the storage accounting to wrap around and allow attackers to bypass storage limits or gas fees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a656bd97-e3d0-4e16-83e5-b0366b1a53c2?mode=deep",
+    "timestamp": "2026-01-20 00:58:38.425270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Struct: VersionData] [State Corruption] If state_items and total_state_bytes overflow independently at different rates, can this create an inconsistent state where the average bytes per item becomes invalid, breaking state storage calculations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_057b83c7-48fd-4e12-aee0-c1916c5ad1c6?mode=deep",
+    "timestamp": "2026-01-20 00:58:51.639468",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Struct: VersionData] [Resource Exhaustion] Can an attacker craft transactions that maximize state_items and total_state_bytes near usize::MAX, causing subsequent legitimate transactions to fail due to overflow, effectively freezing state modifications? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51d05b4c-7c59-4e9c-b887-3634d3e7fff2?mode=deep",
+    "timestamp": "2026-01-20 00:59:05.198219",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Struct: VersionData] [Type Safety] On 32-bit systems where usize is u32, can the state tracking values overflow much earlier than on 64-bit systems, creating platform-specific consensus failures where different validators compute different state storage usage? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b536e1ac-f27e-4130-ae6d-0c6d88c309ea?mode=deep",
+    "timestamp": "2026-01-20 00:59:19.566647",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: from()] [Data Loss] In the From<StateStorageUsage> implementation, when converting from StateStorageUsage::Untracked to VersionData, the conversion returns zero values - can this cause validators to disagree on state usage if some track usage while others don't, leading to consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0bd6514e-42a0-4d23-b78b-da6d855d2b1c?mode=deep",
+    "timestamp": "2026-01-20 00:59:34.878728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: from()] [State Inconsistency] Does the From trait implementation preserve all invariants from StateStorageUsage, or can converting Untracked states to VersionData with zeros create invalid database entries that break state queries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3038b82b-e766-4023-85f3-be3c58d73cc0?mode=deep",
+    "timestamp": "2026-01-20 00:59:52.479672",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: from()] [Information Loss] When converting StateStorageUsage to VersionData, is the Tracked/Untracked distinction preserved anywhere, or is this critical information permanently lost, potentially causing issues when trying to determine if usage tracking was intentionally disabled? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8149a138-2109-4c4a-bae6-bee12090b049?mode=deep",
+    "timestamp": "2026-01-20 01:00:11.472823",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: from()] [Validation Bypass] Can an attacker exploit the From trait to create VersionData entries with arbitrary state_items and total_state_bytes values by manipulating StateStorageUsage inputs, bypassing any validation that might exist in StateStorageUsage constructors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ae76041-762c-4018-b263-265729ac5e71?mode=deep",
+    "timestamp": "2026-01-20 01:00:31.446349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: get_state_storage_usage()] [State Reconstruction] Does get_state_storage_usage() always reconstruct StateStorageUsage as Tracked, meaning that Untracked states can never be recovered from VersionData, potentially causing validators to incorrectly treat untracked storage as tracked? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c638d359-eae0-49e2-a68d-9bc15604f4f8?mode=deep",
+    "timestamp": "2026-01-20 01:00:52.529971",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: get_state_storage_usage()] [Invariant Violation] Can calling get_state_storage_usage() on a VersionData with state_items=0 and total_state_bytes>0 (or vice versa) create an invalid StateStorageUsage that violates internal invariants and causes panics elsewhere in the codebase? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd1df11c-be25-44be-996f-a0d03fc62288?mode=deep",
+    "timestamp": "2026-01-20 01:01:14.302344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: get_state_storage_usage()] [Data Integrity] If VersionData was corrupted in storage (state_items or total_state_bytes modified), does get_state_storage_usage() perform any validation before reconstructing StateStorageUsage, or will it blindly return corrupted values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c33f965d-f5fd-47c2-adef-7f6d8c55e5db?mode=deep",
+    "timestamp": "2026-01-20 01:01:37.769038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: encode_key()] [Endianness Attack] Can an attacker exploiting the big-endian encoding in encode_key() craft database keys that, when interpreted as little-endian by a corrupted node, point to different versions, causing state queries to return incorrect historical data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bc83dfd-21ad-40f1-bbd5-eb29608346c0?mode=deep",
+    "timestamp": "2026-01-20 01:02:01.517604",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: encode_key()] [Key Collision] Does encode_key() properly handle Version values near u64::MAX, or can overflow during to_be_bytes() conversion cause key collisions where different version numbers map to the same database key? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fcbf6dc-5e72-429d-b6be-822d1d5220da?mode=deep",
+    "timestamp": "2026-01-20 01:02:26.859078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: encode_key()] [Ordering Violation] If encode_key() is called with Version values that are not monotonically increasing due to time manipulation or consensus bugs, can this violate RocksDB's ordering assumptions mentioned in the comments and cause database corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f12682b3-5fa0-4030-ad24-b6608960d347?mode=deep",
+    "timestamp": "2026-01-20 01:02:52.929422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: decode_key()] [Buffer Overflow] In decode_key(), does ensure_slice_len_eq properly prevent attacks where an attacker provides a slice smaller than size_of::<Version>() to cause read_u64::<BigEndian>() to read past buffer boundaries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86952546-22c8-4e27-8777-2d22edd0f532?mode=deep",
+    "timestamp": "2026-01-20 01:03:20.356356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: decode_key()] [Size Validation Bypass] Can the ensure_slice_len_eq check in decode_key() be bypassed if data.len() is manipulated through unsafe code or FFI, allowing oversized keys to be processed and potentially exploiting read_u64 parsing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e041d7df-ea61-4e7e-a5e2-98ad53bdd40d?mode=deep",
+    "timestamp": "2026-01-20 01:03:49.196092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: decode_key()] [Panic Attack] If read_u64::<BigEndian>() encounters malformed data that passes the size check but contains invalid byte sequences, can this cause panics that crash validator nodes, leading to consensus liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4fbb3277-71f4-4763-8828-b96acc9393b8?mode=deep",
+    "timestamp": "2026-01-20 01:04:18.106310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: decode_key()] [Error Handling] Does decode_key() properly propagate all error types from read_u64::<BigEndian>(), or can certain error conditions be silently ignored, causing corrupted version numbers to be accepted as valid? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4abde232-2c13-4ada-82c6-d26da291f0b7?mode=deep",
+    "timestamp": "2026-01-20 01:04:48.224546",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: encode_value()] [BCS Serialization] Can bcs::to_bytes() in encode_value() produce non-deterministic output for the same VersionData input across different Rust compiler versions or platforms, causing validators to compute different storage hashes and break consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ce544f4-9d0f-4f34-826f-fd4b9b411c1e?mode=deep",
+    "timestamp": "2026-01-20 01:05:18.377561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: encode_value()] [Size Explosion] Can specially crafted VersionData with maximum usize values cause bcs::to_bytes() to produce extremely large byte arrays that exhaust memory or exceed database value size limits, causing write failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b60eef3-fd10-4c45-a078-aa88877918d8?mode=deep",
+    "timestamp": "2026-01-20 01:05:47.170466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: encode_value()] [Error Propagation] If bcs::to_bytes() fails internally but returns Ok due to a bug, can this cause encode_value() to write corrupted data to the database without error detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_484bc09e-3f1c-4047-b3b2-d475fd6bfaa2?mode=deep",
+    "timestamp": "2026-01-20 01:06:15.794110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: decode_value()] [BCS Deserialization Attack] Can an attacker inject malicious BCS-encoded data into the database that passes bcs::from_bytes() validation but creates VersionData with semantically invalid values (e.g., state_items=usize::MAX), bypassing application-level validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d45817bd-2416-48c6-857c-d30aeb45d5b1?mode=deep",
+    "timestamp": "2026-01-20 01:06:44.694571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: decode_value()] [Resource Exhaustion] Can maliciously crafted BCS data cause bcs::from_bytes() to consume excessive CPU or memory during deserialization, creating a DoS vector when validators query version data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_387ff00d-a2da-4166-b5c7-b251d92fe86f?mode=deep",
+    "timestamp": "2026-01-20 01:07:13.324412",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/version_data/mod.rs] [Function: decode_value()] [Type Confusion] If the BCS data encodes a valid Rust type but with field values that violate VersionData invariants, can decode_value() create invalid VersionData objects that cause panics when used? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5376552a-e582-4ffe-8121-80260292eeec?mode=deep",
+    "timestamp": "2026-01-20 01:07:41.014797",
+    "report_generated": false
+  }
+]
