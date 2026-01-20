@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: enc()] [RNG correlation attack] Using two separate RNGs (main_rng and aead_rng) - if these share internal state or are seeded from the same source, could correlated randomness enable prediction of both ElGamal ephemeral keys and AES nonces? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a580baed-638a-45f1-92a8-ee67fff67728?mode=deep",
+    "timestamp": "2026-01-20 06:14:30.045976",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Insufficient length validation] The check at line 99-102 only ensures ciphertext.len() >= 76, but doesn't validate maximum size - could an attacker cause memory exhaustion by submitting extremely large ciphertexts leading to DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_368eb5a8-eb25-4fd0-b1d8-36ad0fc20e22?mode=deep",
+    "timestamp": "2026-01-20 06:14:42.409636",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Point decompression oracle] The decompression operations at lines 103-107 and 114-118 can fail - does the timing or error message difference between valid/invalid compressed points leak information enabling chosen-ciphertext attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5e303ef-c8de-43ce-a87b-0ae949d44641?mode=deep",
+    "timestamp": "2026-01-20 06:14:54.850176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Torsion point attack on c0] The check at lines 109-112 validates c0.is_torsion_free(), but what if c0 is the identity element which is torsion-free - would ElGamal decryption return a predictable value allowing key recovery? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3dfd2bc2-a267-45a3-a6b5-300f437bc90d?mode=deep",
+    "timestamp": "2026-01-20 06:15:07.724935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Torsion point attack on c1] Similarly at lines 120-123 for c1 - could submitting the identity point as c1 cause the ElGamal decryption to return c1 unchanged, revealing the encrypted AES key directly? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8840ce4-cb00-4098-93e8-4f4ff6873f42?mode=deep",
+    "timestamp": "2026-01-20 06:15:21.397721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Small subgroup confinement] While torsion-free checks exist, could an attacker send c0 and c1 in a small prime-order subgroup that passes is_torsion_free() but confines the ElGamal decryption to a weak subgroup, enabling key recovery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a12bb64f-d0f5-4917-bf0e-8312caa2a175?mode=deep",
+    "timestamp": "2026-01-20 06:15:35.715503",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Invalid curve point acceptance] If CompressedEdwardsY::from_slice() at lines 103 and 114 accepts off-curve points that somehow decompress, could this lead to invalid curve arithmetic in ElGamal decryption revealing secret key bits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f03cf076-1588-454e-b1ed-bd4d4c2e24d0?mode=deep",
+    "timestamp": "2026-01-20 06:15:50.930068",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Slice bounds safety] The slicing operations at lines 103, 114, 129, and 130 assume fixed offsets - could off-by-one errors or corrupted ciphertext length cause panics or reading uninitialized memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_01bda763-41af-43ac-a045-26c2e95d3f1a?mode=deep",
+    "timestamp": "2026-01-20 06:16:07.996022",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [ElGamal decryption timing] The elgamal::decrypt() call at line 125 performs scalar multiplication sk * c0 - does this operation execute in constant time, or could timing analysis reveal bits of the secret key? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d11d0d48-9775-422e-83d4-d5bf4c244740?mode=deep",
+    "timestamp": "2026-01-20 06:16:25.601803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [AES decryption padding oracle] The AES-GCM decryption at line 130 can fail with authentication errors - does the error message at line 131 distinguish between authentication failures and other errors, creating a padding oracle? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8703e925-118b-4b68-8da5-b8c94ed837cc?mode=deep",
+    "timestamp": "2026-01-20 06:16:44.777801",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Nonce reuse detection] There's no check if the nonce at line 129 was previously used - could an attacker replay ciphertexts with identical nonces to leak information about plaintext differences? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d65db2a-f2a2-479d-b878-366b03d791a6?mode=deep",
+    "timestamp": "2026-01-20 06:17:04.295810",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Error timing side-channel] Different error paths (invalid length, decompression failure, torsion check, AES error) may have different execution times - could this timing oracle enable chosen-ciphertext attacks to extract the secret key? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97301a95-b407-4038-8790-a40ec8aecaef?mode=deep",
+    "timestamp": "2026-01-20 06:17:24.764183",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Secret key validation] The function accepts any Scalar as sk without validation - could an attacker who controls sk supply zero, causing all ElGamal decryptions to return the c1 component directly? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2314d5ed-4c7e-4c0e-a510-adc4f3f2a28c?mode=deep",
+    "timestamp": "2026-01-20 06:17:44.822453",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Malformed nonce handling] The nonce slice at line 129 is exactly 12 bytes from ciphertext[64..76] - what happens if these bytes contain invalid nonce data - could AES-GCM fail in unexpected ways? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b494e28-940b-40b5-82f1-207cfb0fdcd3?mode=deep",
+    "timestamp": "2026-01-20 06:18:06.483834",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Ciphertext component substitution] Could an attacker swap c0 and c1 components in the ciphertext to cause ElGamal decryption to return a different group element, potentially deriving a different AES key that decrypts to garbage, leaking information through error patterns? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_013cc784-8868-4929-b79b-4e733f867308?mode=deep",
+    "timestamp": "2026-01-20 06:18:29.472064",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Associated data mismatch] Since enc() doesn't use AD in AES-GCM, an attacker could mix ciphertext components from different messages - should dec() verify integrity of the ElGamal components as AD to prevent this? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_024e4479-6c62-4fbb-964b-051469f9f83a?mode=deep",
+    "timestamp": "2026-01-20 06:18:53.197597",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Key derivation failure handling] If hash_group_element_to_aes_key() at line 126 somehow returns a wrong-length key, would Aes256Gcm::new() panic or use a truncated key, causing silent decryption failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d430a3d4-dbd6-4218-b694-82c1465a88e3?mode=deep",
+    "timestamp": "2026-01-20 06:19:16.622908",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Plaintext size validation] There's no upper bound on the decrypted plaintext size - could successful decryption of malicious ciphertexts return multi-gigabyte plaintexts causing memory exhaustion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3890f183-aa19-4c0f-9ad8-6e4c6f803e34?mode=deep",
+    "timestamp": "2026-01-20 06:19:40.436241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Error propagation security] The function uses anyhow::Result which can include backtraces - could stack traces in production expose internal state or code paths helping attackers refine chosen-ciphertext attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e35b5fa9-3831-4fdd-88df-3aa79120dc13?mode=deep",
+    "timestamp": "2026-01-20 06:20:05.069121",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Point compression validation] CompressedEdwardsY::from_slice() might accept invalid encodings - could specially crafted compressed points cause decompression to succeed with unexpected curve points? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bdb5d6d5-1231-47e6-9d96-8eacb7e138c2?mode=deep",
+    "timestamp": "2026-01-20 06:20:29.898274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: dec()] [Decryption failure oracle] The distinct error messages for different failure modes (lines 106, 111, 117, 122, 131) create an oracle - could attackers use this to distinguish between different types of invalid ciphertexts, enabling adaptive attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5572004e-5cb2-4d0c-b0e8-2a7f87fb8272?mode=deep",
+    "timestamp": "2026-01-20 06:20:52.967566",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: key_gen()] [Weak RNG exploitation] The function delegates to elgamal::key_gen() without validating RNG quality - if a weak or predictable RNG is passed, could all generated keypairs be predictable, allowing complete system compromise? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a9eb598-81f5-4e38-adc2-d5add8fd406e?mode=deep",
+    "timestamp": "2026-01-20 06:21:15.935059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: key_gen()] [Private key validation] There's no check that the generated Scalar is non-zero or within the valid scalar range - could edge cases in Scalar::random() produce weak private keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46d93af3-94c4-468f-905e-333062b2e47b?mode=deep",
+    "timestamp": "2026-01-20 06:21:38.653422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: key_gen()] [Public key verification] The generated public key is not validated to be torsion-free or non-identity - could faulty key generation produce unusable or weak public keys that compromise security? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_573e61a3-5e62-44e5-a0b1-1d380e65bc76?mode=deep",
+    "timestamp": "2026-01-20 06:22:02.486973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/asymmetric_encryption/elgamal_curve25519_aes256_gcm.rs] [Function: key_gen()] [RNG state correlation] If the same RNG is used to generate multiple keypairs without proper reseeding, could related keys be generated, enabling cross-key attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ecc7e76-594f-4122-ba18-7d052b6a0cd7?mode=deep",
+    "timestamp": "2026-01-20 06:22:24.679106",
+    "report_generated": false
+  }
+]
