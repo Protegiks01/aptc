@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Panic-based DoS] Can an attacker cause filesystem corruption or permission issues in any of the 7 database paths during parallel initialization, triggering .unwrap() panics in lines 194, 211, 224, 237, 250, 263, or 276, causing validator node crashes and network liveness degradation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd30a095-a4ea-4780-89e1-d4654d7c0286?mode=deep",
+    "timestamp": "2026-01-20 04:12:10.039243",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Race condition] During parallel database opening via THREAD_MANAGER.get_non_exe_cpu_pool().scope() (line 183), can race conditions occur if multiple threads attempt to create the same database directory simultaneously, leading to file descriptor leaks or database handle corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4f80b8f-73e1-47df-810e-2cb949ab5671?mode=deep",
+    "timestamp": "2026-01-20 04:12:22.547790",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [State inconsistency] If one of the 7 spawned threads (lines 184-278) fails to initialize its database but another succeeds, the resulting .unwrap() calls on Option values (lines 285-291) could create partially initialized LedgerDb instances - can this lead to state corruption where some sub-databases are accessible while others cause panics? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41d4c8fd-e44c-4a1e-bae9-5735d4836f94?mode=deep",
+    "timestamp": "2026-01-20 04:12:35.275759",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Data race] The parallel database initialization spawns 7 concurrent threads without explicit synchronization between them - can concurrent access to shared filesystem resources (block_cache, env) cause data races that corrupt database metadata or column family descriptors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32381dbe-3aa9-4aa1-9c29-e4981ed392da?mode=deep",
+    "timestamp": "2026-01-20 04:12:49.061797",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Resource exhaustion] Can an attacker trigger the parallel opening of 7 databases simultaneously (lines 183-279) repeatedly during node restart scenarios, exhausting file descriptors and causing cascading validator failures across the network? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a015a942-9e0a-44f1-acd0-c5bcdf972375?mode=deep",
+    "timestamp": "2026-01-20 04:13:03.290242",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Unhandled data inconsistency] Line 281 contains an explicit TODO comment 'TODO(grao): Handle data inconsistency' - what happens if the 7 sub-databases are at different versions or contain conflicting state after parallel initialization completes? Can this cause consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d50b2fd-c8de-4327-902e-a43a30e0c9d1?mode=deep",
+    "timestamp": "2026-01-20 04:13:18.076839",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Error propagation failure] If event_db initialization succeeds but transaction_db initialization fails, the scope.join() will still attempt to unwrap all Option values - can this create zombie database connections that leak memory or file handles? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb67fff5-6df4-4ba4-b01e-d2afee77845a?mode=deep",
+    "timestamp": "2026-01-20 04:13:34.066534",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Thread pool exhaustion] The parallel initialization uses THREAD_MANAGER.get_non_exe_cpu_pool() without checking available thread capacity - can an attacker exploit this by triggering multiple simultaneous LedgerDb::new() calls to deadlock the thread pool? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cccde77c-abb0-491a-ab79-6c413b3033dc?mode=deep",
+    "timestamp": "2026-01-20 04:13:51.804907",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Configuration confusion] The function has two completely different initialization paths based on enable_storage_sharding (line 150 vs 183-293) - can an attacker exploit configuration mismatches between nodes where some use sharded storage and others don't, causing state divergence and chain splits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c6d6ef3-9f91-41f7-b41e-96aa280d65c1?mode=deep",
+    "timestamp": "2026-01-20 04:14:12.664398",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Sharding bypass] When sharding is disabled (line 150-172), all sub-databases share the same Arc<DB> instance (ledger_metadata_db) - can this create race conditions where writes to different logical databases interfere with each other due to shared RocksDB handles? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3636e4a-85cc-45e7-b013-a8cb097536fa?mode=deep",
+    "timestamp": "2026-01-20 04:14:32.255103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: enable_storage_sharding()] [Trust assumption violation] The enable_storage_sharding() method (lines 296-298) simply returns a boolean flag without verifying actual database state - can an attacker manipulate this flag to cause nodes to read from wrong database paths, leading to state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e355a067-96a8-45a6-952c-19d1b161673d?mode=deep",
+    "timestamp": "2026-01-20 04:14:53.378803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: new()] [Migration vulnerability] What happens during a live migration between non-sharded (line 150) and sharded (line 183) modes? Is there proper validation to prevent partial migrations that corrupt transaction history? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d75b76e-dfd7-4954-9407-9c81fc147745?mode=deep",
+    "timestamp": "2026-01-20 04:15:15.219641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: metadata_db_path()] [Path confusion] Lines 522-529 compute different paths based on sharding flag - if nodes have inconsistent sharding configurations, can they read metadata from different locations causing transaction history divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86991747-36a3-4289-884e-946ef7f4d402?mode=deep",
+    "timestamp": "2026-01-20 04:15:37.790490",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: create_checkpoint()] [TOCTOU attack] Line 336 calls std::fs::remove_dir_all() followed by create_dir_all() on line 338 - can an attacker exploit the time-of-check-to-time-of-use gap to create symbolic links redirecting checkpoint data to unauthorized locations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2645fb5-573a-4196-88fd-fd9bf75bd648?mode=deep",
+    "timestamp": "2026-01-20 04:16:01.535966",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: create_checkpoint()] [Data destruction] The remove_dir_all() call on line 336 uses .unwrap_or(()) to silently ignore errors - can an attacker cause checkpoint corruption by exploiting race conditions where the directory is being read while being deleted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3cdd865-3c5a-4a19-88b7-ac7655571198?mode=deep",
+    "timestamp": "2026-01-20 04:16:25.691501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: create_checkpoint()] [Atomicity violation] Checkpoint creation for 8 different databases (lines 342-367) happens sequentially without transaction guarantees - if checkpoint creation fails partway through, can validators restore from inconsistent checkpoint state causing chain splits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73710a7f-233f-4aae-98d0-e63849bf0641?mode=deep",
+    "timestamp": "2026-01-20 04:16:51.703314",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: create_checkpoint()] [Path traversal] The cp_root_path parameter is used directly in path construction (line 329) without validation - can an attacker supply malicious paths with '../' sequences to write checkpoint data outside intended directories? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0c5263b-7caa-47d2-93f2-b0a3c183f2eb?mode=deep",
+    "timestamp": "2026-01-20 04:17:18.326274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: create_checkpoint()] [Disk exhaustion] There's no check for available disk space before creating checkpoints - can an attacker trigger repeated checkpoint creation to exhaust disk space and halt validator operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cbb1c8f9-7c92-41cf-a2b6-966d2f228086?mode=deep",
+    "timestamp": "2026-01-20 04:17:44.719651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: create_checkpoint()] [Sharding confusion] The checkpoint creation logic differs between sharded and non-sharded modes (lines 337-367) - can validators with different sharding configs create incompatible checkpoints that cause restoration failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_218a569a-4dd0-4f2c-a43e-3bce23d07566?mode=deep",
+    "timestamp": "2026-01-20 04:18:12.026472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: create_checkpoint()] [Concurrent checkpoint corruption] Can multiple simultaneous calls to create_checkpoint() race against each other, causing interleaved writes that corrupt checkpoint data and make it unrecoverable? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6631e04-c3d8-4a3d-a05d-6aff142576d6?mode=deep",
+    "timestamp": "2026-01-20 04:18:39.065357",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: write_pruner_progress()] [Partial failure] The function writes pruner progress to 8 different databases sequentially (lines 375-386) - if write fails after updating some but not all databases, can this create inconsistent pruning state where different databases prune to different versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00f98429-4ed3-4bcd-965f-ae47471349a6?mode=deep",
+    "timestamp": "2026-01-20 04:19:04.728596",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: write_pruner_progress()] [Version manipulation] The version parameter is passed directly to all sub-databases without validation - can an attacker exploit fast sync completion to write arbitrary pruner progress values that cause premature pruning of critical transaction history? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1280c2d-c333-4373-bad5-7e1e646d232a?mode=deep",
+    "timestamp": "2026-01-20 04:19:32.169317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: write_pruner_progress()] [Replay attack] Is there validation that the pruner progress version is monotonically increasing? Can an attacker replay old pruner progress values to prevent pruning and cause disk exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ac11504-cc5c-437f-b828-1bc967a5fc4a?mode=deep",
+    "timestamp": "2026-01-20 04:19:59.936925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: write_pruner_progress()] [Race condition] Can concurrent calls to write_pruner_progress() from different threads create race conditions where pruner progress values become inconsistent across sub-databases? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_802dccdf-d4b0-4296-89b9-b95636a0d3dc?mode=deep",
+    "timestamp": "2026-01-20 04:20:26.114548",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/mod.rs] [Function: write_pruner_progress()] [State divergence] If event_db.write_pruner_progress() succeeds but transaction_db.write_pruner_progress() fails, nodes will have different pruning states - can this cause state proof verification failures and network partitions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f3b5967-7c4c-4f0d-afdc-9de7f03bc3cb?mode=deep",
+    "timestamp": "2026-01-20 04:20:51.012980",
+    "report_generated": false
+  }
+]
