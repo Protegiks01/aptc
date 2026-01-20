@@ -1,0 +1,134 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_transactions()] [Live mode version] When starting_version is None, code uses latest_version().saturating_sub(1) (line 173); can this cause clients to miss the very latest transaction in live mode? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdab0d73-201e-463f-abf8-a9ba0779556d?mode=deep",
+    "timestamp": "2026-01-20 16:43:01.520409",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Live mode termination] When transactions_count is None, the loop never naturally terminates based on count (line 474); can this cause runaway connections that are never garbage collected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c58f5ed-5d53-45a5-bc3b-639e997eedcc?mode=deep",
+    "timestamp": "2026-01-20 16:43:13.969009",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_data_with_tasks()] [Cache coverage check] check_cache_coverage_status is called before fetching (line 264); but in live mode with no count, how is this check meaningful for unbounded future versions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6f1387b-9d9f-4cb8-b7db-acda61e9b81f?mode=deep",
+    "timestamp": "2026-01-20 16:43:26.744695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_data_with_tasks()] [In-memory cache priority] in_memory_cache.get_transactions() is checked first (line 245); if it returns stale or incorrect data, can this bypass Redis cache and file store entirely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_507d5ea3-3cb5-4f92-834c-0c8748fca4fb?mode=deep",
+    "timestamp": "2026-01-20 16:43:40.833946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_data_with_tasks()] [In-memory cache chunking] The in_memory result is chunked using chunk_transactions (lines 259-262); but was the data already validated for sequential ordering, or can in-memory cache return gaps? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_975732cf-a341-445a-8eac-7ba2cb6f9fc5?mode=deep",
+    "timestamp": "2026-01-20 16:43:54.916883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: RawDataServerWrapper::new()] [In-memory cache sharing] in_memory_cache is Arc'd (line 110); can concurrent modifications to the shared cache cause race conditions or inconsistent reads? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd70e140-ba16-4f01-9444-3936da34d0d1?mode=deep",
+    "timestamp": "2026-01-20 16:44:09.985475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_data_with_tasks()] [Task count edge case] When transactions_count = Some(1), num_tasks = 1 / 1000 = 0, clamped to 1; but what if transactions_count is less than TRANSACTIONS_PER_STORAGE_BLOCK, can this cause inefficient single-task fetching for small ranges? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3625495b-c4a1-416e-b390-aae2ed02a23f?mode=deep",
+    "timestamp": "2026-01-20 16:44:26.151571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_data_with_tasks()] [Unreachable branch] Line 324 marks DataFetchSubTaskResult::BatchSuccess as unreachable from single task; but can the code path change due to refactoring, causing silent failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_066e4edf-1ec8-456a-a81c-a13e3cd3af22?mode=deep",
+    "timestamp": "2026-01-20 16:44:44.073578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Connection start time reset] connection_start_time is set to None when count = 0 (line 502); but can this cause incorrect short connection tracking if the loop continues with more data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_932d7018-650d-4ddc-b21a-d569831391dc?mode=deep",
+    "timestamp": "2026-01-20 16:45:02.944404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: ensure_sequential_transactions()] [Batch pop] batches.pop().unwrap() is called (line 601); but batches were already checked to have len > 1; can refactoring introduce bugs here? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e815f8ea-ce38-498f-8d1b-cb02b918d7fc?mode=deep",
+    "timestamp": "2026-01-20 16:45:22.465933",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_transactions()] [Request metadata injection] The request_connection_id in response metadata (lines 219-223) comes from Uuid::new_v4(); but can an attacker provide their own connection ID in request headers to confuse client-side correlation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc2f4ed8-bcdf-408e-9369-c9c3a3accc5d?mode=deep",
+    "timestamp": "2026-01-20 16:45:43.108130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Metadata validation bypass] The file_store_metadata is awaited in a while loop (lines 422-432); can an attacker who controls the file store provide metadata with mismatched chain_id to cause all requests to fail? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4aaab04-b32f-4717-b5ac-2dd73e4f3b8f?mode=deep",
+    "timestamp": "2026-01-20 16:46:04.609605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetch()] [Cache operator batch size] batch_get_encoded_proto_data fetches from starting_version; but what is the batch size, and can it be manipulated to cause either tiny inefficient fetches or huge memory spikes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce6b04fc-0fda-4970-9bc1-7cdff6681e82?mode=deep",
+    "timestamp": "2026-01-20 16:46:26.911856",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: ensure_sequential_transactions()] [Sorting stability] Batches are sorted using sort_by (line 605); is the sort stable, and can non-deterministic ordering of equal-version batches cause transaction order inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4026bcf9-f023-4680-9d2b-807e66600be7?mode=deep",
+    "timestamp": "2026-01-20 16:46:50.412232",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_data_in_task()] [Ahead-of-cache infinite loop] If ahead_of_cache_data_handling() is called but cache never catches up, can the task loop forever returning NoResults without timeout? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d674f45-fd2b-4eeb-b1cc-d7a89e72b172?mode=deep",
+    "timestamp": "2026-01-20 16:47:14.743753",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetch_from_filestore()] [Duration overflow] io_duration and decoding_duration are f64 seconds; can very long operations cause precision loss or infinity values in metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35159411-4a00-47c3-af0b-ff71ac43801f?mode=deep",
+    "timestamp": "2026-01-20 16:47:40.255271",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: strip_transactions()] [Mutation safety] Transactions are mutated in-place with .as_mut() (line 983); can this violate Rust's borrowing rules if the same transaction is referenced elsewhere? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f17edfb-c593-47f9-a7a8-c1223c79a96a?mode=deep",
+    "timestamp": "2026-01-20 16:48:04.834463",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [TPS calculator overflow] tps_calculator.tick_now(current_batch_size as u64) (line 576); can repeated ticking with u64::MAX values cause internal overflow in MovingAverage? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad03d1f2-d026-4f78-8d00-f6ef3f03cdb5?mode=deep",
+    "timestamp": "2026-01-20 16:48:28.845597",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_transactions()] [File store operator creation] file_store_config.create() creates Box<dyn FileStoreOperator> (line 176); can different implementations have different security properties, and is this validated? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9b554e3-21ab-4f53-ad61-6c18100234e8?mode=deep",
+    "timestamp": "2026-01-20 16:48:53.140675",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: channel_send_multiple_with_timeout()] [First/last unwrap] overall_start_txn and overall_end_txn are unwrapped from resp_items (lines 901-902); can empty resp_items cause panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e77e47ef-b828-4547-92d6-bab3872a4e80?mode=deep",
+    "timestamp": "2026-01-20 16:49:16.316881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_request_metadata()] [Metadata map injection] The HashMap is constructed from user headers (lines 869-880); can duplicate keys or malicious values cause JSON serialization issues in line 886? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_827db7c2-f8c8-4e87-a451-5a92877d4c24?mode=deep",
+    "timestamp": "2026-01-20 16:49:39.549575",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Redis connection manager leak] The ConnectionManager from get_tokio_connection_manager (line 396) is used in CacheOperator; can failed requests leak connections if not properly dropped? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6297f41-3478-4a0d-9faf-9655a6bf0517?mode=deep",
+    "timestamp": "2026-01-20 16:50:02.544014",
+    "report_generated": false
+  }
+]
