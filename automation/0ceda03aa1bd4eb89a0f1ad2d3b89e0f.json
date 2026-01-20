@@ -1,0 +1,146 @@
+[
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Function: UnsyncCodeStorage::new()] [Cache Initialization] Can an attacker provide a malicious module_storage during construction that later returns poisoned script bytecode, causing the UnsyncScriptCache to cache and execute unverified or malicious scripts across subsequent transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89741759-0f18-44c8-8eb0-6cdb3c262581?mode=deep",
+    "timestamp": "2026-01-20 00:49:58.381941",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: script_cache field] [Hash Collision Attack] Since script_cache uses [u8; 32] SHA3-256 hashes as keys, can an attacker craft two different malicious scripts with identical hashes to cause cache poisoning, where verification of script A allows execution of malicious script B with the same hash? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5754fedf-36db-4eb0-988d-06ca1c9c7ba1?mode=deep",
+    "timestamp": "2026-01-20 00:50:11.514177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: script_cache field] [Verification Bypass] Can an attacker insert a deserialized-but-unverified CompiledScript into the script_cache, then later retrieve and execute it without triggering bytecode verification, bypassing safety checks and potentially executing malicious bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_384a6ba2-5f9d-4897-a30c-0ab6d651de62?mode=deep",
+    "timestamp": "2026-01-20 00:50:25.588671",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: script_cache field] [State Confusion] Can an attacker exploit the transition between Code::Deserialized and Code::Verified states in the script_cache to execute a script during the window where it's cached but not yet verified, causing deterministic execution failures across validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cce336dc-3d6f-4136-8e34-3dbc64ecf7f5?mode=deep",
+    "timestamp": "2026-01-20 00:50:39.576039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Delegation: ScriptCache trait] [Cache Manipulation] Since UnsyncCodeStorage delegates ScriptCache methods to script_cache, can an attacker exploit the insert_deserialized_script or insert_verified_script methods to overwrite legitimate cached scripts with malicious ones, causing subsequent transactions to execute wrong bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdd31f53-ae81-41c2-800d-a326cbd7559b?mode=deep",
+    "timestamp": "2026-01-20 00:50:54.464404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Function: module_storage()] [Reference Exposure] Does exposing a reference to the underlying module_storage via module_storage() allow an attacker to directly manipulate the module cache, bypassing script cache consistency checks and causing divergent execution states between scripts and modules? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_941bb4ea-09f5-4f85-be40-9dedf04ee6c2?mode=deep",
+    "timestamp": "2026-01-20 00:51:10.736553",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Function: into_module_storage()] [Ownership Transfer] When into_module_storage() consumes self and returns the module storage, can an attacker exploit the abandoned script_cache to cause use-after-free scenarios or leave orphaned script references that violate memory safety? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_798186a1-bb98-4510-a303-1f4ce109c198?mode=deep",
+    "timestamp": "2026-01-20 00:51:28.287949",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Delegation: ModuleStorage trait] [Inconsistent State] Since UnsyncCodeStorage delegates ModuleStorage methods to module_storage, can an attacker cause inconsistency between the script_cache and module_storage states (e.g., script references modules not in cache), leading to execution failures or undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59c5b09c-cdf1-46c9-91ea-774716a97a0e?mode=deep",
+    "timestamp": "2026-01-20 00:51:47.779196",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: module_storage field] [Generic Type Attack] Since module_storage is generic over M: ModuleStorage, can an attacker provide a malicious implementation of ModuleStorage that violates expected invariants, causing the script_cache to store invalid cross-references to non-existent or corrupted modules? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb25294a-53ff-4e7d-90b5-34a94b105a2e?mode=deep",
+    "timestamp": "2026-01-20 01:12:16.898206",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: UnsyncCodeStorage] [Cache Desynchronization] Can an attacker cause the script_cache and module_storage to diverge by caching a script that references module version V1, then updating the module to V2 in module_storage, leading to scripts executing against wrong module versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db24ef03-2576-40db-b3d6-c9127ca6fb90?mode=deep",
+    "timestamp": "2026-01-20 01:12:29.930756",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Delegation: ScriptCache] [Stale Cache Attack] Since UnsyncScriptCache::empty() creates an empty cache, can an attacker exploit the lack of cache invalidation to serve stale scripts after module upgrades, causing validators to execute outdated bytecode and producing divergent state roots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b14b7315-2ac1-423a-907d-3794c47cf7be?mode=deep",
+    "timestamp": "2026-01-20 01:12:43.675763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Function: new()] [Initialization Race] During UnsyncCodeStorage::new() construction, can an attacker manipulate the module_storage between the script_cache initialization and field assignment, causing the two caches to start with inconsistent views of deployed code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_baa50d77-3971-4759-a020-600a0651c5dc?mode=deep",
+    "timestamp": "2026-01-20 01:12:57.755844",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: script_cache] [Cache Overflow] Can an attacker flood the UnsyncScriptCache with unique script hashes to cause unbounded memory growth, leading to validator OOM crashes and loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5303456d-ddef-4326-b6bf-469804efdc31?mode=deep",
+    "timestamp": "2026-01-20 01:13:13.090388",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Delegation pattern] [Trait Boundary Violation] Can an attacker exploit mismatches between the ScriptCache, ModuleStorage, and WithRuntimeEnvironment trait implementations to cause type confusion or invalid state transitions when methods are delegated? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14aa3c35-bcd3-4973-a5ac-9fa54fbade6d?mode=deep",
+    "timestamp": "2026-01-20 01:13:29.541866",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: script_cache] [Deserialized Script Execution] Can an attacker retrieve a Code::Deserialized script from script_cache and execute it before verification completes, bypassing bytecode verifier checks for stack safety, type safety, and resource safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38343b73-a0ce-49e3-a9d9-33d0db37589b?mode=deep",
+    "timestamp": "2026-01-20 01:13:47.715417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Delegation: ScriptCache::get_script()] [Verification Status Check] When get_script() returns a cached script, does the code verify whether it's in Code::Verified state before execution, or can an attacker execute Code::Deserialized scripts that haven't passed bytecode verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a40836fc-437e-47f4-aba6-beb677e8cea0?mode=deep",
+    "timestamp": "2026-01-20 01:14:08.011058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Delegation: ScriptCache::insert_deserialized_script()] [Premature Caching] Can an attacker call insert_deserialized_script() to cache a malicious script without triggering verification, then force execution of that script from cache before verification occurs, bypassing all safety checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_246fb07a-6b8c-4982-82e2-0b030fff7dbb?mode=deep",
+    "timestamp": "2026-01-20 01:14:30.642506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Delegation: ScriptCache::insert_verified_script()] [Fake Verification] Can an attacker exploit a logic flaw to call insert_verified_script() with a malicious Script that claims to be verified but hasn't actually passed the bytecode verifier, poisoning the cache with dangerous code? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8b6c9e6-1e95-47ed-ac48-62bb2d5b0ece?mode=deep",
+    "timestamp": "2026-01-20 01:14:53.906131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: UnsyncCodeStorage] [Verification Ordering] If script verification depends on module verification state from module_storage, can an attacker manipulate verification order to verify a script against unverified modules, creating a TOCTOU vulnerability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_682406fd-2908-4564-9767-50bdf563eb95?mode=deep",
+    "timestamp": "2026-01-20 01:15:18.102031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: script_cache with [u8; 32] key] [Hash Manipulation] Can an attacker compute script bytecode that produces a specific [u8; 32] hash colliding with a legitimate script, allowing cache poisoning where malicious scripts masquerade as verified trusted scripts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64d0b987-d61a-46e9-a31b-2b921f1fa802?mode=deep",
+    "timestamp": "2026-01-20 01:15:44.092084",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: script_cache] [Preimage Attack] If the script hash is computed incorrectly (e.g., over partial bytecode), can an attacker craft multiple script variants with the same hash, causing cache confusion and non-deterministic execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d51b8545-b286-45f3-8962-6436d1774c26?mode=deep",
+    "timestamp": "2026-01-20 01:16:10.956051",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: script_cache] [Second Preimage Attack] Can an attacker modify an already-cached script's bytecode in memory (if mutable) while keeping its cache key unchanged, causing subsequent executions to use corrupted bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a957646b-80c9-4f48-8789-fdcfaf4efa59?mode=deep",
+    "timestamp": "2026-01-20 01:16:39.274080",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Delegation: ScriptCache] [Key Reuse Attack] Can an attacker delete and re-insert scripts with the same hash but different verification states (deserialized vs verified) to confuse the cache about which version should be executed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40c9894c-c538-40e5-b65a-988deb24b9c1?mode=deep",
+    "timestamp": "2026-01-20 01:17:09.135547",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/implementations/unsync_code_storage.rs] [Struct: script_cache] [Hash Length Attack] Since the cache uses fixed [u8; 32] keys, can an attacker exploit hash truncation or padding vulnerabilities to create collisions with legitimate script hashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dee0a8bf-6942-4dbc-8ee1-f8210f91721d?mode=deep",
+    "timestamp": "2026-01-20 01:17:38.864522",
+    "report_generated": false
+  }
+]
