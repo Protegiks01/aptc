@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/mod.rs] [Module: Re-exports] [Visibility Control] Can an attacker exploit the public re-export structure to access internal filter implementations that should be private, potentially bypassing validation logic or accessing unsafe internal state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7b9e651-cd67-44a9-a81a-1707ee74a498?mode=deep",
+    "timestamp": "2026-01-20 04:09:33.462309",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/mod.rs] [Module: Re-exports] [API Surface] Does the re-export of all builder types (EventFilterBuilder, MoveStructTagFilterBuilder, etc.) expose construction patterns that could allow creation of invalid filter states that bypass validate_state() checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0118c9e-a7f4-4e9c-9ee0-c3249cd85a45?mode=deep",
+    "timestamp": "2026-01-20 04:09:46.948363",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/mod.rs] [Module: Re-exports] [Type Confusion] Can an attacker exploit the re-exported types to cause type confusion between different filter variants, potentially causing incorrect transaction filtering or indexer data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edd731d4-f9e7-472b-8d25-25f8d69f4738?mode=deep",
+    "timestamp": "2026-01-20 04:10:00.586185",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/mod.rs] [Module: Dependencies] [Dependency Chain] Are the dependencies between the re-exported filter modules (event, move_module, transaction_root, user_transaction) properly isolated, or can vulnerabilities in one filter type propagate to others through shared state or unsafe interfaces? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ee8e93c-e40c-418f-9c79-5c78e9ee5344?mode=deep",
+    "timestamp": "2026-01-20 04:10:14.586186",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Struct: EventFilter] [Input Validation] In the EventFilter struct with data_substring_filter and struct_type fields, can an attacker provide an extremely large substring filter string to cause memory exhaustion during OnceCell initialization of the Finder, leading to indexer DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f3a4c39-4135-41d1-a371-9ce0e0a76c5c?mode=deep",
+    "timestamp": "2026-01-20 04:10:29.655438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Function: validate_state()] [Validation Bypass] The validate_state() function checks if both data_substring_filter and struct_type are None, but can an attacker provide empty strings or invalid MoveStructTagFilter to bypass this validation while still creating a useless filter that wastes resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e74dc60-e730-463e-9985-ba59934ee002?mode=deep",
+    "timestamp": "2026-01-20 04:10:45.937135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Function: matches()] [Race Condition] The matches() function uses OnceCell::get_or_init() for lazy initialization of the Finder. Can concurrent calls to matches() from multiple threads cause a race condition where the Finder is initialized multiple times or with inconsistent data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_130addde-3641-475d-b6f5-ba631ea18de1?mode=deep",
+    "timestamp": "2026-01-20 04:11:04.784820",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Function: matches()] [ReDoS Attack] The data_substring_finder using memchr::memmem::Finder processes untrusted event data. Can an attacker craft malicious event data with specific byte patterns that cause catastrophic backtracking or excessive memory consumption in the substring search? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45218a10-4b0c-4104-ab1e-26d59842b8cb?mode=deep",
+    "timestamp": "2026-01-20 04:11:23.660168",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Function: matches()] [Type Confusion] When extracting struct_tag from item.r#type.content, if the Content enum variant doesn't match Struct, the function returns false. Can an attacker craft events with malformed or unexpected Content variants to bypass filtering or cause panics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00f88831-9ed3-4682-9b92-9092fc1df772?mode=deep",
+    "timestamp": "2026-01-20 04:11:44.343828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Function: matches()] [Memory Safety] The finder.find(item.data.as_bytes()) call operates on untrusted event data. Can oversized or malformed event data cause buffer overflows, out-of-bounds access, or memory corruption in the underlying memchr implementation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9bf601a-eb3b-41b2-a8e4-58e7f322ac3b?mode=deep",
+    "timestamp": "2026-01-20 04:12:05.740701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Trait: From<proto>] [Deserialization] The From<aptos_protos::indexer::v1::EventFilter> implementation doesn't validate the proto_filter fields. Can an attacker provide malicious protobuf data with null pointers, invalid UTF-8, or corrupted struct_type to cause crashes or undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb247d54-b52b-46f4-811f-542b3abfb8a2?mode=deep",
+    "timestamp": "2026-01-20 04:12:28.203103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Struct: EventFilter] [Clone Safety] EventFilter derives Clone with OnceCell containing a Finder. Does cloning create shared references to the same Finder instance, potentially causing data races when multiple clones call matches() concurrently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0784c90-0a72-4997-aeb3-264133466034?mode=deep",
+    "timestamp": "2026-01-20 04:12:51.633615",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Function: matches()] [Short-circuit Logic] The matches() function checks struct_type first, then data_substring_filter. Can an attacker exploit this ordering by crafting events that match the struct type but have malicious data, bypassing the substring filter check if the function returns early? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a0e931d-a443-4021-99f3-5467a2b2dcf5?mode=deep",
+    "timestamp": "2026-01-20 04:13:16.187974",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/event.rs] [Struct: EventFilter] [Serialization] With #[serde(skip_serializing_if = \\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73314ac1-05d3-456d-ab6e-c609ed77d938?mode=deep",
+    "timestamp": "2026-01-20 04:13:41.546626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/move_module.rs] [Function: standardize_address()] [Address Normalization] The get_standardized_address() uses OnceCell memoization with standardize_address(). Can an attacker provide addresses with different representations (with/without 0x, different padding) that hash to the same OnceCell but represent different addresses, causing filter bypass? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f53eb02-99af-4945-a89e-fe4ce8e13eac?mode=deep",
+    "timestamp": "2026-01-20 04:14:06.898882",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/move_module.rs] [Function: validate_state()] [Validation Logic] The validate_state() only checks if all three fields (address, module, name) are None. Can an attacker provide empty strings for all fields to bypass validation while creating a filter that matches everything, causing performance degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b009f17-eddf-4a1d-bf85-e8c4d9bc37c9?mode=deep",
+    "timestamp": "2026-01-20 04:14:31.965480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/move_module.rs] [Function: matches()] [Logic Error] The matches() function uses && to combine address, module, and name checks. If any field is None (via matches_opt()), it returns true. Can this allow an attacker to bypass filtering by providing partial matches when full validation was intended? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a8eb91c-9b7a-48e2-a904-9ac142839782?mode=deep",
+    "timestamp": "2026-01-20 04:14:57.796556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/move_module.rs] [Trait: From<proto>] [Initialization Race] The From implementation initializes standardized_address with OnceCell::with_value(). Can concurrent proto conversions cause race conditions where the OnceCell is in an inconsistent state during initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8c6539c-bb6c-47b6-a902-0321d151bf26?mode=deep",
+    "timestamp": "2026-01-20 04:15:23.503602",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/move_module.rs] [Function: matches()] [Case Sensitivity] The module and name matching uses direct string comparison via matches_opt(). Are Move module names case-sensitive? Can an attacker bypass filters using case variations (e.g., 'Coin' vs 'coin')? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e88f00a-a772-4fcc-bb11-536579b92f1c?mode=deep",
+    "timestamp": "2026-01-20 04:15:49.975492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/move_module.rs] [Struct: MoveStructTagFilter] [Unicode Handling] Module and name fields are String types that could contain Unicode. Can an attacker use Unicode normalization attacks (e.g., ΑΒΓ vs ABΓ in Greek/Latin) to bypass filters matching on ASCII representations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80cec66d-0f7d-424d-9c04-93f07b0f7541?mode=deep",
+    "timestamp": "2026-01-20 04:16:16.687940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/move_module.rs] [Function: get_standardized_address()] [Memory Leak] The OnceCell memoization permanently caches the standardized address. In long-running indexer services processing millions of unique addresses, can this cause unbounded memory growth leading to OOM conditions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cacf7f38-ab1a-4c5f-9a5a-71ccf8afcaa1?mode=deep",
+    "timestamp": "2026-01-20 04:16:41.911381",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/move_module.rs] [Function: matches()] [Injection Attack] The standardize_address() is called on untrusted struct_tag.address data. Can specially crafted addresses with control characters, null bytes, or escape sequences cause issues in downstream string processing or logging? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_319cbec7-3685-483a-8377-a31eb10ec202?mode=deep",
+    "timestamp": "2026-01-20 04:17:08.458869",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/transaction_root.rs] [Function: validate_state()] [Validation Logic] The validate_state() requires at least one of success or txn_type to be set. Can an attacker provide both as Some() with contradictory values (e.g., success=true with BlockMetadata type that shouldn't have success) to cause filter inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c3c58c5-0b74-4187-a845-5362385d37ce?mode=deep",
+    "timestamp": "2026-01-20 04:17:32.668265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/transaction_root.rs] [Function: matches()] [Panic Risk] The matches() function calls TransactionType::try_from(item.r#type).expect(\\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecfb0054-612d-4111-be00-98099734df23?mode=deep",
+    "timestamp": "2026-01-20 04:17:57.573883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/transaction_root.rs] [Function: matches()] [Null Pointer] The success check accesses item.info.as_ref().map(|i| i.success). If item.info is None for certain transaction types, does matches_opt() handle this correctly, or can this cause unexpected behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_541d8f5d-ea1d-4f3b-b285-5d0146bf40f1?mode=deep",
+    "timestamp": "2026-01-20 04:18:23.423622",
+    "report_generated": false
+  }
+]
