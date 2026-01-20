@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Derive: Serialize] [Serialization non-determinism] If the Vec<(String, u64)> entries contain duplicate keys, does Serde's serialization order guarantee deterministic output across all validators, or could different serialization orders cause state root mismatches despite identical logical content? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d889966-21aa-4623-ba44-3fdde468b482?mode=deep",
+    "timestamp": "2026-01-20 05:15:00.324077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasSchedule] [Version downgrade attack] Since GasSchedule lacks a version field but GasScheduleV2 has one, can an attacker submit a governance proposal that deserializes as GasSchedule (legacy) on some validators but GasScheduleV2 on others, causing fork due to different gas calculations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d5aa0c4-d783-4cf7-bc00-5ebca39ee5fd?mode=deep",
+    "timestamp": "2026-01-20 05:15:13.426606",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [OnChainConfig Implementation] [Type confusion] With three different OnChainConfig types (GasSchedule, GasScheduleV2, StorageGasSchedule) sharing similar MODULE_IDENTIFIER values, could a malformed serialized payload be deserialized as the wrong type, bypassing validation and causing type confusion in the VM? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a569db53-523c-41a1-8d4e-83fea6993952?mode=deep",
+    "timestamp": "2026-01-20 05:15:26.559847",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Derive: Deserialize] [Field injection] Can an attacker add extra unrecognized fields to the serialized GasScheduleV2 that are silently ignored during deserialization but preserved in the state commitment, causing state root mismatches between validators with different Serde versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04e232ff-437d-4421-9230-394a19650de0?mode=deep",
+    "timestamp": "2026-01-20 05:15:40.330393",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: StorageGasSchedule] [Field reordering] If a malicious serialized StorageGasSchedule has fields in a different order than expected, does Serde's field-based deserialization handle it correctly, or could field values be swapped (e.g., per_byte_read becoming per_byte_write), causing catastrophic gas miscalculations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8aff3481-a29e-49b4-bb59-52c1c9f84d23?mode=deep",
+    "timestamp": "2026-01-20 05:15:55.029721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Derive: Serialize] [Canonical encoding] Does the Serialize implementation produce canonical encoding for gas schedules, or could two logically identical schedules serialize differently based on map iteration order, causing governance proposal hash mismatches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b4936b9-095d-42cc-8640-70987d8e0df3?mode=deep",
+    "timestamp": "2026-01-20 05:16:10.991004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [OnChainConfig Implementation] [Epoch boundary race] When GasScheduleV2 is updated at an epoch boundary, if some validators apply the new schedule before epoch transition completes while others use the old schedule, could this cause state root divergence and consensus failure requiring manual intervention? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_352ba660-f627-44a2-b117-23a06f1785c9?mode=deep",
+    "timestamp": "2026-01-20 05:16:27.927021",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasSchedule::into_btree_map()] [Non-deterministic ordering] If BTreeMap iteration order differs between Rust stdlib versions used by different validators, could the same GasSchedule entries produce different effective gas schedules after into_btree_map(), causing consensus split? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c719f360-34a1-4f79-99b5-879e15778634?mode=deep",
+    "timestamp": "2026-01-20 05:16:47.879154",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasScheduleV2] [Cache invalidation] If validator nodes cache the converted BTreeMap from into_btree_map() but the cache isn't properly invalidated when GasScheduleV2 updates via governance, could stale gas values be used causing incorrect transaction gas calculation and state divergence? (High)",
+    "url": "https://deepwiki.com/grass-dev-pa/aptos-core-044",
+    "timestamp": "2026-01-20 05:17:05.452692",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [OnChainConfig Implementation] [Atomic update failure] Are all three gas schedule types (GasSchedule, GasScheduleV2, StorageGasSchedule) guaranteed to update atomically in the same epoch transition, or could a governance proposal update one but fail to update others, leaving the gas system in an inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17e95965-09b4-4aab-8cab-81e36c71a02b?mode=deep",
+    "timestamp": "2026-01-20 05:17:25.930925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Diff vs applied mismatch] If governance applies a proposal based on diff() output showing specific changes, but the actual applied GasScheduleV2 differs due to serialization/deserialization quirks or duplicate handling, could this cause validators to have different gas schedules than governance intended? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93817793-a149-4546-98f1-668c53c39842?mode=deep",
+    "timestamp": "2026-01-20 05:17:47.716027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: StorageGasSchedule] [Concurrent read-modify-write] If multiple threads read StorageGasSchedule concurrently during transaction execution while a governance update is being applied, could race conditions cause some transactions to use partially updated gas values, breaking deterministic execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d397f99-afde-4342-b87a-2420e50fae48?mode=deep",
+    "timestamp": "2026-01-20 05:18:10.330729",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [OnChainConfig Implementation] [Rollback safety] If a network partition or consensus failure occurs immediately after applying a new gas schedule, is the rollback to previous gas values handled safely, or could the rollback leave validators with mixed gas schedules causing permanent fork? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cba015ca-50ab-41a4-9ae6-c04baa5e17ca?mode=deep",
+    "timestamp": "2026-01-20 05:18:33.866277",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasScheduleV2] [Feature version bypass] If feature_version is checked against a minimum required version in the VM, can an attacker set it to u64::MAX to bypass version checks that use greater-than comparisons, enabling access to unreleased or vulnerable gas calculation features? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f4127c4-5518-4ae5-8c18-efde8926ec8a?mode=deep",
+    "timestamp": "2026-01-20 05:18:58.828327",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasScheduleV2] [Version rollback attack] Can a governance proposal roll back feature_version from 100 to 1, forcing the VM to use legacy gas calculation code that may have known security vulnerabilities or incompatibilities with current network state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_474da716-5e9f-4a7a-a83b-590bd50c030e?mode=deep",
+    "timestamp": "2026-01-20 05:19:24.759048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasScheduleV2] [Version-entries mismatch] If feature_version is set to 10 but entries contain gas parameters only valid in version 5 or version 15, does the VM detect this mismatch and reject the configuration, or does it silently accept it causing undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9cfa622-f62a-4d7a-be33-704ef930c370?mode=deep",
+    "timestamp": "2026-01-20 05:19:51.623870",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Version not in diff] Since diff() doesn't report feature_version changes, can attackers hide critical version modifications from governance review while showing only benign entry changes, enabling stealth downgrades to vulnerable gas code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d26475bf-e1a0-4382-8b02-55ceef678a8b?mode=deep",
+    "timestamp": "2026-01-20 05:20:19.054109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasScheduleV2] [Skip version validation] If there's no validation that feature_version must be monotonically increasing or within valid ranges, can arbitrary version numbers cause the VM to crash, use uninitialized code paths, or skip safety checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6567713-e9aa-4b9c-a3ad-25b92e079174?mode=deep",
+    "timestamp": "2026-01-20 05:20:47.637069",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [OnChainConfig: MODULE_IDENTIFIER] [Module collision] The MODULE_IDENTIFIER for GasSchedule and GasScheduleV2 are both 'gas_schedule' - could this cause confusion in OnChainConfig resolution where the wrong schedule type is fetched, leading to type mismatch errors or incorrect gas application? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23d81b9c-27fd-43f6-a444-324cb41cd4ee?mode=deep",
+    "timestamp": "2026-01-20 05:21:18.175035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [OnChainConfig: TYPE_IDENTIFIER] [Type identifier spoofing] Can a malicious governance proposal craft a Move module that defines a custom type with TYPE_IDENTIFIER 'GasScheduleV2' to shadow the real gas schedule, causing validators to load malicious gas configuration instead of the legitimate one? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24e6e664-711f-4fcf-8323-3705ce80d858?mode=deep",
+    "timestamp": "2026-01-20 05:21:49.727303",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [OnChainConfig Implementation] [Missing access control] The OnChainConfig trait implementations have no access control attributes - does the Move framework enforce that only authorized governance contracts can modify gas schedules, or could any contract potentially update these configurations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbae4907-3680-4f24-9a64-20c79452f89e?mode=deep",
+    "timestamp": "2026-01-20 05:22:21.485781",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [OnChainConfig Implementation] [Initialization attack] If a validator node starts with uninitialized gas schedule (no OnChainConfig value in genesis state), does it default to safe values, or could it crash or accept all transactions at zero gas enabling bootstrap attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_619f6ddc-26b9-4acf-b3c8-ad9e651adf2e?mode=deep",
+    "timestamp": "2026-01-20 05:22:51.587236",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [OnChainConfig: StorageGasSchedule] [Separate schedule desync] Since StorageGasSchedule is a separate OnChainConfig from GasScheduleV2, can they be updated independently via different governance proposals, causing desynchronization where execution gas uses V2 schedule but storage gas uses outdated values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5329f9e5-1f03-410b-985e-f8e5c30f1ba3?mode=deep",
+    "timestamp": "2026-01-20 05:23:22.001430",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasSchedule] [Key injection attack] The String keys in entries have no validation - can an attacker inject keys with SQL-like syntax (e.g., 'storage.write; DROP TABLE state') that might be unsafely interpolated in downstream logging or debugging code, causing injection vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1748bf9-1403-4fd8-96a4-873cfa09646f?mode=deep",
+    "timestamp": "2026-01-20 05:23:51.592223",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasScheduleV2] [Unicode normalization] If gas parameter keys contain Unicode characters that normalize differently (e.g., 'café' vs 'cafe\\u0301'), could the BTreeMap treat them as distinct keys while the VM looks them up as the same key after normalization, causing missing parameter errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8f434b3-8afd-4d29-b722-2619df6862bc?mode=deep",
+    "timestamp": "2026-01-20 05:24:22.114088",
+    "report_generated": false
+  }
+]
