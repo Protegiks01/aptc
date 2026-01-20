@@ -1,0 +1,68 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: Committer::commit()] [Heads/tails race] When updating self.heads and self.tails arrays (lines 265-266), can concurrent reads of these arrays from validate_lru() see partial updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aeaf2140-cada-474c-8bee-d903e9e98875?mode=deep",
+    "timestamp": "2026-01-20 17:31:47.548305",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: Committer] [Field races] Are total_key_bytes and total_value_bytes accessed only from Committer thread, or can concurrent access cause data races? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71c6c6c6-14fc-445c-b6bf-97f5ed71f31f?mode=deep",
+    "timestamp": "2026-01-20 17:32:00.585559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: Committer::commit()] [Double insert] If insert() returns Some(old_slot) in line 252, but the key was actually new (false positive), can this cause memory accounting to incorrectly subtract key_size twice? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad42e909-9f72-450b-aff2-bb22c8e96a0a?mode=deep",
+    "timestamp": "2026-01-20 17:32:14.159765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: Committer::commit()] [Remove failure] If remove() returns None in line 259 but the entry should exist, does this silently ignore the inconsistency or is it detected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3e43ad9-f729-4f6e-aa32-550b51e2f999?mode=deep",
+    "timestamp": "2026-01-20 17:32:28.244023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: HotState::get_committed()] [Return value ordering] Can the tuple (base, state) be used incorrectly by callers if they assume different ordering, causing state/view mismatches? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70bfa1fe-5461-4b66-9634-ef0c56e33c0c?mode=deep",
+    "timestamp": "2026-01-20 17:32:43.248585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: Committer::run()] [Infinite loop] If next_to_commit() always returns Some() due to bugs, can the while loop in line 198 run forever consuming CPU? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b14ec06d-da0e-4ad0-90cf-ed2aa0e07946?mode=deep",
+    "timestamp": "2026-01-20 17:32:59.583839",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: Committer::new()] [Uninitialized fields] Are heads and tails arrays properly initialized to all None values, or can uninitialized memory cause corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1aac4e4a-ecc0-4b09-9ad7-5505f9c2a4e7?mode=deep",
+    "timestamp": "2026-01-20 17:33:17.398997",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: Committer::commit()] [StateSlot.is_hot()] Can is_hot() have side effects or non-deterministic behavior causing different results on different calls? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f06229f-bdd9-4ddf-8586-132522c15972?mode=deep",
+    "timestamp": "2026-01-20 17:33:37.133213",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: Committer::commit()] [StateSlot.size()] Can size() return different values on successive calls for the same slot, breaking memory accounting? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0519f68f-ae67-4f22-b741-2eb4d0161384?mode=deep",
+    "timestamp": "2026-01-20 17:33:59.448118",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/hot_state.rs] [Function: Committer::commit()] [StateSlot.next()/prev()] Can next() or prev() return Some(key) that doesn't exist in the shard, causing validation to panic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29efb59b-ee73-45b0-94d4-2a7f182637ee?mode=deep",
+    "timestamp": "2026-01-20 17:34:22.126296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/\n\n### Citations\n\n**File:** storage/aptosdb/src/state_store/hot_state.rs (L1-315)\n```rust\n// Copyright © Aptos Foundation\n// Parts of the project are originally copyright © Meta Platforms, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::metrics::{COUNTER, GAUGE, OTHER_TIMERS_SECONDS};\nuse anyhow::{ensure, Result};\nuse aptos_infallible::Mutex;\nuse aptos_logger::prelude::*;\nuse aptos_metrics_core::{IntCounterVecHelper, IntGaugeVecHelper, TimerHelper};\nuse aptos_storage_interface::state_store::{\n    state::State, state_view::hot_state_view::HotStateView,\n};\nuse aptos_types::state_store::{\n    hot_state::{HotStateConfig, THotStateSlot},\n    state_key::StateKey,\n    state_slot::StateSlot,\n    NUM_STATE_SHARDS,\n};\n#[cfg(test)]\nuse aptos_types::transaction::Version;\nuse arr_macro::arr;\nuse dashmap::{mapref::one::Ref, DashMap};\n#[cfg(test)]\nuse std::collections::BTreeMap;\nuse std::sync::{\n    mpsc::{Receiver, SyncSender, TryRecvError},\n    Arc,\n};\n\nconst MAX_HOT_STATE_COMMIT_BACKLOG: usize = 10;\n\n#[derive(Debug)]\nstruct Shard<K, V>\nwhere\n    K: Eq + std::hash::Hash,\n{\n    inner: DashMap<K, V>,\n}\n\nimpl<K, V> Shard<K, V>\nwhere\n    K: Clone + Eq + std::hash::Hash,\n    V: Clone,\n{\n    fn new(max_items: usize) -> Self {\n        Self {\n            inner: DashMap::with_capacity(max_items),\n        }\n    }\n\n    fn get(&self, key: &K) -> Option<Ref<'_, K, V>> {\n        self.inner.get(key)\n    }\n\n    fn insert(&self, key: K, value: V) -> Option<V> {\n        self.inner.insert(key, value)\n    }\n\n    fn remove(&self, key: &K) -> Option<(K, V)> {\n        self.inner.remove(key)\n    }\n\n    fn len(&self) -> usize {\n        self.inner.len()\n    }\n\n    #[cfg(test)]\n    fn iter(&self) -> impl Iterator<Item = (K, V)> + use<'_, K, V> {\n        self.inner\n            .iter()\n            .map(|entry| (entry.key().clone(), entry.value().clone()))\n    }\n}\n\n#[derive(Debug)]\npub struct HotStateBase<K = StateKey, V = StateSlot>\nwhere\n    K: Eq + std::hash::Hash,\n{\n    shards: [Shard<K, V>; NUM_STATE_SHARDS],\n}\n\nimpl<K, V> HotStateBase<K, V>\nwhere\n    K: Clone + Eq + std::hash::Hash,\n    V: Clone,\n{\n    fn new_empty(max_items_per_shard: usize) -> Self {\n        Self {\n            shards: arr![Shard::new(max_items_per_shard); 16],\n        }\n    }\n\n    fn get_from_shard(&self, shard_id: usize, key: &K) -> Option<Ref<'_, K, V>> {\n        self.shards[shard_id].get(key)\n    }\n\n    fn len(&self) -> usize {\n        self.shards.iter().map(|s| s.len()).sum()\n    }\n}\n\nimpl HotStateView for HotStateBase<StateKey, StateSlot> {\n    fn get_state_slot(&self, state_key: &StateKey) -> Option<StateSlot> {\n        let shard_id = state_key.get_shard_id();\n        self.get_from_shard(shard_id, state_key).map(|v| v.clone())\n    }\n}\n\n#[derive(Debug)]\npub struct HotState {\n    base: Arc<HotStateBase>,\n    committed: Arc<Mutex<State>>,\n    commit_tx: SyncSender<State>,\n}\n\nimpl HotState {\n    pub fn new(state: State, config: HotStateConfig) -> Self {\n        let base = Arc::new(HotStateBase::new_empty(config.max_items_per_shard));\n        let committed = Arc::new(Mutex::new(state));\n        let commit_tx = Committer::spawn(base.clone(), committed.clone());\n\n        Self {\n            base,\n            committed,\n            commit_tx,\n        }\n    }\n\n    pub(crate) fn set_commited(&self, state: State) {\n        *self.committed.lock() = state\n    }\n\n    pub fn get_committed(&self) -> (Arc<dyn HotStateView>, State) {\n        let state = self.committed.lock().clone();\n        let base = self.base.clone();\n\n        (base, state)\n    }\n\n    pub fn enqueue_commit(&self, to_commit: State) {\n        let _timer = OTHER_TIMERS_SECONDS.timer_with(&[",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d24dae42-2ed9-4bdb-aaef-0aa85f4d89eb?mode=deep",
+    "timestamp": "2026-01-20 17:34:47.049005",
+    "report_generated": false
+  }
+]
