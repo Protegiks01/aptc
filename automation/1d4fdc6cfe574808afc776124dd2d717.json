@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: load_file()] [Error Information Leakage] Does the DiscoveryError::Parsing error expose sensitive information about the file system structure or YAML parsing internals through err.to_string() that could aid attackers in reconnaissance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a271f40f-4294-4c74-afb3-5cf7a8910d8d?mode=deep",
+    "timestamp": "2026-01-20 12:32:17.184854",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Error State Persistence] If load_file() fails repeatedly, does the Stream maintain the last known good PeerSet, or does it send empty/error states to connectivity manager potentially disconnecting all peers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5dcab910-c9b9-4d10-be88-bbdba313f32f?mode=deep",
+    "timestamp": "2026-01-20 12:32:29.649449",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: load_file()] [IO Error Handling] Does DiscoveryError::IO differentiate between transient errors (EAGAIN, EINTR) and permanent errors (ENOENT, EACCES), or does it treat all I/O failures equally potentially causing unnecessary service disruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e6e9065-aa30-4efc-846b-4bfdc205b127?mode=deep",
+    "timestamp": "2026-01-20 12:32:42.412370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Silent Error Suppression] When returning Poll::Ready(Some(Err(error))), is the error properly logged and monitored, or can persistent errors go unnoticed allowing the discovery system to silently fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6592da9e-5ad8-4b2f-a9c0-348148d2d034?mode=deep",
+    "timestamp": "2026-01-20 12:32:57.594587",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: new()] [Interval Manipulation] Can an attacker influence the interval_duration parameter to set extremely short intervals (microseconds) causing I/O storms that degrade validator performance or extremely long intervals (hours) preventing timely peer updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db0abd6e-4eb1-4719-a158-a61ce7176b44?mode=deep",
+    "timestamp": "2026-01-20 12:33:12.003788",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Interval Skipping] If the system is under heavy load and poll_next() processing takes longer than interval_duration, can interval ticks be skipped causing missed peer updates during critical network reconfigurations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3979ae2-7a2d-42ea-a4db-cf344b8ec343?mode=deep",
+    "timestamp": "2026-01-20 12:33:27.249876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: new()] [Zero Interval DoS] Does the code validate that interval_duration is non-zero and within reasonable bounds, or can a zero/negative duration cause infinite polling loops that freeze the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b1dcff8-2f76-4e9c-8cfe-a3b6dcc760c8?mode=deep",
+    "timestamp": "2026-01-20 12:33:44.096685",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Time Service Manipulation] If the TimeService is mocked or manipulated (e.g., in testing or through system clock changes), can this cause the interval to behave unexpectedly, either halting updates or causing rapid-fire polling? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b81b9ce-2158-40fd-8d89-1f3725f20953?mode=deep",
+    "timestamp": "2026-01-20 12:34:02.272540",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Pinning Violation] Does the Pin<&mut Self> contract guarantee memory safety for self.interval during async polling, or can moves/reallocations cause use-after-free or dangling pointer issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6f20ef1-df53-4e5f-aa13-79bbedd0f7b2?mode=deep",
+    "timestamp": "2026-01-20 12:34:21.022712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Reentrancy Attack] If poll_next() is called reentrantly (though unlikely with Pin), can this cause the same file to be read multiple times concurrently, leading to race conditions in file system state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79eda018-43a2-4231-af68-12c904f2aa82?mode=deep",
+    "timestamp": "2026-01-20 12:34:41.436379",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Struct: FileStream] [Send/Sync Safety] Is FileStream properly marked as Send/Sync, or can improper concurrent access from multiple async tasks cause data races on file_path or interval fields? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2214399-63dd-4cf7-946e-0644a0109828?mode=deep",
+    "timestamp": "2026-01-20 12:35:02.493618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Waker Abuse] Can malicious waker implementations or waker poisoning attacks cause poll_next() to be called excessively or never, disrupting the peer discovery timing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93af3d55-de6a-4a04-86a9-335af7b00e0f?mode=deep",
+    "timestamp": "2026-01-20 12:35:24.240015",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Update Flooding] If the file changes rapidly (multiple times per second), does the Stream send too many UpdateDiscoveredPeers messages to connectivity manager, potentially overwhelming it or causing peer connection churn? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2266da3-fa27-49a2-a857-581f610f9f45?mode=deep",
+    "timestamp": "2026-01-20 12:35:46.493300",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Empty PeerSet Attack] Can an attacker clear the YAML file (empty PeerSet) causing the validator to disconnect from all peers, effectively isolating it from the network and causing liveness failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16fb9c19-4bad-47da-b864-208d1531e89e?mode=deep",
+    "timestamp": "2026-01-20 12:36:08.771618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Peer Set Replacement] When a new PeerSet is sent via UpdateDiscoveredPeers, is there validation that at least some peers overlap with the previous set to prevent complete network isolation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58042ade-1371-4750-9c6d-43c5b344ffd4?mode=deep",
+    "timestamp": "2026-01-20 12:36:32.506040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Discovery Source Trust] Does the connectivity manager properly isolate DiscoverySource::File updates from other discovery sources (DHT, on-chain), or can file-based peers override more trustworthy discovery mechanisms? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5eb890f-7c9d-492f-8d1b-95548b9a612c?mode=deep",
+    "timestamp": "2026-01-20 12:36:55.875140",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: new()] [PathBuf Clone Safety] Does the to_path_buf() clone create a deep copy of the path, or can shared references to the underlying path buffer cause aliasing issues if the original path is modified? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a1dbada-9917-4a05-8a02-1b688236499c?mode=deep",
+    "timestamp": "2026-01-20 12:37:19.857579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [AsPath Conversion] Is the as_path() conversion in load_file(self.file_path.as_path()) safe against lifetime issues, or can the PathBuf be dropped while the &Path reference is still in use? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c355a898-3665-4b9f-8938-bba950d797f4?mode=deep",
+    "timestamp": "2026-01-20 12:37:43.939669",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: load_file()] [Non-Canonical Paths] Does load_file() handle non-canonical paths (with . or .. components) correctly, or can path resolution lead to accessing unintended files? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_174e2413-6abd-43a6-bfe0-6fe6a7f52797?mode=deep",
+    "timestamp": "2026-01-20 12:38:07.583486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: load_file()] [YAML Injection] Can an attacker inject YAML directives (e.g., %YAML, %TAG) that cause the parser to behave unexpectedly or execute unintended deserialization logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84fe488b-746d-4109-9805-a76b7ec50990?mode=deep",
+    "timestamp": "2026-01-20 12:38:31.372469",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: load_file()] [Anchor Bomb] Can YAML anchor/alias cycles create infinite loops during deserialization, causing the validator to hang indefinitely during peer discovery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d54e7886-1076-465e-85f0-5f2f75f99958?mode=deep",
+    "timestamp": "2026-01-20 12:38:54.949570",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: load_file()] [Mixed Content Attack] Can an attacker mix different YAML document separators (---) to inject multiple PeerSets in a single file, causing only the first or last to be processed while hiding malicious peers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6ccdb61-29c9-4567-8df2-e0a0c4f98ba4?mode=deep",
+    "timestamp": "2026-01-20 12:39:17.920088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: load_file()] [String Allocation Attack] Does read_to_string() have a maximum size limit, or can an attacker create a massive file that allocates gigabytes of memory causing OOM kills on validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_419fc58f-35e5-4b10-bdef-279128f38909?mode=deep",
+    "timestamp": "2026-01-20 12:39:40.906504",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: poll_next()] [Continuous Error Allocation] If load_file() returns errors continuously, does each error allocation accumulate in memory or message queues, eventually exhausting resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_823b0a19-1f50-4244-a3b3-0496a4bb0f8d?mode=deep",
+    "timestamp": "2026-01-20 12:40:04.333816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/discovery/src/file.rs] [Function: load_file()] [Stack Overflow in Parser] Can deeply nested YAML structures cause stack overflow during recursive parsing in serde_yaml, crashing the validator process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3dc192c0-b55d-44f4-aab9-9fe4273c3322?mode=deep",
+    "timestamp": "2026-01-20 12:40:29.266468",
+    "report_generated": false
+  }
+]
