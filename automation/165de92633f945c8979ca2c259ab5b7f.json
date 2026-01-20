@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Stack overflow] Can an attacker craft a malicious transaction with deeply nested function calls (exactly 256 levels) to reach ACCESS_STACK_SIZE_LIMIT, then trigger one more function entry to overflow the stack check at line 35, potentially causing panic or undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3c16141-e306-4e8d-a6e8-9327b9ba588b?mode=deep",
+    "timestamp": "2026-01-20 07:23:04.024093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Off-by-one error] Does the stack limit check at line 35 use >= instead of >, meaning can an attacker push exactly 256 specifiers when the limit is 256, potentially causing issues when the 257th specifier is added? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_491a2463-2b20-497c-aebe-ae84c30b9c66?mode=deep",
+    "timestamp": "2026-01-20 07:23:18.026518",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Integer overflow] If ACCESS_STACK_SIZE_LIMIT is set to usize::MAX, can the length check at line 35 overflow when comparing self.specifier_stack.len() >= ACCESS_STACK_SIZE_LIMIT, bypassing the limit and causing unbounded stack growth? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fb4b3d8-e34b-457d-9185-9239bfe7713c?mode=deep",
+    "timestamp": "2026-01-20 07:23:31.874296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Resource exhaustion] Can an attacker create a transaction with 255 nested function calls (just under the limit), each with complex AccessSpecifier::Constraint containing hundreds of inclusion/exclusion clauses, to exhaust validator memory and cause node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc633990-f82b-4b38-a3e4-e46aef7a84b2?mode=deep",
+    "timestamp": "2026-01-20 07:23:46.477129",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Access control bypass] When fun.access_specifier() returns AccessSpecifier::Any at line 31, the function returns early without pushing to the stack. Can an attacker exploit this by calling functions with Any specifiers to perform unrestricted resource access, bypassing all access controls? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11c7c9eb-a565-4df2-bc83-c3b914c9910a?mode=deep",
+    "timestamp": "2026-01-20 07:24:02.289839",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Specialization failure] At line 45, fun_specifier.specialize(env)? can fail and return an error. If this error occurs after checking the stack limit but before pushing the specifier, does this leave the state machine in an inconsistent state where future exit_function() calls will underflow? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad1a0716-9f97-4e3c-99bb-e1d2ce5992c0?mode=deep",
+    "timestamp": "2026-01-20 07:24:19.713336",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [TOCTOU race] Between lines 44-46, the specifier is cloned, specialized, then pushed. Can a concurrent thread modify the LoadedFunction's access_specifier during this window, causing a time-of-check-time-of-use vulnerability where the pushed specifier differs from what was validated? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c53b99d-6656-49cb-a107-0097796b1b0f?mode=deep",
+    "timestamp": "2026-01-20 07:24:38.026798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Env manipulation] The specialize() call at line 45 evaluates AddressSpecifier::Eval terms using the env parameter. Can an attacker provide a malicious AccessSpecifierEnv implementation that returns incorrect addresses, allowing unauthorized resource access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27f45663-4e6e-41fb-b9a3-03d582859133?mode=deep",
+    "timestamp": "2026-01-20 07:24:59.239015",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Clone poisoning] At line 44, fun.access_specifier().clone() creates a copy. If the AccessSpecifier contains Arc or Rc pointers to shared data, can an attacker modify the original after cloning to affect the specialized version on the stack? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b79c59ea-a721-4d64-9666-dc4b25f444e4?mode=deep",
+    "timestamp": "2026-01-20 07:25:22.345254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Specialize side effects] Does the specialize() method at line 45 have side effects that mutate the AccessSpecifierEnv? If so, can an attacker cause env corruption that affects subsequent access checks for other transactions in the same block? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b67a61e-2aeb-4058-b621-d384a830607c?mode=deep",
+    "timestamp": "2026-01-20 07:25:47.428626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Partial state update] If specialize() at line 45 fails, the function returns Err without pushing to the stack. However, can the specialize() method have partially mutated internal state before failing, leaving the AccessControlState in an inconsistent condition? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd3b0544-dd3b-4864-a8db-70369e167684?mode=deep",
+    "timestamp": "2026-01-20 07:26:13.480189",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Error message injection] At lines 37-40, the error message includes ACCESS_STACK_SIZE_LIMIT in a format string. Can an attacker manipulate this constant through unsafe code or race conditions to inject malicious content into error messages logged by validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_800d61f6-5a1a-4c46-b10e-809e30c411b3?mode=deep",
+    "timestamp": "2026-01-20 07:26:40.367612",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Stack size mismatch] The function checks self.specifier_stack.len() at line 35 but pushes at line 46. If another thread modifies the stack between these lines in a concurrent execution context, can this cause the actual stack size to exceed ACCESS_STACK_SIZE_LIMIT? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c849c71-127d-4c57-a960-94a08f2238b5?mode=deep",
+    "timestamp": "2026-01-20 07:27:08.334956",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: enter_function()] [Panic on error] If the error at lines 36-41 causes a panic in the error handling code (e.g., due to allocation failure when creating the error message), can this leave the VM in an unrecoverable state causing validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a27e6290-b0bf-4106-a844-a57d72e0f6df?mode=deep",
+    "timestamp": "2026-01-20 07:27:36.114499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [Stack underflow] At line 57, the function checks if specifier_stack.is_empty() before popping at line 63. Can an attacker craft bytecode that calls exit_function() more times than enter_function(), causing the empty check to pass but a subsequent pop to panic or access invalid memory? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0401cc4c-2f1a-495d-af93-377ffac4de2a?mode=deep",
+    "timestamp": "2026-01-20 07:28:05.817075",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [Unbalanced enter/exit] If a function throws an exception or aborts between enter_function() and exit_function(), does the exception handling properly call exit_function() to balance the stack, or will the stack remain corrupted for subsequent executions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f96443b-691b-466d-9b0f-fbd6e3115dc6?mode=deep",
+    "timestamp": "2026-01-20 07:28:35.523587",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [Access specifier mismatch] The function checks fun.access_specifier() at line 56 to decide whether to pop. If the LoadedFunction's access_specifier has been modified between enter and exit, can this cause a mismatch where a specifier was pushed but not popped (or vice versa)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1d797a5-5c62-40b9-a4c6-4ae6accf99a9?mode=deep",
+    "timestamp": "2026-01-20 07:29:04.948271",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [Race condition on pop] At line 63, specifier_stack.pop() is called without a lock. In a concurrent execution environment (e.g., parallel transaction processing), can two threads pop simultaneously, causing one to pop the wrong specifier or access freed memory? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40bb82d5-8f42-4bb4-b8db-bc815c5f3ea4?mode=deep",
+    "timestamp": "2026-01-20 07:29:34.746611",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [Empty check bypass] The empty check at line 57 uses is_empty(). If the Vec implementation has a bug or race condition where is_empty() returns false but pop() fails, can this cause undefined behavior when popping from an actually empty stack? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23c94f64-1d45-4260-a28b-54c9ab9c7280?mode=deep",
+    "timestamp": "2026-01-20 07:30:04.139284",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [Error recovery] When the function returns ACCESS_CONTROL_INVARIANT_VIOLATION at lines 58-61, does the VM properly handle this error by aborting the transaction, or can execution continue with a corrupted access control state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33dccc38-b804-4b8d-a832-3e64e75b5b22?mode=deep",
+    "timestamp": "2026-01-20 07:30:34.166061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [LIFO violation] The function pops from the stack at line 63 without verifying that the popped specifier matches the function's access_specifier. Can an attacker exploit nested function calls with varying access specifiers to pop the wrong specifier, weakening access controls? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b76b05e4-4a79-4ac2-b590-093d3e6f9ffa?mode=deep",
+    "timestamp": "2026-01-20 07:31:04.443110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [Partial pop] If the pop() operation at line 63 triggers a panic or error (e.g., due to memory corruption), can the stack be left in a partially popped state where the length is decremented but the element remains accessible? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8db41513-4f5b-4920-baec-71c686b32f89?mode=deep",
+    "timestamp": "2026-01-20 07:31:34.113127",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [Any shortcut consistency] The function checks if access_specifier is AccessSpecifier::Any at line 56 to skip popping. Does this exactly mirror the logic in enter_function() at line 31, or can subtle differences cause stack imbalance? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f34ad1e-1e7f-43d4-b3c4-bf7c7f821489?mode=deep",
+    "timestamp": "2026-01-20 07:32:01.680092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: exit_function()] [Return value ignored] The function returns PartialVMResult<()> which can indicate an error. If calling code ignores this error and continues execution, can subsequent access checks operate on a corrupted stack leading to unauthorized resource access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b2a90fb-c11d-46cb-a97e-a74489e951d0?mode=deep",
+    "timestamp": "2026-01-20 07:32:31.063737",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/access_control.rs] [Function: check_access()] [Empty stack bypass] At line 70, the function iterates over specifier_stack in reverse. If the stack is empty, the iterator produces no elements and the function returns Ok(()), effectively allowing unrestricted access. Can an attacker force an empty stack state to bypass all access controls? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1f75ee0-746f-47ef-bfa5-b55507758e63?mode=deep",
+    "timestamp": "2026-01-20 07:33:00.859610",
+    "report_generated": false
+  }
+]
