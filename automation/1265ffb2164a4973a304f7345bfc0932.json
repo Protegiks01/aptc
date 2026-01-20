@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Option Unwrapping Safety] At lines 60 and 66, when calling maybe_tc.as_ref().as_ref() on Option<TwoChainTimeoutCertificate>, can malicious None values be passed that cause unexpected behavior in safety rules voting logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4188ed6-4b61-4936-a390-06a845a3b050?mode=deep",
+    "timestamp": "2026-01-20 04:37:15.648070",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: sign_timeout_with_qc()] [Double-Boxed Option Validation] At line 60, the double-boxed Option (Box<Option<TwoChainTimeoutCertificate>>) is unwrapped with as_ref().as_ref(), but is there validation preventing malicious validators from crafting invalid Box pointers that cause segfaults? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7235dd98-638f-46e6-93cc-4aaebe44272c?mode=deep",
+    "timestamp": "2026-01-20 04:37:28.308617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Epoch Validation Missing] None of the message handling code at lines 49-80 appears to validate that incoming messages belong to the current epoch - can Byzantine validators send messages from future/past epochs to confuse safety rules state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfd7fb8d-155d-442e-bc3d-9ad97967063e?mode=deep",
+    "timestamp": "2026-01-20 04:37:41.678754",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: sign_commit_vote()] [LedgerInfo Validation Bypass] At lines 75-78, when processing SignCommitVote with Box<LedgerInfoWithSignatures> and Box<LedgerInfo>, are the ledger infos validated for consistency before being unboxed and passed to sign_commit_vote()? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1aa48e15-81f8-4757-a4b6-622678b8667d?mode=deep",
+    "timestamp": "2026-01-20 04:37:54.915099",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: initialize()] [EpochChangeProof Clone Memory Exhaustion] At line 114, cloning the entire EpochChangeProof with proof.clone() could consume excessive memory if the proof contains a large validator set - can Byzantine validators craft massive proofs to cause OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_982fc663-ce79-4d6d-bc10-dc4d4d20587c?mode=deep",
+    "timestamp": "2026-01-20 04:38:08.994071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: sign_proposal()] [BlockData Clone Deep Copy Vulnerability] At line 121, cloning BlockData with block_data.clone() creates a deep copy - if BlockData contains large transaction payloads, can this be exploited for memory exhaustion attacks during proposal signing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20ce7e86-a973-4e42-afa4-38b3c069156a?mode=deep",
+    "timestamp": "2026-01-20 04:38:23.942422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: sign_timeout_with_qc()] [Timeout Certificate Clone Race] At lines 132-133, cloning TwoChainTimeout and Option<TwoChainTimeoutCertificate> separately is not atomic - can race conditions between these clones cause inconsistent timeout data to be processed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c10e72ba-7cb2-4619-9bb2-81162148f9a6?mode=deep",
+    "timestamp": "2026-01-20 04:38:39.884579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: construct_and_sign_vote_two_chain()] [VoteProposal Clone Timing Attack] At line 146-147, the time taken to clone VoteProposal could leak information about proposal size or complexity - can Byzantine validators use timing side-channels to infer validator behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9706084a-f975-48fc-8abf-86f97dc9a95e?mode=deep",
+    "timestamp": "2026-01-20 04:38:57.447746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: construct_and_sign_order_vote()] [OrderVoteProposal Clone Validation] At line 159, cloning OrderVoteProposal before processing - if the clone modifies internal references or counters, could cloned proposals differ from originals causing signature mismatches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1af4f8e-9432-42bc-b6d8-62f253631ff5?mode=deep",
+    "timestamp": "2026-01-20 04:39:15.899055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: sign_commit_vote()] [LedgerInfo Unboxing Instead of Clone] At line 78, sign_commit_vote uses *ledger_info instead of clone() - is this move semantics safe, or could it leave the Box in invalid state causing use-after-free vulnerabilities? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7efb408b-0c94-4f8d-b075-361bb45cd629?mode=deep",
+    "timestamp": "2026-01-20 04:39:35.459274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Double-Signing via Replay] Can an attacker capture a valid SignProposal message at line 54 and replay it later in a different round, causing the validator to sign the same proposal twice and violate consensus safety rules? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_912375bd-77ec-461f-9bb2-3228565f854d?mode=deep",
+    "timestamp": "2026-01-20 04:39:55.674633",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Vote Equivocation Attack] The ConstructAndSignVoteTwoChain handler at lines 62-68 doesn't appear to check for previous votes in the same round - can malicious code call this multiple times with different VoteProposals to create equivocating votes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8293d2c-3749-4e4e-acb5-66f0202d92ed?mode=deep",
+    "timestamp": "2026-01-20 04:40:17.841726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Timeout Certificate Forgery] At lines 57-61, when processing SignTimeoutWithQC, if the TwoChainTimeoutCertificate in maybe_tc is not properly validated, can Byzantine validators forge timeout certificates to force premature round transitions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61158be8-a4f1-4b91-b749-cc8fbfe031c7?mode=deep",
+    "timestamp": "2026-01-20 04:40:40.238379",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Order Vote Rule Bypass] The ConstructAndSignOrderVote handler at lines 70-73 doesn't show visible validation - can attackers send order vote proposals that violate the ordering rules (e.g., voting for blocks out of sequence) to break commit order invariants? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e73412b-073c-4132-8669-f9b18408f472?mode=deep",
+    "timestamp": "2026-01-20 04:41:03.133733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Commit Vote Safety] At lines 75-78, sign_commit_vote receives both ledger_info and new_ledger_info - if these are inconsistent (e.g., new_ledger_info doesn't extend ledger_info), can this violate safety by creating conflicting commits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3adc6b5d-d7dd-4504-a260-090c3f746b7b?mode=deep",
+    "timestamp": "2026-01-20 04:41:26.414711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Proposal Signing Without Quorum] At line 54-55, sign_proposal() is called without visible validation of quorum certificates in BlockData - can Byzantine validators sign proposals that lack valid QCs, potentially breaking the 3-chain safety rule? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60f42384-9ccd-402f-b52e-2279773089c5?mode=deep",
+    "timestamp": "2026-01-20 04:41:50.568265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Missing Round Progression Check] The message routing at lines 49-80 doesn't enforce monotonic round progression - can attackers send messages for past rounds to manipulate safety rules state and violate last_voted_round invariants? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_937f40eb-ff54-49d8-a231-46a867ef4021?mode=deep",
+    "timestamp": "2026-01-20 04:42:15.878623",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: sign_proposal()] [BLS Signature Malleability] At line 118-122, when returning bls12381::Signature, is there validation that the signature is non-malleable, or can attackers manipulate signatures to create valid-looking but invalid proposals? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93718c39-bae5-4709-b77e-73e47497dbaf?mode=deep",
+    "timestamp": "2026-01-20 04:42:42.580409",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: sign_timeout_with_qc()] [Signature Aggregation Bypass] At line 125-135, when signing timeouts with QC, can Byzantine validators submit partial signatures that when aggregated produce invalid timeout certificates allowing consensus manipulation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77d948fb-d43c-4a9c-9766-4ea10601bcf1?mode=deep",
+    "timestamp": "2026-01-20 04:43:08.612551",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: sign_commit_vote()] [Signature Replay Across Epochs] At line 164-174, when generating BLS signatures for commit votes, are signatures bound to specific epochs, or can attackers replay signatures from previous epochs to forge commits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c6a7c34-21c9-4427-bdfd-bd9cf173da57?mode=deep",
+    "timestamp": "2026-01-20 04:43:33.555726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: sign_proposal()] [Deterministic Signature Nonce] If BLS signature generation at line 118-122 uses deterministic nonces, can timing analysis or repeated signature requests leak the validator's private key through side-channel attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfaab134-eb20-451a-96ff-6b7b869ac791?mode=deep",
+    "timestamp": "2026-01-20 04:44:00.189369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: construct_and_sign_vote_two_chain()] [Vote Signature Verification Missing] At line 138-149, after constructing and signing votes, is the signature verified before returning, or can errors in signature generation go undetected until votes are rejected by other validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afd65878-9418-45d9-b0e5-4ac761c1f7b5?mode=deep",
+    "timestamp": "2026-01-20 04:44:28.095143",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Message Type Confusion] If the SafetyRulesInput enum variants at lines 24-35 can be manually constructed with mismatched type tags and data, can attackers cause handle_message() to route messages to wrong handlers causing state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ec5e596-2215-4bad-b6e7-b852344139f5?mode=deep",
+    "timestamp": "2026-01-20 04:44:54.753198",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: request()] [Request Routing Bypass] At line 101, the request() method delegates to service.request() - can malicious implementations of TSerializerClient bypass safety checks by providing custom request routing logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5adb67f0-7395-4f4b-b075-c260f06e1164?mode=deep",
+    "timestamp": "2026-01-20 04:45:22.245855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/safety-rules/src/serializer.rs] [Function: handle_message()] [Match Exhaustiveness] The match statement at lines 49-80 handles all SafetyRulesInput variants, but if a new variant is added without updating handle_message(), could this cause unhandled message panics in production? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4eb25ec9-5e7a-43f7-b688-a54913d41c10?mode=deep",
+    "timestamp": "2026-01-20 04:45:48.349848",
+    "report_generated": false
+  }
+]
