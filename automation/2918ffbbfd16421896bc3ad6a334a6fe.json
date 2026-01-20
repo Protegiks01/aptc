@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Queue Exhaustion] Can a malicious validator flood the system with messages under a single key to fill the bounded queue (max_queue_size), causing legitimate messages from that validator to be dropped and disrupting consensus communication? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f51e52f-7ddd-45ec-b271-59a9c54dc184?mode=deep",
+    "timestamp": "2026-01-20 21:32:02.405601",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Memory Exhaustion] Can an attacker create an unbounded number of unique keys (e.g., different peer IDs) to bypass per-key queue limits, causing each new key to allocate a HashMap entry and VecDeque, leading to memory exhaustion that crashes validator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b227f6f-44e6-4cc6-badc-b9c3be4ed0e4?mode=deep",
+    "timestamp": "2026-01-20 21:32:14.879463",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Message Dropping Policy] In FIFO mode, when the queue is full, the newest message is dropped immediately. Can an attacker exploit this by continuously sending messages to keep a key's queue full, ensuring that all new legitimate messages (including critical consensus votes) are silently dropped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_840c122a-5d70-4588-b1cb-17e71ba05dce?mode=deep",
+    "timestamp": "2026-01-20 21:32:27.619004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Message Dropping Policy] In LIFO mode, when the queue is full, the oldest message is dropped. Can an attacker exploit this by sending a burst of messages to evict older critical messages (like block proposals or votes) that were queued earlier, causing consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13308a2f-db6c-4f7b-a521-530c2403bb09?mode=deep",
+    "timestamp": "2026-01-20 21:32:41.746528",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Race Condition] When checking if key_message_queue.is_empty() and then pushing to round_robin_queue, can concurrent push() calls from multiple threads cause the same key to be added to round_robin_queue multiple times, breaking the round-robin invariant? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1f2d2cd-6d60-40c7-8c80-212598057eaf?mode=deep",
+    "timestamp": "2026-01-20 21:32:55.828022",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Integer Comparison] The check 'key_message_queue.len() >= self.max_queue_size.get()' uses '>=' operator. Can an attacker exploit off-by-one behavior where the queue can actually grow to max_queue_size+1 elements before dropping starts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f670bc8-9f82-4636-8564-2e655755802d?mode=deep",
+    "timestamp": "2026-01-20 21:33:10.930269",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Memory Allocation] VecDeque::with_capacity(1) allocates only 1 slot initially. Can an attacker trigger excessive reallocations by sending bursts of messages, causing performance degradation and memory fragmentation that slows down validator consensus participation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8056d218-126e-4679-bc78-ebd9e9320da8?mode=deep",
+    "timestamp": "2026-01-20 21:33:27.326514",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Metrics Manipulation] The counters.with_label_values(&[",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59743609-69f3-4463-b446-4b101e0d303b?mode=deep",
+    "timestamp": "2026-01-20 21:33:46.290176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Metrics Manipulation] When a message is dropped, 'dropped' counter is incremented but 'enqueued' was already incremented. Can this double-counting mislead operators about the true rate of message processing vs rejection? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4167921a-c5ed-42e7-aa23-ef211503a4a5?mode=deep",
+    "timestamp": "2026-01-20 21:34:05.566083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Return Value] The function returns Some(T) for dropped messages. If the caller doesn't check this return value, can dropped critical messages (like consensus votes) be silently lost without any error handling, causing liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92fed89a-35ca-427d-a971-a44f84677a11?mode=deep",
+    "timestamp": "2026-01-20 21:34:26.846648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [HashMap Entry] Using entry().or_insert_with() pattern, can an attacker cause HashMap rehashing by adding keys in patterns that trigger worst-case hash collision chains, degrading performance to O(n) lookups? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0259753e-9362-4665-925f-b9ae8c15691e?mode=deep",
+    "timestamp": "2026-01-20 21:34:48.770969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [Clone Operation] The key is cloned with key.clone() before insertion. For expensive-to-clone key types, can an attacker exploit this to cause CPU exhaustion by repeatedly pushing messages with large keys? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86de6f29-1551-4e38-875d-2cbabb47c0a3?mode=deep",
+    "timestamp": "2026-01-20 21:35:11.017430",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: push()] [KLAST Mode] In KLAST mode, oldest messages are dropped like LIFO but retrieved in FIFO order. Can this create a scenario where attacker messages remain in queue while legitimate older messages are continuously evicted, causing starvation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0143c4f1-7660-4ae1-b9f9-52202828bbe1?mode=deep",
+    "timestamp": "2026-01-20 21:35:35.488826",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop()] [Round-Robin Violation] When a key's queue becomes empty after pop(), it's not re-added to round_robin_queue. Can an attacker exploit timing to cause certain keys to be permanently removed from round-robin rotation even if they later receive new messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06cbc06c-43cb-4982-b7d9-cc2834c18702?mode=deep",
+    "timestamp": "2026-01-20 21:35:59.176870",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop()] [Starvation Attack] Can an attacker continuously push messages to multiple keys to ensure their keys stay at the front of round_robin_queue, starving other validators' messages from being processed and degrading consensus participation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d9489f0-8a1b-4a89-a8f9-c5a3a8726b71?mode=deep",
+    "timestamp": "2026-01-20 21:36:23.682353",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop()] [GC Timing] The num_popped_since_gc counter increments only on successful pops. Can an attacker cause failed pops to accumulate empty queues indefinitely, leading to memory exhaustion as remove_empty_queues() is never triggered? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13fafd8e-0922-4b12-a88f-53d814b97163?mode=deep",
+    "timestamp": "2026-01-20 21:36:48.914301",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop()] [GC Timing] With POPS_PER_GC=50, can an attacker craft message patterns that ensure exactly 49 successful pops repeatedly, preventing garbage collection from ever running and causing memory leak from accumulated empty HashMap entries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b9d50ad-63b5-47e1-879d-1dd713799dea?mode=deep",
+    "timestamp": "2026-01-20 21:37:14.523357",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop()] [Integer Overflow] The num_popped_since_gc is u32 and increments on every successful pop. In a long-running validator that processes billions of messages, can this counter overflow, causing num_popped_since_gc to wrap to 0 and trigger unexpected behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb228353-d9fa-46e1-b6be-6b73b7bfa3f2?mode=deep",
+    "timestamp": "2026-01-20 21:37:39.671255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop()] [Race Condition] Between popping key from round_robin_queue and calling pop_from_key_queue(), can another thread modify per_key_queue, causing is_q_empty to be inaccurate and leading to keys being incorrectly added back to round_robin_queue? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec9e719c-325d-4f85-910d-877fc81aec7e?mode=deep",
+    "timestamp": "2026-01-20 21:38:05.174257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop()] [Early Return] If round_robin_queue.pop_front() returns None, the function returns None immediately. Can this hide error conditions where per_key_queue still contains messages but round_robin_queue is corrupted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9acc87c8-1965-484e-a2de-877be10275e3?mode=deep",
+    "timestamp": "2026-01-20 21:38:30.703419",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop()] [Metrics Accuracy] The 'dequeued' counter is incremented only when message.is_some(). Can scenarios exist where pop() is called but returns None due to race conditions, causing dequeued count to not match actual pop() calls? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b333d57-45dc-4e7f-b9e9-43f77fc9aa16?mode=deep",
+    "timestamp": "2026-01-20 21:38:54.930172",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop()] [VecDeque Behavior] VecDeque.pop_front() is used for FIFO. Can the VecDeque internal buffer fragmentation cause performance degradation over time as elements are repeatedly added and removed from different ends? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eca613a8-310d-46d9-919b-087c1fb2dbf5?mode=deep",
+    "timestamp": "2026-01-20 21:39:18.047296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop_from_key_queue()] [None Handling] When per_key_queue.get_mut(key) returns None, the function returns (None, true). Can this mask bugs where a key is in round_robin_queue but not in per_key_queue, indicating data structure inconsistency? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18d0736f-6a85-4867-9031-e610a204f19d?mode=deep",
+    "timestamp": "2026-01-20 21:39:42.189768",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop_from_key_queue()] [Queue Style Mismatch] The match statement handles FIFO/KLAST identically (pop_front) vs LIFO (pop_back). Can changing queue_style at runtime cause messages to be retrieved in unexpected order, violating caller assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e050391e-9850-49e3-82cd-33e58e0562a2?mode=deep",
+    "timestamp": "2026-01-20 21:40:07.711834",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop_from_key_queue()] [Empty Check] The function returns a boolean is_q_empty based on q.is_empty(). Can race conditions cause this boolean to be stale by the time the caller uses it, leading to incorrect round_robin_queue management? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5791bfb-e048-49c4-99e6-c0981e49ac67?mode=deep",
+    "timestamp": "2026-01-20 21:40:32.850461",
+    "report_generated": false
+  }
+]
