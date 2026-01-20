@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Input Injection] Can an attacker provide maliciously crafted stdin input that causes the regex parser at line 26-30 to consume excessive memory or CPU, leading to denial of service against debugging infrastructure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c4647c1-4626-4992-be4a-42e8dbb77061?mode=deep",
+    "timestamp": "2026-01-19 23:55:03.491160",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Buffer Overflow] Does the stdin read_line at line 25 have any size limits, or can an attacker provide unbounded input that exhausts memory before regex processing, causing OOM crashes in production debugging environments? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64fb95b6-9a34-4c6f-88f4-cf28122fbcb2?mode=deep",
+    "timestamp": "2026-01-19 23:55:15.818205",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [ReDoS Attack] Can the regex pattern at line 26 be exploited with carefully crafted input patterns that cause catastrophic backtracking, freezing the debugger process indefinitely? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91a23ce5-8ce1-4b9e-ae2f-312df047fb77?mode=deep",
+    "timestamp": "2026-01-19 23:55:28.390424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Integer Overflow] Can an attacker provide input with numbers larger than u8::MAX (255) at line 29 that cause parse::<u8>() to silently fail with .ok(), leading to truncated transaction bytes and incorrect deserialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d679ced3-975d-4ee5-befa-9477a4e78cd3?mode=deep",
+    "timestamp": "2026-01-19 23:55:42.554449",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Empty Input Attack] What happens if the regex finds no valid byte patterns and returns an empty Vec<u8> at line 30, does bcs::from_bytes panic or return a cryptic error that could leak implementation details? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db53bc07-196e-40a5-ba38-0793cbb77dcc?mode=deep",
+    "timestamp": "2026-01-19 23:55:56.063693",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Deserialization Bomb] Can an attacker craft malicious BCS bytes at line 32 that deserialize into extremely large SignedTransaction structures, causing memory exhaustion when the debugger attempts to process them? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbd51fed-687d-41af-8081-80a577efae1a?mode=deep",
+    "timestamp": "2026-01-19 23:56:10.361340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Type Confusion] Does bcs::from_bytes at line 32 properly validate all type discriminants, or can an attacker provide bytes that deserialize into invalid transaction variants causing undefined behavior in downstream processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bffb0b7-f289-4af0-bd75-7c82b19296af?mode=deep",
+    "timestamp": "2026-01-19 23:56:25.569082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Panic on Malformed Data] Can specially crafted invalid BCS bytes at line 32 trigger panics in the BCS deserializer that crash the debugger without proper error recovery, affecting debugging availability? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56dece49-19bd-4cd6-b75d-e1228a739111?mode=deep",
+    "timestamp": "2026-01-19 23:56:42.540011",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Deserialization Side Effects] Does the BCS deserialization process at line 32 have any side effects that could be exploited, such as allocating resources that aren't properly cleaned up on error paths? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec83ad3f-4e85-42dd-b189-0e6af6803cde?mode=deep",
+    "timestamp": "2026-01-19 23:56:59.014852",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Invalid Signature Data] Can an attacker provide a SignedTransaction with malformed signature bytes that pass BCS deserialization at line 32 but later cause crashes when the debugger attempts signature verification or execution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b753923-8730-449c-b50a-7ed13b6ab605?mode=deep",
+    "timestamp": "2026-01-19 23:57:17.369365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [SSRF via Chain ID] Can an attacker craft a transaction with a manipulated chain_id() at line 33 that doesn't match mainnet/testnet/devnet checks at lines 40-46, causing the endpoint format at line 50 to construct unexpected URLs pointing to internal services? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0aedffac-820a-4b37-95b5-85c66fb1ac72?mode=deep",
+    "timestamp": "2026-01-19 23:57:35.771497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [URL Injection] Is the network string at lines 40-46 properly sanitized before being inserted into the format! macro at line 50, or can an attacker with a custom chain ID inject malicious URL components? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37fae703-00ff-4b3d-a53a-8bd8ffa9a120?mode=deep",
+    "timestamp": "2026-01-19 23:57:55.285566",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [DNS Rebinding] After the endpoint URL is constructed at line 50 and parsed at line 51, are there time-of-check-time-of-use vulnerabilities where DNS resolution could be manipulated between URL construction and actual REST API calls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2a42cfc-16db-4db9-9fb1-6bbf885eb5d3?mode=deep",
+    "timestamp": "2026-01-19 23:58:15.426981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Malicious Endpoint] Can an attacker force the debugger to connect to a malicious server by providing a transaction with specific chain ID values that aren't handled by the if-else chain at lines 40-46, defaulting to 'devnet' at line 45? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71d447ff-8710-4b65-848e-a5dad6eba535?mode=deep",
+    "timestamp": "2026-01-19 23:58:36.435895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [TLS Bypass] Does the URL scheme constructed at line 50 always use https://, or are there code paths where an attacker could force http:// connections that expose transaction data over unencrypted channels? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd616c44-de03-4779-b4d6-00adf5a4cb46?mode=deep",
+    "timestamp": "2026-01-19 23:58:56.281192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [API Credential Exposure] When creating the REST Client at line 51, are any authentication credentials or API keys passed that could be logged or exposed through error messages during URL parsing failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b75cc33-482c-4639-a8e9-6bcbcd546c7a?mode=deep",
+    "timestamp": "2026-01-19 23:59:17.334355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Request Timeout] Does the AptosDebugger::rest_client at line 51 have proper timeout configurations, or can an attacker cause the debugger to hang indefinitely waiting for malicious server responses? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bf7a044-c0aa-4ac0-9233-4292cd0deb8e?mode=deep",
+    "timestamp": "2026-01-19 23:59:38.112918",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Response Size Limits] When calling get_version_by_account_sequence at lines 52-55, are there limits on response sizes to prevent memory exhaustion from malicious API endpoints returning gigabytes of data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3493379b-4ae6-4ad1-b03b-2994cfeecf6f?mode=deep",
+    "timestamp": "2026-01-20 00:00:00.487391",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Unsafe unwrap()] Does the unwrap() call at line 55 properly handle cases where get_version_by_account_sequence returns None, or will it panic and crash the debugger when querying non-existent transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_086e5cd4-9d1d-41c0-a9e1-6cf78dd11006?mode=deep",
+    "timestamp": "2026-01-20 00:00:24.903941",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Error Information Leak] When REST API calls fail with ? operator at lines 51, 54, do the propagated error messages contain sensitive information about internal network topology or authentication mechanisms? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5127ea67-d8b6-4864-9c33-5e1b1eeec45a?mode=deep",
+    "timestamp": "2026-01-20 00:00:47.685922",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Sender Address Validation] Is the txn.sender() value at line 37 validated to ensure it's a legitimate account address, or can attackers provide transactions with invalid/reserved addresses that cause downstream issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c87e6844-55ba-45fc-98d0-1f9b7ae48a9b?mode=deep",
+    "timestamp": "2026-01-20 00:01:10.269334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Sequence Number Overflow] Can an attacker provide a transaction with u64::MAX sequence number at line 38 that causes integer overflow in get_version_by_account_sequence at line 53, leading to incorrect version lookups? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22cf1a20-2b8b-4fa0-837a-6558b699610b?mode=deep",
+    "timestamp": "2026-01-20 00:01:32.645253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Chain ID Spoofing] Can an attacker craft a transaction with a chain ID that passes is_mainnet/is_testnet/is_devnet checks at lines 40-43 but actually belongs to a fork or private network, causing the debugger to execute against wrong state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55b48aea-161b-4a4a-b8aa-156f705dbef6?mode=deep",
+    "timestamp": "2026-01-20 00:01:55.431482",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Invalid Chain ID Display] At line 47, does chain_id.id() always return a valid displayable value, or can malformed chain IDs cause panics or display formatting vulnerabilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_379e7475-195b-4829-b9c2-73da27e99f3b?mode=deep",
+    "timestamp": "2026-01-20 00:02:17.705403",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-debugger/src/bcs_txn_decoder.rs] [Function: run()] [Account Enumeration] Can an attacker use this debugger to enumerate valid accounts by testing different sender addresses at line 37 and observing whether version lookups at lines 52-55 succeed or fail? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e01b78bc-e9e0-425c-b832-609c6efb54a0?mode=deep",
+    "timestamp": "2026-01-20 00:02:40.261274",
+    "report_generated": false
+  }
+]
