@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: to_bytes_by_protocol()] [Protocol downgrade] The function selects protocol per peer - can an attacker force all peers to use the weakest protocol (Json) instead of Compressed to enable easier message manipulation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce10685a-f1fa-443c-81ec-38bfd4a1564f?mode=deep",
+    "timestamp": "2026-01-20 10:33:55.266058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: to_bytes_by_protocol()] [Error propagation] Line 118 uses anyhow::Result - if serialization fails for one peer, does it fail for all? Can this be exploited to prevent reliable broadcast by targeting specific validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_978b6ae9-6414-486a-a451-36aa9944251b?mode=deep",
+    "timestamp": "2026-01-20 10:34:07.660522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: sort_peers_by_latency()] [Timing side channel] Can an attacker observe the sorted peer order (line 122) to infer network topology or validator performance, enabling targeted attacks on the slowest validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce10470c-7fda-4f9a-8325-8c756eb6b6e8?mode=deep",
+    "timestamp": "2026-01-20 10:34:20.226250",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: sort_peers_by_latency()] [Slice mutation] sort_peers_by_latency() mutates the slice in-place - can concurrent calls cause data races if multiple threads sort the same peer list during DKG? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12b7937c-4153-4287-a546-e4d8d9be8deb?mode=deep",
+    "timestamp": "2026-01-20 10:34:33.707628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: sort_peers_by_latency()] [Determinism violation] If peer ordering affects DKG transcript aggregation order, can non-deterministic latency measurements cause validators to process transcripts in different orders and compute different DKG outputs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9820382a-3435-4e01-9d82-95f7ce4b5ddb?mode=deep",
+    "timestamp": "2026-01-20 10:34:47.781868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Struct: NetworkReceivers] [Channel capacity] The rpc_rx channel is created with QueueStyle::FIFO and capacity 10 (line 141) - can an attacker flood 11+ RPC requests to cause channel overflow and drop legitimate DKG messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af4441b9-a1e0-49e7-9b68-6822192cff3f?mode=deep",
+    "timestamp": "2026-01-20 10:35:02.558307",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Struct: NetworkReceivers] [Ordering guarantee] FIFO queue style means messages are processed in order - can an attacker exploit this by sending a malicious message that blocks processing, preventing all subsequent legitimate DKG requests from being handled? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_675c0b21-cf92-4076-950b-e5099e2f7745?mode=deep",
+    "timestamp": "2026-01-20 10:35:18.281190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Struct: NetworkReceivers] [Key collision] The rpc_rx uses AccountAddress as the key - can an attacker send multiple requests with the same sender address to cause key collisions and override pending requests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbd43fdc-604d-4a3a-9d8d-fe70ba0d5177?mode=deep",
+    "timestamp": "2026-01-20 10:35:35.925531",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::new()] [Panic vulnerability] Lines 144-148 panic if network setup is incorrect - can an attacker manipulate network_service_events to trigger this panic during validator startup and prevent DKG from initializing? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33366a01-52dc-4cdf-93d1-f9db4fcd15f5?mode=deep",
+    "timestamp": "2026-01-20 10:35:53.728497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::new()] [Network isolation bypass] The check at line 145 requires NetworkId::Validator - but can an attacker inject events from other network IDs to bypass this check and mix DKG messages with public network traffic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ac610f7-dd8b-4d59-a452-3fbd6b33e321?mode=deep",
+    "timestamp": "2026-01-20 10:36:12.746030",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::new()] [Stream merging race] Lines 150-153 merge multiple event streams using select_all() and select() - can race conditions during concurrent stream events cause messages to be dropped or processed out of order? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f82f34c8-1115-4934-8735-51da83b3b68b?mode=deep",
+    "timestamp": "2026-01-20 10:36:32.554140",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::new()] [Self-receiver priority] The self_receiver is merged with network_events using select() - does this give equal priority, or can network flooding starve self-messages and prevent the validator from processing its own DKG transcripts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d627a2b-28e4-4fcf-8df0-e235b4f5d94c?mode=deep",
+    "timestamp": "2026-01-20 10:36:53.532319",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::new()] [Channel capacity mismatch] rpc_tx is created with capacity 10 but all_events is unbounded - can this cause back-pressure issues where events accumulate in all_events but can't be pushed to rpc_tx? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c271317-eab5-4696-930b-f4475189d659?mode=deep",
+    "timestamp": "2026-01-20 10:37:15.250884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::new()] [Event stream exhaustion] If network_and_events returns an empty iterator or single network fails, does the select_all() handle this gracefully or cause the entire DKG network task to stall? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72c04863-5a9c-4927-9828-ea4d1fdc1319?mode=deep",
+    "timestamp": "2026-01-20 10:37:37.900047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Infinite loop DOS] The loop at line 161 runs indefinitely with await on all_events.next() - can an attacker cause all_events stream to hang indefinitely without yielding, freezing the entire DKG network task? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e4eec3f-2f86-4856-a6d3-08df523eeb3e?mode=deep",
+    "timestamp": "2026-01-20 10:38:01.418983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Event type confusion] Line 163 matches on Event::RpcRequest but ignores all other variants (line 177) - can an attacker send non-RPC events that should be processed but are silently dropped, causing DKG message loss? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc6a2717-711c-4f58-b9a8-26848ee8fb40?mode=deep",
+    "timestamp": "2026-01-20 10:38:24.780035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Sender validation gap] Line 163 extracts peer_id but doesn't validate it against the validator set - can non-validators send RPC requests that get processed as if they came from legitimate validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_051d09f0-e991-4e3d-8251-cc3f5413eb14?mode=deep",
+    "timestamp": "2026-01-20 10:38:48.716230",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Response sender wrapping] Lines 167-170 wrap the response_sender in RealRpcResponseSender - can type confusion occur if the underlying sender is already wrapped or has incompatible protocol? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66d54970-bafe-472e-9f89-58b3943242e3?mode=deep",
+    "timestamp": "2026-01-20 10:39:14.060821",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Channel push failure] Line 173 pushes to rpc_tx with error logging only (line 174) - if push fails due to capacity, is the DKG message permanently lost or does it have retry logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a834b3d-47d2-432d-96a4-31af00893a07?mode=deep",
+    "timestamp": "2026-01-20 10:39:40.104488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Key usage in push] rpc_tx.push uses peer_id as key twice (peer_id, (peer_id, req)) - can this cause issues with the channel's internal key management or allow key-based attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f4200b0-06a7-46c2-9a13-27dd23311bc5?mode=deep",
+    "timestamp": "2026-01-20 10:40:06.089861",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Protocol mismatch] The protocol variable (line 163) is passed to RealRpcResponseSender (line 169) - can protocol version mismatches between request and response cause deserialization failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9af57230-d2cd-4105-bcb9-692fa2a88d67?mode=deep",
+    "timestamp": "2026-01-20 10:40:33.011684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Graceful shutdown] There's no explicit shutdown logic - when the stream ends, does the task properly clean up resources or can it leave dangling channels and memory leaks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fafc99c5-b258-4872-b1bf-1d486534e3ea?mode=deep",
+    "timestamp": "2026-01-20 10:40:59.672169",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Error suppression] Line 174 only logs errors but continues processing - can repeated errors accumulate and hide critical failures in DKG message delivery? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7789d2d9-999d-4ce0-ad59-ef6fe67d8aee?mode=deep",
+    "timestamp": "2026-01-20 10:41:27.307285",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: NetworkTask::start()] [Stream termination] What happens when all_events.next() returns None? Does the task exit cleanly or can it cause the validator to stop processing DKG messages entirely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_289f142d-774e-432b-9cee-6c9d269f89e8?mode=deep",
+    "timestamp": "2026-01-20 10:41:55.866845",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Struct: RealRpcResponseSender] [Double send] The inner sender is Option<oneshot::Sender> (line 190) - can an attacker call send() twice, causing panic on the second unwrap() at line 208 and crashing the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53b86c53-9017-4bcb-8f30-4436111f6c9e?mode=deep",
+    "timestamp": "2026-01-20 10:42:24.847981",
+    "report_generated": false
+  }
+]
