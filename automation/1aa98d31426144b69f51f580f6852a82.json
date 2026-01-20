@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Schema: StaleNodeIndexSchema] [Pruning Race Condition] Can concurrent operations where one thread writes new stale indices via encode_key() while another prunes old indices via decode_key() and seek operations cause database inconsistencies or delete active nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ae61c54-11aa-4129-a436-a0935a044f23?mode=deep",
+    "timestamp": "2026-01-20 10:39:15.143611",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Schema: StaleNodeIndexSchema] [Stale Index Leak] If encode_key() succeeds but the corresponding Merkle node deletion fails, can accumulated orphaned stale indices cause unbounded storage growth and eventually exhaust disk space on validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5db14945-5867-4790-a222-fbc9060167ab?mode=deep",
+    "timestamp": "2026-01-20 10:39:27.633783",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Schema: StaleNodeIndexSchema] [Version Rollback Attack] Can an attacker exploit version manipulation to create stale node indices with stale_since_version values from the past that point to currently active nodes, causing pruning to delete critical state data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30545ec0-9763-45fb-91d0-81c0c0f05055?mode=deep",
+    "timestamp": "2026-01-20 10:39:41.203103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Schema: StaleNodeIndexSchema] [Double Pruning Vulnerability] Can the same NodeKey be inserted into the stale index multiple times with different stale_since_versions, and if so, can double-pruning attempts cause panics or database corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1ae46f2-171c-4cdf-aa23-a7b2b68b1b71?mode=deep",
+    "timestamp": "2026-01-20 10:39:54.651592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Dependencies: ensure_slice_len_gt] [Bounds Check Insufficiency] The ensure_slice_len_gt() call at line 51 only checks length is greater than VERSION_SIZE, but does it validate that remaining bytes are sufficient for NodeKey::decode(), potentially causing subsequent decode failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc449006-c35f-47f6-9803-ee9db6128e46?mode=deep",
+    "timestamp": "2026-01-20 10:40:08.993793",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Dependencies: ensure_slice_len_eq] [Zero-Length Edge Case] At line 68, ensure_slice_len_eq(data, 0) validates empty values, but can empty slice with dangling pointer pass this check and cause use-after-free in unsafe code paths? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a21c86f1-96d5-429c-a8dc-77d6d708f076?mode=deep",
+    "timestamp": "2026-01-20 10:40:24.264656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Integration: Merkle Tree] [Premature Pruning] Can an attacker insert stale node indices with stale_since_version values earlier than the actual state change, causing the pruner to delete nodes that are still referenced by historical state commitments? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1952723-6d6e-4798-9ba8-b0af7787a13c?mode=deep",
+    "timestamp": "2026-01-20 10:40:40.998417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Integration: Merkle Tree] [Active Node Deletion] If a NodeKey at line 53 points to an active (non-stale) Merkle tree node, can decode_key() successfully process it, leading to pruning operations that delete active state and corrupt the current state root? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_583394ef-8ff1-4bf2-a42f-4df5f659c7d0?mode=deep",
+    "timestamp": "2026-01-20 10:40:59.483252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Integration: Merkle Tree] [Path Traversal Attack] Can an attacker encode a NodeKey with malicious nibble_path that causes pruning to traverse outside the intended subtree, deleting nodes from other shards or accounts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58fb9e5d-e695-4272-9d57-c4f2e351d6d8?mode=deep",
+    "timestamp": "2026-01-20 10:41:19.062687",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Integration: Merkle Tree] [Root Node Deletion] Can stale_since_version = 0 or other special values cause the root node to be marked as stale and pruned, completely destroying the Merkle tree and all state data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85e57002-f46a-4396-9f18-b8a59dc840e6?mode=deep",
+    "timestamp": "2026-01-20 10:41:40.105093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Integration: Merkle Tree] [Historical Proof Invalidation] If pruning deletes nodes required for historical Merkle proofs within the configured pruning window, can this break state sync for new validators or API queries for recent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05def92c-e6a2-4cb5-a0db-724bad7feedc?mode=deep",
+    "timestamp": "2026-01-20 10:42:01.786770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Database: RocksDB] [Batch Atomicity Violation] Can a partial failure during batch operations that include StaleNodeIndexSchema entries cause the stale index to be committed while corresponding Merkle node deletions fail, leading to dangling references? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_312353d7-4684-4a3d-abf1-3d49ab4f9c61?mode=deep",
+    "timestamp": "2026-01-20 10:42:24.312901",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Database: RocksDB] [Column Family Isolation] Does STALE_NODE_INDEX_CF_NAME at line 36 provide proper isolation from other column families, or can cross-CF attacks manipulate stale indices through jellyfish_merkle_node operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de3ee64f-517e-4d6f-8a70-c858ccfdca05?mode=deep",
+    "timestamp": "2026-01-20 10:42:47.308547",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Database: RocksDB] [Checkpoint Corruption] During database checkpoint/snapshot operations, can stale node indices be captured in inconsistent state (e.g., index present but referenced node already deleted), causing validators to restore corrupt state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72521da6-e4b1-4738-ada6-506103cec05c?mode=deep",
+    "timestamp": "2026-01-20 10:43:12.278506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Database: RocksDB] [Compaction Race] Can RocksDB compaction operations on STALE_NODE_INDEX_CF_NAME interact with concurrent pruning in ways that cause indices to be deleted while still being referenced, leading to use-after-free of database entries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d9ae03b-faf2-42fc-9094-bb8c2296b19b?mode=deep",
+    "timestamp": "2026-01-20 10:43:37.867895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Database: RocksDB] [Iterator Invalidation] When pruning iterates through stale indices using seek operations from encode_seek_key() at line 75, can concurrent writes invalidate the iterator and cause pruning to skip entries or delete wrong nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a30c3371-a4a0-49f9-be36-7cc4a91a58f8?mode=deep",
+    "timestamp": "2026-01-20 10:44:04.789893",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Versions: Ordering] [Future Version Attack] Can an attacker create stale node indices with stale_since_version values far in the future (approaching u64::MAX) that won't be pruned for years, causing storage exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b8d7cc5-61aa-4210-9a63-4a3b30315048?mode=deep",
+    "timestamp": "2026-01-20 10:44:32.638910",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Versions: Ordering] [Version Zero Attack] Can stale_since_version = 0 cause special-case handling errors where pruning logic treats it as 'always prunable', immediately deleting genesis state nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c6f8ad8-6e17-4d10-a625-03fee6bc0623?mode=deep",
+    "timestamp": "2026-01-20 10:45:00.842498",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Versions: Ordering] [Version Gap Exploitation] Can gaps in version numbers cause pruning to skip ranges of stale indices, leaving unpruned nodes that accumulate over time and exhaust storage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61c961e2-a460-4c5c-b2b5-4136e7b941ab?mode=deep",
+    "timestamp": "2026-01-20 10:45:29.618894",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Versions: Ordering] [Epoch Boundary Issues] At epoch transitions where version counters may reset or change, can stale node indices from old epochs interfere with new epoch state, causing cross-epoch state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c9dbeac-d464-44ff-86cb-6181e74334e3?mode=deep",
+    "timestamp": "2026-01-20 10:45:57.969697",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Versions: Ordering] [Pruning Window Bypass] Can an attacker create indices where stale_since_version is exactly at the pruning window boundary, exploiting off-by-one errors to prune nodes that should still be retained? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e0889eb-31ca-41fa-977b-60291950c4a4?mode=deep",
+    "timestamp": "2026-01-20 10:46:27.970803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [NodeKey: Encoding] [Nibble Path Overflow] Since NodeKey contains a nibble_path that's encoded at line 43, can an attacker create paths exceeding ROOT_NIBBLE_HEIGHT (256 nibbles) that corrupt the encoding? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bdaf47ee-59b4-4c02-8acb-c25056bac8dd?mode=deep",
+    "timestamp": "2026-01-20 10:46:59.328919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [NodeKey: Encoding] [Empty Path Attack] Can NodeKey with empty nibble_path (root node) at different versions cause collisions in the stale index that break pruning of historical root nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50d2a048-c6d3-4aad-8357-1a026d6ea410?mode=deep",
+    "timestamp": "2026-01-20 10:47:30.473014",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [NodeKey: Decoding] [Malformed Nibble Path] When NodeKey::decode() is called at line 53, can malformed nibble paths with invalid padding or odd/even inconsistencies cause decode to succeed but produce wrong node references? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e18eaa3-c461-4e8f-8d1b-a6aa01cb2a2d?mode=deep",
+    "timestamp": "2026-01-20 10:48:00.745792",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [NodeKey: Decoding] [Version Mismatch] Can the version field in NodeKey differ from the stale_since_version field in StaleNodeIndex, and if so, can this inconsistency be exploited to confuse pruning logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_526ba834-3d2d-48c7-a89e-78a57fca6220?mode=deep",
+    "timestamp": "2026-01-20 10:48:33.318132",
+    "report_generated": false
+  }
+]
