@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Integration: Validatable<PublicKey>] [OnceCell cache poisoning] When Validatable<PublicKey> caches validation results in OnceCell, if validate() at line 114 is called concurrently, can race conditions cause cache poisoning where invalid keys are marked as valid? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93556e1b-dbae-4d02-8055-c1603f29052a?mode=deep",
+    "timestamp": "2026-01-20 03:59:19.783984",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Integration: Validatable<PublicKey>] [Deferred validation exploit] Since Validatable<T> allows deferred validation, can an attacker construct Validatable<PublicKey> from UnvalidatedPublicKey via from_unvalidated(), use it in cryptographic operations without calling validate(), and bypass all subgroup checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b94040ab-7279-4ce0-bedb-20a9da1e50e7?mode=deep",
+    "timestamp": "2026-01-20 03:59:32.575815",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Integration: Validatable<PublicKey>] [Validation bypass via valid()] If code uses Validatable::valid() which returns Option<&V>, can error cases where validation fails be ignored, allowing operations to proceed with UnvalidatedPublicKey instead of failing safely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_860070a9-9bf3-455a-a6d7-0731fe201c4c?mode=deep",
+    "timestamp": "2026-01-20 03:59:45.389622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: hash()] [Hash collision] The Hash implementation at lines 99-103 directly writes raw bytes via state.write(&self.0) - can an attacker craft two different UnvalidatedPublicKey instances that hash to the same value, breaking hash-based data structures in consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5af9c74f-d771-4998-a569-1ef4817c69b7?mode=deep",
+    "timestamp": "2026-01-20 04:00:00.439875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: eq()] [Byte-level equality bypass] PartialEq at lines 105-109 compares raw bytes (self.0 == other.0) - can two UnvalidatedPublicKeys representing different curve points (one valid, one invalid) compare as equal if they have the same byte representation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aefe4c0e-3166-4d01-987c-5a6ac2fe32ac?mode=deep",
+    "timestamp": "2026-01-20 04:00:14.490814",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: hash()] [Collision with PublicKey] Since UnvalidatedPublicKey and PublicKey must have equivalent Hash implementations per the Validate trait contract, can an attacker exploit hash collisions between validated and unvalidated keys to bypass validation in HashMap-based lookups? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2fb9ae2f-1301-4487-a43c-340bd65d1804?mode=deep",
+    "timestamp": "2026-01-20 04:00:29.823149",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: eq()] [Validation state confusion] When comparing UnvalidatedPublicKey instances via PartialEq, does the comparison consider validation state? Can an attacker exploit equality checks to substitute validated keys with unvalidated ones in collections? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd66d0e6-0c72-4edd-a522-5de05212844c?mode=deep",
+    "timestamp": "2026-01-20 04:00:46.557164",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: validate()] [Error type mismatch] At line 118, CryptoMaterialError::SmallSubgroupError is wrapped in anyhow - does this error type properly propagate through all call sites, or can it be caught and suppressed allowing invalid keys to be used? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_907e68e1-5b4f-4458-b9da-8a6f35db270c?mode=deep",
+    "timestamp": "2026-01-20 04:01:05.088895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: try_from()] [Length boundary] At line 38, the check uses != rather than bounds checking - can an attacker provide zero-length input or extremely large input that bypasses the length check through integer overflow in the comparison? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6017ca85-867e-4ba2-87d9-a0465768ab68?mode=deep",
+    "timestamp": "2026-01-20 04:01:24.350697",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: deserialize()] [Custom error handling] Both deserialization paths use D::Error::custom() for error handling - does this preserve enough context for security logging, or can attackers' malicious inputs go undetected in logs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_300bc3f4-6a79-4386-b444-81aa91be3197?mode=deep",
+    "timestamp": "2026-01-20 04:01:44.338780",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: validate()] [Error message leakage] At line 118, the debug format {:?} is used in error message - does this leak sensitive information about the subgroup check implementation that attackers can use to craft bypasses? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ee4f668-4eda-45cf-8e6b-eaa1a380f493?mode=deep",
+    "timestamp": "2026-01-20 04:02:05.828010",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: validate()] [Curve equation check] Does PublicKey::try_from() at line 115 verify the point satisfies the BLS12-381 curve equation, or only check it's a valid encoding? Can attackers provide points not on the curve that pass try_from but fail later operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae46b72f-3a88-4278-959e-072ca1167d6c?mode=deep",
+    "timestamp": "2026-01-20 04:02:28.563485",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: validate()] [Infinity point handling] Does subgroup_check() at line 117 explicitly reject the point at infinity, or can this special case pass validation enabling signature forgery attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16ea78ee-e328-4c8c-a5c9-714d293fe3dd?mode=deep",
+    "timestamp": "2026-01-20 04:02:51.981981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: validate()] [Compressed vs uncompressed] Does the validation logic handle both compressed and uncompressed point encodings correctly, or can attackers exploit encoding format differences to bypass validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d8456d9-7098-483c-a609-e2d905cea485?mode=deep",
+    "timestamp": "2026-01-20 04:03:16.196265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: validate()] [Pairing-based validation] Since BLS signatures rely on pairings, does subgroup_check() verify the key will work correctly in pairing operations, or can certain valid-looking keys cause pairing equation failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eec06179-7797-478d-81b2-912843bce84e?mode=deep",
+    "timestamp": "2026-01-20 04:03:40.780337",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Usage Context] [Validator key validation] When validator public keys are loaded from configuration or network messages, are they always wrapped in Validatable<PublicKey> and validated via validate() before use in consensus voting? Can unvalidated keys be used anywhere? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c4ee284-bfb5-4548-a335-a1705df2ee16?mode=deep",
+    "timestamp": "2026-01-20 04:04:07.893254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Usage Context] [Multisig aggregation bypass] If UnvalidatedPublicKey is used directly in PublicKey::aggregate() without validation, can an attacker inject malicious keys that break BLS multisignature aggregation in AptosBFT consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9076fd62-fb3d-4c62-a9d0-a2a48ef373a9?mode=deep",
+    "timestamp": "2026-01-20 04:04:34.557330",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Usage Context] [Genesis validator setup] During genesis or validator set changes, are all validator BLS public keys subjected to validate() subgroup checks, or can malicious genesis configurations include invalid keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f709617-5dbe-4da2-9174-af3e5ed74e50?mode=deep",
+    "timestamp": "2026-01-20 04:05:02.806142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Usage Context] [Network message deserialization] When validator public keys arrive in network consensus messages, does deserialization automatically validate subgroup membership, or must calling code explicitly call validate()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08f190c9-616e-49fb-ac2c-87d692cda2e5?mode=deep",
+    "timestamp": "2026-01-20 04:05:31.988806",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Usage Context] [PoP vs subgroup check] The module comments indicate PoP verification implicitly checks subgroup membership - can an attacker exploit code paths where normal signature verification is used without PoP, bypassing subgroup validation entirely? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e65e2b49-4920-4d64-bcaa-10264e42c095?mode=deep",
+    "timestamp": "2026-01-20 04:05:59.960329",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Concurrency] [Shared UnvalidatedPublicKey] If multiple threads share an UnvalidatedPublicKey instance and call validate() concurrently through Validatable wrapper, can race conditions in OnceCell initialization cause undefined behavior or validation bypasses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9ee6e8d-e405-4877-866d-3ada85d2818a?mode=deep",
+    "timestamp": "2026-01-20 04:06:23.411394",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Concurrency] [Clone and validate race] Since UnvalidatedPublicKey implements Clone at line 19, can an attacker clone an unvalidated key, modify one copy while another is being validated, creating inconsistent validation states? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e80cdc5-5be4-4636-b2c5-d91ebb568a70?mode=deep",
+    "timestamp": "2026-01-20 04:06:48.711014",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Concurrency] [Serialization race] If one thread serializes UnvalidatedPublicKey while another modifies its bytes, can race conditions cause corrupted serialized data that deserializes to invalid keys? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d3826f9-c47d-4f6f-9292-456c0052fa0b?mode=deep",
+    "timestamp": "2026-01-20 04:07:14.984362",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: validate()] [Zero key] Can an attacker provide all-zero bytes as UnvalidatedPublicKey that passes length checks but represents an invalid or dangerous key value? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45ad1059-c65c-4edd-af29-65f88b479e54?mode=deep",
+    "timestamp": "2026-01-20 04:07:40.663614",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/bls12381/bls12381_validatable.rs] [Function: validate()] [Maximum value key] Can an attacker provide bytes representing the maximum field element or curve order that passes validation but causes arithmetic overflows in signature operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d3c53b4-a068-412e-8626-613cc9be16de?mode=deep",
+    "timestamp": "2026-01-20 04:08:07.441196",
+    "report_generated": false
+  }
+]
