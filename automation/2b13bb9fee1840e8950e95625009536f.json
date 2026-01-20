@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_stake_balances()] [Inactive stake timing attack] Lines 351-353 return stake_pool.inactive - can an attacker time their queries to report inactive balances before commission extraction, then withdraw after commission is extracted, stealing funds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bda43dbb-f5d8-4491-a943-34c6d3838bb9?mode=deep",
+    "timestamp": "2026-01-20 22:52:16.792044",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_stake_balances()] [Lockup expiration manipulation] Line 321 retrieves lockup_expiration from stake_pool.locked_until_secs - can validators manipulate this timestamp to prevent withdrawals or force premature unlocking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_523b59d1-d8d2-469b-a638-02410ba99a1a?mode=deep",
+    "timestamp": "2026-01-20 22:52:29.069731",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_stake_balances()] [None result handling] Lines 378-380 return Ok(None) when StakePool retrieval fails - does calling code properly handle None, or can this cause incorrect 0-balance reporting that leads exchanges to think accounts are empty? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_984a761e-dc23-4166-a6a1-b39751ae370c?mode=deep",
+    "timestamp": "2026-01-20 22:52:41.927818",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_stake_balances()] [Version parameter manipulation] The function accepts a 'version: u64' parameter - can an attacker query historical versions to find states where balances were higher, then use those values to justify fraudulent withdrawals? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddf1ea58-e9f5-44dd-a637-d32348e0d316?mode=deep",
+    "timestamp": "2026-01-20 22:52:54.803754",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_stake_balances()] [Resource exhaustion] The function makes multiple API calls (get_account_resource, view) - can an attacker trigger excessive calls to this function with invalid parameters, causing API rate limiting or resource exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44f326e0-ab96-45a8-969a-d6bc009acc99?mode=deep",
+    "timestamp": "2026-01-20 22:53:08.295522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_delegation_stake_balances()] [View function manipulation] Lines 392-404 call the delegation_pool::get_stake view function - can a malicious delegation pool module return fabricated balance data that doesn't match actual on-chain state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e924c754-dd58-4c3a-98f1-827d37b08f84?mode=deep",
+    "timestamp": "2026-01-20 22:53:22.538393",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_delegation_stake_balances()] [Pool address spoofing] Line 398 passes pool_address as a string argument - can an attacker provide a lookalike address using Unicode homoglyphs to query balances from a different pool than intended? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_126bf547-36aa-4770-a3e1-029c107ce539?mode=deep",
+    "timestamp": "2026-01-20 22:53:37.824727",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_delegation_stake_balances()] [Owner address manipulation] Line 399 passes owner_address as a string - can address parsing inconsistencies between Rosetta API and Move view functions cause queries to return balances for different accounts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48424a0a-5a89-493c-b6d7-5c1cabbf6f12?mode=deep",
+    "timestamp": "2026-01-20 22:53:54.085611",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_delegation_stake_balances()] [Version consistency attack] The function queries get_stake at one version (line 402) and get_lockup_secs at the same version (line 417) - are these queries guaranteed to be from the same blockchain state, or can epoch transitions cause inconsistent results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1d36f3e-d863-4f45-a38c-96bc06a95f80?mode=deep",
+    "timestamp": "2026-01-20 22:54:11.179754",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_delegation_stake_balances()] [Parse failure handling] Line 407 calls parse_requested_balance which can return None - but line 431-434 returns InternalError only if None, does this properly handle all parsing failure cases or can some failures be silently ignored? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39ecba84-543a-406a-b169-30d1e0824b68?mode=deep",
+    "timestamp": "2026-01-20 22:54:29.422993",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_delegation_stake_balances()] [Lockup parsing attack] Line 420 calls parse_lockup_expiration - can a malicious contract return non-numeric or extremely large values that cause parsing to default to 0, incorrectly indicating no lockup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e04d2e0f-34d9-481b-afa8-b61445521714?mode=deep",
+    "timestamp": "2026-01-20 22:54:48.510437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_delegation_stake_balances()] [Balance result construction] Lines 422-429 only construct BalanceResult if requested_balance is Some - can None values from parse_requested_balance cause legitimate delegated stakes to be reported as non-existent? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1abeef1-ea5d-442b-8a50-793ae82215b9?mode=deep",
+    "timestamp": "2026-01-20 22:55:09.107486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_delegation_stake_balances()] [Error propagation] The function uses await? operators that propagate errors - can upstream API failures cause cascading errors that make it impossible to query any delegation balances, causing exchange integration failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_933153c9-6baa-4d34-94f1-74a0524656f6?mode=deep",
+    "timestamp": "2026-01-20 22:55:29.304617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: get_delegation_stake_balances()] [Lazy static initialization] Lines 23-26 define DELEGATION_POOL_GET_STAKE_FUNCTION as a lazy static - can initialization failures or panics in parse() cause the entire Rosetta API to become unavailable? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_827f1fb5-8cf2-468e-8903-fac8b741217e?mode=deep",
+    "timestamp": "2026-01-20 22:55:50.758078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_requested_balance()] [Array index out of bounds] Line 447 uses .get(1) and line 451 uses .get(2) without validating array length - can a malicious view function return fewer than 3 elements, causing incorrect None returns or accessing invalid indices? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b81f6cc5-eee2-4c43-b6ed-1da3efe2d73e?mode=deep",
+    "timestamp": "2026-01-20 22:56:12.375614",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_requested_balance()] [Type coercion attack] Lines 442-444 and 446-448 call v.as_str() which returns Option - can the view function return non-string JSON types (numbers, objects) that get silently ignored instead of raising validation errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3bf0eb7d-2714-483c-a320-b38a59f91988?mode=deep",
+    "timestamp": "2026-01-20 22:56:35.880438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_requested_balance()] [Integer overflow in sum] Lines 454-465 compute a sum of u64 values - can an attacker cause balances_result to contain values that sum to more than u64::MAX, causing overflow and wrapping to report incorrect (low) total stake? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c080c397-f3bd-4797-b6c3-24a7cfb9738e?mode=deep",
+    "timestamp": "2026-01-20 22:56:59.532574",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_requested_balance()] [Parse failure silently ignored] Line 460 does .parse::<u64>().ok().unwrap_or(0) - can an attacker inject non-numeric strings that get silently converted to 0, understating total stake and allowing over-withdrawal? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2195e914-b5ea-4d68-8dd4-fa17904e6864?mode=deep",
+    "timestamp": "2026-01-20 22:57:24.537588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_requested_balance()] [Negative balance injection] Although parse::<u64>() should reject negative numbers, can an attacker use scientific notation, hex, or other numeric formats that parse incorrectly and cause balance manipulation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6a01115-a1b7-4189-b00e-3bd146cb5a4f?mode=deep",
+    "timestamp": "2026-01-20 22:57:47.939527",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_requested_balance()] [Total stake calculation bypass] Lines 453-465 sum all three balance components for total stake - can the view function return balances that don't properly partition into active/inactive/pending_inactive, causing double-counting? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5563cc7d-abb0-41ad-979e-b93f0d3999c0?mode=deep",
+    "timestamp": "2026-01-20 22:58:11.466670",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_requested_balance()] [Silent None return] The function returns None for unmatched account types - can this cause legitimate delegation balance queries to silently fail, leading exchanges to think accounts have 0 balance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98a9f392-1e65-4f27-b041-ebb85330daa6?mode=deep",
+    "timestamp": "2026-01-20 22:58:34.744797",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_requested_balance()] [Case sensitivity in is_delegator_* checks] The function calls multiple is_delegator_active_stake(), is_delegator_inactive_stake() etc. - are these checks case-sensitive, allowing bypass with mixed-case account types? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb7a5f83-f170-4627-a104-25054316c437?mode=deep",
+    "timestamp": "2026-01-20 22:58:59.031601",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_lockup_expiration()] [Default to 0 security risk] Line 475 returns unwrap_or(0) when parsing fails - does returning 0 indicate 'no lockup' or 'expired lockup', and can this be exploited to bypass lockup restrictions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f68f09c-704b-4d13-8199-7758bb5aef38?mode=deep",
+    "timestamp": "2026-01-20 22:59:22.292387",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_lockup_expiration()] [Timestamp overflow] The function parses u64 timestamps - can extremely large values (e.g., u64::MAX) be used to create permanent lockups that prevent withdrawals, freezing user funds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96788deb-9de1-4338-8642-001fdc3610c2?mode=deep",
+    "timestamp": "2026-01-20 22:59:45.683054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/misc.rs] [Function: parse_lockup_expiration()] [Empty result handling] Line 473 uses .first() which returns None for empty arrays - can a view function return empty results to bypass lockup checks entirely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c139392-3852-401f-8574-ef6fcccab873?mode=deep",
+    "timestamp": "2026-01-20 23:00:09.280212",
+    "report_generated": false
+  }
+]
