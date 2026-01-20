@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify()] [Signature count bypass] Can an attacker craft a transaction with multiple AccountAuthenticators where the total signature count calculation overflows or is manipulated to bypass the MAX_NUM_OF_SIGS=32 limit at lines 162-170, potentially causing DoS or memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb93f3ff-2385-43e3-8d4f-d3562d97cb78?mode=deep",
+    "timestamp": "2026-01-20 01:21:30.643399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify()] [Integer overflow] In the signature counting logic at lines 162-167, does summing number_of_signatures() across all signers properly handle cases where individual authenticators return values close to usize::MAX, potentially causing overflow and bypassing MAX_NUM_OF_SIGS check? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b84adcd6-7473-41f2-9972-4e267d46a49a?mode=deep",
+    "timestamp": "2026-01-20 01:21:44.276467",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify() - Ed25519 case] [Signature verification bypass] At lines 172-175, does the Ed25519 verification properly prevent signature malleability attacks where an attacker modifies signature components (r,s) to create alternative valid signatures for the same message? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c9a9c20-5c75-469d-bc30-10052ec5b4ec?mode=deep",
+    "timestamp": "2026-01-20 01:21:57.944615",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify() - FeePayer case] [Fee payer confusion] In the fee payer verification logic at lines 176-221, can an attacker exploit the dual-verification approach (zero address vs actual address) to create transactions where different signers sign different messages, breaking transaction integrity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3792cd2a-3415-4b38-a259-36dceb7353bc?mode=deep",
+    "timestamp": "2026-01-20 01:22:12.213046",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify() - FeePayer case] [Partial signature bypass] At lines 203-206, the code filters signers who fail to verify against zero fee payer address - can an attacker craft a scenario where ALL signers fail this check, causing the remaining vector to only contain fee_payer_signer, potentially bypassing multi-signer requirements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b0a37c3-fd5c-4921-8c1e-6d3ede3e35a1?mode=deep",
+    "timestamp": "2026-01-20 01:22:28.114771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify() - FeePayer case] [Message confusion] At lines 197-214, two different RawTransactionWithData messages are constructed (with ZERO and actual fee_payer_address) - can an attacker exploit timing or ordering to get signers verified against wrong messages, causing authentication bypass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76744d74-7ffd-4e55-8782-b8965d69b27c?mode=deep",
+    "timestamp": "2026-01-20 01:22:45.013696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify() - FeePayer case] [Secondary signer bypass] At lines 192-195, secondary_signers are added to to_verify vector - if this vector is empty initially and secondary_signers is also empty, does the verification still enforce sender signature correctly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18c3b151-87f2-48c1-b80a-5af67a96bd61?mode=deep",
+    "timestamp": "2026-01-20 01:23:03.544864",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify() - MultiAgent case] [Message construction vulnerability] At lines 231-234, the multi-agent message is constructed once and reused - can an attacker exploit race conditions if RawTransactionWithData::new_multi_agent() has side effects or caching issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_292f2802-c0fd-403a-a304-090902f485cc?mode=deep",
+    "timestamp": "2026-01-20 01:23:24.744780",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify() - MultiAgent case] [Secondary signer validation] At lines 236-238, does the iteration properly handle cases where secondary_signers vec contains duplicate AccountAuthenticators, potentially allowing double-counting of same signature? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0321f57-b2eb-41b0-aec0-99b1d90c3727?mode=deep",
+    "timestamp": "2026-01-20 01:23:48.407897",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::verify() - SingleSender case] [Direct verification] At line 241, SingleSender directly calls sender.verify(raw_txn) - does this properly enforce that raw_txn hasn't been modified after signature creation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a2f564c-3312-4be8-aed3-269330bb54df?mode=deep",
+    "timestamp": "2026-01-20 01:24:12.697258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::sender()] [Clone safety] At lines 245-259, various sender() implementations return cloned AccountAuthenticators - can an attacker exploit deep clone operations on large MultiEd25519 signatures to cause memory exhaustion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b28bf62-8cf0-4e70-a390-77b50f9a972d?mode=deep",
+    "timestamp": "2026-01-20 01:24:38.490455",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::secondary_signer_addresses()] [Vector safety] At lines 261-277, does to_vec() properly handle cases where secondary_signer_addresses contains duplicate addresses, potentially allowing same account to sign multiple times? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26acd187-0e4d-4a72-976e-43970c5025e7?mode=deep",
+    "timestamp": "2026-01-20 01:25:05.533171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::all_signers()] [Signature ordering] At lines 330-347, all_signers() assembles authenticators in specific order (sender, secondary, fee_payer) - can an attacker exploit ordering assumptions in downstream code to bypass validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9403e6e-4c3d-4355-929e-b0f74e6989c7?mode=deep",
+    "timestamp": "2026-01-20 01:25:34.472629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::to_single_key_authenticators()] [Capacity overflow] At lines 349-396, the function pre-allocates Vec with capacity MAX_NUM_OF_SIGS=32 at line 352 - can an attacker cause memory issues if actual signatures exceed this despite earlier checks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b68571a5-064b-405d-82cd-295df9ef0e7a?mode=deep",
+    "timestamp": "2026-01-20 01:26:03.570408",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::to_single_key_authenticators()] [MultiEd25519 expansion] At lines 365-382, MultiEd25519 authenticators are expanded to individual signatures - does this properly validate that the expansion doesn't exceed MAX_NUM_OF_SIGS when combined with other authenticators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2615b424-b45c-4004-860f-4e8f6c6e241e?mode=deep",
+    "timestamp": "2026-01-20 01:26:34.455468",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::to_single_key_authenticators()] [MultiKey expansion] At lines 386-387, MultiKey authenticators call to_single_key_authenticators() recursively - can deep nesting or circular references cause stack overflow or infinite recursion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_baae3f02-06ba-467e-8835-4930bb26863f?mode=deep",
+    "timestamp": "2026-01-20 01:27:06.910578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::to_single_key_authenticators()] [NoAccountAuthenticator handling] At lines 389-390, NoAccountAuthenticator adds nothing to the vector - can an attacker use this to create transactions with no actual signatures that still pass initial validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1781283-c5e5-4d8c-8fa6-d1326d98eeca?mode=deep",
+    "timestamp": "2026-01-20 01:27:38.884076",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: TransactionAuthenticator::to_single_key_authenticators()] [Abstract authenticator bypass] At line 392, Abstract authenticators are silently skipped - does this allow transactions with only Abstract authenticators to have zero single-key authenticators, bypassing signature validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25f5b5a8-f321-4682-be0e-8e8980ae626b?mode=deep",
+    "timestamp": "2026-01-20 01:28:12.570997",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: AccountAuthenticator::verify()] [Ed25519 verification] At lines 768-771, Ed25519 signature verification delegates to signature.verify() - does this properly check for low-order points and signature canonicalization to prevent malleability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_272da7aa-e3df-44a8-b5d2-ad4a389e1996?mode=deep",
+    "timestamp": "2026-01-20 01:28:43.389011",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: AccountAuthenticator::verify()] [MultiEd25519 verification] At lines 772-775, MultiEd25519 verification - does the underlying verify() properly validate the bitmap corresponds to actual signatures and threshold is met? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef3e6100-125b-49ac-bd8b-3700369ba43c?mode=deep",
+    "timestamp": "2026-01-20 01:29:12.105813",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: AccountAuthenticator::verify()] [SingleKey verification] At line 776, SingleKey delegates to authenticator.verify() - can type confusion between different AnySignature types bypass verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f260af31-1ef9-49d2-8492-e5a8aed48ab8?mode=deep",
+    "timestamp": "2026-01-20 01:29:41.568031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: AccountAuthenticator::verify()] [MultiKey verification] At line 777, MultiKey verification - does this properly enforce minimum signatures requirement even if signatures vector is manipulated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f724d8a-b1b8-4cc9-a276-6963e369243f?mode=deep",
+    "timestamp": "2026-01-20 01:30:11.660070",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: AccountAuthenticator::verify()] [NoAccountAuthenticator bypass] At line 778, NoAccountAuthenticator returns error but requires active checking - can transactions with NoAccountAuthenticator slip through if error handling is improper? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b789f69-4c4a-484b-b744-a2fc6cf0e5ce?mode=deep",
+    "timestamp": "2026-01-20 01:30:41.409029",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: AccountAuthenticator::verify() - Abstract case] [Digest validation] At lines 780-791, Abstract authenticator validates signing_message_digest - can an attacker precompute colliding digests or exploit hash function weaknesses to forge signatures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ea02c45-f811-4c84-970b-a25395ffc9fe?mode=deep",
+    "timestamp": "2026-01-20 01:31:11.525260",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/transaction/authenticator.rs] [Function: AccountAuthenticator::verify() - Abstract case] [Signing message computation] At line 781, signing_message() is called to get original_signing_message - can an attacker exploit serialization non-determinism to create different messages with same digest? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8696080-e8e6-4565-b32c-06dc5f5f94d4?mode=deep",
+    "timestamp": "2026-01-20 01:31:40.874977",
+    "report_generated": false
+  }
+]
