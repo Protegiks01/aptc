@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Consensus safety violation] When ordered_blocks is empty and HashValue::zero() is returned as block_id, can this zero hash collide with legitimate block IDs or be exploited to bypass block validation in downstream phases, potentially causing state inconsistencies? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0cd66e8-5c0a-45e4-823c-4f8ba2e7420f?mode=deep",
+    "timestamp": "2026-01-20 14:51:33.945613",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Liveness attack] If a Byzantine validator repeatedly sends empty ordered_blocks vectors, does the EmptyBlocks error get properly rate-limited or can it cause resource exhaustion in the error handling path, leading to consensus slowdown or halt? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aac24bac-b538-4991-b5b9-ef67bf7aac11?mode=deep",
+    "timestamp": "2026-01-20 14:51:46.824161",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [State corruption] When returning ExecutorError::EmptyBlocks with HashValue::zero(), are there downstream components that assume block_id is always valid, potentially causing panics or incorrect state transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8616de0e-989e-4c18-8610-68e666d93436?mode=deep",
+    "timestamp": "2026-01-20 14:51:59.938523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Resource exhaustion] Can an attacker send a valid but extremely large Vec<Arc<PipelinedBlock>> in ordered_blocks to cause memory exhaustion before the empty check occurs, bypassing DoS protections? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78e944d7-91bb-4863-a374-3d1bbdc03a8d?mode=deep",
+    "timestamp": "2026-01-20 14:52:14.411463",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Logic error] Does the empty check at line 54 properly handle the case where ordered_blocks contains only blocks with nil payloads, potentially allowing empty execution to proceed incorrectly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd180269-b3e7-4b8d-8f0d-efaad0f01168?mode=deep",
+    "timestamp": "2026-01-20 14:52:28.855022",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Randomness manipulation] At line 66, when sending randomness via rand_tx.send(), if a Byzantine validator manipulates the randomness timing or order, can this cause non-deterministic execution across validators leading to state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd433e07-5622-406c-8bc5-87fa48df9230?mode=deep",
+    "timestamp": "2026-01-20 14:52:44.241953",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Race condition] In the loop at lines 64-68, multiple threads could access pipeline_tx().lock() concurrently - can this create a race condition where randomness is sent to wrong blocks or skipped entirely, breaking execution determinism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44af8154-d3eb-488f-95f1-9f611f5b83d4?mode=deep",
+    "timestamp": "2026-01-20 14:53:01.195204",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Channel exhaustion] When rand_tx.send() is called with .take(), if the receiver is dropped or slow, does this cause the oneshot channel to panic or silently fail, potentially causing blocks to execute without required randomness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe48f2d8-5cc6-46b9-864e-2d050b408bdc?mode=deep",
+    "timestamp": "2026-01-20 14:53:20.135471",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Type confusion] At line 66, b.randomness().cloned() returns Option<Randomness> - if a block incorrectly has randomness set twice or has stale randomness, can this propagate incorrect random values affecting transaction execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4eae8ecf-bfc1-4a9a-8b7c-6d341ae7205c?mode=deep",
+    "timestamp": "2026-01-20 14:53:40.322079",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Lock poisoning] If pipeline_tx().lock() at line 65 panics in another thread, will the lock be poisoned causing all subsequent randomness sends to fail, permanently breaking execution for all future blocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ba0b192-22eb-4b8f-9de3-21577782fce3?mode=deep",
+    "timestamp": "2026-01-20 14:54:01.861261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Deadlock potential] When acquiring pipeline_tx().lock() in a loop over ordered_blocks, if another thread holds locks on multiple blocks in reverse order, can this create a deadlock scenario halting consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27abf377-1cea-469c-be78-44bdafc70974?mode=deep",
+    "timestamp": "2026-01-20 14:54:24.026208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Timing attack] Can the sequential processing of randomness at lines 64-68 be exploited by measuring timing differences to infer validator behavior or randomness values before they're committed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49cb917b-ae06-446b-9e12-b69a1fb33f2c?mode=deep",
+    "timestamp": "2026-01-20 14:54:48.134960",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Missing randomness] If pipeline_tx is None or rand_tx is already taken, the randomness send is silently skipped - can blocks execute without required randomness, violating protocol invariants? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa4c41fc-ead1-43b0-95d9-0f50e4b6f4e1?mode=deep",
+    "timestamp": "2026-01-20 14:55:12.864015",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Randomness ordering] When iterating over ordered_blocks at line 64, if blocks are in wrong order, can randomness be sent to blocks in non-deterministic sequence causing execution divergence between validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e014b3e-432c-4ca9-ba95-dcd1a1e7e2bd?mode=deep",
+    "timestamp": "2026-01-20 14:55:37.787455",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Future cancellation] In the async block at lines 70-77, if the future is cancelled or aborted mid-execution, can partially executed blocks corrupt state or cause blocks to be double-executed in retry logic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db85d649-95c6-490e-a81d-f7553f238cde?mode=deep",
+    "timestamp": "2026-01-20 14:56:04.929969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Await poisoning] When calling wait_for_compute_result().await at line 72, if one block's future panics or returns an error, does the entire batch fail atomically or can some blocks be committed while others fail, causing state inconsistency? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b995ddf6-c036-498f-a9a8-bf1e0be8a8aa?mode=deep",
+    "timestamp": "2026-01-20 14:56:32.236523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Error propagation] At line 72, if wait_for_compute_result() returns ExecutorError, the error is propagated with ? operator - can this cause ExecutionWaitRequest to contain partial results leading to incomplete execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9903f104-2e35-4f63-bea0-76eb4936e2b2?mode=deep",
+    "timestamp": "2026-01-20 14:57:01.373006",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Mutation safety] At line 71, ordered_blocks.iter_mut() allows mutation during iteration - if concurrent access occurs, can blocks be modified during execution causing race conditions in compute result storage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a45f5da-7826-4079-a6b0-0dcfe1f4840b?mode=deep",
+    "timestamp": "2026-01-20 14:57:31.684048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Memory leak] The boxed future at line 77 captures moved ordered_blocks - if this future is never awaited or is leaked, does it cause blocks to remain in memory permanently, leading to memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c50d542a-043a-434a-9722-a96547983099?mode=deep",
+    "timestamp": "2026-01-20 14:58:01.302710",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Panic propagation] If set_compute_result() at line 73 panics (e.g., when execution_summary is already set with different root hash), does the panic get properly caught or does it crash the consensus process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b3557a0-395a-4246-83ca-817cd46e4e90?mode=deep",
+    "timestamp": "2026-01-20 14:58:32.086892",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Timeout vulnerability] The async block has no timeout - can a malicious block with infinite compute time cause the entire pipeline to hang, resulting in total loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94060223-d600-46fb-860b-9c6008582451?mode=deep",
+    "timestamp": "2026-01-20 14:59:04.619787",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Order preservation] When using iter_mut() at line 71, is the iteration order guaranteed to match the original ordered_blocks order, or can reordering cause execution to occur out of sequence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e728bd05-390a-4eb1-a10c-b6bb8980b29d?mode=deep",
+    "timestamp": "2026-01-20 14:59:37.712659",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Consensus violation] When extracting block_id from ordered_blocks.last() at line 54, if a Byzantine validator sends blocks in wrong order, can this cause the wrong block to be committed or state to diverge? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7db77951-2725-442a-9a3e-01932bf95a4d?mode=deep",
+    "timestamp": "2026-01-20 15:00:10.114199",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Block validation] There's no validation that ordered_blocks forms a valid chain (checking parent_id links) - can a Byzantine validator send disconnected blocks causing execution of invalid state transitions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0645289-cf63-467a-bfe4-4100db1a596b?mode=deep",
+    "timestamp": "2026-01-20 15:00:43.072008",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/execution_schedule_phase.rs] [Function: process()] [Duplicate blocks] If ordered_blocks contains duplicate block IDs, will both blocks be executed causing duplicate state transitions and incorrect gas accounting? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cf4e8d3-9e6a-4615-a839-0bb4bbc8392e?mode=deep",
+    "timestamp": "2026-01-20 15:01:16.580268",
+    "report_generated": false
+  }
+]
