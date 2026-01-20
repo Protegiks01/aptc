@@ -1,0 +1,50 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/unit_tests/proptest_types.rs] [Lines 381-390] [Group write error handling] Group write at lines 381-390 also uses unwrap() - same question about panic vs error handling? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87ccc43f-11db-4193-be86-2fcc0b390efb?mode=deep",
+    "timestamp": "2026-01-20 23:01:34.087828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/unit_tests/proptest_types.rs] [Lines 241-242] [Base value validation] set_raw_base_values with empty vec![] - is this a valid initial state, or should base values be non-empty for group data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2eb046c7-bc16-4256-99bc-8d2bf8fa68d7?mode=deep",
+    "timestamp": "2026-01-20 23:01:46.711361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/unit_tests/proptest_types.rs] [Lines 248-248] [Tag hardcoding] Tag 5 is hardcoded throughout - can tag value choices affect security, e.g., collision with system-reserved tags? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df3267ba-add5-4d43-8e8b-915337f5425d?mode=deep",
+    "timestamp": "2026-01-20 23:01:59.535420",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/unit_tests/proptest_types.rs] [Lines 249-249] [ResourceGroupSize validation] ResourceGroupSize::zero_combined() for all group operations - can this bypass size checks that should prevent resource exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6e68d5e-5281-400e-9fe6-6ec7951153f3?mode=deep",
+    "timestamp": "2026-01-20 23:02:12.865344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/unit_tests/proptest_types.rs] [Lines 250-250] [Empty dependencies set] HashSet::new() for dependencies - should test cases include non-empty dependency sets to test invalidation propagation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7530af2a-5036-4996-b8fa-66e637d9b278?mode=deep",
+    "timestamp": "2026-01-20 23:02:27.147129",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/unit_tests/proptest_types.rs] [Function: run_and_assert()] [Error propagation] Function returns Result<(), TestCaseError> but most internal operations use unwrap() or panic - can this mask error conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_266f7279-baad-4c3f-9901-1183f2483eb1?mode=deep",
+    "timestamp": "2026-01-20 23:02:41.217305",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/unit_tests/proptest_types.rs] [Overall] [Block-STM integration] How does this test validate that MVHashMap behavior matches Block-STM execution engine requirements for conflict detection and resolution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f8ceb13-38f5-4736-95a7-d01b8e23db7c?mode=deep",
+    "timestamp": "2026-01-20 23:02:57.153926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/unit_tests/proptest_types.rs] [Overall] [Scheduler\n\n### Citations\n\n**File:** aptos-move/mvhashmap/src/unit_tests/proptest_types.rs (L1-442)\n```rust\n// Copyright © Aptos Foundation\n// Parts of the project are originally copyright © Meta Platforms, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\nuse super::{\n    types::{test::KeyType, MVDataError, MVDataOutput, MVGroupError, TxnIndex},\n    MVHashMap,\n};\nuse crate::types::ValueWithLayout;\nuse aptos_aggregator::delta_change_set::{delta_add, delta_sub, DeltaOp};\nuse aptos_types::{\n    state_store::state_value::StateValue,\n    write_set::{TransactionWrite, WriteOpKind},\n};\nuse aptos_vm_types::resolver::ResourceGroupSize;\nuse bytes::Bytes;\nuse claims::assert_none;\nuse proptest::{collection::vec, prelude::*, sample::Index, strategy::Strategy};\nuse std::{\n    collections::{BTreeMap, HashMap, HashSet},\n    fmt::Debug,\n    hash::Hash,\n    sync::atomic::{AtomicUsize, Ordering},\n};\nuse triomphe::Arc;\n\nconst DEFAULT_TIMEOUT: u64 = 30;\n\n#[derive(Debug, Clone)]\nenum Operator<V: Debug + Clone> {\n    Insert(V),\n    Remove,\n    Read,\n    Update(DeltaOp),\n}\n\n#[derive(Debug, Clone, PartialEq, Eq)]\nenum ExpectedOutput<V: Clone + Debug + Eq + PartialEq> {\n    NotInMap,\n    Deleted,\n    Value(V),\n    Resolved(u128),\n    Unresolved(DeltaOp),\n    Failure,\n}\n\n#[derive(Debug, Clone, PartialEq, Eq)]\npub(crate) struct MockValue<V: Eq + PartialEq> {\n    maybe_value: Option<V>,\n    maybe_bytes: Option<Bytes>,\n}\n\nimpl<V: Into<Vec<u8>> + Clone + Eq + PartialEq> MockValue<V> {\n    pub(crate) fn new(maybe_value: Option<V>) -> Self {\n        let maybe_bytes = maybe_value.clone().map(|v| {\n            let mut bytes = v.into();\n            bytes.resize(16, 0);\n            bytes.into()\n        });\n        Self {\n            maybe_value,\n            maybe_bytes,\n        }\n    }\n}\n\nimpl<V: Into<Vec<u8>> + Clone + Debug + Eq + PartialEq> TransactionWrite for MockValue<V> {\n    fn bytes(&self) -> Option<&Bytes> {\n        self.maybe_bytes.as_ref()\n    }\n\n    fn write_op_kind(&self) -> WriteOpKind {\n        unimplemented!(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e9a0911-010f-41cd-aef0-4bc8ccce5fa4?mode=deep",
+    "timestamp": "2026-01-20 23:03:13.210080",
+    "report_generated": false
+  }
+]
