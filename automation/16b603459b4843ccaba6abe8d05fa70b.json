@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Function: ProfilerConfig::new_with_defaults()] [Path Traversal] Can an attacker manipulate the default hardcoded paths './profiling_results/cpu_flamegraph.svg' and './profiling_results/heap.txt' to write profiling outputs to arbitrary filesystem locations, potentially overwriting critical validator configuration files or blockchain state data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b99e470d-cc0c-4cb8-839a-57cc5e719447?mode=deep",
+    "timestamp": "2026-01-20 07:45:41.808775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Struct: CpuProfilerConfig] [Integer Overflow] Can the frequency field (i32) in CpuProfilerConfig be set to negative or extremely large values that cause integer overflow in the pprof library, leading to incorrect profiling behavior or validator crashes during consensus? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd671527-a587-4567-92b6-0115fd99575e?mode=deep",
+    "timestamp": "2026-01-20 07:45:54.389317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Struct: CpuProfilerConfig] [Path Injection] Does the svg_result_path PathBuf accept unsanitized user input that could contain '..' sequences or absolute paths, allowing attackers to write SVG files outside the intended profiling directory and potentially corrupt validator data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b18b4973-cebd-4b83-836c-7ffe26758eb0?mode=deep",
+    "timestamp": "2026-01-20 07:46:07.558302",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Struct: MemProfilerConfig] [Directory Traversal] Are the txt_result_path and svg_result_path fields validated to prevent path traversal attacks, or can malicious configurations specify paths like '/etc/passwd' or '../../../validator_key.json'? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6930964-4247-48f2-a274-2478aa25f93b?mode=deep",
+    "timestamp": "2026-01-20 07:46:21.000806",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Function: ProfilerHandler::new()] [Unvalidated Configuration] Does ProfilerHandler::new() validate that the provided ProfilerConfig contains sane values, or can malicious configurations with None values or invalid paths cause panics when get_cpu_profiler() or get_mem_profiler() are called? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b85bcf75-ef42-44a8-bf46-6e39194567db?mode=deep",
+    "timestamp": "2026-01-20 07:46:35.513563",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Function: ProfilerHandler::get_cpu_profiler()] [Panic on None] Can an attacker provide a ProfilerConfig with cpu_profiler_config set to None, causing the expect() call to panic and crash the validator node during profiling operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3147ddd2-8be9-4d54-bd0a-3cff834fba0c?mode=deep",
+    "timestamp": "2026-01-20 07:46:51.065633",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Function: ProfilerHandler::get_mem_profiler()] [Panic on None] Does get_mem_profiler() properly handle cases where mem_profiler_config is None, or will it panic with 'Memory profiler config is not set', potentially causing validator unavailability during memory profiling? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ca93341-bbbc-4dc0-aeff-8ac90eedda46?mode=deep",
+    "timestamp": "2026-01-20 07:47:08.217204",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Function: ProfilerHandler::get_cpu_profiler()] [Resource Exhaustion] Can multiple concurrent calls to get_cpu_profiler() create unbounded Box<dyn Profiler> instances that exhaust validator memory, causing out-of-memory conditions during consensus participation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63eec636-b947-4fcf-a21c-355430da1ab7?mode=deep",
+    "timestamp": "2026-01-20 07:47:25.990496",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Function: ProfilerHandler::get_mem_profiler()] [Lifetime Issues] Does the Box<dyn Profiler> returned by get_mem_profiler() properly manage the lifetime of the underlying MemProfiler, or can premature deallocation cause use-after-free vulnerabilities when profiling is active? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83709403-e519-4cda-a8dc-70b5db2a907d?mode=deep",
+    "timestamp": "2026-01-20 07:47:44.506425",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Trait: Profiler] [Unimplemented Methods] Can calling expose_text_results() on CpuProfiler cause a panic due to unimplemented!() macro, potentially crashing validators that attempt to retrieve text-format profiling results during operation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b18556e4-22e3-4e13-b3a3-fe8d58993e78?mode=deep",
+    "timestamp": "2026-01-20 07:48:04.421183",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: cpu_profiler.rs] [Command Injection] Does CpuProfiler::profile_for() accept unsanitized binary_path parameters that could be exploited for command injection when generating flamegraphs, allowing attackers to execute arbitrary code on validator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d8c32f0-32ec-4d6e-9a63-e9bb47824510?mode=deep",
+    "timestamp": "2026-01-20 07:48:24.960487",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: cpu_profiler.rs] [Race Condition] In CpuProfiler::start_profiling() and end_profiling(), can concurrent calls create race conditions on the guard Option<ProfilerGuard> field, leading to incorrect profiling state or validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d25a1a40-e570-4209-a46b-972f282b61fd?mode=deep",
+    "timestamp": "2026-01-20 07:48:46.627556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: cpu_profiler.rs] [Resource Leak] Does CpuProfiler::destory_guard() (typo: should be 'destroy') properly clean up ProfilerGuard resources, or can repeated profiling sessions leak memory and eventually crash the validator? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee007cc0-8543-41a8-a50c-e02c45846852?mode=deep",
+    "timestamp": "2026-01-20 07:49:09.028459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: cpu_profiler.rs] [Regex DoS] Can the regex pattern '^(.*)-(\\d*)$' in frames_post_processor() be exploited with crafted thread names causing catastrophic backtracking and CPU exhaustion during profiling? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbcce9a9-ee4a-47e5-87d6-742d246be736?mode=deep",
+    "timestamp": "2026-01-20 07:49:32.906880",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: cpu_profiler.rs] [Blocking Operation] Does profile_for() use thread::sleep() which blocks the current thread for duration_secs, potentially blocking critical consensus operations if profiling is triggered during block proposal or voting? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b3de14f-0e15-4275-9460-40a520de5d50?mode=deep",
+    "timestamp": "2026-01-20 07:49:56.853945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: cpu_profiler.rs] [Error Swallowing] Does end_profiling() silently ignore errors from guard.report().build() with 'if let Ok(report)', potentially hiding profiling failures that indicate validator compromise or malfunction? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1deaab45-a114-4966-a51a-2b9ab17de229?mode=deep",
+    "timestamp": "2026-01-20 07:50:20.965613",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: cpu_profiler.rs] [File System Race] Between create_file_with_parents() and report.flamegraph(file), can an attacker exploit a TOCTOU race condition to replace the file with a symlink pointing to sensitive validator files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_489a6589-3a7d-4167-a01d-fc5e357532f7?mode=deep",
+    "timestamp": "2026-01-20 07:50:43.557817",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: memory_profiler.rs] [Unsafe Code] Does the unsafe jemalloc_sys::mallctl() call in profile_for() properly validate return values, or can malformed inputs cause memory corruption in the validator process? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ed411a0-9b2f-4c83-a997-989b36d55cff?mode=deep",
+    "timestamp": "2026-01-20 07:51:03.520431",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: memory_profiler.rs] [Command Injection] Can the binary_path parameter passed to Command::new('python3').arg(binary_path) be exploited for shell command injection, allowing arbitrary code execution on validator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2a2a46c-0df7-4593-8dc1-5475b08e0ab8?mode=deep",
+    "timestamp": "2026-01-20 07:51:25.047200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: memory_profiler.rs] [Path Traversal] Does memory_profiler.rs validate that binary_path points to a legitimate Aptos binary, or can attackers specify arbitrary paths like '/bin/sh' to execute malicious scripts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf3d750c-5306-4b1b-8d87-8158b9614d0d?mode=deep",
+    "timestamp": "2026-01-20 07:51:46.520365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: memory_profiler.rs] [Hardcoded Script Path] Is the hardcoded path './crates/aptos-profiler/src/jeprof.py' vulnerable to relative path manipulation, allowing attackers to execute malicious Python scripts from unexpected locations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c67fb10f-8e25-4a3f-9f6a-eb14a9ac6ff0?mode=deep",
+    "timestamp": "2026-01-20 07:52:06.841578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: memory_profiler.rs] [Unhandled Script Failure] Does the expect('Failed to execute command') after Command.output() provide sufficient error handling, or can Python script failures leave the validator in an inconsistent profiling state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_01b77027-e9d7-4b63-a9b9-5cb1ce2bbf50?mode=deep",
+    "timestamp": "2026-01-20 07:52:28.960308",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: memory_profiler.rs] [Blocking External Process] Does waiting for python3 jeprof.py to complete block the validator thread, potentially causing consensus timeouts if the Python script hangs or takes too long? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9516491e-150d-4cbb-a8b4-174a0e14b8c8?mode=deep",
+    "timestamp": "2026-01-20 07:52:50.695726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: memory_profiler.rs] [Race Condition] Between start_profiling() and end_profiling(), can concurrent mallctl() calls from multiple threads corrupt jemalloc's prof.active state, causing memory profiling inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20a9b692-d03e-443b-a147-72726a498c2e?mode=deep",
+    "timestamp": "2026-01-20 07:53:12.572360",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-profiler/src/lib.rs] [Related: memory_profiler.rs] [Double Activation] Can calling start_profiling() multiple times without end_profiling() cause jemalloc memory leaks or corruption due to multiple prof.active=true calls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b88a666-9786-4a48-b178-07d2aa69b786?mode=deep",
+    "timestamp": "2026-01-20 07:53:34.099399",
+    "report_generated": false
+  }
+]
