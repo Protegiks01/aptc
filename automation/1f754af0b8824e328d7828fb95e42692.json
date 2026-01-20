@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Trait Implementation: PrePartitionerConfig] [Trait Invariant Violation] Does the PrePartitionerConfig trait define any invariants (e.g., build() must return non-null) that this implementation could violate, causing undefined behavior in consumers of the trait? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a91ed7b-ac61-440b-a1e2-8fea9b24d83b?mode=deep",
+    "timestamp": "2026-01-20 14:11:35.364943",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Trait Implementation: PrePartitionerConfig] [Interface Contract] If the trait contract expects build() to validate the config before creating the partitioner, but this implementation skips validation, could invalid configurations propagate to the execution engine and cause failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff9f67a7-09ef-44c9-914b-7094e20c896c?mode=deep",
+    "timestamp": "2026-01-20 14:11:47.932953",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [Determinism Break] When the config's load_imbalance_tolerance is used to calculate group_size_limit = (block_size * tolerance / num_shards).ceil(), can floating-point non-associativity cause different validators to round differently, producing different partition schemes and breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_792c788d-0955-4ba2-a39c-83c5045bf30c?mode=deep",
+    "timestamp": "2026-01-20 14:12:00.524372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [Integer Conversion Overflow] The group_size_limit is calculated as a usize from f32 arithmetic - if the calculation produces a value larger than usize::MAX, will the 'as usize' cast silently overflow, creating a tiny group_size_limit that defeats the purpose of load balancing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1818ed22-72d7-43ec-980d-cd82eccf5200?mode=deep",
+    "timestamp": "2026-01-20 14:12:14.448250",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [Division by Zero] If num_shards is set to 0 in the execution context, will the division in group_size_limit calculation panic, and could an attacker trigger this by manipulating shard configuration during reconfiguration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_520baffa-62bd-4059-97cc-46ac8dd5405a?mode=deep",
+    "timestamp": "2026-01-20 14:12:28.510379",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [Negative Block Size] If block_size could somehow be negative (due to bugs elsewhere), would the multiplication with load_imbalance_tolerance produce undefined results that corrupt the partitioning logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d367ef1b-ff53-4e75-9def-0ebb6ef4b805?mode=deep",
+    "timestamp": "2026-01-20 14:12:43.398642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [Edge Case: Empty Block] When block_size = 0, does group_size_limit = (0 * 2.0 / shards).ceil() = 0 cause the partitioner to fail or create invalid partitions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a991cdd4-443d-408d-b515-c9d58c2c4a7e?mode=deep",
+    "timestamp": "2026-01-20 14:13:00.692663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [Edge Case: Single Shard] When num_shards = 1, does group_size_limit = block_size * 2.0 allow the entire block to be a single group, defeating parallelism and exposing validators to performance attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e89f9a00-9212-48b3-9125-efa9ef8032af?mode=deep",
+    "timestamp": "2026-01-20 14:13:18.387968",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [Edge Case: Massive Block] For extremely large blocks (e.g., 1 million transactions), can the calculation block_size * 2.0 / shards overflow f32 precision, losing significant digits and producing incorrect group_size_limit values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_759b2899-13e2-4e5f-80ca-b9b94396b1ca?mode=deep",
+    "timestamp": "2026-01-20 14:13:37.049696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [LPT Algorithm Interaction] How does load_imbalance_tolerance interact with the Longest-Processing-Time-First scheduler - can adversarial values create pathological cases where LPT produces maximally imbalanced shard assignments? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f62fb9cd-c721-4901-b216-2feab69f8b72?mode=deep",
+    "timestamp": "2026-01-20 14:13:56.231248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [Union-Find Interaction] Since the ConnectedComponentPartitioner uses union-find for conflict detection, can load_imbalance_tolerance values cause the break-up of connected components to create more groups than the union-find algorithm expects, causing index out-of-bounds errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa3e0084-f386-46e6-89f9-800b53fddc8b?mode=deep",
+    "timestamp": "2026-01-20 14:14:16.895217",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Config-Runtime Interaction] [Transaction Ordering] If group_size_limit causes connected components to be split, could the splitting logic violate transaction ordering constraints (e.g., breaking up a sender's sequential transactions), causing sequence number validation failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2a7391b-a631-46d8-aea3-53a7b30c3101?mode=deep",
+    "timestamp": "2026-01-20 14:14:38.758633",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Serialization] [Config File Injection] If ConnectedComponentPartitionerConfig is loaded from a YAML/TOML config file, can an attacker with filesystem access inject malicious load_imbalance_tolerance values (e.g., NaN, infinity) that bypass any application-level validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f543b9db-c505-46e0-afdd-01f9fcd266fa?mode=deep",
+    "timestamp": "2026-01-20 14:15:02.226582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Serialization] [Environment Variable Override] If the config can be overridden by environment variables, can an attacker with shell access inject arbitrary f32 values that violate safety assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32df1922-e745-4008-801e-0b4f44e84b41?mode=deep",
+    "timestamp": "2026-01-20 14:15:25.325866",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Serialization] [Binary Deserialization] If the config is ever serialized to binary format (e.g., for IPC), could bit-level manipulation inject invalid f32 representations that Rust's type system doesn't catch? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9dea95d3-d35b-4c01-917c-5954fc56f45b?mode=deep",
+    "timestamp": "2026-01-20 14:15:49.976296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Serialization] [Network Transmission] If validator nodes exchange config objects over the network, could a Byzantine node send crafted configs with malicious load_imbalance_tolerance values to disrupt honest validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_377a50e6-f8dc-4481-8486-f173653153dd?mode=deep",
+    "timestamp": "2026-01-20 14:16:14.990187",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Lifetime] [Static Lifetime Assumption] Is there an implicit assumption that the config lives for the entire validator process lifetime, and could premature dropping cause use-after-free when the partitioner tries to access it? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a589508-9067-46db-bc78-ca4eddb8646a?mode=deep",
+    "timestamp": "2026-01-20 14:16:41.308325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Lifetime] [Hot Reload] If the config supports hot-reloading during runtime, could changing load_imbalance_tolerance mid-execution cause different blocks to be partitioned with different strategies, breaking determinism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_efcab7e9-9b3e-4410-8326-070925a1eb4c?mode=deep",
+    "timestamp": "2026-01-20 14:17:08.547661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Lifetime] [Epoch Transition] During epoch transitions when validator sets change, are config objects properly synchronized across all validators, or could timing differences cause some validators to use old configs while others use new ones? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54434ca9-7cc9-438b-8e22-1dc2003a3f4d?mode=deep",
+    "timestamp": "2026-01-20 14:17:35.523645",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Validation] [No Bounds Checking] The struct has no validation logic for load_imbalance_tolerance - can this be exploited by setting values outside reasonable ranges (e.g., [0.5, 10.0]) to create extreme imbalances that degrade consensus performance? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6626d30-c43b-48ed-b385-e7f90cf183b4?mode=deep",
+    "timestamp": "2026-01-20 14:18:01.990480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Validation] [Invariant Enforcement] Are there any protocol-level invariants (e.g., 'group size must never exceed 50% of block size') that should be enforced by validation logic but are missing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a72092d-ecb5-4fe2-aec8-ea3a860962a5?mode=deep",
+    "timestamp": "2026-01-20 14:18:28.867693",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Validation] [Range Fuzzing] Has the config been fuzzed with the full range of f32 values including edge cases (±0, ±infinity, NaN, subnormals) to ensure the partitioner doesn't crash or produce invalid output? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1185527-dda5-4d4c-be5d-92d17e7c0188?mode=deep",
+    "timestamp": "2026-01-20 14:18:54.835132",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Validation] [Negative Testing] Are there tests that explicitly verify the system's behavior when load_imbalance_tolerance is negative, zero, or exceeds reasonable bounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75d14bfc-8ed0-4bf5-be05-1263b2b35777?mode=deep",
+    "timestamp": "2026-01-20 14:19:21.316791",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Concurrency] [Shared Mutability] If the config is wrapped in Arc<RwLock<>> for sharing across threads, could a write-lock during critical consensus operations cause lock contention that delays block processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86ff933f-416a-4eb3-b952-133dd056d290?mode=deep",
+    "timestamp": "2026-01-20 14:19:48.531684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/connected_component/config.rs] [Concurrency] [Read-After-Write] If one thread modifies the config while another thread is in the middle of build(), could there be a race condition where the partitioner is created with inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edc80d8b-a7da-4e0f-aad6-495f772e8baa?mode=deep",
+    "timestamp": "2026-01-20 14:20:15.062991",
+    "report_generated": false
+  }
+]
