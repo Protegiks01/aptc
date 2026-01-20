@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: enter_module_lock()] [Integer Overflow] At line 155, module_lock_count is incremented with no overflow check. Can an attacker trigger this function 2^64 times (on 64-bit systems) to wrap the counter to zero, completely disabling module lock protection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_917f3a3d-db35-4d10-b37f-139c561656b1?mode=deep",
+    "timestamp": "2026-01-20 02:32:53.515579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: enter_module_lock()] [Missing Validation] The function at lines 154-156 has no validation or error return. Should there be a maximum lock depth check to prevent stack overflow or resource exhaustion attacks through deeply nested locking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4957da6c-e17c-4921-8119-7d15caaa5405?mode=deep",
+    "timestamp": "2026-01-20 02:33:07.148823",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: enter_module_lock()] [Public Interface] This function is marked pub(crate) and can be called directly. Can external code in the same crate call this without proper validation, corrupting the lock state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9021f70e-20ae-4a24-a877-28d6b868a27d?mode=deep",
+    "timestamp": "2026-01-20 02:33:21.960941",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: exit_module_lock()] [Underflow Check Timing] At line 159, the function checks if module_lock_count > 0 before decrementing. But can a race condition cause multiple threads to all pass this check, then all decrement, causing underflow despite the check? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b5e0890-aacc-487f-b258-a6bf427edec1?mode=deep",
+    "timestamp": "2026-01-20 02:33:37.019387",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: exit_module_lock()] [Error Handling Bypass] If exit_module_lock() returns an error at lines 163-165, does the caller properly handle this error, or can it be ignored allowing continued execution with corrupted lock state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a25c04d-d1c1-48e6-b601-85dbb1cd8a5a?mode=deep",
+    "timestamp": "2026-01-20 02:33:53.121484",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: exit_module_lock()] [Invariant Violation Message] The error message 'Unbalanced module lock counter' at line 164 doesn't include context about current counter value. Does this make debugging state corruption harder, potentially hiding exploitation attempts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b8a6867-c259-4294-b929-694cf5c78b4f?mode=deep",
+    "timestamp": "2026-01-20 02:34:10.649714",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: check_resource_access()] [Counter Threshold Logic] At line 175, the check is counter > 1 to determine reentrancy. Why is the threshold 1 instead of 0? Can an attacker exploit this off-by-one to access resources during the first reentrant call? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2c3351c-6c99-4aea-a0f1-6e1efffa1f13?mode=deep",
+    "timestamp": "2026-01-20 02:34:31.460330",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: check_resource_access()] [unwrap_or_default Bypass] At line 174, unwrap_or_default() returns 0 if the module isn't in active_modules. Does this mean resources can be freely accessed if the module was never entered, even during a reentrancy scenario? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41a0f335-f73c-46cf-8b95-35fa10c1c58d?mode=deep",
+    "timestamp": "2026-01-20 02:34:53.789709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: check_resource_access()] [Module ID Mismatch] The function uses struct_id.interned_module_id() at line 172. Can an attacker access resources from module A while reentering module B if the struct's module ID is manipulated or incorrectly reported? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_186cb8c5-b1bf-406b-ad43-a14703fcfdbf?mode=deep",
+    "timestamp": "2026-01-20 02:35:17.325767",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: check_resource_access()] [TOCTOU Race] Between the counter check at line 170-175 and the actual resource access, can another thread modify the active_modules map, allowing resource access that should be blocked? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35d710ad-6d0d-4746-9a9b-84dcd403e834?mode=deep",
+    "timestamp": "2026-01-20 02:35:44.031353",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: check_resource_access()] [Error Message Leak] The error at lines 180-184 reveals the full struct identifier. Can this information disclosure help attackers identify high-value resources to target in reentrancy attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d9fbd59-e5b8-4fb5-aa6a-71efe7b130e3?mode=deep",
+    "timestamp": "2026-01-20 02:36:12.545239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: check_resource_access()] [No Module Lock Check] This function only checks the counter value, not module_lock_count. When module lock is active (AIP-73 mode), should ALL resource access be blocked regardless of counter value? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09487b55-b7e5-4582-9fcf-f44ecf366dd2?mode=deep",
+    "timestamp": "2026-01-20 02:36:41.504946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: check_resource_access()] [Copied Counter Value] The counter is .copied() at line 173. Does this create a race window where the value can change between copy and comparison? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbb5b1fa-89bb-4ae1-a7eb-3cf0b244eb3b?mode=deep",
+    "timestamp": "2026-01-20 02:37:11.862258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: is_locking()] [NativeDynamicDispatch Always Lock] At line 58, NativeDynamicDispatch always returns true. Is there any validation that native dispatch functions are actually safe to lock, or can malicious natives exploit this forced locking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d545f003-3d49-41f2-9472-60aa42c02065?mode=deep",
+    "timestamp": "2026-01-20 02:37:43.284000",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: is_locking()] [has_module_lock Attribute Trust] At line 59, the function trusts callee.function.has_module_lock() attribute. Can an attacker modify bytecode to add/remove this attribute, manipulating whether functions are locked? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3798bd7-af04-43d3-9d4a-9e8b69891321?mode=deep",
+    "timestamp": "2026-01-20 02:38:13.229312",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Function: is_locking()] [ClosureDynamicDispatch Not Locking] Closures at line 59 only lock if has_module_lock() is true. Should closures always lock to prevent closure-based reentrancy attacks, similar to natives? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d999c8ae-5e66-436a-b97a-cc8587f665ce?mode=deep",
+    "timestamp": "2026-01-20 02:38:43.399273",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Struct: ReentrancyChecker] [FxHashMap Collision Attack] The active_modules uses FxHashMap at line 34. FxHash is designed for speed, not DOS resistance. Can an attacker craft ModuleIds that hash to the same bucket, causing O(n) lookups and DOS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6fd6ee0-0eac-46d2-b663-ca08d04a9b30?mode=deep",
+    "timestamp": "2026-01-20 02:39:15.781990",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Struct: ReentrancyChecker] [Default Implementation Safety] The #[derive(Default)] at line 30 creates an empty checker. If this is used improperly during initialization, can it bypass reentrancy checks until properly configured? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c82fa8d-20a5-4755-a6dd-9ffcfac8ff99?mode=deep",
+    "timestamp": "2026-01-20 02:39:48.882985",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Struct: ReentrancyChecker] [Memory Exhaustion] The active_modules HashMap has no size limit. Can an attacker enter many different modules without exiting to exhaust memory and DOS the VM? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f1241bd-fdd0-4d93-bb32-cc97b8c2fd97?mode=deep",
+    "timestamp": "2026-01-20 02:40:22.064921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Struct: ReentrancyChecker] [Counter Storage Type] Counters are stored as usize. On 32-bit systems, can overflow occur much faster (2^32 vs 2^64), making attacks more practical? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0181ddd6-f27d-4c58-be51-4c368c76edc9?mode=deep",
+    "timestamp": "2026-01-20 02:40:56.905088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Struct: ReentrancyChecker] [No Clone/Copy Trait] The struct is not Clone/Copy. Does this prevent defensive copying, making it impossible to snapshot checker state for rollback during transaction failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acc15cee-5705-4ba2-9e8d-154ca1a113bf?mode=deep",
+    "timestamp": "2026-01-20 02:41:29.262755",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Enum: CallType] [Variant Discrimination] At lines 43-50, CallType uses manual discrimination. Can an attacker corrupt memory to change a Regular call to NativeDynamicDispatch, bypassing normal reentrancy checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ec114f2-8d86-427d-b877-8a64d0561a3f?mode=deep",
+    "timestamp": "2026-01-20 02:42:02.322284",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Enum: CallType] [Copy Trait Safety] CallType derives Copy at line 42. Can this lead to inconsistent states if a CallType is copied and both copies are used in different enter/exit pairs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e4d4167-b6cd-49d4-9a7a-32ee2a84feb3?mode=deep",
+    "timestamp": "2026-01-20 02:42:33.089717",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Enum: CallType] [Exhaustiveness] The enum has 3 variants at lines 43-50. If new call types are added in the future, will existing match statements fail safely or introduce security holes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e6a2fdc-9cf7-4a7e-bec1-46f424783262?mode=deep",
+    "timestamp": "2026-01-20 02:43:06.995588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/runtime/src/reentrancy_checker.rs] [Integration] [Enter/Exit Asymmetry] If enter_function() is called multiple times but exit_function() is only called once (due to early return or error), will the counters remain elevated, permanently locking modules? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0a35c2f-e908-4470-840b-8517917bc816?mode=deep",
+    "timestamp": "2026-01-20 02:43:41.485771",
+    "report_generated": false
+  }
+]
