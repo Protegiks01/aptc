@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: next_sleep_index()] [Integer overflow] Can an attacker or long-running test create enough sleep entries to overflow next_sleep_index (line 258-262), bypassing the checked_add panic and causing index collisions in the pending BTreeMap, leading to sleep entries overwriting each other? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5306d8d-9a06-46d9-9a04-9ad78d259964?mode=deep",
+    "timestamp": "2026-01-20 16:30:21.854825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: advance()] [Integer overflow] In the advance function (line 233-254), when self.now += duration is performed at line 235, can duration values near Duration::MAX cause integer overflow in the addition, potentially wrapping time backwards and breaking consensus time ordering? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef0b89a6-696c-4cb0-888e-f63f41916e7c?mode=deep",
+    "timestamp": "2026-01-20 16:30:33.942071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: register_sleep()] [Integer overflow] At line 284, deadline = self.now + duration could overflow when self.now is already large and duration is near max, potentially causing deadlines to wrap to earlier times and triggering sleeps prematurely in consensus-critical timeouts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea88f87b-c4eb-4aaf-9a43-13dc4dca0802?mode=deep",
+    "timestamp": "2026-01-20 16:30:46.423428",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: duration_max()] [Arithmetic side effects] The duration_max function at lines 20-23 uses #[allow(clippy::arithmetic_side_effects)] - does Duration::new(u64::MAX, 1_000_000_000 - 1) correctly represent maximum duration without overflow, or can this value cause arithmetic issues when used in time calculations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0eecafaf-68e9-47fc-a687-bfc5b114eb7f?mode=deep",
+    "timestamp": "2026-01-20 16:31:00.287331",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: now()] [Arithmetic overflow] At line 200, this.base_time + this.now uses unchecked addition - can an attacker manipulate now value through repeated advance() calls to cause overflow when added to base_time, breaking time monotonicity guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab907b91-7819-4541-9a96-43fdb27d0567?mode=deep",
+    "timestamp": "2026-01-20 16:31:13.969105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: advance_async()] [Race condition] Between releasing the lock at line 171 and yielding at line 174, can multiple concurrent advance_async calls interleave, causing time to advance non-atomically and waking waiters in incorrect order, breaking consensus timeout ordering? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7f34e67-adde-4b85-8eb9-13ce255bcf4f?mode=deep",
+    "timestamp": "2026-01-20 16:31:28.565899",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: advance_next_async()] [Race condition] The comment at line 159 says 'don't hold the lock while yielding', but between advance_next() at line 158 and yield_now() at line 161, can another thread advance time again, causing the returned wake_time to be stale and misleading? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41644c52-e831-416e-ad79-0cd5ab500684?mode=deep",
+    "timestamp": "2026-01-20 16:31:43.868541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: poll()] [Race condition] In MockSleep::poll (lines 382-395), after getting the lock at line 383, checking the entry at line 385, and updating the waker at line 389, can the sleep be triggered by another thread immediately after updating the waker but before returning Poll::Pending, causing a lost wakeup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8da3d170-de13-4718-93a1-5d8f9981ba36?mode=deep",
+    "timestamp": "2026-01-20 16:32:01.103344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: reset()] [Race condition] In reset function (lines 358-370), between unregistering at line 364 and re-registering at line 367, can another thread's advance() call see inconsistent state, potentially triggering the old sleep or missing the new one? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2db7d928-d72c-4476-a86c-0107e2e55af1?mode=deep",
+    "timestamp": "2026-01-20 16:32:18.874571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: drop()] [Race condition] In MockSleep::drop (lines 398-405), can a race occur where drop() unregisters the sleep at line 403, but simultaneously another thread's advance() is iterating the pending queue, causing use-after-free or double-trigger issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27ca32c1-f3af-4e0b-b747-d02c6e607b96?mode=deep",
+    "timestamp": "2026-01-20 16:32:37.676527",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: register_sleep()] [Race condition] When auto_advance_deadline is Some (lines 289-298), the function immediately advances time at line 291 without the lock being held across the entire operation - can concurrent register_sleep calls cause time to advance non-deterministically? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94fcaa7e-4e23-4a3a-a1c2-380b9ed9f041?mode=deep",
+    "timestamp": "2026-01-20 16:32:56.780219",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Struct: MockTimeService] [Arc/Mutex safety] The MockTimeService uses Arc<Mutex<Inner>> at line 41 - can multiple clones in different threads cause lock contention that makes advance operations non-atomic, allowing consensus timeout races? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b79b4030-bfea-4d17-a45e-c5550a197691?mode=deep",
+    "timestamp": "2026-01-20 16:33:17.207501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: register_sleep()] [State inconsistency] At lines 300-304, the assertion 'prev_entry.is_none()' assumes SleepIndex uniqueness, but can integer overflow in next_sleep_index() cause index reuse, violating this invariant and corrupting the pending queue? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1fbacb2-b77b-4f4f-b06a-213642930ed9?mode=deep",
+    "timestamp": "2026-01-20 16:33:37.808977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: advance()] [State inconsistency] The advance function calculates num_expired at lines 241-245 but then iterates exactly num_expired times at lines 248-251 - can concurrent modifications to pending queue cause this count to become stale, leading to too few or too many wakeups? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d25a605-4db9-47cb-8d6c-99c8e23aa2b5?mode=deep",
+    "timestamp": "2026-01-20 16:33:59.671576",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: unregister_sleep()] [State inconsistency] When unregister_sleep returns Some at line 311, indicating a successful removal, can the waker inside have already been taken by poll() in another thread, causing the caller to get a None waker when expecting Some? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21e112e4-a039-438f-940a-48844bd504b8?mode=deep",
+    "timestamp": "2026-01-20 16:34:21.535247",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: trigger_min_sleep()] [State inconsistency] At lines 325-333, if unregister_min_sleep returns a None waker (line 328), the sleep is still removed from pending but never woken - can this cause consensus timeouts to silently fail without waking the waiting task? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d30ce7d-1ad7-431e-aaf0-4a6db5fdeb1d?mode=deep",
+    "timestamp": "2026-01-20 16:34:43.761624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: register_sleep()] [State inconsistency] When auto_advance_deadline is set and a sleep exceeds it (lines 293-297), auto_advance_deadline is set to None at line 296 - can concurrent sleeps see different auto_advance states, causing non-deterministic time advancement in consensus tests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe5dae9c-b2b0-4c87-a3d9-b45eddbb42f6?mode=deep",
+    "timestamp": "2026-01-20 16:35:05.541334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: new_auto_advance()] [Auto-advance bypass] The function calls new_auto_advance_for(duration_max()) at line 104 - can this cause all sleeps to resolve immediately, bypassing timeout logic that should protect against Byzantine validators in consensus tests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97ca2a2a-edcb-4ab8-b3f3-a7c1dee99022?mode=deep",
+    "timestamp": "2026-01-20 16:35:28.035683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: register_sleep()] [Auto-advance manipulation] At lines 289-298, when deadline <= auto_advance_deadline, time advances immediately and the sleep is never registered - can an attacker in a test environment use this to skip all timeout checks in consensus safety tests, masking real timing vulnerabilities? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e6bce14-be20-4188-b33f-43684b7df7d5?mode=deep",
+    "timestamp": "2026-01-20 16:35:50.153721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: register_sleep()] [State manipulation] When turning off auto_advance at line 296 after exceeding deadline, self.now is set to max(self.now, auto_advance_deadline) at line 295 - can this cause time to jump forward unexpectedly, breaking tests that rely on precise time progression? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1584d571-0abc-4620-a6de-4fa00ce19ae0?mode=deep",
+    "timestamp": "2026-01-20 16:36:12.339261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: register_sleep()] [Non-determinism] The auto-advance logic at lines 289-298 makes sleep behavior dependent on the order of sleep creation - can this cause consensus tests to pass/fail non-deterministically based on task scheduling, masking real race conditions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b2b1199-e839-4b72-92f8-fce23895c0e7?mode=deep",
+    "timestamp": "2026-01-20 16:36:34.703056",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: poll()] [Lost wakeup] At line 389, the waker is replaced with maybe_waker.replace(cx.waker().clone()) - if a waker was already present, is the old waker properly dropped, or can this cause memory leaks in long-running consensus tests? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34598113-81d5-42e4-9db2-be385bad519d?mode=deep",
+    "timestamp": "2026-01-20 16:36:56.198978",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: trigger_min_sleep()] [Waker handling] At lines 328-330, if maybe_waker is Some, waker.wake() is called - can wake() panic in certain conditions, causing the function to abort without properly cleaning up the pending entry? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b932b97-5bb9-400f-9189-5ee8c99be3ea?mode=deep",
+    "timestamp": "2026-01-20 16:37:17.495193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: register_sleep()] [Waker lifecycle] New sleeps are registered with maybe_waker = None at line 342 - can the sleep be triggered before it's ever polled, causing the waker to be None and the task never waking up, leading to consensus deadlock? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6132ed9c-56a7-488f-b5cc-fee0a829db8c?mode=deep",
+    "timestamp": "2026-01-20 16:37:39.112593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/mock.rs] [Function: reset()] [Waker transfer] At line 364, the waker is pulled out with flatten() - if unregister_sleep returns None (sleep already triggered), can the new registration at line 367 have a None waker, causing the reset sleep to never wake? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_151ac50a-bfd5-41b1-9379-0422e0480c2f?mode=deep",
+    "timestamp": "2026-01-20 16:38:01.803994",
+    "report_generated": false
+  }
+]
