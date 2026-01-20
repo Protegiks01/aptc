@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Connection Storm] Rapid retries call get_grpc_manager_client_for_request() (line 28-30) with no rate limiting - can this cause a connection storm to the backend, overwhelming the gRPC server or network infrastructure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cbc6503e-cba3-4486-bcca-210fb82096ed?mode=deep",
+    "timestamp": "2026-01-20 22:37:02.596046",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Goroutine Leak] Each fetch_transactions() call spawns an async task that may loop forever - can many concurrent calls exhaust the async runtime's task limit, preventing new legitimate requests from being processed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c3acefa-89ff-4054-ad39-0e03498d80c6?mode=deep",
+    "timestamp": "2026-01-20 22:37:15.393574",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Infinite Loop Condition] The loop has no break condition except successful version match - can this create a logical deadlock if the gRPC server's version number never reaches starting_version due to reorgs or pruning? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf8ba646-aa5b-4d00-8dae-c17f413a7594?mode=deep",
+    "timestamp": "2026-01-20 22:37:28.938871",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Version Regression] If the server returns transactions with version < starting_version after a reorg, the code silently retries - can this cause the indexer to be stuck in an infinite loop during chain reorganizations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07e66bb0-266e-4c98-b60e-4ec0398db6d0?mode=deep",
+    "timestamp": "2026-01-20 22:37:42.397976",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Livelock] If get_grpc_manager_client_for_request() and get_transactions() both fail intermittently at exactly the wrong timing, can the system enter a livelock state where it's constantly retrying but never making progress? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2eb974a-f2ef-40ed-aa7b-2e263c2aa5ed?mode=deep",
+    "timestamp": "2026-01-20 22:37:57.718011",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Monitoring Gap] Only successful fetches are traced (line 19), failed attempts are silent - can attackers exploit this blind spot to launch attacks that go undetected until catastrophic failure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_640691fb-e525-4197-b092-a4e5a6159989?mode=deep",
+    "timestamp": "2026-01-20 22:38:13.200786",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [No Metrics] There are no metrics for retry counts, latency, or error rates - can degraded performance or attacks go unnoticed, preventing timely incident response? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79e156ee-0032-4567-af73-9af3c8f78009?mode=deep",
+    "timestamp": "2026-01-20 22:38:29.743964",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Silent Version Mismatch] When version doesn't match (line 37-38), the retry is completely silent - can systematic version mismatch attacks persist for long periods without being detected in logs or alerts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b3ab9c6-3624-4c65-96db-73fe50839465?mode=deep",
+    "timestamp": "2026-01-20 22:38:48.111318",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Untrusted Input] The Transaction objects (line 33) from gRPC are trusted without validation - can maliciously crafted protobuf messages exploit deserialization vulnerabilities in the aptos_protos library? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eeb4e1b5-6251-4394-987c-febc080ffa0d?mode=deep",
+    "timestamp": "2026-01-20 22:39:07.548054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Trust Model Violation] The code implicitly trusts the gRPC server as authoritative - can a compromised or Byzantine node in the validator set serve malicious data through this interface? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02c76a0c-ab29-4d7c-abb3-a1fc80bdc67b?mode=deep",
+    "timestamp": "2026-01-20 22:39:28.408389",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Struct: DataClient] [Privilege Escalation] The DataClient (line 9-11) has no capability or permission checks - can low-privilege components instantiate DataClient to access sensitive blockchain data they shouldn't have permission to read? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65452ee8-76d6-455d-8e04-01bc28a52d8f?mode=deep",
+    "timestamp": "2026-01-20 22:39:49.601904",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Reorg Handling] There's no handling for blockchain reorganizations - can chain reorgs cause the indexer to index orphaned transactions as canonical, corrupting the indexed state permanently? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc1dc979-c7d1-46bf-8cd6-30f376a9dd7e?mode=deep",
+    "timestamp": "2026-01-20 22:40:12.689875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Finality Violation] Transactions are indexed without checking if they're finalized by AptosBFT consensus - can unfinalized or reverted transactions be indexed as final, showing incorrect balances to users? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_054783ee-ae3a-4615-a26c-1f311d671d86?mode=deep",
+    "timestamp": "2026-01-20 22:40:37.533368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Fork Choice Rule] The code has no fork choice logic when multiple transaction batches are available - can this lead to indexing transactions from a minority fork instead of the canonical chain? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d33e2c96-c69f-402b-91e8-154a8ca92008?mode=deep",
+    "timestamp": "2026-01-20 22:41:03.246347",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Epoch Boundary] There's no special handling for epoch boundaries in Aptos - can epoch transitions with validator set changes cause version numbering inconsistencies that break the indexer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de727b55-3838-4c6d-8759-0c6529b49897?mode=deep",
+    "timestamp": "2026-01-20 22:41:29.235886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Protobuf Size Limits] The response.into_inner() (line 33) may not respect protobuf message size limits - can an attacker send a response claiming to be within limits but with nested structures that expand to gigabytes during parsing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_171a3a5b-94fe-403d-9e24-6b73f445d76b?mode=deep",
+    "timestamp": "2026-01-20 22:41:56.328368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Malformed Protobuf] Transaction deserialization doesn't check for required fields - can malformed protobuf messages with missing required fields cause undefined behavior or incorrect indexing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4a46dae-ddc5-448f-9042-1fc40ba58a44?mode=deep",
+    "timestamp": "2026-01-20 22:42:23.103204",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Protobuf Injection] The GetTransactionsRequest (line 21-26) uses Some() wrappers for optional fields - can carefully crafted None values be interpreted differently by different protobuf implementations, causing inconsistencies? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25263aac-4674-448e-afa0-c3c734c29326?mode=deep",
+    "timestamp": "2026-01-20 22:42:49.915992",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Client Reuse] A new client is obtained every loop iteration (line 28-30) - can this defeat connection pooling optimizations, causing excessive TCP handshakes and degrading performance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f1a21fb-fd49-47e1-a225-c6895d2eae3b?mode=deep",
+    "timestamp": "2026-01-20 22:43:19.439399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Connection State] The code doesn't check if the client is in a healthy state before use - can calling get_transactions() on a half-closed or error state connection cause protocol violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b47abb64-a34f-4550-9185-dc84b1a364e7?mode=deep",
+    "timestamp": "2026-01-20 22:43:44.962655",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Struct: DataClient] [Shared State] The Arc<ConnectionManager> (line 10) is shared across all DataClient instances - can concurrent access patterns cause connection manager internal state corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd08d741-f069-4829-94a1-7f3b75dd173c?mode=deep",
+    "timestamp": "2026-01-20 22:44:11.040890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Version Zero Handling] No special handling for starting_version = 0 (genesis) - can this cause issues if the gRPC server has different genesis block semantics or pruned early history? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67f1a820-6e2a-4a69-b0da-ba53797c5c71?mode=deep",
+    "timestamp": "2026-01-20 22:44:36.885389",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [U64 Maximum] What happens if starting_version is u64::MAX - can this cause overflow in version comparisons or make it impossible to fetch the last transaction in the chain? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1491b6b-d3b2-49bc-be63-006ae10abcb9?mode=deep",
+    "timestamp": "2026-01-20 22:45:02.835417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Empty Chain State] If the blockchain has no transactions yet (version 0 with empty state), can the return of empty vec (line 35) be misinterpreted as an error rather than valid empty state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3dc6a96-8071-4937-b03a-23378cc71f85?mode=deep",
+    "timestamp": "2026-01-20 22:45:29.215699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_client.rs] [Function: fetch_transactions()] [Historical Data] The code doesn't check if starting_version refers to pruned historical data - can requests for ancient transactions cause undefined behavior or return incorrect results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bfee83e-251e-49f5-bd78-0658083d5481?mode=deep",
+    "timestamp": "2026-01-20 22:45:57.655398",
+    "report_generated": false
+  }
+]
