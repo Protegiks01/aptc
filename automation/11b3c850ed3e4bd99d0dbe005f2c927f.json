@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [Atomicity Failure] Lines 163-223 create multiple batches (ledger_db_batch, sharded_kv_batch, state_kv_metadata_batch) but commit them separately at line 223 and later—can a crash between these commits leave different databases in inconsistent states during state sync? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2fafdc4c-8dbe-4f31-92ff-7f876fd68861?mode=deep",
+    "timestamp": "2026-01-20 04:11:19.202857",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [Version Mismatch] At line 183-198, save_transactions() is called with false for should_save_kv, skipping key-value writes—can this create a state where transaction data exists but state key-values are missing, causing query failures and state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c5c976e-ee80-4c8b-b004-8a9f008219a6?mode=deep",
+    "timestamp": "2026-01-20 04:11:33.035734",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [Duplicate Progress Write] Lines 207-218 write both LedgerCommitProgress and OverallCommitProgress to the same version—can these writes race with normal commit operations to create conflicting progress markers, confusing the commit pipeline? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5b50cca-ce74-4809-86c7-3d7b70b5f69c?mode=deep",
+    "timestamp": "2026-01-20 04:11:47.703277",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [Pruner Reset] At lines 225-234, min_readable_version is saved for all pruners, but can this interfere with ongoing pruning operations that expect a different min version, causing premature deletion of still-needed historical data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db5acf7d-3769-4b4a-acc2-6631143b29ff?mode=deep",
+    "timestamp": "2026-01-20 04:12:02.560336",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [State Reset Race] At line 237, state_store.reset() is called—can concurrent readers that started before reset but finish after see inconsistent state between old and new state roots, causing incorrect query results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_139acc21-fa79-4fc2-9180-34aee4b32b5d?mode=deep",
+    "timestamp": "2026-01-20 04:12:18.723721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [Ledger Info Validation] At lines 200-205, save_ledger_infos() is called with ledger_infos array—can an attacker provide ledger infos with incorrect epoch boundaries that get saved without validation, breaking epoch continuity assumptions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6ce10b8-422c-456f-a321-9cb8b61cd205?mode=deep",
+    "timestamp": "2026-01-20 04:12:36.280777",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [Unzip Vulnerability] At lines 167-171, transactions_and_outputs are unzipped—can a malicious proof have mismatched transaction and output counts that cause the unzip to silently drop data, leading to incomplete state restoration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e34abd2f-a326-408c-b8df-754440463299?mode=deep",
+    "timestamp": "2026-01-20 04:12:55.695515",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [WriteSet Extraction] At lines 177-180, write_sets are extracted from outputs—can malformed outputs with invalid write_sets cause panics during iteration, preventing state sync completion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11453eb0-a0c8-4963-8aec-9d0e050c152f?mode=deep",
+    "timestamp": "2026-01-20 04:13:18.129841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: check_and_put_ledger_info()] [Version Mismatch] At lines 549-554, LedgerInfo version must match the commit version—but can an attacker provide a valid LedgerInfo for version N while committing version N+1, bypassing this check through a race condition in version comparison? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e07c80c4-9a53-4e93-bfb6-63ce6966c576?mode=deep",
+    "timestamp": "2026-01-20 04:13:40.953087",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: check_and_put_ledger_info()] [Root Hash Collision] At lines 557-569, db_root_hash is compared with li_root_hash—can a hash collision attack allow an attacker to create a different accumulator state with the same root hash, enabling state divergence between validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0920b535-587f-4890-bc6c-923781af43ad?mode=deep",
+    "timestamp": "2026-01-20 04:14:05.141136",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: check_and_put_ledger_info()] [Epoch Gap] At lines 572-582, epoch continuity requires current_epoch to match ledger_info.epoch(), but can an attacker exploit the case where get_latest_ledger_info_option() returns None (genesis) to skip epoch at bootstrap, creating an invalid epoch history? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2badc42b-f175-46d8-be30-c41e164ea931?mode=deep",
+    "timestamp": "2026-01-20 04:14:30.560133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: check_and_put_ledger_info()] [State Snapshot Missing] At lines 585-594, if ends_epoch(), a state snapshot must exist at the exact version—can an attacker cause the epoch-ending commit to succeed even if the snapshot was not fully persisted, breaking the invariant that epoch boundaries have snapshots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f04c394-77db-4fe5-b8c6-6c87a5e884b4?mode=deep",
+    "timestamp": "2026-01-20 04:14:58.260049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: check_and_put_ledger_info()] [TOCTOU on Root Hash] At line 557-560, get_root_hash(version) retrieves the pre-committed root hash, but between this check at line 564-569 and the actual ledger batch write at line 597-599, can the root hash be modified by concurrent operations, invalidating the verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85ecadeb-9032-4aa5-b425-e67c26004786?mode=deep",
+    "timestamp": "2026-01-20 04:15:26.693198",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: check_and_put_ledger_info()] [Snapshot Version Off-by-One] At line 586, get_state_snapshot_before(version + 1) is checked to equal version—can an off-by-one error allow snapshot at version-1 to pass validation, causing epoch transitions to reference incorrect state snapshots? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88f58dd2-33b3-4751-ac9a-fe7be8907e2c?mode=deep",
+    "timestamp": "2026-01-20 04:15:57.111211",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: check_and_put_ledger_info()] [Epoch Overflow] At line 576, next_block_epoch() is used for epoch continuity—can epoch number overflow after many epochs cause the comparison at line 578 to incorrectly pass, accepting a ledger info with wrapped-around epoch? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2dcc2bf7-e304-4424-bfd6-c8ed84f4188e?mode=deep",
+    "timestamp": "2026-01-20 04:16:29.299232",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: check_and_put_ledger_info()] [Root Hash Verification Bypass] Between lines 557-569, root hash check happens, but the check uses get_root_hash() which may return cached data—can an attacker exploit cache inconsistencies to bypass root hash validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ecbeb1e-0bbf-4222-b543-d9ea0a357696?mode=deep",
+    "timestamp": "2026-01-20 04:17:02.996255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_state_kv_and_ledger_metadata()] [Partial Commit] At lines 369-381, ledger metadata and state kv are committed in parallel using rayon::scope with unwrap()—if one succeeds but the other panics, can this create inconsistency where LedgerCommitProgress points to a version with incomplete state data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d79793c0-53ee-4a09-b07d-88278f40fad0?mode=deep",
+    "timestamp": "2026-01-20 04:17:38.402946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_state_kv_and_ledger_metadata()] [Block Index Injection] At lines 343-358, block index is written conditionally when skip_index_and_usage is true—can an attacker manipulate skip_index_and_usage to inject fake block events at arbitrary versions, corrupting the block index? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9cc3aea4-72e9-4572-8b01-e6577a92fba4?mode=deep",
+    "timestamp": "2026-01-20 04:18:13.924310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_state_kv_and_ledger_metadata()] [State Update Race] At lines 334-340, put_state_updates() writes to both ledger_metadata_batch and sharded_kv_batches—can concurrent state updates cause partial writes where some shards are updated but metadata is not, breaking state integrity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe8c9a75-e02a-40d3-b5ab-733004882880?mode=deep",
+    "timestamp": "2026-01-20 04:18:50.636624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_state_kv_and_ledger_metadata()] [Version Calculation Error] At line 348, version is calculated as chunk.first_version + i, and at line 363, expect_last_version() is used—can an overflow or off-by-one error cause incorrect version assignments in LedgerCommitProgress? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12a15285-bfd0-4dc7-ab90-14bb9d60b9bf?mode=deep",
+    "timestamp": "2026-01-20 04:19:26.557537",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_state_kv_and_ledger_metadata()] [Event Key Spoofing] At lines 345-347, event_key() equality check with new_block_event_key()—can an attacker craft events with colliding event keys to be incorrectly indexed as block events, polluting the block index? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20a75392-6efd-4f5d-a6c3-6e9bae4c064f?mode=deep",
+    "timestamp": "2026-01-20 04:20:01.371428",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_state_kv_and_ledger_metadata()] [Batch Unwrap] At line 365, ledger_metadata_batch.put() uses .unwrap()—can malformed metadata cause this to panic, leaving sharded_kv_batches committed but metadata uncommitted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3f457e6-1d52-475e-b2f4-20c3c6986138?mode=deep",
+    "timestamp": "2026-01-20 04:20:37.376402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_state_kv_and_ledger_metadata()] [Shard Imbalance] At line 332, new_sharded_native_batches() creates multiple shards—can uneven state update distribution cause some shards to timeout during commit at line 378-379, resulting in partial state commits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ce2d1c7-79db-4728-a610-efa2699f6f0f?mode=deep",
+    "timestamp": "2026-01-20 04:21:11.376889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_accumulator()] [Root Hash Mismatch] At lines 432-436, put_transaction_accumulator() calculates a root hash, but then at lines 447-456, root hashes are recalculated for each version in parallel—can discrepancies between these two calculations cause the function to return an incorrect root hash? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93c43b9d-74ca-4933-8090-9695906d80c8?mode=deep",
+    "timestamp": "2026-01-20 04:21:45.926257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_accumulator()] [Parallel Hash Race] At lines 447-456, all_root_hashes are computed in parallel using into_par_iter()—can race conditions in the accumulator's internal state cause different threads to compute inconsistent root hashes for the same version? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c64be03d-34a0-4ec1-886b-60758fb7efa3?mode=deep",
+    "timestamp": "2026-01-20 04:22:22.535360",
+    "report_generated": false
+  }
+]
