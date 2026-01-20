@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Integer Overflow] Can an attacker trigger u64 overflow by calling create_event_v1() when handle.count() is at u64::MAX, causing sequence_number to wrap to 0 and allowing event replay attacks or event ordering violations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e99cf920-f4ba-4e1a-a874-ce4e48eef671?mode=deep",
+    "timestamp": "2026-01-20 20:46:37.261718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Integer Overflow] Does the sequence number increment at line 11 (*handle.count_mut() = sequence_number + 1) check for overflow, or could this panic in production causing denial of service when an EventHandle reaches maximum events? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_999a9de3-ecd0-4275-9877-94ad22856e6e?mode=deep",
+    "timestamp": "2026-01-20 20:46:49.719074",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [State Corruption] If sequence_number + 1 overflows at line 11, could the EventHandle count become corrupted (wrapping to 0), causing subsequent events to have duplicate sequence numbers and breaking event stream uniqueness guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd67e4d1-b1f7-4f41-bd39-96ae79915ba9?mode=deep",
+    "timestamp": "2026-01-20 20:47:03.067863",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Replay Attack] If the sequence number wraps around due to overflow, can an attacker replay old events by creating new events with the same EventKey and sequence_number combination, bypassing event deduplication? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_420b7bed-a793-4a83-9302-acc694066d81?mode=deep",
+    "timestamp": "2026-01-20 20:47:16.255659",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Arithmetic Error] Does the addition operation at line 11 use checked_add() or saturating_add(), or does it rely on default overflow behavior which could differ between debug and release builds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e19dece-638f-4a34-9f60-dbcf8a36411e?mode=deep",
+    "timestamp": "2026-01-20 20:47:30.350873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Panic/DoS] Can an attacker craft a malicious Move struct that fails BCS serialization at line 16 (bcs::to_bytes(self).unwrap()), causing a panic and halting transaction execution or consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94a372c7-3f3a-4681-9d68-c585ba965ce7?mode=deep",
+    "timestamp": "2026-01-20 20:47:45.405076",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Panic/DoS] What happens if ContractEvent::new_v1() returns an error at line 18 but unwrap() is called - can this be triggered by providing invalid event_data size causing validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c17bdde3-a95c-4932-911b-2c4ce6ccb271?mode=deep",
+    "timestamp": "2026-01-20 20:48:01.166869",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Error Handling] Does bcs::to_bytes() at line 16 have a maximum serialization size limit, or can an attacker create a deeply nested struct that causes memory exhaustion before the unwrap() is reached? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37a0d4d3-02a7-4dd6-b53f-0c48c38763dc?mode=deep",
+    "timestamp": "2026-01-20 20:48:18.954590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Determinism] If BCS serialization at line 16 fails non-deterministically across validators (due to implementation bugs), will the unwrap() cause some validators to panic while others succeed, creating a consensus fork? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0915e56-dbb6-49c5-99e0-3098327b446b?mode=deep",
+    "timestamp": "2026-01-20 20:48:37.546506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Panic Recovery] Are panics from unwrap() at lines 16 and 18 caught at a higher level, or do they cause the entire validator process to crash requiring restart and affecting liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e35be5a-8030-409b-a345-40d69c6ef579?mode=deep",
+    "timestamp": "2026-01-20 20:48:56.956905",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Race Condition] If create_event_v1() is called concurrently on the same EventHandle by multiple threads during parallel transaction execution, can the count mutation at line 11 create race conditions leading to duplicate sequence numbers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19e713eb-cee7-41e7-84bf-f1857cd84ab8?mode=deep",
+    "timestamp": "2026-01-20 20:49:17.306375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [TOCTOU] Is there a time-of-check-time-of-use vulnerability between reading handle.count() at line 10 and mutating it at line 11, where another thread could modify the count in between? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62585d55-14b4-4873-a443-65cb1b51399d?mode=deep",
+    "timestamp": "2026-01-20 20:49:38.294932",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Atomicity] Does the read-modify-write sequence (lines 10-11) execute atomically, or can transaction rollbacks leave the EventHandle in an inconsistent state with incremented count but no emitted event? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_01e94bd4-0fc0-4dbe-be76-8ef3209497dc?mode=deep",
+    "timestamp": "2026-01-20 20:50:00.583875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Parallel Execution] In Block-STM parallel execution, if two transactions emit events to the same EventHandle, does the sequence number assignment maintain total ordering or can events be emitted out-of-order? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d71505b0-86c5-4198-834c-4d1bba192eec?mode=deep",
+    "timestamp": "2026-01-20 20:50:23.451047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Serialization Bomb] Can an attacker implement a malicious Serialize trait that produces exponentially large output when bcs::to_bytes(self) is called at line 16, causing memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13fe6c35-d583-4883-80fc-f2c692150fff?mode=deep",
+    "timestamp": "2026-01-20 20:50:47.652877",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Type Confusion] If the Serialize implementation at line 16 produces bytes that don't match the TypeTag from Self::struct_tag() at line 15, could this create type confusion when deserializing events later? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28179bf5-bf7f-48b9-9ee8-9fca6bd3b9f2?mode=deep",
+    "timestamp": "2026-01-20 20:51:13.240148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Malformed BCS] Does bcs::to_bytes() at line 16 validate the serialized output format, or can a malicious Serialize implementation produce invalid BCS that passes here but fails during event storage or query? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_adcc4089-ed9c-43a6-808d-46b7660f163d?mode=deep",
+    "timestamp": "2026-01-20 20:51:38.568286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Resource Exhaustion] Is there a size limit on the Vec<u8> returned by bcs::to_bytes() at line 16, or can an attacker create events with gigabyte-sized payloads consuming storage and bandwidth? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de2976fc-5946-4af6-b6f6-57bdc1ef462b?mode=deep",
+    "timestamp": "2026-01-20 20:52:05.549349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Deterministic Serialization] Does BCS guarantee deterministic serialization across all platforms and Rust versions, or could non-determinism at line 16 cause validators to produce different event hashes breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5148171-2f03-46ef-a1f5-a0f07a3e2d29?mode=deep",
+    "timestamp": "2026-01-20 20:52:33.319074",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Unauthorized Mutation] Does create_event_v1() validate that the caller has permission to mutate the EventHandle at line 11, or can any code with an &mut EventHandle increment arbitrary event counters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_479d2380-9dc6-4524-b920-240276bf0b9d?mode=deep",
+    "timestamp": "2026-01-20 20:53:01.032667",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [State Consistency] If transaction execution fails after line 11 mutates the EventHandle count but before the event is persisted, does the count roll back or can it become desynchronized with actual events? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3287bb7-fe02-4163-8fd1-65459ce2da2a?mode=deep",
+    "timestamp": "2026-01-20 20:53:28.095568",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Handle Reuse] Can an attacker manipulate the EventHandle to reset its count field before calling create_event_v1(), causing new events to reuse old sequence numbers and collide with historical events? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a410c75b-175d-426f-96c1-9984e8cb0fdd?mode=deep",
+    "timestamp": "2026-01-20 20:53:53.698479",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Borrow Safety] Does taking &mut EventHandle at line 9 properly enforce exclusive access, or can unsafe code violate borrow checker rules to create aliased mutable references causing data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c357d791-4be8-401b-8c28-26f1c2b722ec?mode=deep",
+    "timestamp": "2026-01-20 20:54:18.821053",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Size Validation] Does ContractEvent::new_v1() at line 18 validate the event_data size against a maximum limit, or can attackers bypass size checks by calling create_event_v1() directly with oversized payloads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1dacb813-68b0-4de8-a5c5-fd0eb48417ca?mode=deep",
+    "timestamp": "2026-01-20 20:54:42.637037",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/move_utils/move_event_v1.rs] [Function: create_event_v1()] [Key Validation] Does ContractEvent::new_v1() validate that the EventKey from *handle.key() at line 13 is properly formed and not manipulated, preventing event injection attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36545998-abeb-4159-a59e-d0af5e0a92f3?mode=deep",
+    "timestamp": "2026-01-20 20:55:07.517375",
+    "report_generated": false
+  }
+]
