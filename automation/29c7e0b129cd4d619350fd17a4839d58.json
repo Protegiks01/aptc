@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Hash collision attack] Can an attacker craft multiple keys that map to the same cache index via the modulo operation (key % capacity), causing cache thrashing and forcing legitimate entries to be overwritten, potentially leading to state inconsistencies in consensus or transaction validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91ff1a54-3796-4bf3-8975-04a4260c3734?mode=deep",
+    "timestamp": "2026-01-20 21:55:16.608236",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Collision-based DoS] Can a malicious validator or transaction sender deliberately generate keys with predictable modulo collisions (e.g., keys 0, capacity, 2*capacity, ...) to repeatedly overwrite the same cache slot, causing performance degradation severe enough to impact consensus liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0754d10c-ce7b-4d34-9887-bbfc5d463b33?mode=deep",
+    "timestamp": "2026-01-20 21:55:30.254923",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Predictable eviction] Since the cache uses deterministic modulo-based indexing, can an attacker predict exactly which cache entries will be evicted when inserting crafted keys, allowing them to force eviction of critical consensus or transaction data leading to cache misses during block validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb59cd94-598c-45bc-99a0-c544ddcbba18?mode=deep",
+    "timestamp": "2026-01-20 21:55:44.492325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Integer overflow in modulo] If the cache capacity is set to a very small value (e.g., 1) or if usize keys approach usize::MAX, can the modulo operation (key % capacity) cause integer overflow or panic, potentially crashing validator nodes and causing loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f110ab56-73ff-46ba-83c0-23883a3f9fc9?mode=deep",
+    "timestamp": "2026-01-20 21:55:58.878187",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Zero capacity edge case] What happens if capacity is set to 0 during initialization? Does the modulo operation (key % 0) cause a division by zero panic that could crash validator nodes handling transaction caching? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1546377-46b9-4de4-a9f0-2ac8f2cb3bc2?mode=deep",
+    "timestamp": "2026-01-20 21:56:14.369234",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Cache slot probing attack] Can an attacker systematically probe cache slots by querying keys with known modulo properties to infer which transaction hashes or state keys are currently cached, potentially leaking sensitive validator state information? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ceaf922b-9d85-411b-9d6b-443154861e33?mode=deep",
+    "timestamp": "2026-01-20 21:56:31.147133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Birthday paradox collision] Given the default capacity of 1,000,000, can an attacker exploit the birthday paradox to create hash collisions with high probability using only ~1,000 carefully chosen keys, causing cache pollution that degrades transaction processing performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6be6f604-efad-4179-b88b-1b63f380bec4?mode=deep",
+    "timestamp": "2026-01-20 21:56:50.192125",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Wrong key eviction] If multiple keys map to the same index due to modulo collisions, does evict() correctly remove only the specified key, or could it accidentally evict a different key with the same index, causing data loss and state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a96eb224-50e7-4681-a090-7b1279b32fe0?mode=deep",
+    "timestamp": "2026-01-20 21:57:11.324372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Race condition in size update] Between fetch_sub() and fetch_add() operations on lines 120 and 124, can concurrent insertions to different cache slots cause the total_size counter to become inconsistent with actual cached data, potentially allowing memory exhaustion attacks that bypass size limits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9dec6e72-04a2-4e66-8a4c-3c36ec833463?mode=deep",
+    "timestamp": "2026-01-20 21:57:33.972541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: total_size()] [Relaxed memory ordering] The size counter uses Ordering::Relaxed for load operations - can this cause a validator to read stale size values, making incorrect eviction decisions that lead to either memory exhaustion or premature cache eviction of critical consensus data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12317439-3942-4ab8-99a5-f40bc8d051e8?mode=deep",
+    "timestamp": "2026-01-20 21:57:57.421980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Size accounting overflow] If multiple threads concurrently insert very large entries, can the AtomicUsize size counter overflow past usize::MAX, wrapping around to a small value and causing the cache to appear nearly empty, potentially leading to unlimited memory allocation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae663383-06c1-433e-a6a8-6d10b7a5f52b?mode=deep",
+    "timestamp": "2026-01-20 21:58:22.569282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Size underflow on eviction] If evict() is called concurrently with insert_with_size() on the same key, can the fetch_sub() operation cause the size counter to underflow (wrapping to a huge value), making the cache believe it has consumed massive memory and refusing further insertions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1be12e3-0e8a-4da3-9e73-bf31f47ba706?mode=deep",
+    "timestamp": "2026-01-20 21:58:49.636642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Lost size updates] With Ordering::Relaxed, can size updates from one thread be delayed or lost due to CPU cache coherency issues, causing validators to disagree on cache state and leading to non-deterministic transaction processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8046a66e-aca5-4b59-bc9d-5cab7505aed0?mode=deep",
+    "timestamp": "2026-01-20 21:59:16.950309",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: total_size()] [Time-of-check-time-of-use (TOCTOU)] If code checks total_size() before inserting, can the size change between the check and the actual insert, allowing an attacker to bypass memory limits by racing multiple insertions past the size check? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f09c64b-5e14-4a1e-bf4a-8a52a3a3a425?mode=deep",
+    "timestamp": "2026-01-20 21:59:45.754990",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Negative size values] If size_in_bytes is passed as a very large usize value close to usize::MAX, can subsequent fetch_add() operations cause the total size to overflow and wrap to a small value, breaking memory accounting? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5992ca27-a197-4ee5-85f9-bf3a99a3f75f?mode=deep",
+    "timestamp": "2026-01-20 22:00:12.703275",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Double eviction race] Can two threads simultaneously evict the same key, both calling fetch_sub() with the same prev.size_in_bytes, causing the total_size to be decremented twice for a single entry and creating a size accounting deficit? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f830cf83-2dbb-45fe-a697-18cde5400c3e?mode=deep",
+    "timestamp": "2026-01-20 22:00:37.806341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Lock contention DoS] Can an attacker deliberately query cache keys that map to hot indices with high collision rates, causing excessive mutex contention that blocks other threads from accessing the cache and degrading transaction validation throughput enough to impact consensus timing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec036270-0dae-466f-ab83-4f72782c1e37?mode=deep",
+    "timestamp": "2026-01-20 22:01:02.356513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Lock held during clone] The get() function clones the entire CacheEntry while holding the mutex lock - for large cached values (e.g., entire transaction payloads), can this cause prolonged lock holding that creates a denial-of-service bottleneck for other cache operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9278faa4-c6f5-4725-81c9-5b6aae7389a1?mode=deep",
+    "timestamp": "2026-01-20 22:01:27.939004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Parking_lot poison handling] Does parking_lot::Mutex properly handle thread panics, or can a panic while holding a cache lock cause the mutex to become permanently locked (poisoned), making that cache slot permanently inaccessible and causing state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d32f684c-c55a-4380-9230-c56bd6799cb2?mode=deep",
+    "timestamp": "2026-01-20 22:01:54.377584",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Lock ordering deadlock] If this cache is used from multiple contexts (e.g., consensus thread, mempool thread, API thread) and those contexts also lock other resources, can differing lock acquisition orders cause deadlocks that freeze validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6eee8132-a111-47be-a094-872d42b1b432?mode=deep",
+    "timestamp": "2026-01-20 22:02:22.038027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Atomicity violation across locks] Since each cache slot has its own independent mutex, can operations spanning multiple slots (e.g., evict one key, insert another) create race conditions where the cache state becomes inconsistent between the size counter and actual entries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac9602b7-5186-45d2-925d-d7b700a0e881?mode=deep",
+    "timestamp": "2026-01-20 22:02:50.242594",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Lock fairness starvation] Does parking_lot::Mutex guarantee fairness, or can a high-priority attacker thread continuously lock hot cache indices, starving legitimate consensus threads from accessing cached transaction data and causing block proposal timeouts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5168e453-4c3f-49aa-9c49-444595957e90?mode=deep",
+    "timestamp": "2026-01-20 22:03:19.505071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [No timeout on lock acquisition] Since the code uses lock() without timeout, can a stuck thread holding a mutex (e.g., due to a page fault or OS scheduling delay) cause indefinite blocking of other threads trying to access that cache slot? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eeb0e47c-266b-4dce-a05b-e41c7245a5bb?mode=deep",
+    "timestamp": "2026-01-20 22:03:46.033538",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Clone-after-unlock race] After releasing the lock, get() returns a cloned entry - can the original cached entry be modified/evicted by another thread immediately after unlock but before the clone is returned, causing the caller to receive stale data that conflicts with current cache state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e34e7e44-0030-45f5-aa70-406225b0d4d9?mode=deep",
+    "timestamp": "2026-01-20 22:04:14.424345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Malicious size_in_bytes] Can a malicious caller pass an arbitrarily large size_in_bytes value (e.g., usize::MAX) that doesn't match the actual value size, causing the cache to believe it has consumed all memory while actually storing small values, effectively disabling the cache? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ed33817-10ba-4b9f-b343-7dc800b68e00?mode=deep",
+    "timestamp": "2026-01-20 22:04:44.195621",
+    "report_generated": false
+  }
+]
