@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: new_proposal()] [Timestamp Monotonicity] Block timestamps from duration_since_epoch() may not be monotonically increasing if system time changes. Could backwards time jumps create blocks with timestamps less than their parents, violating temporal ordering and breaking consensus liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9dd0363-6cfc-419c-89f8-dfe35ead3813?mode=deep",
+    "timestamp": "2026-01-20 02:40:38.875437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: new_proposal()] [Unwrap Panic] At line 52, Block::new_proposal().unwrap() will panic on error. Could error conditions in new_proposal (invalid signatures, round violations) cause test panics that hide actual consensus bugs rather than gracefully handling and reporting them? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ff77c4e-8f0d-4312-af2d-c7695d763a2f?mode=deep",
+    "timestamp": "2026-01-20 02:40:51.285062",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: fake_id()] [Missing Error Propagation] The fake_id() function doesn't return Result and assumes block operations succeed. Could this mask errors in block construction that would fail in production, creating false confidence in consensus correctness? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b813e7a-ee2b-46c6-a07a-4d7b5f6a04f8?mode=deep",
+    "timestamp": "2026-01-20 02:41:04.071895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: new_proposal()] [Payload Emptiness] All proposals use Payload::empty(false, true). Does this adequately test consensus behavior with full blocks? Could bugs only manifest with large payloads, missing critical vulnerabilities in transaction ordering, gas calculation, or block packing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e95e2f39-2b5b-4df8-a4ff-9f77f90ca63d?mode=deep",
+    "timestamp": "2026-01-20 02:41:18.127442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: random_payload()] [DirectMempool Variant] At line 264, Payload::DirectMempool variant is used. Are there other payload variants (InQuorumStore, etc.) that aren't tested? Could variant-specific bugs in payload handling enable transaction censorship or ordering manipulation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be6a7dc3-76a0-45e3-b66a-3639ec1de230?mode=deep",
+    "timestamp": "2026-01-20 02:41:32.481582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: random_payload()] [Transaction Signature] Transactions are signed with test keys at lines 262-266. Do these signatures follow the same validation path as production? Could weak test signature validation hide bugs in transaction authentication? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9c577ff-da85-4687-8768-5daa668ef24b?mode=deep",
+    "timestamp": "2026-01-20 02:41:47.649407",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: placeholder_certificate_for_block()] [Epoch Boundary] The function hardcodes epoch+1. Are epoch transitions properly tested? Could bugs at epoch boundaries (validator set changes, reconfiguration) enable attacks that only work when transitioning between epochs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c19d3dc-7fd7-4c79-b63b-b091911d5a39?mode=deep",
+    "timestamp": "2026-01-20 02:42:03.945423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: gen_test_certificate()] [Committed Block None] When committed_block is None (line 197), a placeholder ledger info is used. Does this properly represent uncommitted state? Could confusion between committed and uncommitted blocks enable attacks where validators commit blocks without proper finality? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72b8dc1b-2ba0-4d5c-a4b6-94e1e986893b?mode=deep",
+    "timestamp": "2026-01-20 02:42:22.047317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: child()] [QC Ancestor Relationship] The child() allows qc_idx from 0..=parent_idx. Could QC pointing to the parent itself (qc_idx == parent_idx) create degenerate cases where blocks self-certify, breaking the 2-chain or 3-chain commit rules? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e906e11e-db9f-4994-9ffb-257c47f95eb1?mode=deep",
+    "timestamp": "2026-01-20 02:42:40.770947",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: fake_id()] [HashValue Injection] At line 86, arbitrary HashValue is injected as block ID. Could specific hash values (all zeros, all ones, max value) trigger edge cases in hash-based data structures like Merkle trees or block stores, enabling block insertion attacks or lookup failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11435d13-c30c-44ef-bb8f-49ae18236220?mode=deep",
+    "timestamp": "2026-01-20 02:43:00.775684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: placeholder_ledger_info()] [Zero Hash Semantics] HashValue::zero() is used for consensus_data_hash. In production, does zero hash have special meaning (like null pointer)? Could zero hashes break hash uniqueness assumptions or enable collision attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9aca6546-f218-4b7b-af7f-b7a0342a9fdb?mode=deep",
+    "timestamp": "2026-01-20 02:43:20.682539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: gen_test_certificate()] [Hash Collision] VoteData hash at line 199 is computed from block and parent info. Could attackers find hash collisions in vote data by manipulating block parameters, creating QCs that appear to certify different blocks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df58f6cf-db00-49cb-ac06-a4dfab95ba90?mode=deep",
+    "timestamp": "2026-01-20 02:43:42.116060",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: new_proposal()] [Timestamp Race] The duration_since_epoch() call at line 48 may race with concurrent block creation. Could concurrent proposals get identical timestamps, violating timestamp uniqueness and enabling block confusion attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f6480d5-1f13-403a-a806-b84001f2c7d6?mode=deep",
+    "timestamp": "2026-01-20 02:44:03.758488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: random_payload()] [Random Address Race] AccountAddress::random() at line 261 uses system randomness. Could concurrent calls deplete randomness pool or create non-uniform address distribution, enabling address prediction attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_adf459b8-87e5-4141-b0cd-1ccdceb57547?mode=deep",
+    "timestamp": "2026-01-20 02:44:25.679405",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: child()] [Forest Mutation] The forest vector is mutated at line 149. If forests are shared across threads, could concurrent modification cause race conditions, data corruption, or violations of block ancestry invariants? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b79c332-0412-48ff-8927-da636b173030?mode=deep",
+    "timestamp": "2026-01-20 02:44:48.476662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: fake_id()] [Failed Authors Extraction] At line 93, block.block_data().failed_authors().unwrap() is called. Could this unwrap panic if failed_authors is None? What security implications arise from incorrect failed_authors tracking - could validators falsely blame honest validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02f969f4-7f59-4d60-b113-451a1b4bbf87?mode=deep",
+    "timestamp": "2026-01-20 02:45:12.845490",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: new_proposal()] [Empty Failed Authors] At line 51, Vec::new() is passed for failed_authors. Does this adequately test failure handling? Could bugs in failed_authors logic enable validators to avoid accountability for failures or manipulate leader election? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12c79138-dedd-415d-beb0-f4a8aa232381?mode=deep",
+    "timestamp": "2026-01-20 02:45:38.543855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: certificate_for_genesis()] [Genesis QC Uniqueness] The certificate_for_genesis() creates QCs from mock genesis. Could multiple different genesis QCs be created, enabling chain split attacks where validators start from different genesis states? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0617ac30-42ae-43f3-b667-071e431776a7?mode=deep",
+    "timestamp": "2026-01-20 02:46:04.692484",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: placeholder_certificate_for_block()] [Certificate ID Consistency] The function creates certificates for specified block IDs. Is there validation that certificate IDs match the blocks they certify? Could mismatched IDs enable certificate reuse across different blocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7864fd0f-93be-4ec9-93b1-7e5ff7d16997?mode=deep",
+    "timestamp": "2026-01-20 02:46:31.652658",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: gen_test_certificate()] [Vote Data Hash] The vote_data.hash() at line 199 becomes consensus_data_hash in ledger info. Could hash computation differences between test and production enable attacks where QCs appear valid in tests but fail in production? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_665d1562-d26a-4902-9f15-31231ffa250a?mode=deep",
+    "timestamp": "2026-01-20 02:46:58.532500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: bigger_round()] [Increment Bounds] The increment range 2..8 at line 105 seems arbitrary. Could extreme values (increment of 1 billion or u64::MAX-initial_round) be needed to test round overflow handling? Are there gaps in test coverage? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7be946f7-895b-4c4c-a213-1094a7dc4fb7?mode=deep",
+    "timestamp": "2026-01-20 02:47:25.392851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: placeholder_certificate_for_block()] [Epoch Arithmetic] At line 221, 'genesis_ledger_info.epoch() + 1' is computed. Could epoch overflow (if genesis epoch is u64::MAX) wrap to 0, creating blocks in epoch 0 that conflict with actual genesis epoch? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32d3382c-201d-4b9a-942e-bb7d26615fcf?mode=deep",
+    "timestamp": "2026-01-20 02:47:52.829740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: placeholder_ledger_info()] [LedgerInfo Validity] The placeholder creates LedgerInfo with BlockInfo::empty() and HashValue::zero(). Could this pattern be exploited to create ledger infos that bypass validation, enabling validators to commit without proper state roots or consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8a168e7-c8ca-413b-a888-250caf345465?mode=deep",
+    "timestamp": "2026-01-20 02:48:18.499462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: gen_test_certificate()] [LedgerInfo Mismatch] The function allows either real committed_block info or placeholder. Could switching between modes enable attacks where validators disagree on which blocks are committed, breaking finality guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67980001-cca0-4747-9c18-d62da51aec5e?mode=deep",
+    "timestamp": "2026-01-20 02:48:44.899200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/block_test_utils.rs] [Function: placeholder_certificate_for_block()] [Consensus Data Hash Setting] At line 244, set_consensus_data_hash is called after LedgerInfo creation. Does this mutation maintain LedgerInfo integrity? Could the hash be set multiple times or inconsistently, breaking the binding between ledger info and vote data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb5d7b4e-116e-4b77-a6ed-8be5ff6b6bb3?mode=deep",
+    "timestamp": "2026-01-20 02:49:10.706420",
+    "report_generated": false
+  }
+]
