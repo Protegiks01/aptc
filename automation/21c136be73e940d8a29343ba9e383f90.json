@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Vector Capacity] As buffer grows via push at line 56, can frequent reallocations cause performance issues or memory fragmentation affecting indexer throughput? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_109df716-bd00-4876-b1e4-3d63a1d427fd?mode=deep",
+    "timestamp": "2026-01-20 15:44:56.480053",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Threshold Boundary] The comparison at line 59 uses >=, but what if buffer_size_in_bytes equals max_size_per_file exactly, can this cause buffer to be one transaction larger than intended? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_457dc95c-19a3-40b9-8a8b-a02a8166d379?mode=deep",
+    "timestamp": "2026-01-20 15:45:09.279186",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Multiple Triggers] If both size threshold and end_batch are true at line 59, is dump called once or can logic error cause double dump? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee1390f4-0139-442e-93db-8995acc460cb?mode=deep",
+    "timestamp": "2026-01-20 15:45:22.351157",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: dump_transactions_to_file()] [Metadata Growth] BatchMetadata.files vector grows unboundedly via push at line 73 until end_batch, can this cause memory issues for large batches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cce514c0-7d19-45a4-904a-b0df5ae6df98?mode=deep",
+    "timestamp": "2026-01-20 15:45:37.685127",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: dump_transactions_to_file()] [Metadata Consistency] If multiple dumps occur before end_batch, files vector accumulates entries, but if one send fails, can partial metadata corruption occur? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6fc153fa-2b0d-473b-8234-91893a6e64d0?mode=deep",
+    "timestamp": "2026-01-20 15:45:52.467112",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Error Handling] If dump_transactions_to_file returns error at line 60, error is propagated but state is corrupted, should there be rollback mechanism? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b737f7b7-acaf-4d0d-9140-9e686c9f1af7?mode=deep",
+    "timestamp": "2026-01-20 15:46:06.298798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: dump_transactions_to_file()] [Error Context] When send fails and is converted to anyhow::Error at line 81-82, is sufficient context preserved for debugging which transactions were lost? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8852e14d-e0b7-433b-8126-acfab952a627?mode=deep",
+    "timestamp": "2026-01-20 15:46:22.973789",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Version Increment] Version is incremented at line 58 before dump is attempted at line 60, if dump fails, version counter is permanently out of sync with buffer state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33530b88-5f6f-4c1e-bcff-7ddf565940fb?mode=deep",
+    "timestamp": "2026-01-20 15:46:41.762302",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Version Consistency] Between lines 56-58, transaction is added and version incremented, but these are not atomic, can interleaving with concurrent operations cause version/buffer mismatch? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4b7f380-ce14-4754-9013-8400604bf8b6?mode=deep",
+    "timestamp": "2026-01-20 15:47:01.395190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Await Point] The .await at line 60 is a suspension point where other tasks can execute, can this cause race conditions with shared state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba1850f5-969f-4023-bf7b-e3b2f60d860b?mode=deep",
+    "timestamp": "2026-01-20 15:47:21.309786",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: dump_transactions_to_file()] [Await Point] The .await at line 80-81 is another suspension point after buffer is cleared, can cancellation here cause data loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf09de1e-8dce-4ee1-b46d-e968bc7124f0?mode=deep",
+    "timestamp": "2026-01-20 15:47:42.550193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Zero Size] If encoded_len() returns 0 at line 49 (empty transaction), can this cause buffer_size_in_bytes to never reach threshold causing unbounded buffer growth? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb1a8dff-4dda-4e7c-bd86-c394cf78ad56?mode=deep",
+    "timestamp": "2026-01-20 15:48:03.709124",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Size Overflow] Can repeated addition of size_bytes at line 57 cause usize overflow if many large transactions are buffered? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b9c8293-29d1-4fd5-aee5-5bc63a411816?mode=deep",
+    "timestamp": "2026-01-20 15:48:24.257195",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: dump_transactions_to_file()] [Metadata Reset] At line 85-86, BatchMetadata::default() is used to reset, but is default state guaranteed to be valid for next batch? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc87171b-37ea-45fa-81af-920d6af730da?mode=deep",
+    "timestamp": "2026-01-20 15:48:45.880995",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: new()] [Metadata Initialization] BatchMetadata passed to new() at line 25, if this is not properly initialized, can first batch have invalid metadata? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a846aeb0-45c6-47ec-82dd-d35f5d6e99d3?mode=deep",
+    "timestamp": "2026-01-20 15:49:07.950253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Transaction Validation] Beyond version check at lines 50-55, no validation of transaction content, can malformed transactions be buffered and sent downstream causing indexer errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3134155-de82-4ee3-8b06-f4a28eddbada?mode=deep",
+    "timestamp": "2026-01-20 15:49:30.029618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Duplicate Detection] No check for duplicate transactions with same version, can transactions be double-counted if fed multiple times? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9c6e4ae-a0e9-4a25-a47a-823580529d22?mode=deep",
+    "timestamp": "2026-01-20 15:49:52.431143",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: dump_transactions_to_file()] [Backpressure] If channel has bounded capacity and is full, send at line 80-81 blocks, can this cause entire indexer to stall waiting for slow consumer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce8b394c-3386-425a-bb03-8fb789ef1351?mode=deep",
+    "timestamp": "2026-01-20 15:50:15.694225",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: dump_transactions_to_file()] [Channel Closed] If receiver closes channel, send returns error, but is there recovery mechanism or does indexer permanently fail? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77192336-59d7-4f7b-a688-3058dfbeee75?mode=deep",
+    "timestamp": "2026-01-20 15:50:39.697131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: version()] [Getter Safety] The version() getter at line 37-39 returns u64 by value, but can external code misuse this to create version skew? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ccc7281-f2c4-4554-bfb5-7e75f58f179e?mode=deep",
+    "timestamp": "2026-01-20 15:51:04.257820",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Struct: FileStoreOperatorV2] [Type Safety] Version fields are all u64, but is there risk of mixing transaction.version with self.version in comparisons causing logic errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f593d12-0a0f-45b0-b357-c462be8de281?mode=deep",
+    "timestamp": "2026-01-20 15:51:28.726919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [State Transition] The state machine (empty -> buffering -> dumping -> empty) has no explicit validation, can invalid state transitions occur? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_339ef6a2-3987-4587-9c68-1667ba2c231e?mode=deep",
+    "timestamp": "2026-01-20 15:51:53.860409",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: dump_transactions_to_file()] [State Recovery] After failed dump, is operator in recoverable state or must it be recreated, can this cause prolonged indexer downtime? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d6d93ae-e7f9-41ca-bf44-28b443a0cee8?mode=deep",
+    "timestamp": "2026-01-20 15:52:17.967286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [First Transaction] When processing first transaction (version 0), are all code paths tested including modulo operation at line 48? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89f62e69-734c-49ad-b1d0-9e21484cd3ae?mode=deep",
+    "timestamp": "2026-01-20 15:52:42.640895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/file_store_operator.rs] [Function: buffer_and_maybe_dump_transactions_to_file()] [Last Transaction] When processing transaction with version u64::MAX, can integer overflow at line 48 or 58 cause corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8abbbb23-f9da-4f30-9fee-895a4113aafe?mode=deep",
+    "timestamp": "2026-01-20 15:53:07.104163",
+    "report_generated": false
+  }
+]
