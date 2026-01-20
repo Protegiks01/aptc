@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Integer overflow] In line 22, can an attacker propose a block where num_txns equals usize::MAX, causing the assignment 'let num_chunks = num_shards' followed by modulo/division operations to trigger integer overflow in subsequent calculations, leading to incorrect partitioning and consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0797fa5b-cc63-461e-aed7-36982263567b?mode=deep",
+    "timestamp": "2026-01-20 05:26:22.385709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Division by zero] In line 24 'let small_chunk_size = num_txns / num_chunks', if num_chunks (which equals num_shards) is zero, does this cause a division by zero panic that can halt validator execution and cause total loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b683451-be94-4226-a1c0-11d367d779fa?mode=deep",
+    "timestamp": "2026-01-20 05:26:34.734566",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Integer overflow] In line 23 'let num_big_chunks = num_txns % num_chunks', if num_chunks is zero, does the modulo operation cause a panic or undefined behavior that Byzantine validators can exploit to create non-deterministic execution across nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7b4bbf3-844d-489c-bf6a-17fc3e350f9c?mode=deep",
+    "timestamp": "2026-01-20 05:26:47.260165",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Integer overflow] In line 29 'let next_chunk_end = next_chunk_start + small_chunk_size + extra', can the addition of these usize values overflow when processing extremely large blocks, causing next_chunk_end to wrap around to a small value and create overlapping or missing transaction ranges? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_955d04b5-2b07-43e2-9f68-23ac9b4ed354?mode=deep",
+    "timestamp": "2026-01-20 05:27:00.271614",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Arithmetic error] In line 28 'let extra = if chunk_id < num_big_chunks { 1 } else { 0 }', if num_big_chunks equals num_chunks due to num_txns % num_chunks edge cases, does this cause all chunks to get the extra transaction, violating the uniform distribution invariant? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3bc20167-db70-4828-853b-ad7fa03a49be?mode=deep",
+    "timestamp": "2026-01-20 05:27:14.888386",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Integer underflow] In line 24, when num_txns is less than num_chunks, does small_chunk_size become 0, and can this cause some shards to receive 0 transactions while others receive 1, potentially violating downstream execution assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91b033d7-0ac1-4d5e-af8c-b35eea5fcbc8?mode=deep",
+    "timestamp": "2026-01-20 05:27:29.677943",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Range overflow] In line 30 '(next_chunk_start..next_chunk_end).collect()', if next_chunk_end overflows to a value less than next_chunk_start due to arithmetic wrapping, does this create an empty or invalid range that breaks the partition structure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_adecf394-b283-4677-8701-7869f98813f1?mode=deep",
+    "timestamp": "2026-01-20 05:27:45.682216",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Capacity overflow] In line 25 'let mut ret = Vec::with_capacity(num_chunks)', if num_chunks is usize::MAX or very large, can this cause memory allocation failure or panic that Byzantine validators can trigger to crash honest nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf266209-f0ba-4477-8e19-d43f0c0ac524?mode=deep",
+    "timestamp": "2026-01-20 05:28:02.783655",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Loop bounds] In line 27 'for chunk_id in 0..num_chunks', if num_chunks is modified by another thread or overflows during loop execution, can this cause the loop to execute fewer or more times than expected, creating incomplete partitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a7b0128-0ecd-4387-ae42-16dd1aea91ba?mode=deep",
+    "timestamp": "2026-01-20 05:28:19.956114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Accumulation error] In line 31 'next_chunk_start = next_chunk_end', if next_chunk_end has wrapped due to overflow, does this cause subsequent chunks to start from incorrect indices, potentially duplicating or skipping transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f008150e-925a-4a42-a261-a54fa5f53b84?mode=deep",
+    "timestamp": "2026-01-20 05:28:38.383987",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Transaction duplication] Can the range collection in line 30 '(next_chunk_start..next_chunk_end).collect()' create overlapping ranges if arithmetic errors cause next_chunk_start to not advance properly, leading to the same transaction being included in multiple shards and executed twice? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18081c8a-5b9a-445a-9f29-9e9cd1bd334f?mode=deep",
+    "timestamp": "2026-01-20 05:28:58.785860",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Missing transactions] If the final chunk's next_chunk_end (line 29) doesn't equal num_txns due to rounding errors in the distribution logic, can some transactions at the end of the block be completely omitted from all partitions, causing loss of user transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c5e7900-9b36-4573-a474-3a025a0438e6?mode=deep",
+    "timestamp": "2026-01-20 05:29:19.732282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Chunk boundary violation] In line 28-29, when calculating chunk boundaries, can off-by-one errors cause the last transaction of one chunk to be the first transaction of the next chunk, creating dependency violations in parallel execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cd0ca94-d5b3-482c-b8f7-708f6d888ac9?mode=deep",
+    "timestamp": "2026-01-20 05:29:41.203611",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Determinism violation] Is the partitioning algorithm in lines 21-35 guaranteed to be deterministic across all validators, or can floating-point arithmetic, platform differences, or race conditions cause different validators to produce different partitions for the same block? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f62e8d01-6692-4b61-803a-461c54214939?mode=deep",
+    "timestamp": "2026-01-20 05:30:03.763657",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Ordering violation] Does the collect() operation in line 30 preserve transaction ordering within each chunk, or can it shuffle transactions in a way that violates sequence number dependencies and causes execution failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41548ba7-42b5-4d7c-92f0-9c842e184bc8?mode=deep",
+    "timestamp": "2026-01-20 05:30:27.017859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Empty partition] When num_txns < num_chunks, can some shards receive empty Vec<PrePartitionedTxnIdx> partitions (zero transactions), and do downstream executors handle empty shards correctly or does this cause execution to hang? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad70d97a-6c2e-42f8-bed1-9ce069296a0c?mode=deep",
+    "timestamp": "2026-01-20 05:30:50.543322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Chunk size invariant] The comment in line 17 suggests chunks should be evenly divided, but can adversarial block sizes cause highly uneven distribution (e.g., one shard gets 99% of transactions) that defeats parallel execution benefits and causes execution timeouts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f718c0b1-5206-4f01-8d59-daaa93de40b7?mode=deep",
+    "timestamp": "2026-01-20 05:31:14.654091",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Index range validity] In line 30, do the ranges (next_chunk_start..next_chunk_end) always produce valid PrePartitionedTxnIdx values that are < num_txns, or can boundary errors create indices that cause out-of-bounds access in downstream code? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0afcb805-fa1e-47f8-aef2-178c5cd8e17e?mode=deep",
+    "timestamp": "2026-01-20 05:31:39.137601",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Chunk concatenation] The test in line 70 verifies that actual.concat() produces (0..18), but in production, can gaps or overlaps in chunk ranges cause the concatenated result to differ from the original transaction sequence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab3dae8f-0ec9-45e9-b061-531e6565449b?mode=deep",
+    "timestamp": "2026-01-20 05:32:03.763785",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: process()] [Distribution fairness] In lines 23-24, the calculation 'num_txns % num_chunks' and 'num_txns / num_chunks' determines chunk sizes - can a Byzantine block proposer manipulate num_txns to create extremely unfair distributions that violate protocol assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5dbf5661-4323-4fec-b820-70fa95a6b229?mode=deep",
+    "timestamp": "2026-01-20 05:32:28.850889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: pre_partition()] [State inconsistency] In line 47, when calling 'self.process(state.num_txns(), state.num_executor_shards)', if state.num_txns() returns a value that doesn't match the actual number of transactions in state.txns, can this cause index mismatches that lead to accessing wrong transactions or out-of-bounds errors? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22158784-726a-4676-83cd-cc06c76ace6b?mode=deep",
+    "timestamp": "2026-01-20 05:32:54.261700",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: pre_partition()] [Counter initialization] In line 48 'let mut txn_counter = 0', is this counter correctly incremented to track all transactions, or can integer overflow when processing blocks with usize::MAX transactions cause the counter to wrap and produce incorrect start_txn_idxs_by_shard values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b8327b6-095a-4893-a25c-d8e06086b91d?mode=deep",
+    "timestamp": "2026-01-20 05:33:20.364627",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: pre_partition()] [Vector sizing] In line 49 'let mut start_txn_idxs_by_shard = vec![0; state.num_executor_shards]', if state.num_executor_shards is very large (e.g., millions), can this cause OOM that Byzantine validators trigger to crash honest nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3242376b-42c3-47a7-9319-e84a9811cea4?mode=deep",
+    "timestamp": "2026-01-20 05:33:45.455812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: pre_partition()] [Loop invariant] In the loop at lines 50-53, does txn_counter always increment by exactly pre_partitioned.len() total transactions, or can discrepancies between the loop iterations and actual partition sizes cause txn_counter to not reach state.num_txns()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_834ad401-6d8d-4a03-88ee-6b7d5a04578c?mode=deep",
+    "timestamp": "2026-01-20 05:34:10.391864",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/block-partitioner/src/pre_partition/uniform_partitioner/mod.rs] [Function: pre_partition()] [Index assignment] In line 51 'start_txn_idxs_by_shard[shard_id] = txn_counter', if shard_id from enumerate() doesn't match the intended shard numbering scheme, can this cause start indices to be assigned to wrong shards, breaking the partition structure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9cc593e-219f-4553-b061-bcbf70c913f7?mode=deep",
+    "timestamp": "2026-01-20 05:34:33.882105",
+    "report_generated": false
+  }
+]
