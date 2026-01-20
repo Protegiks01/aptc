@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: freeze_ref()] [Same kind exemption] At lines 1781-1783, sibling edges of the same Call kind are exempted - can this be abused by creating calls that return multiple references to the same location, then freezing one while keeping others mutable? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c3b11f1-94a7-4197-b5e6-0b199aaee08d?mode=deep",
+    "timestamp": "2026-01-20 01:45:25.252174",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: freeze_ref()] [Derived temps exclusion] Lines 1814-1873 exclude derived temps from the mutable reference check - can manipulating the derived_from map allow freezing while mutable references exist? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25925c67-fb95-491d-9fae-b0c76db6abc9?mode=deep",
+    "timestamp": "2026-01-20 01:45:37.761493",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: freeze_ref()] [Transitive children bypass] At lines 1822-1823, transitive children of the label are checked - but can non-transitive mutable borrows (siblings of ancestors) escape this check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8177c905-154b-4d66-b9d5-f8ebecae15a0?mode=deep",
+    "timestamp": "2026-01-20 01:45:53.814620",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: assign()] [Inferred assignment confusion] The AssignKind::Inferred logic at lines 1534-1542 decides between move and copy based on heuristics - can edge cases cause incorrect classification, allowing move of a borrowed value? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d749402-89c6-4352-a698-28f16b2d7f37?mode=deep",
+    "timestamp": "2026-01-20 01:46:07.195617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: move_ref()] [Label transfer race] At lines 790-796, the label is removed from src and added to dest non-atomically - can this create a window where neither temp owns the label? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5cf819c-86ff-4a00-bb32-b2d8ddb821fd?mode=deep",
+    "timestamp": "2026-01-20 01:46:21.011931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: copy_ref()] [Derived marking bypass] Copy_ref at lines 800-805 marks the destination as derived from source - but can this marking be lost during graph joins, causing the copied ref to bypass v1 semantics checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d196a578-51c9-4cbb-a155-9893753153fc?mode=deep",
+    "timestamp": "2026-01-20 01:46:36.260955",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: replace_ref()] [Non-release on borrowed] Replace_ref at lines 775-787 releases the old reference, but what if it's still borrowed? Can this cause the borrow graph to incorrectly drop active borrow edges? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3347f9e3-0869-4d86-9f39-3f1c11f57fc4?mode=deep",
+    "timestamp": "2026-01-20 01:46:54.109178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: return_()] [Parameter index bypass] At line 1915, the check is `local >= get_parameter_count()` - can off-by-one errors or incorrect parameter indexing allow returning references to locals? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cda6a440-59a4-441b-aee5-a2a7148b7d1c?mode=deep",
+    "timestamp": "2026-01-20 01:47:11.925947",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: return_()] [Root confusion] The roots() call at line 1902 finds ancestors - can a graph structure with multiple roots cause some to be missed, allowing return of global-derived references? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25567cbc-e9c1-4614-a1e7-ce538a47eda1?mode=deep",
+    "timestamp": "2026-01-20 01:47:32.079383",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: return_()] [External bypass] At line 1927, External and Derived locations are exempted - can all references be marked as External through manipulation, bypassing all return restrictions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63fe48f5-a077-48a9-ac60-34254439c209?mode=deep",
+    "timestamp": "2026-01-20 01:47:51.861396",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: read_ref()] [Missing safety check] Read_ref at lines 1937-1942 doesn't call check_borrow_safety - can reading through a reference violate safety if the graph is in an unsafe state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d420038-a29c-49bc-ae72-6c0293fab3d9?mode=deep",
+    "timestamp": "2026-01-20 01:48:12.998470",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: write_ref()] [Insufficient borrow check] Write_ref at lines 1945-1958 only checks if dest has children, not if it's part of an unsafe borrow pattern - can this allow writes that violate borrow safety? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b76e783c-0e37-4308-8506-e3a6709a97c0?mode=deep",
+    "timestamp": "2026-01-20 01:48:37.524890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: move_from()] [Resource extraction race] The move_from check at lines 1878-1893 verifies no borrows exist, but can concurrent operations create borrows after the check but before extraction? (Note: This is a compiler, not runtime, so probably not applicable) (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1af4624-abae-491b-a203-34e341cd972b?mode=deep",
+    "timestamp": "2026-01-20 01:49:01.392743",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: could_overlap()] [Field overlap logic] The overlap check at lines 258-264 only considers field identity - can different paths to the same field through generic type instantiation bypass this check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8d54744-b00a-4926-bc08-91b66dc8015b?mode=deep",
+    "timestamp": "2026-01-20 01:49:25.551787",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: any_could_overlap()] [Short-circuit bypass] At lines 267-270, if any pair overlaps the function returns true - but can the cartesian product logic miss overlaps due to set ordering? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48e98a01-519b-455c-a35e-fa53960c5920?mode=deep",
+    "timestamp": "2026-01-20 01:49:49.690906",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: is_mut()] [Edge kind checking] The is_mut check at lines 240-249 pattern matches - can new edge kinds be added without updating this, causing mutable edges to be treated as immutable? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af5cdc0e-6996-4ede-973a-7e5636ee992f?mode=deep",
+    "timestamp": "2026-01-20 01:50:14.941624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: new_from_code_offset()] [Label collision] Code offset labels at lines 278-280 use 16-bit offset and 8-bit qualifier - can programs with >64K bytecode or >256 qualifiers cause label collisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08abbe64-6ac6-4ba9-bc16-71f95637013e?mode=deep",
+    "timestamp": "2026-01-20 01:50:41.533417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: new_from_counter()] [Counter collision] Counter labels at lines 284-287 shift by 24 bits - can this collide with code offset labels if counter exceeds certain values? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d76bb68-f128-4a81-b319-b2dd057c54f8?mode=deep",
+    "timestamp": "2026-01-20 01:51:08.445604",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: roots()] [Incomplete traversal] The roots() function at lines 831-854 uses a todo list - can cycles in the parent graph cause infinite loops despite the 'done' set? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57e4b90c-0628-44e6-b7d7-e2d6798580e0?mode=deep",
+    "timestamp": "2026-01-20 01:51:36.238419",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: transitive_children()] [Cycle handling] Transitive children at lines 857-871 includes the starting node - can cycles cause the result set to be incorrect? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f5e05c8-5baf-44bb-a3d3-f5661bfaba36?mode=deep",
+    "timestamp": "2026-01-20 01:52:04.931459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: error_with_hints()] [Error suppression bypass] Errors are suppressed if suppress_errors is true at lines 1396-1404 - can this be exploited to compile unsafe code in production by manipulating compiler flags? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b5856d2-bee6-4493-b7bc-78db7a2febb1?mode=deep",
+    "timestamp": "2026-01-20 01:52:34.159486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: diverging_edge_error()] [Error ordering] At lines 1295-1296, edges are ordered by location for error messages - can this ordering affect which error is reported first, potentially hiding more critical issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4aaa883-91de-46b1-9b7c-88e61aff9d8f?mode=deep",
+    "timestamp": "2026-01-20 01:53:03.518961",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: release_refs_not_alive_after()] [Liveness annotation trust] The code trusts LiveVarAnnotation at line 885 - can incorrect liveness analysis from a prior pass cause safety violations to go undetected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16df60d9-c805-4e35-a285-3e0edaa5b3c1?mode=deep",
+    "timestamp": "2026-01-20 01:53:32.811766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: release_refs_not_alive_after()] [Alive.after check] Only refs in alive.after are kept at lines 1109 - can temporaries that should be alive be incorrectly marked as dead, causing premature release? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f22e1065-3b68-4822-9144-60f56ffbb837?mode=deep",
+    "timestamp": "2026-01-20 01:54:01.845478",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/reference_safety/reference_safety_processor_v2.rs] [Function: execute()] [Instruction preprocessing] Borrow safety is checked before processing at lines 1976-2008 - can the state after preprocessing but before execution differ, causing TOCTOU issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82d15b62-c6c2-49e0-8c17-d2e17040759c?mode=deep",
+    "timestamp": "2026-01-20 01:54:29.104531",
+    "report_generated": false
+  }
+]
