@@ -1,0 +1,50 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Box Allocation DoS] At line 86, each transaction is wrapped in Box::new() without limit on transaction count per call - can attackers send millions of tiny transactions to exhaust heap allocations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_740d3b2d-282f-42c2-82ee-4de754653665?mode=deep",
+    "timestamp": "2026-01-20 14:23:18.146239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Size Calculation Cost] encoded_len() is called for every transaction (lines 83, 85) - if this is expensive, can attackers send large batches to cause CPU exhaustion during size accounting? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0906e9bd-25b9-4d7c-a0ca-61d2604f3c13?mode=deep",
+    "timestamp": "2026-01-20 14:23:30.994520",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Eviction CPU Cost] The eviction loop (lines 108-116) processes one slot per iteration - if many slots need eviction, can this block writers for extended time, causing indexer lag? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40d97c4e-ff00-4c74-b155-ea7a30cf5fa2?mode=deep",
+    "timestamp": "2026-01-20 14:23:44.017480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: get_data()] [Version-Slot Mapping Collision] Since get_data() uses modulo to map version to slot without checking version validity, can requesting version X return data for version X + k*num_slots, causing indexer to serve wrong transaction data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a38ed22-5a17-4994-8fc8-d3d3d464fc1e?mode=deep",
+    "timestamp": "2026-01-20 14:23:57.604424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Atomicity Violation] The function updates multiple state variables (data, start_version, end_version, total_size) non-atomically - can readers observe state where end_version points beyond actual available data, causing None returns for valid versions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d03430c-5e73-4fe5-b464-801debdff575?mode=deep",
+    "timestamp": "2026-01-20 14:24:12.113341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Replay Attack] Can an attacker capture and replay valid update_data() calls with old start_versions to force the cache to accept stale data, potentially causing double-spend detection failures in downstream consumers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7aaad812-8273-4371-a989-4f12701c9b92?mode=deep",
+    "timestamp": "2026-01-20 14:24:28.154959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Struct: DataManager] [Type Safety] Since Transaction is from aptos_protos::transaction::v1, can incompatible protobuf versions cause deserialization failures when get_data() returns cached data, crashing consumers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78a21759-e2ae-434d-8c7c-66ffb3249f43?mode=deep",
+    "timestamp": "2026-01-20 14:24:45.665476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/data_manager.rs] [Function: update_data()] [Slot Reuse Without Clear] When overwriting a slot at line 82-86, the old transaction is dropped but the slot isn't explicitly cleared - can partial transaction data remain in memory, leaking sensitive information? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e5dd2a9-c5e5-4f22-a648-24e229b7c04b?mode=deep",
+    "timestamp": "2026-01-20 14:25:03.769289",
+    "report_generated": false
+  }
+]
