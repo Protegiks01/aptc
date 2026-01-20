@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/lib.rs] [Function: start_backup_service()] [Authentication bypass] Does the backup service implement any authentication or authorization mechanism before exposing database state, or can any network-accessible attacker query sensitive validator state including transaction history, account balances, and cryptographic proofs without credentials? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_979c6e8e-d55b-4693-8ba1-319b35ae7c4b?mode=deep",
+    "timestamp": "2026-01-20 04:55:37.174127",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/lib.rs] [Function: start_backup_service()] [Access control] Is there IP whitelisting, TLS client certificate validation, or any network-level access control to restrict who can call backup endpoints, or can external attackers freely download the entire blockchain state including private validator metadata? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99834aed-005e-4db8-bc86-40d5821d238d?mode=deep",
+    "timestamp": "2026-01-20 04:55:50.163852",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: get_routes()] [Rate limiting] Does the backup service implement rate limiting or request throttling on any endpoints, or can an attacker exhaust server resources by making unlimited concurrent requests to expensive endpoints like state_snapshot? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edc69ebb-818a-4447-87d2-ed9b571fdfff?mode=deep",
+    "timestamp": "2026-01-20 04:56:03.086928",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot endpoint] [Resource exhaustion] Can an attacker request state snapshots at extremely high versions (near u64::MAX) to force the database to perform expensive Merkle tree traversals, causing validator node slowdown or memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2be24d35-3458-4647-aeb1-9ee10438f98e?mode=deep",
+    "timestamp": "2026-01-20 04:56:16.562660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot_chunk endpoint] [Integer overflow] When processing the limit parameter in state_snapshot_chunk(version, start_idx, limit), can an attacker supply limit=usize::MAX to cause integer overflow in buffer allocation or iterator bounds checking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50d2b387-d902-456a-9092-1e7cff9f7511?mode=deep",
+    "timestamp": "2026-01-20 04:56:31.114320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: transactions endpoint] [Memory exhaustion] Can an attacker request transactions(0, usize::MAX) to force the server to load billions of transactions into memory, causing OOM crashes and validator unavailability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f811d5fe-95c2-440c-abc7-3169b0e85bd2?mode=deep",
+    "timestamp": "2026-01-20 04:56:46.707486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: BytesSender::send_size_prefixed_bcs_bytes()] [Channel flooding] With MAX_BATCHES set to 100, can an attacker trigger slow client reads to fill the mpsc channel, causing the blocking_send() to block indefinitely and freeze the backup service thread? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3bc89c5-cfba-4c17-91a0-e1080d1ad0d4?mode=deep",
+    "timestamp": "2026-01-20 04:57:03.570018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: BytesSender::send_bytes()] [Buffer growth] Is there a maximum buffer size limit before flushing, or can malicious BCS-serialized records cause unbounded buffer growth in BytesMut, leading to memory exhaustion attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ab5f9e6-8420-4c44-9561-540944a36d2d?mode=deep",
+    "timestamp": "2026-01-20 04:57:23.851481",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: state_range_proof endpoint] [Version inconsistency] When serving state_range_proof(version, end_key), if the database is concurrently being updated with new transactions, can the proof reference a state root from version N while returning values from version N+1, breaking Merkle proof verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_576e5a7c-2781-4933-a5df-dfd83af01488?mode=deep",
+    "timestamp": "2026-01-20 04:57:43.880679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot endpoint] [TOCTOU race] Between calling get_state_item_iter(version) and iterating through results, if the database prunes old versions, can the iterator return inconsistent data or panic due to missing state, causing validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_518611df-122d-4927-a22b-eb97a14d635b?mode=deep",
+    "timestamp": "2026-01-20 04:58:04.203833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: transaction_range_proof endpoint] [Proof integrity] Does get_transaction_range_proof validate that first_version <= last_version before generating proofs, or can an attacker request inverted ranges to trigger assertion failures or return invalid proofs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f612861-f533-4caa-b645-31ce355c6c14?mode=deep",
+    "timestamp": "2026-01-20 04:58:26.208972",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: epoch_ending_ledger_infos endpoint] [Epoch boundary] When requesting epoch_ending_ledger_infos(start_epoch, end_epoch), if end_epoch < start_epoch or end_epoch is far in the future, can this cause infinite loops or panics in the iterator logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db231af0-5e02-44bd-b2a6-d3c67e350a64?mode=deep",
+    "timestamp": "2026-01-20 04:58:48.289875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/lib.rs] [Function: start_backup_service()] [Runtime safety] Does spawning the warp server with runtime.handle().spawn() properly handle runtime shutdown, or can calling drop(runtime) while requests are in-flight cause use-after-free or data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af46ee4e-a049-469c-afe9-eac5aa6036f8?mode=deep",
+    "timestamp": "2026-01-20 04:59:12.585253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/utils.rs] [Function: reply_with_bytes_sender()] [Task abandonment] After spawning the blocking task with tokio::task::spawn_blocking(), if the client disconnects early, does the spawned task continue consuming database resources indefinitely without cancellation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8df4147c-aea9-4705-ac26-bf1a08da29c6?mode=deep",
+    "timestamp": "2026-01-20 04:59:37.273165",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: BytesSender::finish()] [Double finish] If finish() is called multiple times on the same BytesSender (e.g., via Drop and explicit call), can this cause double-flush leading to duplicate data in the stream or panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e4f6828-07bc-43ca-91aa-a2c359a2d431?mode=deep",
+    "timestamp": "2026-01-20 05:00:03.540775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: BytesSender::abort()] [Error propagation] When abort() is called with an error, if blocking_send() fails because the receiver is dropped, does the original error get swallowed, making debugging impossible? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_692f29ae-2c9d-407e-9028-84ac84b096de?mode=deep",
+    "timestamp": "2026-01-20 05:00:31.066759",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: state_range_proof endpoint] [HashValue validation] Does the endpoint validate that the end_key HashValue represents a valid state key before calling get_account_state_range_proof(), or can malformed hash values cause database query errors or crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9fae1cd0-627c-4446-9e8f-79bfedbf64c9?mode=deep",
+    "timestamp": "2026-01-20 05:00:58.789801",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot_chunk endpoint] [Index bounds] When processing state_snapshot_chunk(version, start_idx, limit), is there validation that start_idx + limit doesn't overflow usize, preventing out-of-bounds iterator access? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_693b6e25-218e-40a0-b82a-e0d3e7df5820?mode=deep",
+    "timestamp": "2026-01-20 05:01:28.513162",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: transactions endpoint] [Version validation] Does the transactions endpoint validate that start_version exists in the database before creating the iterator, or can requesting future versions cause panics or return empty results without proper error codes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc04ca72-4abc-451a-a418-879b8240b448?mode=deep",
+    "timestamp": "2026-01-20 05:01:58.457829",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: epoch_ending_ledger_infos endpoint] [Epoch overflow] Can an attacker supply u64::MAX for end_epoch to cause integer overflow when calculating (end_epoch - start_epoch), potentially leading to incorrect iteration bounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_547d1b7a-e2b0-4afa-b7c8-9d71899df1a1?mode=deep",
+    "timestamp": "2026-01-20 05:02:28.366170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/utils.rs] [Function: unwrap_or_500()] [Information leakage] When logging errors with warn!(\\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f13ed226-9201-4328-86f5-235e7f5b1c1b?mode=deep",
+    "timestamp": "2026-01-20 05:02:53.732624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/utils.rs] [Function: handle_rejection()] [Enumeration attack] Does the 400 Bad Request response reveal different error details for malformed parameters vs. missing parameters, allowing attackers to enumerate valid endpoint structures and parameter types? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a341010-069e-4e58-819f-01b79fbba8d7?mode=deep",
+    "timestamp": "2026-01-20 05:03:19.994594",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: db_state endpoint] [State disclosure] Does the db_state endpoint return sensitive information like internal database version numbers, epoch configurations, or validator set details that could aid attackers in planning consensus attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_010e5760-6b6c-41df-b471-29dd1e9804f8?mode=deep",
+    "timestamp": "2026-01-20 05:03:45.505886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: abort()] [Error serialization] When abort() sends an error through the stream, is the error properly sanitized to avoid leaking sensitive database internals, or could boxed errors expose implementation details? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80135fbb-659b-4868-9fed-c0b5c33915f9?mode=deep",
+    "timestamp": "2026-01-20 05:04:11.951053",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/mod.rs] [Function: state_root_proof endpoint] [Proof forgery] Does the state_root_proof endpoint validate the returned proof before sending it, or can database corruption cause it to return invalid Merkle proofs that would allow attackers to fake state commitments? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1241590-bef4-41d1-bb35-1855ed861913?mode=deep",
+    "timestamp": "2026-01-20 05:04:39.936023",
+    "report_generated": false
+  }
+]
