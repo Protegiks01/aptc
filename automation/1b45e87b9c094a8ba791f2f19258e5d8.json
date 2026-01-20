@@ -1,0 +1,56 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs] [Function: execute_block()] [Observable timing] Can SHARDED_BLOCK_EXECUTION_BY_ROUNDS_SECONDS timing reveal confidential transaction patterns enabling MEV attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e793434-a1e0-41e2-b985-1fe3433abb36?mode=deep",
+    "timestamp": "2026-01-20 11:08:15.173715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs] [Function: start()] [TPS spoofing] Can manipulated num_txns or exe_time values cause false TPS reporting hiding consensus problems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5180ad5-c67a-4dd0-8666-c848cba2b2ee?mode=deep",
+    "timestamp": "2026-01-20 11:08:27.681483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs] [Function: execute_block()] [Counter cardinality explosion] Can unlimited unique shard_id/round combinations cause metrics cardinality explosion and monitoring system failure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb69daf4-dc06-4cab-9697-7178795e1a93?mode=deep",
+    "timestamp": "2026-01-20 11:08:40.719683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs] [Function: execute_transactions_with_dependencies()] [Cross-shard double-spend] Can transactions with cross-shard dependencies execute on multiple shards simultaneously, allowing double-spending? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b95d4a0-ecbe-43f1-bd8f-ccd8f29fd8a5?mode=deep",
+    "timestamp": "2026-01-20 11:08:53.699388",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs] [Function: execute_sub_block()] [Shard fork attack] Can malicious coordinator send different SubBlock data to different validator shards causing execution divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30ba5be3-9001-41b1-bb16-998ccc1b5ff7?mode=deep",
+    "timestamp": "2026-01-20 11:09:08.254527",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs] [Function: execute_transactions_with_dependencies()] [Dependency cycle] Can TransactionWithDependencies contain circular dependencies causing deadlock or infinite wait? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d751a8e8-c5d9-4f85-bb1f-f5bcde17a661?mode=deep",
+    "timestamp": "2026-01-20 11:09:22.924648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs] [Function: execute_transactions_with_dependencies()] [Partial commit attack] Can some shards commit cross-shard state while others rollback, creating inconsistent global state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95a4ea3b-9d01-411b-94b7-89db20931e3b?mode=deep",
+    "timestamp": "2026-01-20 11:09:38.871803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs] [Function: execute_transactions_with_dependencies()] [Cross-shard replay] Can cross-shard commit messages be replayed across different blocks causing state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_efbd2705-ba93-4d72-ad89-3a12f5c73965?mode=deep",
+    "timestamp": "2026-01-20 11:09:56.334199",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs] [Function: execute_\n\n### Citations\n\n**File:** aptos-move/aptos-vm/src/sharded_block_executor/sharded_executor_service.rs (L1-273)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{\n    block_executor::AptosVMBlockExecutorWrapper,\n    sharded_block_executor::{\n        aggr_overridden_state_view::{AggregatorOverriddenStateView, TOTAL_SUPPLY_AGGR_BASE_VAL},\n        coordinator_client::CoordinatorClient,\n        counters::{\n            SHARDED_BLOCK_EXECUTION_BY_ROUNDS_SECONDS, SHARDED_BLOCK_EXECUTOR_TXN_COUNT,\n            SHARDED_EXECUTOR_SERVICE_SECONDS,\n        },\n        cross_shard_client::{CrossShardClient, CrossShardCommitReceiver, CrossShardCommitSender},\n        cross_shard_state_view::CrossShardStateView,\n        messages::CrossShardMsg,\n        ExecutorShardCommand,\n    },\n};\nuse aptos_block_executor::{\n    code_cache_global_manager::AptosModuleCacheManager, txn_provider::default::DefaultTxnProvider,\n};\nuse aptos_logger::{info, trace};\nuse aptos_metrics_core::TimerHelper;\nuse aptos_types::{\n    block_executor::{\n        config::{BlockExecutorConfig, BlockExecutorLocalConfig},\n        partitioner::{ShardId, SubBlock, SubBlocksForShard, TransactionWithDependencies},\n        transaction_slice_metadata::TransactionSliceMetadata,\n    },\n    state_store::StateView,\n    transaction::{\n        analyzed_transaction::AnalyzedTransaction,\n        signature_verified_transaction::SignatureVerifiedTransaction, BlockOutput,\n        TransactionOutput,\n    },\n};\nuse aptos_vm_logging::disable_speculative_logging;\nuse futures::{channel::oneshot, executor::block_on};\nuse move_core_types::vm_status::VMStatus;\nuse std::sync::Arc;\n\npub struct ShardedExecutorService<S: StateView + Sync + Send + 'static> {\n    shard_id: ShardId,\n    num_shards: usize,\n    executor_thread_pool: Arc<rayon::ThreadPool>,\n    coordinator_client: Arc<dyn CoordinatorClient<S>>,\n    cross_shard_client: Arc<dyn CrossShardClient>,\n}\n\nimpl<S: StateView + Sync + Send + 'static> ShardedExecutorService<S> {\n    pub fn new(\n        shard_id: ShardId,\n        num_shards: usize,\n        num_threads: usize,\n        coordinator_client: Arc<dyn CoordinatorClient<S>>,\n        cross_shard_client: Arc<dyn CrossShardClient>,\n    ) -> Self {\n        let executor_thread_pool = Arc::new(\n            rayon::ThreadPoolBuilder::new()\n                // We need two extra threads for the cross-shard commit receiver and the thread\n                // that is blocked on waiting for execute block to finish.\n                .thread_name(move |i| format!(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6eb7d35-d20b-469e-909b-5b0b5d69adb5?mode=deep",
+    "timestamp": "2026-01-20 11:10:14.044790",
+    "report_generated": false
+  }
+]
