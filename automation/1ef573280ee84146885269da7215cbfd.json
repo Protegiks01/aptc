@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Function: Claims::test()] [Logic Error] The test function has exp and iat timestamps swapped - exp is set to Utc::now() while iat is set to Utc::now() + 3600 seconds. Can this bug in test code indicate a misunderstanding of JWT semantics that could have propagated to production code, causing tokens to be rejected immediately or accepted when expired? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57c1dd55-7dd3-4764-8b0b-bcb66879c199?mode=deep",
+    "timestamp": "2026-01-20 13:43:44.832997",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Function: Claims::test()] [Timestamp Confusion] Since the test function sets exp=now and iat=now+3600, does this mean the token expires before it's issued? Could similar timestamp confusion in production code allow expired tokens to be accepted or valid tokens to be rejected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68c8f9ae-5841-43a3-88ce-b871e3002f6c?mode=deep",
+    "timestamp": "2026-01-20 13:43:57.121310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Function: Claims::test()] [Test Coverage Gap] Does the swapped exp/iat in the test function mean that actual timestamp validation logic is never properly tested, potentially hiding critical bugs in jwt_auth.rs authorize_jwt() that could allow expired token usage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48772c66-156b-4a52-aeed-fba99177cd85?mode=deep",
+    "timestamp": "2026-01-20 13:44:09.714540",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Function: default_role_type()] [Privilege Escalation] The default_role_type() function returns RoleType::Validator (most privileged role). Can an attacker craft an AuthRequest with a missing role_type field to exploit serde's default attribute and authenticate as a Validator instead of a less-privileged FullNode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ae4b1c8-27ae-46f3-b515-578e6b182b5c?mode=deep",
+    "timestamp": "2026-01-20 13:44:22.842607",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field role_type] [Authentication Bypass] If an attacker sends a malformed JSON AuthRequest omitting the role_type field, will serde automatically assign RoleType::Validator due to the #[serde(default)] attribute, bypassing intended access controls and granting validator-level permissions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81d9786e-43f9-4b0e-babd-af2c8a8c50e8?mode=deep",
+    "timestamp": "2026-01-20 13:44:36.557338",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Function: default_role_type()] [Authorization Bypass] Since role_type defaults to Validator, can a malicious client send minimal AuthRequest payloads without role_type to gain elevated privileges, then use the resulting JWT to access validator-only telemetry endpoints? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c475b73-7a97-40a8-ac17-1201376da2bd?mode=deep",
+    "timestamp": "2026-01-20 13:44:51.060799",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest] [Design Flaw] Why does role_type default to the most privileged role (Validator) instead of the least privileged (FullNode or Unknown)? Could this violate the principle of least privilege and enable privilege escalation attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ecd81c5-e872-42e4-bdfa-ff014f49d7f7?mode=deep",
+    "timestamp": "2026-01-20 13:45:06.862816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Function: default_role_type()] [Backward Compatibility Attack] If the default was added for backward compatibility with old clients that don't send role_type, can attackers exploit legacy protocol versions to authenticate as Validators without proper validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a75678e2-15d1-4736-bb22-3ea691a2e8e4?mode=deep",
+    "timestamp": "2026-01-20 13:45:22.894438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Function: default_uuid()] [Privacy Leak] The default_uuid() returns Uuid::default() (all zeros: 00000000-0000-0000-0000-000000000000). Can attackers omit run_uuid in AuthRequest to get tokens with identical UUIDs, enabling correlation of telemetry from different nodes and breaking privacy guarantees? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4f8a103-81ec-44a8-8520-f9fd99acf277?mode=deep",
+    "timestamp": "2026-01-20 13:45:40.218212",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field run_uuid] [Session Tracking] If multiple AuthRequest messages omit run_uuid, all resulting JWT Claims will have the same default UUID. Can this enable tracking of validator restarts, correlating authentication sessions, and building validator behavior profiles? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4941c2ac-0382-4c9a-bea1-51c42ee6c0d2?mode=deep",
+    "timestamp": "2026-01-20 13:45:59.627794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Function: default_uuid()] [Replay Detection Bypass] Since run_uuid is meant to identify unique node instances/sessions, can the default all-zeros UUID break replay protection mechanisms that rely on unique UUIDs per authentication session? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14c8b8b4-a636-457d-b781-48a346003447?mode=deep",
+    "timestamp": "2026-01-20 13:46:19.140927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: Claims field run_uuid] [Token Correlation] If JWT tokens with default run_uuid (all zeros) are issued to multiple nodes, can telemetry aggregation systems incorrectly merge metrics from different validators, causing monitoring failures or enabling DoS by metric pollution? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2537937-5a33-41c2-9981-d6b9c098ee52?mode=deep",
+    "timestamp": "2026-01-20 13:46:39.683392",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field chain_id] [Cross-Chain Replay] Does AuthRequest validate that chain_id matches the expected network? Can an attacker replay authentication from testnet (chain_id=2) to mainnet (chain_id=1) to gain unauthorized access if both chains share validator public keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfcd5534-358a-420d-bc0c-a374f10c54ee?mode=deep",
+    "timestamp": "2026-01-20 13:47:00.466896",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field chain_id] [ChainId Manipulation] Since ChainId is a simple wrapper type, can an attacker craft AuthRequest with invalid chain_id values (e.g., u8::MAX, 0, negative values cast to u8) to bypass validation logic or cause integer overflow in downstream processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d2bd54b-e002-461b-90ad-051d770be8b8?mode=deep",
+    "timestamp": "2026-01-20 13:47:21.493348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field chain_id] [Multi-Chain Confusion] If a validator operates on multiple chains (mainnet + testnet), can an attacker authenticate with the wrong chain_id to access telemetry data meant for a different network, leaking sensitive mainnet validator information? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6df6850-d093-49f8-a790-6c5e7147cd22?mode=deep",
+    "timestamp": "2026-01-20 13:47:43.405167",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field chain_id] [Deserialization Attack] Can malformed JSON with extremely large chain_id values (beyond u8 range) cause deserialization panics, integer overflows, or memory corruption during serde::Deserialize processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3b2e3d6-4ad7-4217-8cc0-39ca069c18f2?mode=deep",
+    "timestamp": "2026-01-20 13:48:06.486894",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field peer_id] [Identity Spoofing] Since peer_id is directly deserialized without validation, can an attacker claim to be any PeerId (including a known validator) and pass initial authentication if the peer_id-to-public_key binding is not properly verified in handle_auth()? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12a706e1-3959-4ee5-a76d-2511c3b8329e?mode=deep",
+    "timestamp": "2026-01-20 13:48:30.646772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field peer_id] [PeerId Injection] PeerId is 32 bytes. Can an attacker inject malicious byte patterns that appear valid during deserialization but cause crashes or unexpected behavior when used as map keys or in cryptographic operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9186d7e4-dc8f-4223-93b8-6b1d80520fe7?mode=deep",
+    "timestamp": "2026-01-20 13:48:55.778885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field peer_id] [Validator Impersonation] Can an attacker send AuthRequest with a peer_id belonging to a legitimate validator but provide their own server_public_key, hoping that incomplete validation allows them to authenticate as that validator? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c735963-2565-4d52-8216-18390de54bab?mode=deep",
+    "timestamp": "2026-01-20 13:49:19.762497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field peer_id] [PeerId Format Attack] Are there any special PeerId values (all zeros, all 0xFF, sequential patterns) that could bypass validation, cause hash collisions, or trigger edge cases in peer lookup logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d195e22a-0638-4569-abfe-e826b7b2f353?mode=deep",
+    "timestamp": "2026-01-20 13:49:43.333855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field server_public_key] [Man-in-the-Middle Setup] An attacker includes their own public key as server_public_key in AuthRequest. If validation only checks key format (not key ownership), can the attacker complete the Noise handshake and intercept JWT tokens meant for the legitimate server? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ac21b7a-a19f-46ca-8cb1-9d396c5e9dde?mode=deep",
+    "timestamp": "2026-01-20 13:50:06.907935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field server_public_key] [Public Key Validation] x25519::PublicKey is 32 bytes. Does deserialization validate that the provided bytes form a valid x25519 public key on the curve? Can invalid points cause cryptographic failures or enable small-subgroup attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fc0e8c9-9132-4dfa-86ae-f67967fb92eb?mode=deep",
+    "timestamp": "2026-01-20 13:50:29.859777",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field server_public_key] [Key Confusion Attack] If multiple telemetry servers exist with different public keys, can an attacker deliberately provide the wrong server_public_key to cause authentication to fail with a specific error, enabling timing-based oracle attacks to map the server infrastructure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9874cec5-fd3b-4632-941d-c82b8d2b0990?mode=deep",
+    "timestamp": "2026-01-20 13:50:52.712584",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field server_public_key] [Replay with Wrong Key] Can an attacker replay captured AuthRequest messages but replace server_public_key to target a different server, potentially causing state confusion or enabling cross-server attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_970e7ac0-d3be-4fbc-8095-d9e222764954?mode=deep",
+    "timestamp": "2026-01-20 13:51:14.645545",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/types/auth.rs] [Struct: AuthRequest field handshake_msg] [Buffer Overflow] handshake_msg is Vec<u8> with no size limits in the type definition. Can an attacker send multi-gigabyte handshake_msg payloads to cause OOM, crash the server, or trigger DoS by exhausting memory during deserialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04ad2fa8-ebfc-4238-806f-0d5a76ff098c?mode=deep",
+    "timestamp": "2026-01-20 13:51:36.024882",
+    "report_generated": false
+  }
+]
