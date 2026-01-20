@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Race condition] Can concurrent insertions to the same cache index cause the size tracking to become permanently inconsistent when one thread reads the old entry between lines 119-121 while another thread is modifying it, leading to incorrect total_size() values that could break eviction policies or cause memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_640669f9-84e4-493c-840f-bb05ad7a3ad6?mode=deep",
+    "timestamp": "2026-01-20 13:09:31.049874",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Race condition] Between releasing the lock at line 131 and returning the index, can another thread evict or modify the same entry, causing the caller to believe they successfully inserted when the entry is already gone, leading to state inconsistencies in dependent systems? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4f73167-19d2-4e9e-b9a7-2e770deeeca7?mode=deep",
+    "timestamp": "2026-01-20 13:09:44.162325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Race condition] After cloning the entry at line 111, can the original entry be evicted or modified by another thread, causing the caller to operate on stale data that no longer reflects the cache state, potentially leading to incorrect validation decisions in consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a97de6b2-cea1-423b-a5f2-27aed511e757?mode=deep",
+    "timestamp": "2026-01-20 13:09:57.670643",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Race condition] Can two threads simultaneously evict the same key, both successfully taking the entry and both decrementing the size counter, causing size underflow and incorrect total_size() calculations that could bypass memory limits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e372d35-e239-4885-907c-4d317a51c343?mode=deep",
+    "timestamp": "2026-01-20 13:10:12.132469",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Race condition] If thread A reads prev at line 119, thread B evicts the entry, then thread A executes fetch_sub at line 120, can this cause the size to be decremented twice for the same entry, leading to size underflow? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72235350-9f63-43c0-962c-41b514bbb824?mode=deep",
+    "timestamp": "2026-01-20 13:10:27.577596",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Struct: SyncMutexCache] [TOCTOU] Between checking total_size() and inserting a new entry, can an attacker exploit the time-of-check-time-of-use gap to exceed memory limits by racing multiple insertions, causing memory exhaustion on validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b0cce68-21e7-4bf5-871f-0c6a369f5c7e?mode=deep",
+    "timestamp": "2026-01-20 13:10:43.704597",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Data race] Since get() returns a cloned Option<CacheEntry<T>> at line 111, can modifications to the original entry after cloning lead to inconsistent views across different threads, potentially causing non-deterministic behavior in consensus validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab2df961-24bc-4481-a26f-066d6d0d94e5?mode=deep",
+    "timestamp": "2026-01-20 13:11:01.354625",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Lost update] Can concurrent inserts to different indices that require size updates cause lost updates to the AtomicUsize size field due to race conditions in the fetch_sub/fetch_add sequence at lines 120 and 124? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0b70308-ad15-49c4-bfd8-c167c0cad7fc?mode=deep",
+    "timestamp": "2026-01-20 13:11:22.066313",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Memory ordering] The fetch_sub at line 120 and fetch_add at line 124 use Ordering::Relaxed - can this allow reordering of size updates relative to the cache entry update at line 125-129, causing observers to see inconsistent cache state where size doesn't match actual entries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7851009c-7abd-4cf9-8123-cef41a9d0941?mode=deep",
+    "timestamp": "2026-01-20 13:11:43.327567",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Memory ordering] The fetch_sub at line 140 uses Ordering::Relaxed - can this allow the size decrement to be reordered after the lock release, causing total_size() readers to see incorrect values during the eviction window? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26887cd2-e7fe-4672-9f5a-64e5f76c6f7d?mode=deep",
+    "timestamp": "2026-01-20 13:12:06.247662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: total_size()] [Memory ordering] Using Ordering::Relaxed at line 147 means no synchronization with other threads - can this cause total_size() to return stale or inconsistent values that don't reflect recent insertions or evictions, breaking memory limit enforcement logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_590b4d6f-c0e0-4b5f-8d5b-6afce4d514b7?mode=deep",
+    "timestamp": "2026-01-20 13:12:30.523506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Memory ordering] Can the relaxed atomic operations cause the size updates to be visible in a different order than the actual cache modifications on different CPU cores, leading to temporary negative size values or size > actual memory used? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_864b04c0-6556-47a5-b056-747cd2fad496?mode=deep",
+    "timestamp": "2026-01-20 13:12:55.475267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Struct: SyncMutexCache] [Memory ordering] Since size is AtomicUsize with Relaxed ordering and cache entries use Mutex, can the lack of synchronization between atomic and mutex operations cause cache corruption or inconsistent state visible to different validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdfe0c34-011e-44fa-99df-3c60039324dc?mode=deep",
+    "timestamp": "2026-01-20 13:13:21.020597",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Integer overflow] Can an attacker provide a maliciously large size_in_bytes value at line 114 that, when added via fetch_add at line 124, causes usize overflow in the total size counter, wrapping to a small value and bypassing memory limits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07527868-65bc-4ab0-bfc2-789e5bd2edde?mode=deep",
+    "timestamp": "2026-01-20 13:13:47.349298",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Integer underflow] If prev.size_in_bytes is corrupted to be larger than the current total size, can the fetch_sub at line 120 underflow the size counter, wrapping to usize::MAX and causing catastrophic memory exhaustion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7003b8c-7808-46ce-8f67-7b49a21bdd33?mode=deep",
+    "timestamp": "2026-01-20 13:14:12.481053",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Integer underflow] Can multiple concurrent evictions of the same key cause fetch_sub at line 140 to be called multiple times with the same prev.size_in_bytes, causing size to underflow below zero (wrap to usize::MAX)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9cd69d64-bd69-4966-9c4c-68d13e80c3e8?mode=deep",
+    "timestamp": "2026-01-20 13:14:36.758126",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Integer overflow] Can the sum of all size_in_bytes values across concurrent insertions exceed usize::MAX before any evictions occur, causing overflow in the cumulative fetch_add operations and incorrect size tracking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19305a49-5c12-4af3-be94-9498b910d262?mode=deep",
+    "timestamp": "2026-01-20 13:15:02.440247",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Integer overflow] In the sequence at lines 120 and 124, can the interleaving of fetch_sub followed by fetch_add from multiple threads cause temporary overflow conditions that persist if threads are suspended mid-operation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e5abe65-bac4-48ed-9624-b4d70894fd14?mode=deep",
+    "timestamp": "2026-01-20 13:15:28.393631",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: with_capacity()] [Integer overflow] Can an attacker call with_capacity at line 81 with usize::MAX or near-maximum values, causing the Vec allocation at line 82 to fail or consume all system memory, leading to node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4e5b4e9-fa46-4e72-8146-bd5c105f32e9?mode=deep",
+    "timestamp": "2026-01-20 13:15:55.061214",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Integer overflow] Can the modulo operation key % capacity at line 109 cause integer overflow or produce unexpected results when key is near usize::MAX, potentially accessing out-of-bounds cache indices? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e0c30c5-83a3-4ede-aa69-6974675c7a5e?mode=deep",
+    "timestamp": "2026-01-20 13:16:21.906951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Hash collision] Can an attacker deliberately choose keys that all map to the same index via modulo at line 109, causing excessive lock contention on a single cache slot and degrading validator performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe2ceed1-86eb-4b23-b4a9-b85f87c5e282?mode=deep",
+    "timestamp": "2026-01-20 13:16:45.712395",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Hash collision] Since different keys can map to the same index (key % capacity at line 115), can an attacker insert malicious data that overwrites legitimate cached entries for unrelated keys, causing cache poisoning? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93e2ebe3-d0f6-44f3-b1d2-771f7b04ad8f?mode=deep",
+    "timestamp": "2026-01-20 13:17:13.789331",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Hash collision] When evicting a key at line 135, if another key maps to the same index due to modulo collision, can this cause unintended eviction of the wrong data, corrupting cache state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ca9703d-dd94-4148-8cd0-62c4265c8209?mode=deep",
+    "timestamp": "2026-01-20 13:17:39.529808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Hash collision] If the capacity is a power of 2, can an attacker exploit modulo operation patterns to cause systematic collisions, filling only a subset of cache slots while others remain empty, reducing effective cache capacity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c163d80e-b6a0-4c8c-9bce-9306cd54fd24?mode=deep",
+    "timestamp": "2026-01-20 13:18:04.523960",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Hash collision] Can an attacker repeatedly insert keys with the same (key % capacity) value to force constant overwrites of a single slot, while monitoring timing to leak information about cached validator state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e348904-6a50-485d-ad98-ae4f9ead4708?mode=deep",
+    "timestamp": "2026-01-20 13:18:30.863769",
+    "report_generated": false
+  }
+]
