@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: generate()] [Insecure Random Generation - HIGH] The generate() function at line 183-196 uses insecure_random_g2_points() and random_scalars() with the provided RNG. If this is called with a weak RNG in tests that are later used as test vectors in production, can predictable randomness leak into production DKG ceremonies, making the generated keys vulnerable to pre-computation attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2533270-62be-4e60-b032-27c54ad270b3?mode=deep",
+    "timestamp": "2026-01-20 23:47:31.163134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [RNG Parameter Unused - MEDIUM] The deal() function receives an RNG parameter at line 90 and passes it to shamir_secret_share() at line 94, but the function signature doesn't constrain the RNG quality. Can a malicious dealer provide a compromised or predictable RNG that generates weak shares, allowing them to later reconstruct other players' shares and compromise the DKG? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f387db3-6c24-4a10-b2bd-9c0d4fa48dd0?mode=deep",
+    "timestamp": "2026-01-20 23:47:43.648760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Dealer Impersonation - CRITICAL] The deal() function accepts a dealer parameter at line 89 but doesn't verify that the caller has authority to act as that dealer. Can an attacker call this function claiming to be any dealer, allowing them to inject malicious shares into the DKG on behalf of honest validators and compromise the final master secret key? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33867d59-0f23-4bf0-9831-4c40292db74c?mode=deep",
+    "timestamp": "2026-01-20 23:47:56.848696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: maul_signature()] [Dealer Substitution - HIGH] The maul_signature() function at lines 222-231 allows changing the dealer identity in a transcript without any authorization checks. Can an attacker take a valid transcript from one dealer, call maul_signature() to claim it as their own, and submit it to aggregate multiple times under different identities, amplifying their influence in the DKG? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42164354-6e78-4532-9905-3c90cc1d3e46?mode=deep",
+    "timestamp": "2026-01-20 23:48:09.883678",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Secret Commitment Mismatch - HIGH] Lines 96-101 compute commitments V[i] = g_2 * C[i] for shares and V[n] = g_2 * f[0] for the secret. If shamir_secret_share() has a bug where f[0] doesn't match the input secret, can a malicious dealer create transcripts where the committed public key doesn't correspond to the actual secret being shared, causing validator key mismatches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cffcdd30-fb59-404b-a7d7-f8d841c7f85f?mode=deep",
+    "timestamp": "2026-01-20 23:48:23.899347",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: get_dealers()] [Dealer List Trust - MEDIUM] The get_dealers() function at lines 156-158 returns a cloned dealer list without any validation. If a transcript has been aggregated with malicious dealer entries, can this polluted dealer list be used to make incorrect authorization decisions in subsequent protocol steps? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ebd9a83-a530-4f93-ac06-e1c4d79b8242?mode=deep",
+    "timestamp": "2026-01-20 23:48:38.736467",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Trait: Convert] [Secret Extraction - HIGH] The Convert trait implementation at lines 53-57 exposes get_secret_a() which returns the raw Scalar secret. Can unauthorized code call this conversion to extract the input secret in plaintext, defeating the purpose of secret sharing by allowing direct secret access without threshold reconstruction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a2ce1d5-37ba-45a4-ac3a-5c7836c499ad?mode=deep",
+    "timestamp": "2026-01-20 23:48:54.406190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Trait: Transcript - Type Aliases] [Type Confusion - MEDIUM] Lines 60-70 define type aliases for DealtSecretKey = Scalar and DealtSecretKeyShare = Scalar (both plaintext). If calling code expects encrypted keys and casts between secure and insecure variants, can this cause type confusion where plaintext secrets are transmitted over the network as if they were encrypted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c26626b5-b46e-41d9-a9d3-b22b9ba183e2?mode=deep",
+    "timestamp": "2026-01-20 23:49:11.949967",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: dst()] [Domain Separation - MEDIUM] The domain separation tag at line 72-74 is 'APTOS_INSECURE_FIELD_PVSS_FIAT_SHAMIR_DST' which clearly indicates insecure usage. If protocol code doesn't check the DST and mixes secure and insecure transcripts, can an attacker exploit this to downgrade security or cause cross-protocol attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7711337-f96a-40f0-b8b8-b1d3b7276c2b?mode=deep",
+    "timestamp": "2026-01-20 23:49:31.013905",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Race Condition - MEDIUM] The aggregate_with() function mutates self in place at lines 208-213. If multiple threads aggregate into the same transcript concurrently without proper synchronization, can race conditions cause partial aggregations, corrupted vector contents, or inconsistent dealer lists that compromise the final DKG result? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec30f671-eb88-40f4-af55-cc0fc9172989?mode=deep",
+    "timestamp": "2026-01-20 23:49:50.806588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Non-atomic Verification - MEDIUM] The verify() function performs multiple checks across lines 121-151. If the transcript is modified concurrently during verification (e.g., by another thread calling aggregate_with()), can TOCTOU (time-of-check-time-of-use) races cause verification to pass for a transcript that is later modified to an invalid state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_399051a5-512f-4c07-91b8-acd293867fdc?mode=deep",
+    "timestamp": "2026-01-20 23:50:11.453418",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct: Transcript] [Shared State - LOW] The Transcript struct derives Clone at line 27, allowing multiple copies to exist. If these copies are modified independently and later aggregated, can this cause state inconsistencies where different aggregation orders produce different results due to non-commutative operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_072cfcc6-777f-4081-b28f-3b66ec3f8a4b?mode=deep",
+    "timestamp": "2026-01-20 23:50:33.255998",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Sybil Attack via Weak Verification - CRITICAL] Since verification doesn't authenticate dealers and only checks cryptographic consistency, can a Byzantine attacker create an unlimited number of fake dealer identities, submit valid-looking transcripts for each, and dominate the DKG aggregation to control the final master secret key? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51a102a4-36ec-4b40-af2e-5202b7fbaa0d?mode=deep",
+    "timestamp": "2026-01-20 23:50:56.066940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Grinding Attack - HIGH] The deal() function uses caller-provided randomness (rng parameter). Can a malicious dealer grind through many random seeds offline until they find one that produces shares with special properties (e.g., low entropy, predictable relationships), then use that seed to create a weak transcript that compromises the final aggregated secret? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c44d38e-f2fa-4cc5-920d-c33d78efe10b?mode=deep",
+    "timestamp": "2026-01-20 23:51:19.339195",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: decrypt_own_share()] [Share Theft - HIGH] The function returns the secret share without requiring proof of ownership or authentication. If the DecryptPrivKey parameter is not validated elsewhere, can an attacker call this function with any player ID and a fake decryption key to steal arbitrary shares and reconstruct secrets below the threshold? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa7c46fc-91bd-4e19-bee6-face37aad607?mode=deep",
+    "timestamp": "2026-01-20 23:51:43.359715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Replay Attack - MEDIUM] The aggregation doesn't check for duplicate transcripts or maintain a history of already-aggregated dealers. Can an attacker replay the same transcript multiple times, causing it to be aggregated repeatedly and giving that dealer outsized influence over the final master key? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd62f1a6-f36e-429e-b1d1-b26bb0e3e6c0?mode=deep",
+    "timestamp": "2026-01-20 23:52:08.466039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Threshold Configuration - MEDIUM] The function only checks that eks.len() == sc.n but doesn't validate the threshold t value in the SecretSharingConfig. Can an attacker provide a config where t > n or t == 0, causing the Shamir secret sharing to create invalid shares that cannot be reconstructed or provide no security? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aabd1d0c-6501-48a4-8352-51575377be52?mode=deep",
+    "timestamp": "2026-01-20 23:52:33.987995",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Configuration Mismatch - MEDIUM] The verify() function receives separate sc and eks parameters. If sc.n doesn't match the actual number of players expected in the protocol, but equals eks.len(), can this bypass validation and allow transcripts for wrong-sized validator sets to be accepted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f708c508-950b-4acc-a6b2-fba86d9345a6?mode=deep",
+    "timestamp": "2026-01-20 23:52:59.172052",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Public Parameters - MEDIUM] The function receives PublicParameters (pp) but only uses get_commitment_base() at line 96. If pp contains other critical parameters that should be validated (like group order or curve parameters), can an attacker provide malicious public parameters that cause the DKG to operate on a weak algebraic structure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebdeb99e-5d05-4aa6-b199-2ffc16b7fee8?mode=deep",
+    "timestamp": "2026-01-20 23:53:24.912384",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: get_public_key_share()] [Player ID Validation - MEDIUM] The function accesses self.V[player.id] without checking if player.id < sc.n. Can a malicious or corrupted player struct with id >= n cause a panic or return garbage data from beyond the valid vector bounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bb07384-6e48-4346-8855-8480dbd6e1d9?mode=deep",
+    "timestamp": "2026-01-20 23:53:50.712085",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Scalar Zero Attack - HIGH] The verification generates random scalars (alphas) at line 137 without checking for zero values. If a zero alpha is generated, the corresponding share/commitment cancels out in the linear combination. Can an attacker exploit this rare case by submitting transcripts that only pass verification when zero alphas occur, creating a verification bypass with probability 1/|Scalar field|? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d902125-1333-42e9-9137-111f836e249a?mode=deep",
+    "timestamp": "2026-01-20 23:54:16.514042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Point at Infinity - MEDIUM] Lines 98-101 multiply the commitment base g_2 by scalars without checking if the result is the point at infinity. If any share C[i] causes this, can the resulting invalid commitment pass verification but later cause failures during threshold reconstruction or key derivation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e990ad4b-d2a3-4930-80dd-9d59c5ece7c5?mode=deep",
+    "timestamp": "2026-01-20 23:54:42.828196",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Multi-exponentiation Safety - MEDIUM] Line 147 uses G2Projective::multi_exp_iter() for computing the linear combination. If this function has implementation bugs or doesn't handle edge cases (empty iterators, mismatched lengths), can this cause incorrect verification results that accept invalid transcripts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_176e4852-c17b-46fd-a954-4d38168f7c96?mode=deep",
+    "timestamp": "2026-01-20 23:55:09.259928",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Polynomial Degree - LOW] The function computes V from polynomial f but doesn't explicitly check that f has the correct degree. If shamir_secret_share() returns a polynomial of wrong degree, can this cause reconstruction failures or reduce the security threshold below the expected value? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de57d049-801d-4322-8ff2-72775d511c86?mode=deep",
+    "timestamp": "2026-01-20 23:55:34.107008",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Invariant Violation - HIGH] The function has debug_asserts at lines 205-206 and 215-216 checking length invariants, but these are removed in release builds. If the transcript state becomes inconsistent (e.g., C.len() != V.len()-1), can this cause subtle bugs in release builds that are impossible to debug because they only occur in production? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1260648d-2c8a-4082-bd6d-2645ec29643c?mode=deep",
+    "timestamp": "2026-01-20 23:55:56.983146",
+    "report_generated": false
+  }
+]
