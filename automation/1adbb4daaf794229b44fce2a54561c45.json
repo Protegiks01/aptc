@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [Lost notification] Between releasing the lock in cvar.wait() and reacquiring it, if set_value() is called and notifies but the thread hasn't entered the wait state yet, can notifications be lost causing permanent blocking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d4aa1a9-0c38-4b1b-b9d8-88dae319a90e?mode=deep",
+    "timestamp": "2026-01-20 10:54:18.238952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: set_value()] [Notification ordering] Does notify_all() guarantee all waiting threads observe the Ready state before any new thread can call set_value() again, or can notification ordering lead to threads seeing stale Waiting status? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59da6dce-8d89-47c6-ae7f-dd7fb78e528a?mode=deep",
+    "timestamp": "2026-01-20 10:54:30.920344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Enum: RemoteValueStatus] [Invalid state] Can the RemoteValueStatus enum be constructed in an invalid state outside of the defined Ready/Waiting variants through unsafe code or memory corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32f0c940-e481-4e3e-a036-515d88d1b0bf?mode=deep",
+    "timestamp": "2026-01-20 10:54:43.664561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [Pattern matching exhaustiveness] The match on RemoteValueStatus only handles Ready and has unreachable!() for Waiting - if new enum variants are added in future, will this cause undetected panics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73e3e7a7-036e-4098-a3c5-8c190086fde4?mode=deep",
+    "timestamp": "2026-01-20 10:54:57.039886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: set_value()] [Type confusion] Can type confusion between Option<StateValue> with None vs Some cause incorrect state value semantics when different shards interpret missing vs empty state differently? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a75447df-5e41-40b6-8612-9b0510ca9ade?mode=deep",
+    "timestamp": "2026-01-20 10:55:12.170323",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [Timing side-channel] Can the duration a thread waits in get_value() leak information about cross-shard dependencies or execution patterns that can be exploited to infer private transaction data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2fd26c9b-6c05-4646-8e3a-bf8683e14ca8?mode=deep",
+    "timestamp": "2026-01-20 10:55:27.527914",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: is_ready()] [TOCTOU vulnerability] Between calling is_ready() and get_value(), can the RemoteValueStatus change from Ready back to Waiting, causing time-of-check-time-of-use vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6703bc2c-5d93-4040-9b18-70d1e37ec528?mode=deep",
+    "timestamp": "2026-01-20 10:55:43.297117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: is_ready()] [Race condition] If is_ready() is used to avoid blocking but another thread calls get_value() between the check and use, can this lead to unexpected blocking behavior in critical execution paths? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_967f7993-0542-4b9c-8aaa-70b153ad3e5d?mode=deep",
+    "timestamp": "2026-01-20 10:56:01.647745",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Derive: Clone] [Deep vs shallow clone] The #[derive(Clone)] on RemoteStateValue performs Arc::clone for shallow copy - can multiple clones sharing the same underlying state cause unexpected state mutations when set_value() is called? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08d99746-4a44-4a67-9137-1620c7a9cbb5?mode=deep",
+    "timestamp": "2026-01-20 10:56:20.180855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Derive: Clone] [Clone semantics attack] Can an attacker clone RemoteStateValue before get_value() and after set_value() to observe state transitions and exploit race conditions in the waiting/ready state machine? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65e6cf2b-d377-4e49-a1c6-39485479cbe8?mode=deep",
+    "timestamp": "2026-01-20 10:56:39.995613",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [Clone cost] The value.clone() on potentially large StateValue objects - can this clone operation consume significant CPU time, creating DoS opportunities by forcing expensive clones? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f617807-6345-45b4-96d4-c378cbd74420?mode=deep",
+    "timestamp": "2026-01-20 10:57:00.587878",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: waiting()] [Initialization] Can RemoteStateValue::waiting() be called but never have a corresponding set_value(), leaving it in permanent Waiting state and causing deadlock in dependent code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e01db41d-c3e7-4e58-865d-08ade51ff9c2?mode=deep",
+    "timestamp": "2026-01-20 10:57:22.443128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: set_value()] [API contract] Is there any enforcement that set_value() should be called exactly once, or can repeated calls with different values cause non-deterministic behavior in consuming code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fdf586f-9a7e-44db-a825-c8ecea76d084?mode=deep",
+    "timestamp": "2026-01-20 10:57:43.838748",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [Timeout missing] There's no timeout mechanism in get_value() - can this cause validators to hang indefinitely waiting for Byzantine shards, requiring manual intervention and breaking liveness guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d9a4c95-9e70-4e88-9e90-9abaa9bada92?mode=deep",
+    "timestamp": "2026-01-20 10:58:06.235496",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: is_ready()] [Double-check pattern] If caller uses is_ready() then get_value(), the lack of atomicity between these calls can cause race conditions - should these be combined into a single atomic operation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26a95566-4135-4ad4-80e3-5e00001af4dd?mode=deep",
+    "timestamp": "2026-01-20 10:58:28.985946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [Condvar spurious wakeup] While the code handles spurious wakeups with a while loop, can excessive spurious wakeups under high contention cause performance degradation or resource exhaustion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d35a524-811f-47d6-b7e4-d4a8064c98f1?mode=deep",
+    "timestamp": "2026-01-20 10:58:51.505020",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: set_value()] [Condvar notify semantics] Does notify_all() guarantee that all threads in wait() will observe the updated RemoteValueStatus before any can re-enter waiting, or can notification races occur? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e697a520-c828-439c-b7a0-b6ae66fd6a02?mode=deep",
+    "timestamp": "2026-01-20 10:59:13.430841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [Wait predicate] The while loop checks RemoteValueStatus::Waiting as the wait predicate - is this check atomic and thread-safe, or can it observe torn reads of the enum discriminant? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27e8c6de-3d30-414a-b354-44481249795c?mode=deep",
+    "timestamp": "2026-01-20 10:59:35.680038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: set_value()] [StateValue validation] Is there any validation of the StateValue parameter before storing it in RemoteValueStatus::Ready, or can malformed/corrupted StateValues be set causing downstream execution errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c11c535-66c6-45d9-a283-1402f5573aa9?mode=deep",
+    "timestamp": "2026-01-20 10:59:59.080550",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [StateValue corruption] When cloning StateValue, can memory corruption or race conditions cause the cloned value to differ from the original, breaking deterministic execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfe64987-9b5d-4dfe-9467-fbcca9ba6496?mode=deep",
+    "timestamp": "2026-01-20 11:00:22.819927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: set_value()] [None semantics] When set_value(None) is called, does this correctly represent 'state does not exist' vs 'state exists but is empty', and can confusion between these semantics cause execution bugs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58ccbcbc-a703-4a09-be7f-57b402b4a58d?mode=deep",
+    "timestamp": "2026-01-20 11:00:46.573958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value() & set_value()] [Lock ordering] If multiple RemoteStateValue instances are accessed in different orders by different threads, can this cause deadlock due to circular lock dependencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce7a230f-ef73-4ec8-9fdc-bc5bfefebd89?mode=deep",
+    "timestamp": "2026-01-20 11:01:12.112241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [Nested locking] If code calling get_value() holds other locks, can the blocking wait create nested lock scenarios leading to deadlock with set_value() callers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae908255-7537-48b2-92a7-20c459bc5757?mode=deep",
+    "timestamp": "2026-01-20 11:01:36.834565",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: is_ready()] [Lock acquisition order] If is_ready() and get_value() are called on multiple RemoteStateValue instances, can inconsistent lock ordering cause deadlock scenarios? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2060bb73-ae23-4934-bc5b-6826d9a0bfe3?mode=deep",
+    "timestamp": "2026-01-20 11:02:02.313725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/sharded_block_executor/remote_state_value.rs] [Function: get_value()] [Panic during wait] If a panic occurs while a thread is waiting in cvar.wait(), will the mutex remain locked causing all other threads to hang indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35d4a305-ace2-4ce4-b19a-42f0528c28ef?mode=deep",
+    "timestamp": "2026-01-20 11:02:31.150779",
+    "report_generated": false
+  }
+]
