@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Database constraint] If parse_timestamp produces a timestamp before PostgreSQL's minimum (year 4713 BC) or after maximum (year 294276 AD), can this cause database insertion failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac7398fa-f0a4-4106-ad55-2be51fc2db5a?mode=deep",
+    "timestamp": "2026-01-20 17:05:21.963871",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [Time ordering] If timestamps are not monotonically increasing across blocks, can this break assumptions in downstream systems that rely on timestamp ordering for consensus analysis? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_075bbaf8-cf85-4567-9228-60462d89cee1?mode=deep",
+    "timestamp": "2026-01-20 17:05:34.368378",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [Foreign key violation] The schema has `CONSTRAINT fk_versions FOREIGN KEY (version) REFERENCES transactions (version)`. Can a race condition occur where from_transaction creates a BlockMetadataTransaction before the parent transaction is inserted, causing foreign key violations that crash the indexer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_276b985b-ceb2-4226-9071-0615570b33fb?mode=deep",
+    "timestamp": "2026-01-20 17:05:47.593046",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [Primary key collision] Version is the primary key and must be unique. Can concurrent indexer instances or re-indexing operations attempt to insert the same version twice, causing primary key violations that halt indexing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd087e14-319b-4510-8c6f-3d80af04857b?mode=deep",
+    "timestamp": "2026-01-20 17:06:00.879561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [Unique constraint violation] Block_height has a UNIQUE constraint. Can a consensus bug or malicious validator produce two blocks with the same block_height but different versions, causing unique constraint violations when indexing the second block? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_334d4153-8d11-422c-be70-e0543ed9009c?mode=deep",
+    "timestamp": "2026-01-20 17:06:15.093220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Data inconsistency] If block_height in line 60 doesn't match the actual block height stored in the parent transaction, can this create inconsistencies where queries by block_height return incorrect block metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd2cd8c4-64a9-46b1-8b59-f753975e8ce1?mode=deep",
+    "timestamp": "2026-01-20 17:06:29.878728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [Orphaned records] If the foreign key to transactions(version) is violated due to transaction deletion or pruning, can this leave orphaned block_metadata_transactions records that break referential integrity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d48600b-bf3f-492d-a22c-8a225e83bb84?mode=deep",
+    "timestamp": "2026-01-20 17:06:46.404504",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Version mismatch] If txn_version at line 57 differs from the version in the referenced transaction record, can this cause foreign key lookups to fail and prevent proper transaction-to-block-metadata associations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d85cf4c-470a-4e1f-b4dd-5f11f8dc1d37?mode=deep",
+    "timestamp": "2026-01-20 17:07:04.784738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [Cascade deletion] Does the foreign key constraint have ON DELETE CASCADE? If parent transactions are deleted, can this unexpectedly delete block metadata records needed for consensus validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14385a01-c5c6-42ab-ba2c-8e1931b84dd4?mode=deep",
+    "timestamp": "2026-01-20 17:07:22.835870",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Epoch consistency] Can an attacker submit block metadata with epoch numbers that don't match the epoch of the referenced transaction version, creating epoch inconsistencies that break validator set queries and epoch-based analytics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eef22b4b-6f63-4d3f-990b-f51296e04a13?mode=deep",
+    "timestamp": "2026-01-20 17:07:42.888081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Round progression] Can non-monotonic round numbers in line 63 be inserted into the database (e.g., round decreases between blocks), violating consensus assumptions and enabling historical consensus data manipulation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b99591b8-6585-425b-b153-05d82a626a10?mode=deep",
+    "timestamp": "2026-01-20 17:08:04.077821",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [Block height gaps] Can an attacker skip block heights during indexing (e.g., index heights 100, 102, 104) creating gaps that break block height sequencing and fork detection algorithms? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be4e21a7-7852-4abf-8a72-57cdc5f32adf?mode=deep",
+    "timestamp": "2026-01-20 17:08:26.490270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Proposer verification] The proposer field at line 64 is not validated against the validator set. Can an attacker index block metadata with an invalid proposer address that never was a validator, corrupting proposer attribution and validator performance metrics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d93d05ab-da29-4d54-a4b6-aedef802fa0d?mode=deep",
+    "timestamp": "2026-01-20 17:08:50.022404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Vote bitvector manipulation] Can the previous_block_votes_bitvec at line 66-67 be manipulated to show false voting patterns (e.g., indicating validators voted when they didn't), corrupting consensus participation tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49d47ca8-1639-4abc-995d-016dfbe49075?mode=deep",
+    "timestamp": "2026-01-20 17:09:13.745574",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Failed proposer indices] Can failed_proposer_indices at line 65 contain duplicate indices, negative indices (after u32->i32 conversions), or out-of-range indices that corrupt validator failure tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e98fee60-4e8b-4e2d-86c3-cd9e60f98065?mode=deep",
+    "timestamp": "2026-01-20 17:09:37.829720",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [ID validation] The id field at line 26 is a String without validation. Can arbitrary or malicious IDs be inserted that don't correspond to actual block hashes, breaking block identification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91c2e042-ebd6-4168-a3e7-4ef697686c64?mode=deep",
+    "timestamp": "2026-01-20 17:10:02.477832",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [ID collision] If txn.id.to_string() at line 61 produces duplicate IDs for different blocks (due to hash collisions or bugs), can this create ambiguity in block lookups? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afe5e115-8633-45aa-a462-6f992dfa528c?mode=deep",
+    "timestamp": "2026-01-20 17:10:26.766635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [JSONB injection] The previous_block_votes_bitvec field is stored as jsonb. Can an attacker inject malicious JSON structures that exploit PostgreSQL JSONB parsing vulnerabilities or consume excessive storage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15361e61-2182-4084-9959-3fbc2187b3d7?mode=deep",
+    "timestamp": "2026-01-20 17:10:52.826233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [JSONB injection] The failed_proposer_indices field is stored as jsonb. Can specially crafted JSON payloads cause PostgreSQL query performance degradation or trigger JSONB-related bugs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afd71bed-1bde-4908-b086-ed8791f5d5c4?mode=deep",
+    "timestamp": "2026-01-20 17:11:19.251271",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Type confusion] If failed_proposer_indices in line 65 is serialized as JSON, can type confusion attacks occur where the JSON structure doesn't match the expected Vec<u32> format, breaking downstream JSON parsing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3262aad7-bfd4-410a-8ded-0ddcef46f4d7?mode=deep",
+    "timestamp": "2026-01-20 17:11:47.218557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Array size limits] Can failed_proposer_indices contain more elements than the total number of validators, indicating invalid data that should be rejected but gets stored in the database? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c1bfbae-5507-473e-b56c-c32c8c4490b0?mode=deep",
+    "timestamp": "2026-01-20 17:12:15.602756",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Bitvector length] Can previous_block_votes_bitvec have a length that doesn't match the expected validator count, storing inconsistent vote data that breaks quorum calculations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bf82295-7ba2-4800-a77c-ccf294d04fcc?mode=deep",
+    "timestamp": "2026-01-20 17:12:44.516917",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Struct: BlockMetadataTransaction] [JSON schema validation] Since JSONB fields lack schema validation, can arbitrary JSON structures be inserted that break indexer queries expecting specific array formats? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3304289-bc4b-4449-99a4-01d4a84e5d7a?mode=deep",
+    "timestamp": "2026-01-20 17:13:12.972328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Deeply nested JSON] Can an attacker provide vote or proposer data that serializes to deeply nested JSON exceeding PostgreSQL's nesting limits, causing insertion failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_220c8fd8-66e7-4e7b-87a2-947f6ea7cf50?mode=deep",
+    "timestamp": "2026-01-20 17:13:41.241848",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/block_metadata_transactions.rs] [Function: from_transaction()] [Race condition] Can multiple indexer instances call from_transaction() concurrently for the same transaction, causing race conditions where both attempt to insert the same version, resulting in primary key violations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d1c36c7-753d-4761-9821-dca45c2d1917?mode=deep",
+    "timestamp": "2026-01-20 17:14:11.266795",
+    "report_generated": false
+  }
+]
