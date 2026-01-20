@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: new()] [Sender cloning] MempoolNotifier stores notification_sender on line 71 - can this sender be extracted and cloned maliciously to create unauthorized notification sources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13a5f7dd-7134-4a63-b7ad-569b60ac4a46?mode=deep",
+    "timestamp": "2026-01-20 01:19:22.240393",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: new()] [Listener initialization] MempoolNotificationListener::new() on line 127 stores notification_receiver - can multiple listeners be created for same receiver causing split brain where only some notifications reach mempool? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da5464aa-50de-490f-bd2b-4bcfa7e8fd8e?mode=deep",
+    "timestamp": "2026-01-20 01:19:34.528328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Struct: MempoolNotifier] [Clone trait] Line 63 derives Clone for MempoolNotifier - can unlimited cloning create thousands of senders all competing to send notifications, causing channel congestion and notification delays? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f70caf0b-4da8-4984-bd72-4040b693057c?mode=deep",
+    "timestamp": "2026-01-20 01:19:47.254181",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Struct: MempoolNotifier] [Clone semantics] When MempoolNotifier is cloned, all clones share the same channel sender - can one clone closing its sender affect other clones, causing notification failures across unrelated state sync components? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf4e6e18-89e9-4e76-ac26-5e76ab473f32?mode=deep",
+    "timestamp": "2026-01-20 01:20:00.213305",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Struct: MempoolNotifier] [Clone lifetime] If a cloned MempoolNotifier outlives the original, can it continue sending notifications after state sync has transitioned to new epoch, causing stale notifications with wrong block metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be919d39-cc82-474b-a001-831b1507baa6?mode=deep",
+    "timestamp": "2026-01-20 01:20:13.765820",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Comment: line 96] [Specification mismatch] Comment says 'Mempool needs to be notified about all transactions (user and non-user transactions)' but code on lines 84-94 only sends user transactions - does this specification violation cause mempool to miss critical system transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b61054b-332c-4f84-a9b9-033fc8c4d0c7?mode=deep",
+    "timestamp": "2026-01-20 01:20:28.458237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Comment: line 97] [Issue reference] References GitHub issue #1882 - was this issue resolved, or does the current implementation still have the bug where mempool isn't properly notified about non-user transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f58fa3f-fcd2-4565-8aa8-0bf8bb5cd16e?mode=deep",
+    "timestamp": "2026-01-20 01:20:44.064859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Test: test_mempool_not_listening()] [Production behavior] Test on lines 214-215 closes receiver and expects CommitNotificationError - but in production, does mempool closing its receiver cause permanent notification failure requiring node restart? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_900b9890-52c6-4549-9b3e-e580c7536c3b?mode=deep",
+    "timestamp": "2026-01-20 01:21:01.240697",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Test: test_mempool_channel_blocked()] [Blocking detection] Test on lines 234-238 uses 5-second timeout to detect blocking - but in production, can state sync block indefinitely with no timeout, causing total liveness failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85f84153-0713-49dc-bffe-5ecdfbefd50e?mode=deep",
+    "timestamp": "2026-01-20 01:21:19.790306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Test: test_mempool_channel_blocked()] [Channel capacity] Test creates channel with capacity 1 on line 225 - what is the production capacity, and can it be exhausted during high transaction throughput causing notification loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44a8199e-a527-43b1-867f-0c7859fd836c?mode=deep",
+    "timestamp": "2026-01-20 01:21:39.030368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Test: test_no_transaction_filtering()] [Non-user transactions] Test on lines 255-259 sends BlockMetadata and Genesis transactions - does production code properly handle these, or will they be silently dropped as shown in the filter_map on line 92? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34d32071-b192-432b-afb3-a60cd97f4ff3?mode=deep",
+    "timestamp": "2026-01-20 01:21:59.439980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Test: create_user_transaction()] [Test transaction validity] Test creates transaction with all zeros for gas/limits on lines 318-321 - can similar invalid transactions in production bypass validation and cause issues when mempool processes committed notifications? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_686b9f83-61c7-444d-aca8-e16c105dd7d1?mode=deep",
+    "timestamp": "2026-01-20 01:22:20.673512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Test: create_user_transaction()] [Random address] Line 315 uses AccountAddress::random() for sender - can production code send notifications with invalid or system addresses that mempool should reject? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee66ab19-ab55-4386-95e8-b4d6638e764d?mode=deep",
+    "timestamp": "2026-01-20 01:22:42.501124",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Test: create_block_metadata_transaction()] [Hash collision] Line 334 creates BlockMetadata with HashValue::new([0; HashValue::LENGTH]) - can actual blocks have hash collisions causing mempool to incorrectly associate transactions with wrong blocks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acd775c9-6a08-48a2-87ac-497e03d376f9?mode=deep",
+    "timestamp": "2026-01-20 01:23:05.116414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Memory ordering] The mpsc channel operations lack explicit memory ordering guarantees - can weak memory models on some architectures cause notifications to be observed out-of-order by mempool? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07c8c3db-60d6-4ee2-9057-8e76df9bd7bf?mode=deep",
+    "timestamp": "2026-01-20 01:23:29.002426",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Channel fairness] If multiple state sync tasks send notifications concurrently, does the mpsc channel provide fairness guarantees, or can one sender starve others causing some blocks to never notify mempool? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_190680ba-781c-4cef-9550-231971f7b43f?mode=deep",
+    "timestamp": "2026-01-20 01:23:53.371382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Async executor] The code assumes single async executor - can running state sync and mempool on different executors cause notification delivery issues due to executor context switching? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b7eab36-295a-42ef-8e65-d8ca0e2d3054?mode=deep",
+    "timestamp": "2026-01-20 01:24:17.008544",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Panic safety] If any code panics during notify_new_commit() execution (lines 78-117), can the channel be left in corrupted state preventing future notifications? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db195cdc-8ad1-4fd7-b0f7-21ad8acad9cb?mode=deep",
+    "timestamp": "2026-01-20 01:24:40.879435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Task cancellation] If the async task running notify_new_commit() is aborted while waiting on send().await (line 107), does proper cleanup occur or can resources leak? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9a20dbd-e4e5-48e8-ad89-4d848ed30c1f?mode=deep",
+    "timestamp": "2026-01-20 01:25:05.110249",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Transaction lifetime] The Vec<Transaction> passed to notify_new_commit() on line 80 - if it contains references to deallocated memory, can this cause use-after-free when extracting UserTransaction on line 87? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f70e5da4-bc4c-4015-a3d6-06866f94606c?mode=deep",
+    "timestamp": "2026-01-20 01:25:30.004959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Type confusion] The Transaction enum on line 86 - can an attacker craft a transaction that appears to be UserTransaction variant but contains data from other variants, bypassing type safety? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46c0c2d5-f0cc-4fe7-be54-704240c98c0b?mode=deep",
+    "timestamp": "2026-01-20 01:25:55.288599",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Sender validation] When extracting signed_txn.sender() on line 88, is there validation that the sender actually signed the transaction, or can signature verification be bypassed in committed transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21e2a9ff-fe6a-4eae-8b15-26f3b8258d9b?mode=deep",
+    "timestamp": "2026-01-20 01:26:21.033399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [State sync coupling] If state sync component crashes or restarts, does MempoolNotifier properly reconnect to mempool, or can notifications be permanently lost during component restart? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cab590d-b518-4479-89bd-8a23d7c51ec0?mode=deep",
+    "timestamp": "2026-01-20 01:26:46.971368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Mempool coupling] If mempool stops processing notifications but doesn't close receiver, can the bounded channel fill up causing state sync to block and halt consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85e29c97-5685-4917-8d6a-51819b6a18b9?mode=deep",
+    "timestamp": "2026-01-20 01:27:10.933660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Overall] [Epoch transitions] During epoch transitions when validator set changes, are existing notifications in the channel properly drained or do they get lost causing inconsistent mempool state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdd59ddc-6386-4a11-88ac-d53ba49dcbd4?mode=deep",
+    "timestamp": "2026-01-20 01:27:34.679390",
+    "report_generated": false
+  }
+]
