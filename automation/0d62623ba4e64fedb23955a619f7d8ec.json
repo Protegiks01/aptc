@@ -1,0 +1,80 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_auxiliary_data()] [Unused Function] Line 471 marks this function as dead_code—if this function is accidentally used, can the lack of testing cause it to have vulnerabilities like version calculation errors at line 485? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2c533cb-728c-499c-94f5-d82edd3a2687?mode=deep",
+    "timestamp": "2026-01-20 01:05:12.843179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: calculate_and_commit_ledger_and_state_kv()] [Skip Index Flag] The skip_index_and_usage parameter at line 266 is passed to multiple commit functions—can an attacker manipulate this flag to skip critical index updates, making historical queries fail and hiding malicious transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dcc7836-2745-4de0-aeef-ba1085913581?mode=deep",
+    "timestamp": "2026-01-20 01:05:25.102248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [Ledger Info Array] At line 129, ledger_infos is a slice—can an empty array or array with conflicting ledger infos pass validation, causing state sync to restore to an incorrect state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9cec4b6d-62f3-4ad8-b6e6-0e2b2569d657?mode=deep",
+    "timestamp": "2026-01-20 01:05:37.736370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: get_and_check_commit_range()] [None State] If both old_committed_ver and pre_committed_ver are None (impossible but not explicitly checked), can this cause ensures at lines 525-536 to incorrectly pass or panic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47be137c-d85f-400e-88a5-08a81e0db281?mode=deep",
+    "timestamp": "2026-01-20 01:05:52.894522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: calculate_and_commit_ledger_and_state_kv()] [Database Shard Inconsistency] With parallel writes to event_db, write_set_db, transaction_db, auxiliary_info_db, state_kv, transaction_info_db, and transaction_accumulator_db at lines 276-318, can power loss or system crash during these parallel operations cause some databases to be updated while others are not, creating permanent inconsistency? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a56ecb91-b8ae-4993-8581-6d747125d2b1?mode=deep",
+    "timestamp": "2026-01-20 01:06:07.127837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_state_kv_and_ledger_metadata()] [Metadata Batch Isolation] At line 331, a new SchemaBatch is created for metadata, and at line 332, sharded batches for state_kv—are these batches written atomically as one transaction, or can partial writes cause metadata and state_kv to diverge? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a3e71fb-58dc-44fd-915c-0b41220436d0?mode=deep",
+    "timestamp": "2026-01-20 01:06:21.915252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_accumulator()] [Multiple Schema Writes] Three separate write_schemas() calls occur at lines 440, 465, and implicitly in parallel—can these non-atomic writes cause the accumulator to be in an inconsistent state visible to readers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_358af634-fd9e-456f-950d-e582cae0d5fe?mode=deep",
+    "timestamp": "2026-01-20 01:06:37.963957",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [Write Order] At line 223, ledger_db.write_schemas() is called, but state kv and metadata batches are prepared earlier—if write_schemas() fails, are the earlier prepared batches properly cleaned up? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea06bc14-7423-4839-a14d-818cd03ec790?mode=deep",
+    "timestamp": "2026-01-20 01:06:55.180764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_ledger()] [Replay Attack] If commit_ledger() is called multiple times with the same version but different ledger_info_with_sigs, does get_and_check_commit_range() at line 95 prevent the replay, or can this overwrite already committed ledger info? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac3a5580-40e9-45bd-ab40-0a984567957d?mode=deep",
+    "timestamp": "2026-01-20 01:07:13.483501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: pre_commit_ledger()] [Idempotency] If pre_commit_ledger() fails and is retried with the same chunk, does pre_commit_validation() at line 62 correctly handle the retry, or does it reject the chunk because buffered state was partially updated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1367f13c-64b9-4885-8912-3fe026c381bc?mode=deep",
+    "timestamp": "2026-01-20 01:07:32.480511",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: finalize_state_snapshot()] [Snapshot Replay] Can finalize_state_snapshot() be safely called multiple times for the same version, or will repeated calls corrupt the ledger by double-writing transactions and state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e235115-2909-4333-80bf-dba22d39b940?mode=deep",
+    "timestamp": "2026-01-20 01:07:52.253054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: check_and_put_ledger_info()] [Signature Verification] The check_and_put_ledger_info() function verifies version, root hash, and epoch at lines 549-594, but does it verify the actual signatures in ledger_info_with_sigs, or can an attacker provide invalid signatures that pass all checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3bfdbff9-498e-4e2c-a07b-5d70508a20d4?mode=deep",
+    "timestamp": "2026-01-20 01:08:13.558535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_accumulator()] [Hash Algorithm] The root hash calculation at line 432-436 uses put_transaction_accumulator()—does this use a quantum-resistant hash algorithm, or can future quantum computers retroactively forge accumulator proofs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c0bc6f8-5eb0-445c-bf4f-e757c754af53?mode=deep",
+    "timestamp": "2026-01-20 01:08:35.676187",
+    "report_generated": false
+  }
+]
