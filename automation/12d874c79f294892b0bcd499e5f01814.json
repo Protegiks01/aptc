@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: RandKeys] [Cryptographic Key Exposure] Can the augmented secret key share (ASK) in RandKeys be extracted or leaked through unsafe cloning, serialization, or debug printing, allowing Byzantine validators to derive other validators' secret keys and forge randomness proofs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa5743ad-166b-4a00-a2e7-7c544cc34646?mode=deep",
+    "timestamp": "2026-01-20 05:02:22.464994",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: RandKeys::new()] [Initialization Vulnerability] Does the RandKeys::new() constructor validate that num_validators matches the length of pk_shares vector, or can mismatched lengths cause out-of-bounds access when certified_apks is indexed, potentially leading to panics or memory corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6be9116-2967-4318-94e0-b1e466e99329?mode=deep",
+    "timestamp": "2026-01-20 05:02:35.000126",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: RandKeys::new()] [Validator Set Mismatch] Can an attacker provide a pk_shares vector with fewer entries than num_validators during RandKeys initialization, causing certified_apks to have uninitialized entries that later cause consensus failures when validators try to verify randomness shares? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_599ea4a0-30d0-4581-a027-8e687879c5a9?mode=deep",
+    "timestamp": "2026-01-20 05:02:48.000837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: add_certified_apk()] [Array Bounds Attack] The function uses assert!(index < self.certified_apks.len()) but can an attacker trigger this with index == usize::MAX or other large values in concurrent scenarios, causing panics that halt randomness generation and lead to consensus liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29dc0b33-a5c4-44ff-a25e-ddc8307dcabe?mode=deep",
+    "timestamp": "2026-01-20 05:03:02.150919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: add_certified_apk()] [Race Condition] Multiple threads may call add_certified_apk() concurrently for the same index - does OnceCell::set() guarantee atomicity, or can race conditions cause one thread's certified APK to be silently dropped while returning Ok(()), leading to missing validator keys and failed randomness verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b15b191b-4581-42b7-84c6-6028b49faecd?mode=deep",
+    "timestamp": "2026-01-20 05:03:15.999078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: add_certified_apk()] [Duplicate Key Injection] The early return 'if self.certified_apks[index].get().is_some()' prevents overwriting existing keys, but can a Byzantine validator race to insert a malicious APK before the honest validator, permanently poisoning the key set and causing all subsequent randomness verifications to fail? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0aa90dab-bf50-499e-870f-711e5d9115e3?mode=deep",
+    "timestamp": "2026-01-20 05:03:30.851441",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: add_certified_apk()] [Error Handling] The function calls unwrap() on OnceCell::set() result - can this panic if the cell is somehow already set between the is_some() check and set() call, causing validator crashes during key distribution in epoch transitions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c56196f7-6083-46d4-a7ee-e04e48c5ec01?mode=deep",
+    "timestamp": "2026-01-20 05:03:47.308059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: RandKeys] [Memory Safety] The certified_apks vector contains OnceCell<APK> which may have internal Arc or other shared pointers - can improper cloning or dropping of RandKeys cause use-after-free or double-free vulnerabilities when validators shut down or reconfigure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d4a6b1b-468d-412b-bd57-cff65129ad35?mode=deep",
+    "timestamp": "2026-01-20 05:04:05.315106",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: RandKeys] [Key Verification Gap] RandKeys stores pk_shares but does not verify they match the ask/apk during construction - can an attacker provide inconsistent public key shares that pass individual checks but cause cryptographic failures during WVUF aggregation, breaking randomness generation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2dd1fe8a-e6db-47d2-82cd-32f63e232261?mode=deep",
+    "timestamp": "2026-01-20 05:04:23.849949",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: add_certified_apk()] [Byzantine APK Injection] Can a Byzantine validator provide a valid-looking but incorrect APK that passes initial checks but later causes subtle verification failures, allowing them to selectively deny randomness contributions from specific honest validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb296e1f-de83-427f-8027-9412ed57f46e?mode=deep",
+    "timestamp": "2026-01-20 05:04:43.925889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: Randomness] [Randomness Manipulation] The randomness field stores raw Vec<u8> bytes with serde_bytes serialization - can an attacker inject malformed or biased randomness bytes that appear valid but predictably influence smart contract outcomes, enabling gambling or lottery manipulation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b6ac50a-1485-43bb-a1a7-bfa283d2178c?mode=deep",
+    "timestamp": "2026-01-20 05:05:05.436215",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: Randomness::new()] [Entropy Validation] Does Randomness::new() validate the length or entropy of the randomness Vec<u8>, or can attackers provide empty, single-byte, or low-entropy randomness that breaks cryptographic security assumptions in on-chain applications? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3cb15e41-0386-4671-98d8-0d7d5f3f9e21?mode=deep",
+    "timestamp": "2026-01-20 05:05:27.851948",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: randomness()] [Direct Byte Access] The randomness() method returns &[u8] allowing direct byte-level access - can on-chain contracts misuse this raw access to extract predictable patterns or biases that compromise randomness quality for security-critical operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9a3463e-71da-497f-90b1-a8eabd8d97b5?mode=deep",
+    "timestamp": "2026-01-20 05:05:51.559666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: randomness_cloned()] [Resource Exhaustion] The randomness_cloned() method creates a full Vec<u8> clone without size limits - can an attacker store arbitrarily large randomness vectors (e.g., gigabytes) that cause memory exhaustion when cloned repeatedly during transaction execution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8718a66-4655-4c9d-bbb7-e877168857cb?mode=deep",
+    "timestamp": "2026-01-20 05:06:15.148431",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: Randomness] [Metadata-Randomness Binding] Does the Randomness struct cryptographically bind the randomness bytes to the RandMetadata (epoch/round), or can an attacker substitute randomness from a different epoch/round that passes validation but violates temporal ordering? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea33241a-9ed9-429e-ad02-a3ec35a601ad?mode=deep",
+    "timestamp": "2026-01-20 05:06:39.372042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: Randomness] [Serialization Attack] The randomness field uses serde_bytes - can crafted serialized data with extreme sizes or malformed length prefixes cause deserialization to allocate excessive memory or trigger buffer overflows during network transmission? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4bc2c4c-a7db-4c9c-9a97-d2a5fefcafe3?mode=deep",
+    "timestamp": "2026-01-20 05:07:05.362300",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: Randomness::new()] [Type Confusion] Can an attacker provide randomness bytes that when deserialized appear valid but contain type-confused data structures that cause crashes or undefined behavior when consumed by WVUF verification functions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0663b695-d5be-446f-b8ad-db5949fc7c8e?mode=deep",
+    "timestamp": "2026-01-20 05:07:32.867916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: Randomness] [Determinism Violation] Can concurrent access to Randomness struct through multiple references cause non-deterministic behavior where different validators read different randomness values, leading to state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d5ea5fe-74aa-41ed-adb0-12f4dc5ab87e?mode=deep",
+    "timestamp": "2026-01-20 05:08:01.466898",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: RandMetadata] [Epoch Overflow] The epoch field is u64 - can epoch values near u64::MAX cause integer overflow when incremented during epoch transitions, wrapping back to 0 and causing validators to accept randomness from future epochs as valid? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4970502-a2af-457c-a52f-494ceb2daea2?mode=deep",
+    "timestamp": "2026-01-20 05:08:30.566132",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: RandMetadata] [Round Manipulation] Can a Byzantine validator craft RandMetadata with manipulated round numbers (e.g., round=u64::MAX) that cause arithmetic overflow in round comparisons, allowing old randomness to be replayed as fresh? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a62495ec-a1c0-46f9-8b42-14ed382b6504?mode=deep",
+    "timestamp": "2026-01-20 05:09:00.584148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: RandMetadata] [Replay Attack] Does RandMetadata validation prevent replay attacks where attackers resubmit old epoch/round combinations with fresh signatures to influence current randomness generation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ca99c30-f9d5-4b5a-adcd-ef964617579b?mode=deep",
+    "timestamp": "2026-01-20 05:09:30.910999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: RandMetadata] [Cross-Epoch Poisoning] Can metadata from epoch N be accepted in epoch N+1 if validators have not yet fully transitioned, causing mixed randomness from different validator sets that breaks security assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_735341cb-50b4-4da3-b1cb-3383898d8d1c?mode=deep",
+    "timestamp": "2026-01-20 05:10:01.500215",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: RandMetadata] [Serialization Uniqueness] Is the BCS serialization of RandMetadata guaranteed to be unique for each epoch/round pair, or can hash collisions in serialized form allow different metadata to produce identical WVUF verification inputs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0623efb-f5ff-4e57-ae36-d7ce57706bfa?mode=deep",
+    "timestamp": "2026-01-20 05:10:32.160075",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Struct: FullRandMetadata] [Block Binding] The block_id field is 'not used for signing' per comments - can an attacker provide valid signatures for one block but bind them to a different block_id, causing randomness to be associated with wrong blocks and breaking fork resolution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28e32eae-7a79-4767-8694-8c4dcbd9eae8?mode=deep",
+    "timestamp": "2026-01-20 05:11:00.572637",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/randomness.rs] [Function: FullRandMetadata::new()] [Timestamp Manipulation] Can Byzantine validators provide arbitrarily large or negative timestamp values that cause integer overflow when used in time-based comparisons for randomness ordering? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41ae70e1-f347-4f75-b235-1f079c9602f9?mode=deep",
+    "timestamp": "2026-01-20 05:11:29.447343",
+    "report_generated": false
+  }
+]
