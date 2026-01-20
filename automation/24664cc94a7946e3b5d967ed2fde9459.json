@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: unmetered_get_lazily_verified_module() impl] [Version conflict] insert_verified_module() (lines 322-327) uses a version parameter - if two transactions insert different versions of the same module concurrently, which version wins? Can this lead to non-deterministic execution across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a8a1607-a4ae-485a-99dd-651bb0d213ce?mode=deep",
+    "timestamp": "2026-01-20 17:30:00.763646",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Cycle detection bypass] The visited HashSet (line 349) is meant to detect cycles - but if an attacker crafts modules A->B->C->A where each validates individually, can the cycle check fail if modules are verified out of order across concurrent transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30f5b48c-cd81-4eee-a65e-cf9c00cdd08f?mode=deep",
+    "timestamp": "2026-01-20 17:30:13.388177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Recursive stack overflow] The function is recursive (lines 401-407 call itself) - can an attacker deploy a chain of modules with max-depth dependencies (e.g., 1000+ levels) to cause stack overflow and crash validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a84a5bb5-c028-4fc7-b6d6-8c6cf1037e31?mode=deep",
+    "timestamp": "2026-01-20 17:30:26.200618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Verification order manipulation] Dependencies are verified in iteration order (line 386) - can an attacker control dependency order through module structure to exploit race conditions in concurrent verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5340a350-6c02-4aff-baf1-89c162c299f8?mode=deep",
+    "timestamp": "2026-01-20 17:30:39.442686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Paranoid check bypass] paranoid_check_module_address_and_name() (lines 372-376) validates module metadata - but is this check also performed on dependencies? Can an attacker inject a malicious dependency with mismatched address/name? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a90c995b-bf96-4875-9d47-5e509a5d604e?mode=deep",
+    "timestamp": "2026-01-20 17:30:53.452575",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Build locally verified race] build_locally_verified_module() (lines 377-381) creates locally verified code - if this operation is not atomic with cache insertion, can concurrent transactions verify the same module multiple times, wasting resources? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d6d2099-f97d-407f-8001-1bbe9aa5c5b6?mode=deep",
+    "timestamp": "2026-01-20 17:31:08.500005",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Dependency resolution TOCTOU] Between resolving a dependency (lines 389-391) and verifying it (lines 401-407), can the dependency be replaced on-chain, causing validators to verify different dependency versions and produce non-deterministic state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0a3b840-7257-40c6-a8f8-563ee61b7582?mode=deep",
+    "timestamp": "2026-01-20 17:31:27.294733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Cached verification trust] If dependency.code().is_verified() returns true (line 394), it's trusted immediately - can a prior transaction have poisoned the cache with a 'verified' module that's actually malicious? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0545d8e5-35ca-46bd-aef4-b3c40496131f?mode=deep",
+    "timestamp": "2026-01-20 17:31:44.702241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Cycle detection false positive] The visited.insert() check (line 399) prevents revisiting - but in a valid DAG with multiple paths to the same node (A->B->D, A->C->D), could this incorrectly flag D as a cycle? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d762312-bff1-43be-b2ad-223ac87bae3a?mode=deep",
+    "timestamp": "2026-01-20 17:32:03.720579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Cyclic dependency error timing] module_cyclic_dependency_error! (lines 411-414) is returned on cycle detection - but before this error, how many dependencies were already verified and cached? Can partial verification state corruption occur? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0175c79e-7770-4d9b-86ec-3f0d1ed7d4d3?mode=deep",
+    "timestamp": "2026-01-20 17:32:23.501605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Linking verification bypass] build_verified_module_with_linking_checks() (lines 418-419) performs linking - but if this fails after dependencies are verified, are verified dependencies rolled back from cache? Can failed verifications leave cache in inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87f5beff-50f1-4bbd-aa8b-7c9db79178d2?mode=deep",
+    "timestamp": "2026-01-20 17:32:44.062099",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Insert verification race] insert_verified_module() (lines 420-425) inserts the verified module - if concurrent transactions both verify the same module, do both insertions succeed? Which version is kept? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90e4cc24-0496-429d-8a15-9966b5645227?mode=deep",
+    "timestamp": "2026-01-20 17:33:05.086131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Dependency vector exhaustion] verified_dependencies vec (line 385) collects all deps - for modules with thousands of dependencies, can this vector grow so large it exhausts memory before OOM protections trigger? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4282963-b9ec-468a-8bb1-85055b190b8c?mode=deep",
+    "timestamp": "2026-01-20 17:33:27.180137",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Immediate dependencies iterator] immediate_dependencies_iter() (line 386) walks dependencies - if the deserialized module is maliciously crafted to report incorrect dependencies, can this cause verification of wrong modules? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea2592d7-e54e-4afd-a3bd-b832d9e01621?mode=deep",
+    "timestamp": "2026-01-20 17:33:50.880664",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_verify()] [Extension clone cost] module.extension().clone() (line 423) clones extension data - if extensions contain large data structures, can repeated cloning during recursive verification cause memory spikes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1336d4b-9d00-4ea8-ae6c-10a433924bd2?mode=deep",
+    "timestamp": "2026-01-20 17:34:15.504310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_skip_verification()] [Production leak] This entire function (lines 432-511) is #[cfg(fuzzing)] - but what if fuzzing features leak into production through conditional compilation errors? Would all verification be skipped? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a874e2a0-3993-4dd0-bbdc-a7b89f63b161?mode=deep",
+    "timestamp": "2026-01-20 17:34:41.119900",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_skip_verification()] [Unverified module creation] Module::new() (lines 493-501) creates unverified modules - if this fuzzing path is ever reachable in production, can attackers deploy completely unverified bytecode bypassing all security checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_002e2a18-5765-46b0-a149-f66e3929477a?mode=deep",
+    "timestamp": "2026-01-20 17:35:07.494757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_skip_verification()] [Fuzzing cycle detection] The cycle detection logic (lines 473-489) in fuzzing mode is identical to verified mode - so cycles would still be caught, but can this give false security confidence while verification is actually skipped? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_803e8e54-a79c-4231-9415-096990e69ac0?mode=deep",
+    "timestamp": "2026-01-20 17:35:34.833674",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_skip_verification()] [Location::Undefined error] Errors are finished with Location::Undefined (line 501) - does this hide critical error context needed for debugging malicious modules discovered during fuzzing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a47b46f-8bc0-4f08-9ea0-4f2010cdd256?mode=deep",
+    "timestamp": "2026-01-20 17:36:02.530539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: visit_dependencies_and_skip_verification()] [Insert unverified modules] insert_verified_module() is called (lines 503-508) even though the module isn't actually verified - does the cache distinguish between truly verified and fuzzing-skipped modules? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10f64a46-5c42-4fe7-9eca-32a56f052d94?mode=deep",
+    "timestamp": "2026-01-20 17:36:31.750423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Struct: FunctionValueExtensionAdapter] [Lifetime issues] The adapter (line 515) holds a reference to module_storage with lifetime 'a - can lifetime issues cause use-after-free if module_storage is dropped while adapter is still in use? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e7a96f4-96b0-4a84-81be-c7c29bff92e9?mode=deep",
+    "timestamp": "2026-01-20 17:37:01.381952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: create_from_serialization_data()] [Deserialization bomb] LazyLoadedFunction::new_unresolved() (line 537) creates functions from serialized data - can an attacker provide crafted SerializedFunctionData with malicious module_id/fun_id that doesn't exist, causing errors during lazy resolution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbb5db08-4835-4c7f-8e2d-6bd60fe23746?mode=deep",
+    "timestamp": "2026-01-20 17:37:30.171089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: get_serialization_data()] [State borrow panic] state.borrow() (line 544) borrows function state - if function is being modified concurrently, can this panic and crash the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c747e6a-be54-4a82-956f-8ae3c4a89d0a?mode=deep",
+    "timestamp": "2026-01-20 17:37:59.101106",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: get_serialization_data()] [Unresolved data leak] When state is Unresolved (line 545), raw data is returned - can this leak sensitive information about function closures before they're resolved and validated? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e5819fb-10b8-4350-a968-43c74df63943?mode=deep",
+    "timestamp": "2026-01-20 17:38:26.941089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/runtime/src/storage/module_storage.rs] [Function: get_serialization_data()] [Captured layouts validation] Captured layouts must exist for storable closures (lines 556-560) - but what if captured_layouts is None due to a bug? Can this cause VALUE_SERIALIZATION_ERROR that's improperly handled? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9366923-d3bb-4743-b969-cc2d81e8f0b3?mode=deep",
+    "timestamp": "2026-01-20 17:38:53.179018",
+    "report_generated": false
+  }
+]
