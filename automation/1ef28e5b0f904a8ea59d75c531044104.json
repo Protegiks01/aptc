@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Function: PeerMonitoringMetadata::new()] [Invariant violation] Can PeerMonitoringMetadata be constructed with average_ping_latency_secs < latest_ping_latency_secs, violating the expected invariant that average should smooth out spikes, leading to incorrect peer prioritization in mempool? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_faeaaa39-b105-4eb3-b518-ee5369a2f86e?mode=deep",
+    "timestamp": "2026-01-20 13:42:02.290517",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Trait: Display for PeerMonitoringMetadata] [Format string injection] When formatting metadata for logs, can attackers inject format string directives through NetworkInformationResponse or NodeInformationResponse Display implementations that get interpolated by the outer Display, causing log injection or information disclosure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76e8ad22-5c52-44d8-ab96-ed1ed8bc8706?mode=deep",
+    "timestamp": "2026-01-20 13:42:15.104274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Trait: Debug for PeerMonitoringMetadata] [Missing internal_client_state] Debug formatting explicitly excludes internal_client_state - if debug logs are used for security auditing, can attackers hide malicious state in this field that never appears in debug output but affects runtime behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1e0cabe-0812-4cdf-965b-235e3c80b0bd?mode=deep",
+    "timestamp": "2026-01-20 13:42:28.060939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Function: display_format_option()] [Unbounded output] The display formatting functions don't limit string length - can extremely verbose NetworkInformationResponse or NodeInformationResponse values cause log overflow, filling disk storage and triggering log rotation that purges important security events? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1874ef58-5381-432d-a639-1da1f677449c?mode=deep",
+    "timestamp": "2026-01-20 13:42:43.297674",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Function: debug_format_option()] [Recursive formatting] If NetworkInformationResponse contains references to other peers' metadata, can recursive debug formatting create infinite loops or stack overflows when displaying cyclic peer relationships? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68d83f71-fb7c-4609-bdae-3e79f9b32948?mode=deep",
+    "timestamp": "2026-01-20 13:42:57.910267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Integration: Mempool] [Transaction routing] Since mempool uses PeerMonitoringMetadata to prioritize peers for transaction forwarding, can an attacker with multiple nodes provide fake metadata to monopolize transaction flow, enabling front-running attacks by ensuring all transactions pass through their infrastructure first? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_090be1be-651f-472a-a0e8-209ea023223e?mode=deep",
+    "timestamp": "2026-01-20 13:43:13.461799",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Integration: Mempool] [Sybil attack amplification] Can an attacker create multiple peer identities with fake low-latency PeerMonitoringMetadata to occupy all top priority slots in mempool's peer ranking, starving honest peers of transaction traffic and degrading network propagation speed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc58eb44-b249-4ce6-967b-225f86e6217e?mode=deep",
+    "timestamp": "2026-01-20 13:43:29.711395",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Integration: Mempool] [Load balancing bypass] Can attackers report identical low latencies across all their Sybil nodes to defeat load balancing logic, ensuring they receive transaction duplicates from all sender buckets and gaining complete visibility into mempool contents for MEV extraction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f705c57-2c05-4b7b-98be-810b96905178?mode=deep",
+    "timestamp": "2026-01-20 13:43:48.464515",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Integration: Mempool] [Failover poisoning] If primary peers fail, mempool falls back to peers with Failover priority - can attackers position themselves as failover peers with slightly higher but still fake-low latencies to take over transaction routing during network instability? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3953698a-37d5-4228-9b35-8dead9a35f9c?mode=deep",
+    "timestamp": "2026-01-20 13:44:08.282297",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Integration: Consensus Observer] [Subscription manipulation] Since consensus observer uses distance_from_validators and ping latencies for subscription selection, can malicious peers provide fake metadata to become preferred subscription targets, allowing them to filter or delay consensus messages and degrade finality? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27edc5e4-3b5d-4112-b5f0-ae19fd192ac1?mode=deep",
+    "timestamp": "2026-01-20 13:44:29.209072",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Integration: Consensus Observer] [Eclipse attack] Can an attacker surround a fullnode with colluding peers all reporting distance=1 from validators with low latency, causing the fullnode to exclusively subscribe to attacker-controlled consensus observers and receive censored or forked chain views? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6a252ad-357c-4e70-b2ec-2b99f2ac3804?mode=deep",
+    "timestamp": "2026-01-20 13:44:51.316996",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Integration: Consensus Observer] [Subscription starvation] Can Byzantine nodes report extremely low latencies to monopolize all consensus observer subscription slots, preventing honest fullnodes from subscribing to legitimate validators and causing them to fall behind or fork? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e64c994-d910-40f4-a31a-32bb0dd70be9?mode=deep",
+    "timestamp": "2026-01-20 13:45:14.329759",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Integration: State Sync] [Data source manipulation] Can attackers provide fake PeerMonitoringMetadata to become preferred data sources for state synchronization, allowing them to serve corrupted state data or selectively withhold critical transactions to partition the network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38de1c07-9331-4890-a7b9-7e21a8258524?mode=deep",
+    "timestamp": "2026-01-20 13:45:38.186388",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Integration: State Sync] [Snapshot poisoning] If state sync prioritizes peers with low distance and latency for snapshot downloads, can attackers position themselves as top-priority snapshot sources and serve snapshots at incorrect versions to cause sync failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50110fc8-d5ba-4357-afb7-ab72d901ac24?mode=deep",
+    "timestamp": "2026-01-20 13:46:02.441176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Derive: Default for PeerMonitoringMetadata] [Unsafe defaults] The Default implementation creates all-None metadata - can code paths that rely on Default accidentally use uninitialized metadata for peer selection, causing random peer prioritization or selection of disconnected peers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8554f5c-e9b7-4274-a992-ab8aeb9a4b0f?mode=deep",
+    "timestamp": "2026-01-20 13:46:27.713320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Derive: Default for PeerMonitoringMetadata] [Zombie peers] If a peer's metadata is reset to Default after disconnection but before removal from peer maps, can stale Default metadata cause the disconnected peer to be selected for transaction forwarding, resulting in failed sends and retransmission storms? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96cb1588-7a42-4586-aff4-8bc85e337c74?mode=deep",
+    "timestamp": "2026-01-20 13:46:53.720204",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Derive: Clone for PeerMonitoringMetadata] [Deep copy cost] Since PeerMonitoringMetadata contains nested Option<NetworkInformationResponse> with BTreeMap<PeerNetworkId, ConnectionMetadata>, can excessive cloning during peer prioritization updates cause CPU spikes that delay transaction processing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e84f609e-7b1c-4697-b329-40ba5dfd3359?mode=deep",
+    "timestamp": "2026-01-20 13:47:15.281138",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Derive: Clone for PeerMonitoringMetadata] [State inconsistency] If PeerMonitoringMetadata is cloned for comparison while being updated concurrently, can torn reads cause mempool to make prioritization decisions based on partially updated metadata where distance is new but latency is old? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4d28844-112f-4237-a837-f3e4f74a06a3?mode=deep",
+    "timestamp": "2026-01-20 13:47:42.077737",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Derive: PartialEq for PeerMonitoringMetadata] [Float semantics] PartialEq for f64 fields uses IEEE 754 semantics where NaN != NaN - can this cause PeerMonitoringMetadata comparisons to be non-reflexive (metadata != metadata), breaking hash map lookups and causing peer metadata leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b64d24b8-458b-4197-8644-7daf9e8c8c71?mode=deep",
+    "timestamp": "2026-01-20 13:48:09.096661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Derive: PartialEq for PeerMonitoringMetadata] [Transitive violation] If two metadata instances have slightly different f64 values due to floating-point errors but compare equal via PartialEq, can this violate transitivity (A == B && B == C but A != C) and corrupt sorted peer lists? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b57e1f2f-3011-4926-987e-1e357d9db3c1?mode=deep",
+    "timestamp": "2026-01-20 13:48:36.163028",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Field: distance_from_validators via latest_network_info_response] [Recursive distance poisoning] Since distance is calculated recursively (node distance = min(peer distances) + 1), can an attacker with one compromised low-distance peer infect the entire network's distance calculations, making all nodes incorrectly believe they're close to validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3d75da0-cc17-49bb-8515-b0c4575111db?mode=deep",
+    "timestamp": "2026-01-20 13:49:03.959123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Field: distance_from_validators via latest_network_info_response] [Distance oscillation] Can attackers alternate between reporting distance=1 and distance=99 in their metadata to cause peer prioritization to oscillate, triggering continuous re-prioritization that wastes CPU and disrupts transaction forwarding? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1666bf00-7c1e-4eed-a85a-3ce828fe84d0?mode=deep",
+    "timestamp": "2026-01-20 13:49:32.377054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Field: distance_from_validators via latest_network_info_response] [Validator impersonation] If a fullnode receives NetworkInformationResponse claiming distance=0 from a peer without verifying that peer actually has validator role, can non-validators impersonate validators to gain priority in all peer selection algorithms? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfd3005f-5a44-438b-8254-dba11d56a310?mode=deep",
+    "timestamp": "2026-01-20 13:50:00.939778",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Field: average_ping_latency_secs] [Negative latency] Can attackers exploit float encoding to report negative ping latencies that sort higher than all positive latencies, gaining top priority in mempool and consensus observer selection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8047df82-5dcf-478b-8331-9bbd945d46ca?mode=deep",
+    "timestamp": "2026-01-20 13:50:30.854083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/types/src/lib.rs] [Field: average_ping_latency_secs] [Zero latency] Can reporting exactly 0.0 for ping latency bypass comparison logic that uses latency differences, causing the peer to be treated as infinitely fast and monopolizing all traffic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a3354c4-130b-4056-8a26-8cf55b2ba2d3?mode=deep",
+    "timestamp": "2026-01-20 13:51:01.688836",
+    "report_generated": false
+  }
+]
