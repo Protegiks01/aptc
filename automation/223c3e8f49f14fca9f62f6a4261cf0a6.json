@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Authentication bypass] Can an attacker bypass JWT verification by exploiting the external firebase_token::JwkAuth dependency if it returns Some() for malformed tokens, allowing unauthorized access to faucet funds without valid Firebase authentication? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b19dfa21-62c9-433f-9786-f294551689ff?mode=deep",
+    "timestamp": "2026-01-20 16:10:44.422852",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Token validation] Does the JwkAuth::verify() method validate JWT signature, expiration (exp claim), issued-at (iat claim), and audience (aud claim), or can attackers submit expired/premature/mismatched-audience tokens that get accepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11e94e9a-4506-4bf8-8fff-e5bdee73f801?mode=deep",
+    "timestamp": "2026-01-20 16:10:56.590271",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Cryptographic validation] Is the JWT signature verification cryptographically sound, or can attackers forge tokens using weak algorithms (e.g., alg=none, RS256 key confusion attacks) that bypass the JwkAuth verifier? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2d3c615-e8e0-4299-b635-7b0901d47bdd?mode=deep",
+    "timestamp": "2026-01-20 16:11:09.488384",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Email verification bypass] The code checks email_verified at line 56, but can an attacker craft a JWT with a manipulated claims structure where email_verified is missing or has a non-boolean type, causing deserialization to succeed with default false value that then gets bypassed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ef40391-0242-4310-9422-67715fca0df9?mode=deep",
+    "timestamp": "2026-01-20 16:11:23.000992",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Race condition] Since validate_jwt() takes Arc<HeaderMap> and is async, can multiple concurrent calls with the same JWT token create race conditions in the JwkAuth verifier's internal state, leading to incorrect validation results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da0c400a-c6ce-42d2-afb5-b0413a81ff79?mode=deep",
+    "timestamp": "2026-01-20 16:11:36.936642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Token replay] The function returns the sub field (Firebase UID) but doesn't check for token reuse - can an attacker replay the same valid JWT token multiple times to bypass rate limiting that should be per-request rather than per-user? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83f81ac2-e2de-47e3-81d0-ea859a558bc1?mode=deep",
+    "timestamp": "2026-01-20 16:11:51.849453",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Time validation] Does the verify() call properly validate the exp and iat timestamps against the current time with proper clock skew tolerance, or can attackers use tokens that are expired/not-yet-valid by exploiting time synchronization issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53644037-4a43-44f1-892a-f8bcbc0ae2eb?mode=deep",
+    "timestamp": "2026-01-20 16:12:07.176116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Issuer validation] The JwtClaims struct includes an iss field, but is it validated against the expected Firebase issuer URL, or can attackers use tokens from different issuers (e.g., other Firebase projects) to gain unauthorized access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e681b1e-12b0-4f4d-bcd0-485cd278279f?mode=deep",
+    "timestamp": "2026-01-20 16:12:24.514455",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Audience validation] The aud claim in JwtClaims is not explicitly validated in the code - can attackers use tokens intended for different applications/audiences to authenticate with the faucet? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8baa377-3aa1-4ef0-83ff-1bd22e5a4325?mode=deep",
+    "timestamp": "2026-01-20 16:12:42.572450",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Error handling] When verify() returns None at line 45, the error message 'Failed to verify JWT token' is generic - does this leak information about whether the token was malformed vs invalid signature vs expired, enabling oracle attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf9bf356-7e8c-4d29-adb3-d652301c0f03?mode=deep",
+    "timestamp": "2026-01-20 16:13:01.413340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Header injection] The X_IS_JWT_HEADER check uses eq_ignore_ascii_case('true') at line 73 - can attackers bypass this by using Unicode homoglyphs, null bytes, or whitespace variants (e.g., 'True', 'TRUE', 'true\\\\0') that match the case-insensitive check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d5d996d-534b-444c-a9f0-fb35f2c8e6af?mode=deep",
+    "timestamp": "2026-01-20 16:13:20.789672",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Header validation bypass] The x-is-jwt header is checked at lines 70-82, but this is a custom security mechanism - can attackers exploit the fact that this header is not part of standard JWT validation to bypass authentication by manipulating request routing or middleware? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9d547cb-a381-4608-b7f9-047f5d456f22?mode=deep",
+    "timestamp": "2026-01-20 16:13:41.123654",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Authorization header parsing] At line 94, split_whitespace().nth(1) extracts the token - can attackers bypass validation by inserting multiple spaces, tabs, or newlines in the Authorization header (e.g., 'Bearer  <token>' with multiple spaces)? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a7b1fd6-3a52-42e3-9ea2-403f2c49644c?mode=deep",
+    "timestamp": "2026-01-20 16:14:02.341360",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Token extraction] The code uses split_whitespace().nth(1) which takes the second whitespace-separated token - can attackers inject additional whitespace-separated strings after the JWT token that get ignored but could be used in other parts of the system? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ab83f7c-c52e-4a96-bf4d-f2a572f0e8d9?mode=deep",
+    "timestamp": "2026-01-20 16:14:24.362893",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Case sensitivity bypass] The Authorization header value extraction uses to_str() at line 93 - does this properly handle non-ASCII characters or UTF-8 encoding issues that could bypass validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18c4b125-7f19-4a38-9bd5-57548c481e52?mode=deep",
+    "timestamp": "2026-01-20 16:14:46.275174",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Header case sensitivity] HTTP header names are case-insensitive by spec, but does the poem::http::HeaderMap properly handle case variations of 'Authorization' and 'x-is-jwt' headers, or can attackers bypass checks using 'AUTHORIZATION' or 'X-IS-JWT'? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29292654-26b0-4b6f-a64b-1146d4c9fb23?mode=deep",
+    "timestamp": "2026-01-20 16:15:09.441379",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Missing header handling] At lines 91-101, if Authorization header exists but is malformed (e.g., 'Bearer' without token, or 'Token <token>'), the error message reveals the expected format - does this enable enumeration attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da94fb09-9d96-4ce2-806a-1544901c4100?mode=deep",
+    "timestamp": "2026-01-20 16:15:31.157406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Header manipulation] Since jwt_sub() takes Arc<HeaderMap>, can attackers exploit reference counting to maintain stale references to modified headers after validation, causing TOCTOU (time-of-check-time-of-use) vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9465308c-1dc1-4ef8-83d6-8598ea0a3216?mode=deep",
+    "timestamp": "2026-01-20 16:15:52.560380",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Double header attack] What happens if multiple Authorization or x-is-jwt headers are present - does HeaderMap::get() return the first, last, or merged value, and can attackers exploit this to bypass validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6744f90e-cf1a-4380-b976-6ff3b9418b56?mode=deep",
+    "timestamp": "2026-01-20 16:16:14.105379",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: jwt_sub()] [Empty token] If the Authorization header is 'Bearer ' (with trailing space but no token), does split_whitespace().nth(1) return None or Some(''), and could this bypass validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9c55c35-1b1f-4db1-a82f-3795807ed3ee?mode=deep",
+    "timestamp": "2026-01-20 16:16:35.996512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Email verification] At line 56, email_verified must be true, but can attackers exploit Firebase's email verification flow by using tokens from accounts that had verified emails but later changed to unverified emails? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b2f1785-fa3a-4003-b9ca-0939899bcd80?mode=deep",
+    "timestamp": "2026-01-20 16:16:57.756889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Struct: JwtClaims] [Claim deserialization] The email_verified field at line 112 is a bool - can attackers send JWT tokens with email_verified as string 'true' or integer 1 that deserialize successfully due to serde's lenient parsing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c79efe50-f4d4-4da0-b0c7-968fc9e7a3e2?mode=deep",
+    "timestamp": "2026-01-20 16:17:18.471605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Email verification bypass] The email field is present in JwtClaims but never validated - can attackers use tokens with empty, malformed, or attacker-controlled email addresses as long as email_verified is true? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44ce79a4-5d3a-4740-b328-37fe980c23e3?mode=deep",
+    "timestamp": "2026-01-20 16:17:39.334506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Function: validate_jwt()] [Logic error] The email_verified check at line 56 rejects unverified tokens, but what if the check is performed before signature verification completes, allowing timing attacks to determine if tokens are structurally valid? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_faab1f6c-2cf7-4709-a17d-dce9557ea0d4?mode=deep",
+    "timestamp": "2026-01-20 16:18:01.557065",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/firebase_jwt.rs] [Struct: JwtClaims] [Missing validation] The email field at line 111 is never validated for format/length - can attackers cause DoS or resource exhaustion by using extremely long email strings in JWT claims? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63f80ffa-04e7-4717-82e3-68d8dac015e3?mode=deep",
+    "timestamp": "2026-01-20 16:18:24.859416",
+    "report_generated": false
+  }
+]
