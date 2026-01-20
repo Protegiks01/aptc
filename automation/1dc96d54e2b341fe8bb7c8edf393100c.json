@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: save_min_readable_version()] [Transaction boundary] Is write_pruner_progress() at line 82-83 transactional? If not, can partial writes leave the database in an inconsistent state where progress metadata is corrupted, preventing validator restart? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d0f0b13-f917-4896-8168-14e4cf34c26a?mode=deep",
+    "timestamp": "2026-01-20 12:54:41.775380",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: new()] [Bootstrap inconsistency] At line 119-120, if the database contains no progress metadata (first startup), does get_state_merkle_pruner_progress() return 0? Can this cause the pruner to start at version 0 even if the database contains state at higher versions, leading to inconsistent pruning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0bbc5961-95a5-4095-81c2-4c093d5494e5?mode=deep",
+    "timestamp": "2026-01-20 12:54:54.048441",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: new()] [Progress initialization race] Between reading progress at line 119 and storing it in AtomicVersion at line 130, can the database be modified by other threads? Could this cause min_readable_version to be initialized with stale data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fae66efe-ebc5-4f71-abbf-9d56688b7f7e?mode=deep",
+    "timestamp": "2026-01-20 12:55:06.593368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: save_min_readable_version()] [Write-read consistency] After write_pruner_progress() succeeds at line 82-83, is the new value immediately visible to subsequent reads via get_state_merkle_pruner_progress()? Can database caching cause stale reads that lead to incorrect pruning decisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb754f36-0bb4-4f44-8c63-eca3282c176b?mode=deep",
+    "timestamp": "2026-01-20 12:55:19.595440",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: save_min_readable_version()] [Idempotency] If save_min_readable_version() is called multiple times with the same value due to retries or race conditions, is this safe? Can duplicate writes cause database corruption or performance issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e7751f5-7592-4587-8346-904ebcc0c69f?mode=deep",
+    "timestamp": "2026-01-20 12:55:34.214894",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Privilege escalation] Is there access control on who can call set_pruner_target_db_version()? Can unprivileged code or external APIs trigger pruning with malicious target versions, causing data loss or corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d01205aa-2c7c-489a-94c5-410fe95111d8?mode=deep",
+    "timestamp": "2026-01-20 12:55:48.896382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Authorization bypass] Can external code call maybe_set_pruner_target_db_version() with fabricated latest_version values to manipulate pruning behavior? Is the latest_version trusted or validated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff39c921-2257-473b-b4c5-b72b985869cf?mode=deep",
+    "timestamp": "2026-01-20 12:56:04.382924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: save_min_readable_version()] [Direct database access] Does save_min_readable_version() directly write to the database without any access control checks? Can malicious code call this to corrupt pruning progress and cause state inconsistency? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ff7d2ef-3ae0-4621-ae44-0ac045b0e177?mode=deep",
+    "timestamp": "2026-01-20 12:56:21.564891",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: new()] [Configuration injection] At line 108, state_merkle_pruner_config is passed from the caller. Is this configuration validated and sanitized? Can attackers inject malicious configuration through config files or APIs to compromise pruning behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f246e07-6671-4fde-94c2-537fb195d9dd?mode=deep",
+    "timestamp": "2026-01-20 12:56:39.712335",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Field: state_merkle_db] [Database reference sharing] The state_merkle_db Arc is cloned at line 112 for the pruner. Can malicious code obtain references to this Arc and directly manipulate the database, bypassing pruner coordination and corrupting state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad632190-e836-4bdc-94a1-98193f234178?mode=deep",
+    "timestamp": "2026-01-20 12:56:58.369757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Invariant: min_readable_version <= latest_version] Can the condition at line 69 be violated if min_readable_version is manipulated to be greater than latest_version? Would this cause the pruner to never trigger and lead to unbounded growth? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cf5b90c-b96d-434e-8313-e556759dbce8?mode=deep",
+    "timestamp": "2026-01-20 12:57:17.951416",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Invariant: min_readable_version = latest_version - prune_window] At line 162, can saturating_sub break this invariant? If latest_version < prune_window, min_readable_version becomes 0 instead of negative, violating expectations and potentially causing all state to be pruned? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d37ca535-a191-4f7b-9e1e-cb380ed7e60c?mode=deep",
+    "timestamp": "2026-01-20 12:57:38.714029",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: save_min_readable_version()] [Invariant: monotonic progress] Is there validation that min_readable_version only increases? Can calling save_min_readable_version() with a smaller value cause the pruner to regress and re-prune already processed versions, corrupting the database? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89b37274-9c6b-4fb7-8106-5a5a5cebe5c6?mode=deep",
+    "timestamp": "2026-01-20 12:57:59.755044",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: new()] [Invariant: pruner_worker lifecycle] Is there an invariant that pruner_worker, once created, remains valid for the lifetime of StateMerklePrunerManager? Can the worker crash or exit, leaving pruner_worker as Some but pointing to a dead thread? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7a604ba-9c5f-4abc-85a0-824ac205c6c4?mode=deep",
+    "timestamp": "2026-01-20 12:58:21.341041",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: get_prune_window()] [Invariant: immutable prune_window] Is prune_window guaranteed to never change after construction? Can hot reloading or dynamic configuration updates modify prune_window mid-operation, causing inconsistency between pruning batches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52185397-9595-47d7-bf23-5770a5d99133?mode=deep",
+    "timestamp": "2026-01-20 12:58:44.117056",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: save_min_readable_version()] [Metrics inconsistency] At lines 78-80, metrics are updated before database write at line 82-83. If the database write fails, metrics will show incorrect progress. Can this cause operators to believe pruning is succeeding when it's actually failing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6e9f879-1338-4ce2-9770-11774a88ff9a?mode=deep",
+    "timestamp": "2026-01-20 12:59:08.049441",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Metrics race] At lines 166-168, metrics are updated between storing min_readable_version and calling set_target_db_version(). Can observers see metrics that don't match actual state, causing confusion during debugging? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3deaf19b-c751-4644-b984-c165e0021e58?mode=deep",
+    "timestamp": "2026-01-20 12:59:33.061511",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: new()] [Metrics initialization] At lines 122-124, metrics are initialized with min_readable_version. If this initialization fails silently, will monitoring systems show zero/default values that hide actual pruning state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50574968-5e74-4aa6-9a70-70979aa6bfff?mode=deep",
+    "timestamp": "2026-01-20 12:59:59.059151",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: init_pruner()] [Metrics label uniqueness] At lines 145-150, metrics use S::name() as labels. If multiple pruner types have the same name, will metrics collide and become uninterpretable? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58f5f27d-bbb9-4830-a0f2-aedea49949aa?mode=deep",
+    "timestamp": "2026-01-20 13:00:25.659959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: save_min_readable_version()] [Metrics overflow display] When min_readable_version is cast to i64 at line 80, large values will overflow. Will monitoring dashboards display these as negative values, confusing operators about pruning progress? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c8e5e69-8c84-4c84-a38a-06c7979599c0?mode=deep",
+    "timestamp": "2026-01-20 13:00:52.821191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: new()] [Schema version mismatch] At line 119-120, get_state_merkle_pruner_progress() reads progress from database. If a validator upgrades and the progress metadata schema changes, can this cause deserialization failures that prevent startup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1a17793-d114-404f-a086-0267f2cbd2fc?mode=deep",
+    "timestamp": "2026-01-20 13:01:19.915412",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: save_min_readable_version()] [Progress metadata compatibility] At line 82-83, write_pruner_progress() stores progress. If this format changes between versions, can downgrading validators fail to read the new format, preventing rollback? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_531f8b22-be93-4d7b-b100-baba456943a7?mode=deep",
+    "timestamp": "2026-01-20 13:01:50.188483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: init_pruner()] [StateMerklePruner version mismatch] At line 140-141, StateMerklePruner::new() is called. If StateMerklePruner internals change between versions, can this cause initialization failures or behavior changes that break pruning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af2a32a1-3b0a-4a20-90ee-c1b5995d8e28?mode=deep",
+    "timestamp": "2026-01-20 13:02:17.876521",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: new()] [Configuration schema evolution] If StateMerklePrunerConfig adds new required fields, can old validators with outdated config files fail to initialize the pruner, causing startup failures after upgrades? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe311332-60eb-49ba-b76a-a7014fd9ae31?mode=deep",
+    "timestamp": "2026-01-20 13:02:45.536579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: new()] [Database migration coordination] During a rolling upgrade where some validators have upgraded and others haven't, can differences in pruning behavior cause database divergence between validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec09e44e-7de5-4d2d-8f61-7ee0d66c054d?mode=deep",
+    "timestamp": "2026-01-20 13:03:12.700239",
+    "report_generated": false
+  }
+]
