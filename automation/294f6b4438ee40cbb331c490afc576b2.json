@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Struct: DelayedFieldID] [Ordering attack] The struct derives PartialOrd and Ord on line 25 - can attackers exploit the ordering logic (which uses unique_index first, then width) to manipulate sorted collections of IDs, causing state machine divergence? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcde1440-a1f3-4561-a22e-3e6a81c7a198?mode=deep",
+    "timestamp": "2026-01-20 21:43:36.552072",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: try_into_move_value()] [Roundtrip failure] If an ID is converted to Move value and back, the width validation on lines 196-201 checks consistency - but can an attacker find edge cases where the roundtrip produces a different ID with the same u64 representation but different width? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bc90b48-022f-4c71-a883-594c8f8a765d?mode=deep",
+    "timestamp": "2026-01-20 21:43:49.224906",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: into_derived_string_struct()] [Gas non-determinism] The comment on line 145 says conversion creates 'fixed-size Move values' for deterministic gas - but can different validators calculate different sizes for the same ID due to race conditions in size_u32_as_uleb128()? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28048819-9bff-43a2-94c9-8901fb29ade9?mode=deep",
+    "timestamp": "2026-01-20 21:44:01.883709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: try_into_move_value()] [Resource duplication] If DelayedFieldID is used to track Move resources (like aggregators or coins), can an attacker exploit conversion logic to create duplicate IDs that reference the same resource, enabling double-spending? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a92f2443-e527-417c-8fa9-f22c00487f0c?mode=deep",
+    "timestamp": "2026-01-20 21:44:15.962936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: try_from_move_value()] [Resource extraction bypass] The function extracts IDs from Move values without verifying resource ownership - can an attacker extract IDs from resources they don't own, gaining unauthorized access to delayed field values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8042bee-134e-482f-a3fd-197e1f4d62fb?mode=deep",
+    "timestamp": "2026-01-20 21:44:30.280455",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Struct: DelayedFieldID] [Copy semantics] The struct derives Copy on line 25 - does this allow attackers to duplicate resource IDs by simply copying the struct, violating Move's linear type system for resources? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2fc7fa94-518e-4a39-9020-acdc116a1f2f?mode=deep",
+    "timestamp": "2026-01-20 21:44:45.163134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: new_with_width()] [ID generation attack] The function creates IDs from arbitrary unique_index values - can an attacker predict or brute-force unique_index values to craft IDs that collide with legitimate delayed fields, enabling theft or corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a77ea0b-a261-4d93-b8d8-cc80462ae700?mode=deep",
+    "timestamp": "2026-01-20 21:45:00.667394",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Trait: TryIntoMoveValue] [Type safety bypass] The trait converts IDs to arbitrary Move layouts - can an attacker implement malicious layouts that bypass Move's type system, enabling access to typed resources through wrong type? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4305ea2-d81a-41aa-bf12-5a3ca53d5265?mode=deep",
+    "timestamp": "2026-01-20 21:45:18.148895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: From<u64>] [Unwrap panic] Lines 81-82 use unwrap() on try_from() results - can an attacker provide u64 values that cause these conversions to fail, panicking validator nodes and causing consensus halt? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b090726f-9383-4064-b027-7b08a4888941?mode=deep",
+    "timestamp": "2026-01-20 21:45:36.341134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: try_from_move_value()] [Expect_ok panic] Lines 171, 173, 178 use expect_ok() which panics on error - can an attacker craft Move values that trigger these error paths, causing validator crashes and loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80d44865-4f17-4aee-b398-e62de3229a2d?mode=deep",
+    "timestamp": "2026-01-20 21:45:55.609815",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: into_derived_string_struct()] [Error propagation] The function returns PartialVMError but downstream callers may not handle it properly - can an attacker trigger error conditions that propagate unchecked, corrupting transaction execution state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c9fa52d-e11a-4959-8a51-9fcd8569936d?mode=deep",
+    "timestamp": "2026-01-20 21:46:14.671449",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: try_from_move_value()] [Code invariant error] Lines 181-184, 191-193, 197-200 return code_invariant_error - are these truly invariant violations, or can attackers trigger these errors through malicious input, causing unnecessary transaction aborts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9025b62f-b4bc-4ea4-a8c8-fede9d981155?mode=deep",
+    "timestamp": "2026-01-20 21:46:37.905755",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: into_derived_string_struct()] [Width validation error] Line 62-64 returns an error for invalid widths, but the error message includes format!() with self:?} - can an attacker craft IDs with specially crafted values that cause the debug formatting to panic or leak sensitive information? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c02effe-d898-4153-8ed2-82b4e44f4de8?mode=deep",
+    "timestamp": "2026-01-20 21:46:59.660642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: into_derived_string_struct()] [Serialization size mismatch] The comment on line 52 requires exact width match for serialization - can an attacker exploit off-by-one errors in ULEB128 encoding to create values that serialize to width+1 or width-1 bytes, corrupting storage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d394bf52-baec-4564-a00d-7f51e5bdbfc8?mode=deep",
+    "timestamp": "2026-01-20 21:47:22.124277",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: into_derived_string_struct()] [Variable encoding attack] The function uses size_u32_as_uleb128() for variable-length encoding - can an attacker find width values that cause ULEB128 to produce ambiguous encodings, allowing multiple IDs to serialize to the same bytes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11da6250-de7a-40a3-a563-b11e5985587b?mode=deep",
+    "timestamp": "2026-01-20 21:47:44.999766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: try_into_move_value()] [Layout mismatch] If the same DelayedFieldID is serialized with different layouts (U64 vs U128 vs DerivedString), will deserialization produce the same ID? Can attackers exploit layout inconsistencies to create persistent storage corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b3bffa3-d79f-47a7-bc9b-ee2a3be0173c?mode=deep",
+    "timestamp": "2026-01-20 21:48:09.376689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: try_from_move_value()] [Width extraction mismatch] Lines 171, 174, 187 extract different widths (8, 16, variable) for different layouts - can an attacker store an ID with one layout and retrieve it with another, bypassing width validation and corrupting state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e576df8-d8c5-4dd5-8d86-a71e97a3e61e?mode=deep",
+    "timestamp": "2026-01-20 21:48:34.097622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: as_u64()] [Endianness issue] The bit packing on line 45 may produce different results on big-endian vs little-endian systems - can this cause validators on different architectures to produce different serialized states? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0539a670-874a-49e4-9ef0-0e6ff33a0096?mode=deep",
+    "timestamp": "2026-01-20 21:48:59.639611",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Struct: DelayedFieldID] [Non-atomic access] The struct has two separate u32 fields - if accessed concurrently without synchronization, can race conditions cause unique_index and width to be read from different logical timestamps, creating inconsistent IDs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e958358-5b1c-4e3a-8bf8-33f7cd82ab90?mode=deep",
+    "timestamp": "2026-01-20 21:49:26.170292",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: as_u64()] [Race in bit packing] If multiple threads call as_u64() while unique_index or width are being modified, can torn reads cause the returned u64 to contain mixed values from different ID versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4359434d-ed15-4959-bca5-4ce47f8d5ab6?mode=deep",
+    "timestamp": "2026-01-20 21:49:53.483133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: into_derived_string_struct()] [TOCTOU vulnerability] The width is extracted on line 49 and used throughout the function - if width changes between extraction and use (in concurrent scenarios), can this cause size calculation mismatches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4401d15c-740a-486e-89c3-c8819f1deea9?mode=deep",
+    "timestamp": "2026-01-20 21:50:21.352666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: try_from_move_value()] [Concurrent extraction] If multiple threads extract IDs from the same Move value concurrently, can race conditions in value_as::<T>() cause non-deterministic extraction results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9e57b50-cfb0-4017-bd92-f5e264c5a16d?mode=deep",
+    "timestamp": "2026-01-20 21:50:51.770326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Trait: ExtractWidth] [Unsafe concurrency] The extract_width() method on line 110 reads width directly without synchronization - can concurrent reads during ID modifications see garbage values if u32 writes are not atomic on all architectures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6fdb03a-8a83-4a08-9d78-49d51c6f7e0c?mode=deep",
+    "timestamp": "2026-01-20 21:51:17.920929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Struct: DelayedFieldID] [Aggregator collision] Since this ID is used for aggregators (comment on line 23), can attackers craft IDs that collide with existing aggregator IDs, allowing them to manipulate aggregator values and steal funds? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_314fd93b-5fe9-4150-826e-acd576aa1f23?mode=deep",
+    "timestamp": "2026-01-20 21:51:44.596608",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-vm/types/src/delayed_values/delayed_field_id.rs] [Function: new_with_width()] [Aggregator width manipulation] For aggregators storing coin balances, can an attacker create an ID with width=8 (u64) but later access it as width=16 (u128), causing balance overflows and unlimited minting? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0776debb-4f43-4848-bc40-c2a18901d52b?mode=deep",
+    "timestamp": "2026-01-20 21:52:12.582733",
+    "report_generated": false
+  }
+]
