@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: new()] [Message dropping attack] Can a malicious peer rapidly connect/disconnect to flood the channel, causing LIFO eviction of critical NewPeer/LostPeer notifications that legitimate peers need to receive, leading to incorrect peer state tracking and potential consensus participation failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f59f61a-bb1a-49cb-9aa7-97d231a05251?mode=deep",
+    "timestamp": "2026-01-20 02:07:37.358790",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: new()] [State inconsistency] Since QueueStyle::LIFO with max_queue_size=1 drops the oldest message when a new one arrives for the same PeerId, can an attacker exploit this by sending rapid NewPeer/LostPeer notifications to cause receivers to miss critical connection state changes, leading to desynchronized peer views across the network? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c82f2f6e-5916-4168-ab35-69aef7b9d4e5?mode=deep",
+    "timestamp": "2026-01-20 02:07:50.594063",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: new()] [Liveness attack] With capacity set to 1, if a validator receives multiple simultaneous connection events from different peers, can the LIFO queue drop important notifications causing the validator to fail to track connected peers accurately, potentially excluding valid validators from consensus participation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d6d79c7-2a38-4a9e-bf17-27bbabbe472c?mode=deep",
+    "timestamp": "2026-01-20 02:08:04.111295",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: new()] [Race condition] When aptos_channel::new() is called with QueueStyle::LIFO and capacity 1, can concurrent push() operations from multiple threads racing to send notifications for the same PeerId result in non-deterministic message ordering, causing receivers to process stale connection states? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c648efc6-4a7f-4d6e-8e0b-410b354d46b6?mode=deep",
+    "timestamp": "2026-01-20 02:08:16.551535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: new()] [Resource exhaustion] Does the channel creation with None for counters prevent proper monitoring of dropped messages? Can an attacker exploit the lack of metrics to silently drop critical connection notifications without detection, enabling stealth attacks on peer connectivity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3c27078-3952-4f83-a89b-dd7d5bbf533c?mode=deep",
+    "timestamp": "2026-01-20 02:08:31.813339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: new()] [Configuration vulnerability] Since the channel uses a hardcoded max_queue_size of 1, can this be exploited in high-churn network scenarios where legitimate connection events occur faster than receivers can process them, causing systematic loss of connection notifications and degraded network health? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40468863-ede8-4625-9436-7e2d6e3736d3?mode=deep",
+    "timestamp": "2026-01-20 02:08:48.420569",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: new()] [Denial of service] With LIFO semantics, can a Byzantine peer repeatedly reconnect to push new ConnectionNotification::NewPeer messages, causing the oldest (potentially more important) notifications to be dropped, effectively preventing other components from learning about legitimate peer connections? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e44e671b-2788-42f7-8892-b61acf626d6c?mode=deep",
+    "timestamp": "2026-01-20 02:09:06.193488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: new()] [Priority inversion] Does the LIFO queue style prioritize the most recent connection event, but can this be exploited where an attacker rapidly generates connection events to prevent processing of earlier critical notifications like validator connections, causing consensus participation delays? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a111750-4664-4e00-9ab0-95abd0e866da?mode=deep",
+    "timestamp": "2026-01-20 02:09:26.716443",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: Sender/Receiver] [Identity spoofing] Since the channel uses PeerId as the key for message separation, can an attacker craft or predict PeerId values to collide with legitimate validator PeerIds, causing their malicious connection notifications to overwrite legitimate ones in the LIFO queue? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfb3b095-0ce8-4e62-81b1-45d8847e9026?mode=deep",
+    "timestamp": "2026-01-20 02:09:48.211506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: Sender/Receiver] [PeerId collision] Can two different peers with similar or colliding PeerId hashes cause the PerKeyQueue to treat them as the same key, resulting in one peer's connection notifications overwriting another's, leading to lost peer tracking and potential validator exclusion from consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5db166d-ee56-4425-b12a-c6a18212ec0d?mode=deep",
+    "timestamp": "2026-01-20 02:10:12.911436",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: Sender/Receiver] [Key validation bypass] Is there any validation that the PeerId used in Sender::push() corresponds to a legitimate, authenticated peer? Can an attacker push notifications with arbitrary PeerIds to pollute the channel and cause receivers to track non-existent or malicious peers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7b5dd08-af8d-423c-9115-86b8be3d40dd?mode=deep",
+    "timestamp": "2026-01-20 02:10:38.272618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: Sender/Receiver] [Sybil attack] Can a malicious actor create multiple connections with different but controlled PeerIds to fill the per-key queues across many keys, causing memory exhaustion and preventing legitimate peers' notifications from being queued properly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00b91d4a-7116-4e53-9f3d-4e8efdba359b?mode=deep",
+    "timestamp": "2026-01-20 02:11:04.443987",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: Sender/Receiver] [PeerId reuse attack] If a malicious peer disconnects and reconnects with the same PeerId, can the LIFO eviction cause the LostPeer notification to be dropped when a NewPeer notification arrives, leaving receivers with an incorrect belief that the peer never disconnected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f69ec6c-3bb4-4acc-9e02-18c833dee492?mode=deep",
+    "timestamp": "2026-01-20 02:11:31.692651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: ConnectionNotification] [Message integrity] Can an attacker with access to the Sender modify the ConnectionNotification (NewPeer/LostPeer) messages in transit by manipulating the ConnectionMetadata or NetworkId fields to provide false connection information to subscribers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e015f2e-6c0e-4981-893f-01beb80626c0?mode=deep",
+    "timestamp": "2026-01-20 02:12:00.560077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: ConnectionNotification] [Notification forgery] Since ConnectionNotification contains ConnectionMetadata and NetworkId, can a compromised component forge NewPeer notifications with fabricated connection metadata to make receivers believe that non-existent peers are connected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17e2038f-1d64-42e1-8de1-c956d4d73a20?mode=deep",
+    "timestamp": "2026-01-20 02:12:31.717468",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: ConnectionNotification] [Event ordering attack] Can an attacker send LostPeer before NewPeer for the same PeerId, exploiting the LIFO semantics to make the receiver process events out of order, causing it to believe a peer is disconnected when it's actually connected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_593103d9-6ab1-40d0-8224-8ddaf686671c?mode=deep",
+    "timestamp": "2026-01-20 02:13:02.721561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: ConnectionNotification] [Notification replay] Is there any sequence number or timestamp validation in ConnectionNotification? Can stale or replayed connection notifications be pushed to the channel, causing receivers to process outdated connection state information? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_776b1a21-b709-4909-a188-80f6222e98c2?mode=deep",
+    "timestamp": "2026-01-20 02:13:35.226275",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Type: ConnectionNotification] [NetworkId spoofing] Can the NetworkId field in ConnectionNotification be manipulated to make a peer appear to be on a different network (e.g., Validator instead of public), bypassing network-specific access controls or trust boundaries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c42602bb-587e-4daf-a9c9-ac1f9e23fbbc?mode=deep",
+    "timestamp": "2026-01-20 02:14:08.704127",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: send_new_peer()] [Test helper vulnerability] The test function send_new_peer() hardcodes NetworkId::Validator - does this mask potential issues where incorrect NetworkIds could be pushed in production, allowing peers to masquerade as validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8297f09f-782e-464c-b04f-931edfa88d3c?mode=deep",
+    "timestamp": "2026-01-20 02:14:42.221229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: send_lost_peer()] [Test helper vulnerability] Similar to send_new_peer(), does send_lost_peer() with hardcoded NetworkId::Validator fail to test scenarios where NetworkId mismatches between NewPeer and LostPeer could cause state corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88d4cdbf-2b32-4a96-aeb7-91ef3f6eb223?mode=deep",
+    "timestamp": "2026-01-20 02:15:16.636283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: send_n_get_1()] [Test coverage gap] The test sends 4 messages for the same peer (NewPeer, LostPeer, NewPeer, LostPeer) and expects only the last one - but does this adequately test the security implications of dropped notifications, such as a validator missing the fact that a malicious peer reconnected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_618adfc0-f19e-4431-8b43-b6e4e4be7f34?mode=deep",
+    "timestamp": "2026-01-20 02:15:51.868550",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: send_n_get_1()] [Concurrency test gap] The test uses block_on() for synchronous execution, but does this fail to test race conditions when multiple senders concurrently push notifications for the same PeerId in an async runtime, potentially exposing atomicity issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4021e90e-604b-4a13-a9ea-aea45248329a?mode=deep",
+    "timestamp": "2026-01-20 02:16:26.376179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: send_n_get_1()] [Edge case missing] The test verifies that 2 different peers generate 2 notifications, but does it test what happens when the round-robin queue is exhausted or when one peer generates notifications much faster than another, potentially starving notifications? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e827de0-aee9-4c46-b5d1-321e0a76c558?mode=deep",
+    "timestamp": "2026-01-20 02:16:59.599513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Function: send_n_get_1()] [Dropped message verification] The test doesn't verify WHICH messages were dropped when LIFO eviction occurs - could this hide bugs where critical NewPeer notifications are dropped instead of redundant LostPeer notifications, affecting security-critical connection tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_051a9fb1-6ba3-4b95-91be-c0c37c023070?mode=deep",
+    "timestamp": "2026-01-20 02:17:30.518626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/conn_notifs_channel.rs] [Test module] [Mock connection metadata] Tests use ConnectionMetadata::mock() - does this properly validate that real ConnectionMetadata fields (like connection_id, timestamps, addresses) are handled correctly when dropped, or could malicious metadata cause issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d36b7280-25a9-495f-99a9-cdee57d18f32?mode=deep",
+    "timestamp": "2026-01-20 02:18:01.136590",
+    "report_generated": false
+  }
+]
