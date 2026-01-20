@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: new()] [Race condition] Can concurrent calls to new() with overlapping network_ids create duplicate entries in peers_and_metadata or trusted_peers HashMaps, leading to inconsistent state across different network layers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b3a8d37-e9b4-4c72-adf8-b25f4fb45837?mode=deep",
+    "timestamp": "2026-01-20 16:19:50.214593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: new()] [State inconsistency] Does the initialization properly synchronize the cached_peers_and_metadata with peers_and_metadata, or can a race between initialization and cache update cause subscribers to receive stale initial state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47d9e814-ff84-4c19-9462-e23ef4f01ff1?mode=deep",
+    "timestamp": "2026-01-20 16:20:02.952838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: new()] [Memory exhaustion] Can an attacker provide an arbitrarily large network_ids slice during initialization to exhaust memory by creating excessive HashMap entries and ArcSwap instances? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7093c353-6cc2-4140-90fa-a14d93c8a79f?mode=deep",
+    "timestamp": "2026-01-20 16:20:16.515053",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: set_cached_peers_and_metadata()] [Cache inconsistency] Between the time peers_and_metadata.write() is released and cached_peers_and_metadata.store() completes, can readers observe stale cached data that doesn't match the actual state, causing validation failures or routing errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9e4c7d2-06f6-410a-b1dc-53dc1b2b1c68?mode=deep",
+    "timestamp": "2026-01-20 16:20:30.059407",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: set_cached_peers_and_metadata()] [TOCTOU] Can an attacker exploit the time-of-check to time-of-use gap between cloning peers_and_metadata and storing it in the cache to manipulate peer metadata and cause inconsistent peer selection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98793e6a-c87c-4f62-98b9-664e4d8c9e4c?mode=deep",
+    "timestamp": "2026-01-20 16:20:44.783801",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: get_all_peers()] [Stale data] Does get_all_peers() reading from cached_peers_and_metadata risk returning disconnected or removed peers that were just deleted, causing messages to be sent to invalid peers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_170e4651-2c4b-463c-9683-2636a0ad3ed5?mode=deep",
+    "timestamp": "2026-01-20 16:21:00.524143",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: get_connected_peers_and_metadata()] [Cache staleness] Can the cached data returned by get_connected_peers_and_metadata() include peers whose connection was just terminated but cache wasn't updated yet, leading to failed consensus messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_598f604c-6895-4e5e-a929-521645af307e?mode=deep",
+    "timestamp": "2026-01-20 16:21:17.500710",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: insert_connection_metadata()] [Race condition] If two concurrent calls to insert_connection_metadata() occur for the same peer_network_id with different ConnectionMetadata, which one wins and can this cause connection ID mismatches that break remove_peer_metadata()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_166e082e-70c4-496c-9390-1310eb419c85?mode=deep",
+    "timestamp": "2026-01-20 16:21:36.204348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: insert_connection_metadata()] [Notification ordering] Does insert_connection_metadata() guarantee that broadcast(NewPeer) happens after cache update, or can subscribers receive NewPeer events before the peer is queryable via get_metadata_for_peer()? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35355054-23aa-4e83-bde6-b54fe4943b9b?mode=deep",
+    "timestamp": "2026-01-20 16:21:55.801858",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: insert_connection_metadata()] [Entry modification race] In the and_modify().or_insert_with() pattern, can a concurrent update between the modify check and insert lead to overwriting newer connection metadata with stale data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcfa8f1e-338d-4a46-a7c0-929905bdd00e?mode=deep",
+    "timestamp": "2026-01-20 16:22:17.025559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: insert_connection_metadata()] [Trusted peer bypass] Can an attacker establish a connection by calling insert_connection_metadata() for a peer that is not in the trusted_peers set, bypassing trust validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f5f3a65-1531-4e1a-84cd-c485e3933f4a?mode=deep",
+    "timestamp": "2026-01-20 16:22:39.091495",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: insert_connection_metadata()] [Memory exhaustion] Can a malicious peer repeatedly reconnect with different ConnectionIds to exhaust memory by accumulating stale PeerMetadata entries that never get cleaned up? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e931c85c-4fb4-46f9-8794-ccda9ef1120b?mode=deep",
+    "timestamp": "2026-01-20 16:23:02.948927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: remove_peer_metadata()] [Connection ID validation bypass] Can an attacker craft a remove request with a guessed or stale connection_id that matches by chance, allowing them to remove a peer's metadata prematurely and disrupt consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0f36afc-9037-4a0d-a5d7-41db9d489997?mode=deep",
+    "timestamp": "2026-01-20 16:23:27.779749",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: remove_peer_metadata()] [TOCTOU vulnerability] Between checking active_connection_id == connection_id and calling entry.remove(), can a concurrent insert_connection_metadata() update the connection_id, causing removal of the wrong connection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c07596c1-6c92-4bbf-a070-f87a5797d309?mode=deep",
+    "timestamp": "2026-01-20 16:23:52.339556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: remove_peer_metadata()] [Notification ordering] Does remove_peer_metadata() broadcast LostPeer before or after updating the cache? Can subscribers receive LostPeer while the peer is still in cached data, causing inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92de4e9c-cd57-4131-bebe-ec1fcb32f3b3?mode=deep",
+    "timestamp": "2026-01-20 16:24:18.368546",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: remove_peer_metadata()] [Atomicity violation] If the broadcast() call fails or panics after entry.remove() but before cache update, can the system end up in an inconsistent state where the peer is removed but cache still contains it? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f2f35a4-4327-4cc2-99fb-05f87a4ea318?mode=deep",
+    "timestamp": "2026-01-20 16:24:45.412012",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: remove_peer_metadata()] [DoS via selective removal] Can a Byzantine node trigger removal of honest validator peers by manipulating connection_ids, isolating validators and preventing consensus progress? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf65d7c9-889e-4523-a43b-87d918691138?mode=deep",
+    "timestamp": "2026-01-20 16:25:12.926995",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: update_connection_state()] [Race condition] Can concurrent calls to update_connection_state() and remove_peer_metadata() lead to a state where connection_state is updated for a peer that's already been removed, causing dangling metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b89441c-9dd7-463a-beab-949e07028a23?mode=deep",
+    "timestamp": "2026-01-20 16:25:40.576372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: update_connection_state()] [State transition validation] Does update_connection_state() validate the ConnectionState transition (e.g., can't go from Disconnected to Connected without proper handshake), or can an attacker force invalid state transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52a04fb7-7d8a-48d6-815e-ccf052665f03?mode=deep",
+    "timestamp": "2026-01-20 16:26:07.515104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: update_connection_state()] [Missing notification] Why doesn't update_connection_state() call broadcast() to notify subscribers of state changes, and can this cause applications to operate on stale connection assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a793e99f-bf26-4adb-ab93-0b0cb11377c5?mode=deep",
+    "timestamp": "2026-01-20 16:26:35.067598",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: update_connection_state()] [Atomicity] If the write lock is held during peer_metadata mutation but released before cache update, can readers observe inconsistent connection states between the main map and cache? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_316ed625-305d-46c0-967f-b7cc7a8b3deb?mode=deep",
+    "timestamp": "2026-01-20 16:27:01.066628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: update_peer_monitoring_metadata()] [Metadata injection] Can a malicious peer provide fake PeerMonitoringMetadata with manipulated latency values to influence sort_peers_by_latency() and get prioritized for consensus messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0a842c2-f041-421d-9aef-2b5ff71f52a4?mode=deep",
+    "timestamp": "2026-01-20 16:27:28.307774",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: update_peer_monitoring_metadata()] [Race with removal] If update_peer_monitoring_metadata() and remove_peer_metadata() execute concurrently, can monitoring metadata be updated for a peer that's being removed, causing cache corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e98f227-daa8-4b48-bfa3-d7f12ce16af2?mode=deep",
+    "timestamp": "2026-01-20 16:27:55.748602",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: update_peer_monitoring_metadata()] [Float precision] Does PeerMonitoringMetadata contain floating-point latency values that could be crafted to cause NaN or infinity, breaking sort_peers_by_latency() despite the 'latency is never NaN' assertion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_380e9a47-6a17-4118-882f-f051cf048ba6?mode=deep",
+    "timestamp": "2026-01-20 16:28:24.108498",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: update_peer_monitoring_metadata()] [Overflow attack] Can an attacker provide PeerMonitoringMetadata with extreme timestamp values that cause integer overflow in subsequent latency calculations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d65dd4b-4dda-44e3-95aa-d1f4c9eaa984?mode=deep",
+    "timestamp": "2026-01-20 16:28:53.305655",
+    "report_generated": false
+  }
+]
