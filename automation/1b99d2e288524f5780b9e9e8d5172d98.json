@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Struct: InternalIndexerDBConfig] [Deserialization attack] Can an attacker craft a malicious YAML/TOML config file with extremely large boolean values or non-boolean types that bypass serde's deny_unknown_fields validation, causing panic or memory corruption during deserialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27b209de-aafd-47b4-aab5-62f8b43de5e9?mode=deep",
+    "timestamp": "2026-01-20 11:21:58.868348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Struct: InternalIndexerDBConfig] [Type confusion] Does the serde deserializer properly validate that enable_transaction, enable_event, enable_statekeys, and enable_event_v2_translation are strictly booleans, or can string values like 'true' or integers 0/1 cause type confusion leading to incorrect feature enablement? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b5d1b1a-4d52-4021-99e3-509c014f0cc9?mode=deep",
+    "timestamp": "2026-01-20 11:22:12.237381",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Struct: InternalIndexerDBConfig] [Integer overflow] Can an attacker set event_v2_translation_ignores_below_version to u64::MAX in the config file, causing integer overflow when this value is used in version comparison logic (e.g., version + 1) leading to incorrect event indexing or skipped security checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_151f2d90-9d32-4919-9c4b-ad27b5e8aaa7?mode=deep",
+    "timestamp": "2026-01-20 11:22:26.823784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Struct: InternalIndexerDBConfig] [Memory exhaustion] Can an attacker configure batch_size to usize::MAX or an extremely large value (e.g., billions), causing memory allocation failures or OOM panics when DBIndexer attempts to allocate buffers of this size during transaction processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81fe0798-84df-4c82-af43-510c40105876?mode=deep",
+    "timestamp": "2026-01-20 11:22:41.488805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Attribute: deny_unknown_fields] [Config bypass] If an attacker adds unknown fields to the config file, will serde's deny_unknown_fields properly reject the config, or could there be edge cases where extra fields are silently ignored, allowing hidden configuration options to be injected? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f180a7e-6412-48d0-8259-770e4bd6a094?mode=deep",
+    "timestamp": "2026-01-20 11:22:57.570972",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: new()] [Unchecked parameters] Does the new() constructor validate that batch_size is within reasonable bounds (e.g., > 0 and < 1_000_000), or can it accept 0 causing division-by-zero errors, or extremely large values causing memory exhaustion in downstream processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c245351-9044-47f8-b5fc-48015f7e717d?mode=deep",
+    "timestamp": "2026-01-20 11:23:14.636686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: new()] [Invalid feature combination] Can new() be called with enable_event_v2_translation=true but enable_event=false, creating an invalid configuration that violates the dependency check enforced in sanitize() but bypasses validation if new() is called directly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58067728-0744-42f0-8f90-6b1fbd709976?mode=deep",
+    "timestamp": "2026-01-20 11:23:32.992178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: new()] [Version threshold logic] If event_v2_translation_ignores_below_version is set to a value greater than the current chain version, will this cause all v2 events to be ignored indefinitely, effectively disabling event v2 translation and causing API data loss? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99f97e30-48d2-473e-99ff-8ce5fb15695a?mode=deep",
+    "timestamp": "2026-01-20 11:23:53.860237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: new()] [Zero batch size] Can batch_size be set to 0 in new(), causing infinite loops or division-by-zero panics in DBIndexer::get_num_of_transactions() when calculating min(batch_size, ...) or during batch processing iterations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40dbf08d-3918-4738-9041-9812d29773da?mode=deep",
+    "timestamp": "2026-01-20 11:24:16.609197",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: default()] [Insecure defaults] Are the default values (all features disabled, batch_size 10_000) secure for production use, or do they create a misconfiguration where critical indexer features are unexpectedly disabled, causing API endpoints to fail or return incomplete data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20a855af-4d23-425a-a953-8300d6901c61?mode=deep",
+    "timestamp": "2026-01-20 11:24:41.001763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: default()] [Default batch size] Is the default batch_size of 10_000 appropriate for all node types (validator vs fullnode vs archival), or could this cause performance degradation or memory pressure on resource-constrained nodes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bd9f3e1-0f89-4e71-9f9e-70be34105f57?mode=deep",
+    "timestamp": "2026-01-20 11:25:06.924488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: default()] [Feature flag defaults] With all indexer features disabled by default, can this lead to nodes starting without realizing the internal indexer is non-functional, causing silent API failures that only manifest when account-based queries are attempted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69f2ba7a-0992-454f-9fdb-f18d9aefefb2?mode=deep",
+    "timestamp": "2026-01-20 11:25:34.713990",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: default()] [Version threshold default] Is event_v2_translation_ignores_below_version=0 a safe default, or should it be set to the genesis version to avoid attempting to translate non-existent pre-genesis events? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd4fdbb1-b8df-473c-a89b-f382efd3bac2?mode=deep",
+    "timestamp": "2026-01-20 11:26:02.690991",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: enable_transaction()] [TOCTOU race] If multiple threads call enable_transaction() concurrently while another thread is updating the config, can a TOCTOU race condition occur where feature enablement state is read inconsistently, leading to partial indexing or data corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75c9e3ed-67e4-4c07-a371-9358ad8e7595?mode=deep",
+    "timestamp": "2026-01-20 11:26:30.618759",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: enable_event()] [Inconsistent state] If enable_event() returns true but the underlying DB is not initialized or storage sharding is disabled, will DBIndexer operations panic or silently fail, causing data loss or service degradation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cb95ae0-e8b9-46c2-8e92-903bdd8f0bf1?mode=deep",
+    "timestamp": "2026-01-20 11:26:59.792068",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: enable_event_v2_translation()] [Dependency violation] Can enable_event_v2_translation() return true while enable_event() returns false, violating the dependency enforced in sanitize() if the config was modified after sanitization or created via new() directly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fece2f9-6db0-41e7-be98-195ff0ebd91c?mode=deep",
+    "timestamp": "2026-01-20 11:27:29.663116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: event_v2_translation_ignores_below_version()] [Version manipulation] Can an attacker modify this value at runtime (if config is mutable) to skip indexing recent v2 events, causing data gaps in the event indexer and breaking event-based APIs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca61945e-9371-4ddb-92ff-26df31b6b19e?mode=deep",
+    "timestamp": "2026-01-20 11:28:01.377019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: enable_statekeys()] [State corruption] If enable_statekeys() is toggled from true to false after partial indexing, will existing state key indexes become stale or corrupted, leading to incorrect account resource queries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc15a9ca-a48b-488b-90fb-35c20dc000b2?mode=deep",
+    "timestamp": "2026-01-20 11:28:33.409029",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: batch_size()] [Unchecked return] Does batch_size() return the raw usize value without bounds checking, allowing callers to use potentially dangerous values (0, usize::MAX) that could cause panics or integer overflow in arithmetic operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e19204d-e8ca-42e6-9263-312049699235?mode=deep",
+    "timestamp": "2026-01-20 11:29:01.856416",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: is_internal_indexer_db_enabled()] [Logic error] Does the OR logic (enable_transaction || enable_event || enable_statekeys) correctly represent when the indexer should be enabled, or should it also check enable_event_v2_translation since that feature also writes to the indexer DB? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90028aed-31ea-4020-b6b2-57e7dde38ca9?mode=deep",
+    "timestamp": "2026-01-20 11:29:30.147213",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: is_internal_indexer_db_enabled()] [Incomplete check] If enable_event_v2_translation is true but all other flags are false, will is_internal_indexer_db_enabled() return false even though the indexer DB is needed for v2 translation, causing initialization to be skipped and panics when translation is attempted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69c393de-5319-4f03-afb5-d26de8bfd732?mode=deep",
+    "timestamp": "2026-01-20 11:29:57.405105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: is_internal_indexer_db_enabled()] [Storage initialization] If is_internal_indexer_db_enabled() returns false but the node config has storage sharding enabled, will this create an inconsistent state where sharded storage exists but the indexer is not initialized? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f37d23b-19ae-4b4e-b6b2-1cda3deae40f?mode=deep",
+    "timestamp": "2026-01-20 11:30:24.979634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: is_internal_indexer_db_enabled()] [Race condition] Can is_internal_indexer_db_enabled() be called during node initialization before sanitize() runs, allowing an invalid configuration to pass through and cause runtime panics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0ac0d11-6ba3-42bf-9b9d-ae97059dfc65?mode=deep",
+    "timestamp": "2026-01-20 11:30:52.018146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: sanitize()] [Validation bypass] Can sanitize() be skipped entirely if NodeConfig is constructed programmatically rather than loaded from file, allowing invalid configurations (indexer enabled without storage sharding) to reach production? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_554d307f-96d7-4093-8264-0feacd7ba7e7?mode=deep",
+    "timestamp": "2026-01-20 11:31:19.612620",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/internal_indexer_db_config.rs] [Function: sanitize()] [TOCTOU vulnerability] After sanitize() validates the config, can the config be modified before it's used (e.g., if NodeConfig is mutable), allowing the storage sharding check to be bypassed and causing DB corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12c2b9f5-74b3-4894-817e-87075ae11e54?mode=deep",
+    "timestamp": "2026-01-20 11:31:47.892095",
+    "report_generated": false
+  }
+]
