@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: start_abort()] [Race Condition] Can concurrent calls to start_abort() with the same incarnation number lead to multiple workers believing they successfully aborted the transaction, causing duplicate abort processing and state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_738cfbe5-d509-4b40-a8f7-c7ed07fe2a2f?mode=deep",
+    "timestamp": "2026-01-20 16:04:28.255687",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: finish_abort()] [Race Condition] If start_abort() succeeds but finish_abort() is called concurrently by multiple threads due to a race, can this cause the incarnation counter to increment multiple times, skipping incarnations and breaking deterministic execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93bdd905-6607-41f9-86bf-117c26d1a593?mode=deep",
+    "timestamp": "2026-01-20 16:04:41.706008",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: finish_execution()] [Race Condition] Can finish_execution() and start_abort() race on the same incarnation, where finish_execution sets status to Executed while start_abort increments next_incarnation_to_abort, leading to inconsistent state where an aborted incarnation appears executed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef1e03f4-5122-477f-b1af-182619faf35e?mode=deep",
+    "timestamp": "2026-01-20 16:04:55.873248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: add_stall()] [Race Condition] In add_stall(), the num_stalls counter is incremented via fetch_add before acquiring the lock. Can a concurrent remove_stall() decrement the counter between fetch_add and lock acquisition, causing the 0→1 transition check to fire incorrectly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc0804d7-7406-4a9a-919f-a64dd86020a5?mode=deep",
+    "timestamp": "2026-01-20 16:05:10.192079",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: remove_stall()] [Race Condition] The remove_stall() function re-checks is_stalled() after acquiring the lock. Can an attacker exploit the window between fetch_sub and lock acquisition to add stalls, causing the function to incorrectly return false when it should update the dependency shortcut? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30581097-1112-4ee0-b6dd-00648b5841f1?mode=deep",
+    "timestamp": "2026-01-20 16:05:25.670387",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: start_executing()] [Race Condition] Can multiple threads concurrently call start_executing() for the same transaction, and if both see PendingScheduling before either acquires the lock, can this lead to double-execution of the same incarnation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1965b7a-3c9c-46de-92a3-9a3225e00103?mode=deep",
+    "timestamp": "2026-01-20 16:05:42.457600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: swap_dependency_status_any()] [Race Condition] The dependency_shortcut is updated without holding the status lock in some code paths. Can concurrent reads observe partially updated shortcut values leading to incorrect scheduling decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6219a5f-4802-47b5-92fd-5ffe53efb0f6?mode=deep",
+    "timestamp": "2026-01-20 16:06:00.987645",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: to_pending_scheduling()] [Race Condition] After updating status to PendingScheduling and releasing the lock, but before add_to_schedule() is called, can a concurrent abort increment the incarnation, causing the wrong incarnation to be scheduled? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b178796b-e2e4-4791-9dde-bb2f53cac786?mode=deep",
+    "timestamp": "2026-01-20 16:06:22.180969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: defer_module_validation()] [Race Condition] Can defer_module_validation() race with finish_abort(), where requirements are added to the Executing status but finish_abort transitions to Aborted before the lock is released, causing validation requirements to be lost? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4083a232-4d33-4da9-8460-29ca15b5e376?mode=deep",
+    "timestamp": "2026-01-20 16:06:44.714241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: finish_abort() with start_next_incarnation=true] [Race Condition] When finish_abort() atomically transitions from Executed to Executing via start_next_incarnation=true, can a concurrent start_abort() on the new incarnation succeed before to_executing() completes, causing immediate abort of the newly started incarnation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a162a5cc-9c03-4676-898d-eea6be2f7db0?mode=deep",
+    "timestamp": "2026-01-20 16:07:10.024081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: start_abort()] [Integer Overflow] The next_incarnation_to_abort is incremented via fetch_max(incarnation + 1). Can an attacker trigger enough aborts to overflow the u32 incarnation counter, wrapping to 0 and breaking abort filtering logic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7db21c8-ed28-47b2-8d87-dd64ba2758be?mode=deep",
+    "timestamp": "2026-01-20 16:07:36.042185",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: finish_abort()] [Integer Overflow] When incrementing incarnation via aborted_incarnation + 1, if aborted_incarnation is u32::MAX, will the addition overflow and wrap to 0, causing the transaction to restart from incarnation 0 and lose all execution history? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7996109e-d7ff-4652-bec0-b72976ba622a?mode=deep",
+    "timestamp": "2026-01-20 16:08:02.970351",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: add_stall()] [Integer Overflow] The num_stalls counter is incremented via fetch_add without overflow checking. Can an attacker add enough stalls to overflow the u32 counter, wrapping to 0 and causing the transaction to appear unstalled when it should be stalled? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27fe4513-aa95-438c-b5e6-43337f53455f?mode=deep",
+    "timestamp": "2026-01-20 16:08:31.356823",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: finish_execution()] [Integer Overflow] When transitioning from Aborted to PendingScheduling, the new incarnation is finished_incarnation + 1. Can this overflow if finished_incarnation is u32::MAX, causing incarnation to wrap to 0? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c1fe90d-7307-4fb8-948d-baf27b0e13dc?mode=deep",
+    "timestamp": "2026-01-20 16:09:02.446273",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: remove_stall()] [Integer Underflow] The remove_stall() calls fetch_sub(1) and then checks if prev_num_stalls == 0 to return an error. However, is there a TOCTOU race where multiple threads call fetch_sub, causing the counter to underflow below 0 (wrapping to u32::MAX) before the check? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c8d52bf-98cb-4ee2-be93-82e3fb3c822c?mode=deep",
+    "timestamp": "2026-01-20 16:09:32.685688",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: finish_execution()] [State Invariant Violation] If finish_execution() is called with a finished_incarnation that doesn't match the current incarnation, it returns an error. Can a malicious worker bypass this check by manipulating the incarnation counter externally, causing execution results from one incarnation to be applied to another? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b6bb051-c1a8-407e-99df-a59177b7d208?mode=deep",
+    "timestamp": "2026-01-20 16:10:02.942473",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: finish_abort()] [State Invariant Violation] The function checks if next_incarnation_to_abort == new_incarnation. If a concurrent start_abort increments this counter between the check and status update, can this cause finish_abort to succeed on a stale incarnation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a388fd35-a351-45d8-b863-3da80d31ca16?mode=deep",
+    "timestamp": "2026-01-20 16:10:34.254335",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: to_executing()] [State Invariant Violation] When transitioning to Executing, the dependency_shortcut is updated from ShouldDefer to WaitForExecution. If the shortcut is already WaitForExecution due to a race, the swap_dependency_status_any() will return an error. Can this cause valid transitions to fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c84aeff4-1365-4b94-a36d-f90eabebc438?mode=deep",
+    "timestamp": "2026-01-20 16:11:05.097360",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: start_executing()] [State Invariant Violation] The function only succeeds if status is PendingScheduling. Can a transaction get stuck in Aborted state if finish_execution() is never called, preventing any future start_executing() calls from succeeding? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b57903b-c5af-4844-8ac0-82e2e0c39f74?mode=deep",
+    "timestamp": "2026-01-20 16:11:37.072290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: StatusWithIncarnation::start_executing()] [State Invariant Violation] This method sets status to Executing with empty BTreeSet only if current status is PendingScheduling. Can a malicious actor bypass this by directly manipulating the Mutex, transitioning from other states? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df8c1ee9-d034-4f0f-a0fa-eeb70a43ab58?mode=deep",
+    "timestamp": "2026-01-20 16:12:07.116161",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: already_aborted()] [State Invariant Violation] The function returns true if incarnation is less than current incarnation OR status is Aborted. Can this lead to false positives where a future incarnation is incorrectly considered already aborted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0003074-a1a0-463b-9ea6-17400b21c3b6?mode=deep",
+    "timestamp": "2026-01-20 16:12:36.719454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: never_started_execution()] [State Invariant Violation] Returns true if incarnation < self.incarnation OR (equal incarnation AND PendingScheduling). Can this incorrectly return true for a transaction that was executing but got aborted back to PendingScheduling? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a38f2e4d-8032-46b1-8273-55e576c1b3fe?mode=deep",
+    "timestamp": "2026-01-20 16:13:06.657924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: add_stall()] [ABA Problem] The comment states 'may not update IsSafe dependency status at an incorrect time in the future (i.e. ABA)'. Can an ABA problem occur where: (1) status is Executed with IsSafe, (2) thread A adds stall and sets ShouldDefer, (3) thread B removes stall and sets IsSafe, (4) thread C adds stall but sees IsSafe was already set, causing incorrect state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_980cf74c-49c8-4239-9c15-4e163c7b9ef9?mode=deep",
+    "timestamp": "2026-01-20 16:13:33.999393",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: dependency_shortcut] [ABA Problem] The dependency_shortcut AtomicU8 is read without a lock in multiple places. Can an ABA sequence occur where a reader observes the same value twice (e.g., ShouldDefer) but the status has cycled through multiple states in between, causing incorrect decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a52efddb-71e6-4eec-bbeb-042f27f836c1?mode=deep",
+    "timestamp": "2026-01-20 16:14:01.736717",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: shortcut_executed_and_not_stalled()] [ABA Problem] This function reads dependency_shortcut without locking and returns true only if it equals IsSafe. Can the value change from IsSafe to ShouldDefer to IsSafe between the read and the decision, causing stale information to be used? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_132c759c-56fc-48e9-b63a-f855fce5ee32?mode=deep",
+    "timestamp": "2026-01-20 16:14:30.475145",
+    "report_generated": false
+  }
+]
