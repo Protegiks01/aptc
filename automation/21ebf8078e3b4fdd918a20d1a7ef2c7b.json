@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Race Condition] Can concurrent calls to start_shared_mempool() with the same mempool Arc<Mutex<CoreMempool>> create duplicate coordinator tasks that race to process the same transactions, leading to double-submission to consensus or state inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d763fa5-18d7-4453-94d1-c2f305b47b1e?mode=deep",
+    "timestamp": "2026-01-20 15:54:22.071271",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Task Lifecycle] If executor.spawn() fails to spawn the coordinator task at line 67-77, does the function silently continue without the main mempool coordinator running, causing complete loss of mempool liveness and transaction propagation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51b65a11-d8ec-4e9b-93fb-709de2d9a163?mode=deep",
+    "timestamp": "2026-01-20 15:54:34.769716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Task Lifecycle] If executor.spawn() fails to spawn gc_coordinator at line 79-82, will expired transactions accumulate indefinitely in mempool causing unbounded memory growth and eventual node crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ef0d813-16df-47b3-a8ef-fc99437680be?mode=deep",
+    "timestamp": "2026-01-20 15:54:47.672402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Task Lifecycle] If executor.spawn() fails for snapshot_job at line 84-88, does this affect mempool correctness or is it only a debugging issue? Can failure to spawn this task expose memory safety issues if trace logging is enabled? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8505ebc-5418-4bf0-a0a6-a83de6f5ea04?mode=deep",
+    "timestamp": "2026-01-20 15:55:01.190886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Initialization Order] Is there a race condition where coordinator task (line 67) starts processing transactions before SharedMempool::new() completes at line 55-65, potentially accessing uninitialized network_interface or validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2daff71-eef9-45a5-a6e3-581437c780c0?mode=deep",
+    "timestamp": "2026-01-20 15:55:15.792405",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Configuration Validation] Does the function validate config.mempool.system_transaction_gc_interval_ms before passing to gc_coordinator? Can a malicious or corrupted config set this to 0 or u64::MAX causing infinite loop or no garbage collection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5e8da49-e687-4e36-b184-9e0999ebf5bf?mode=deep",
+    "timestamp": "2026-01-20 15:55:31.172346",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Configuration Validation] Does the function validate config.mempool.mempool_snapshot_interval_secs before passing to snapshot_job? Can extremely small values cause excessive logging and performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85b078e2-a277-4530-8ff6-e781c7120e0f?mode=deep",
+    "timestamp": "2026-01-20 15:55:47.863817",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Configuration Validation] Does the function validate config.mempool.shared_mempool_peer_update_interval_ms? Can a value of 0 cause coordinator to spin in tight loop updating peers constantly, degrading validator performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6829efbf-c96a-43ca-8d23-b20bfe035523?mode=deep",
+    "timestamp": "2026-01-20 15:56:06.944341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Resource Leak] If one of the spawned tasks panics, are the other tasks properly cleaned up? Can a panic in coordinator leave gc_coordinator and snapshot_job running indefinitely with dangling references? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5bad433-f0e9-4685-bc0a-4a06b404f184?mode=deep",
+    "timestamp": "2026-01-20 15:56:26.643633",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Concurrent Access] The mempool Arc<Mutex<CoreMempool>> is cloned at line 38 and passed to multiple tasks (coordinator via smp, gc_coordinator line 80, snapshot_job line 86). Can concurrent lock acquisition across these tasks cause deadlocks or lock contention affecting mempool throughput? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e19892f6-2a6a-4367-8fce-87cdfd8b59b4?mode=deep",
+    "timestamp": "2026-01-20 15:56:47.691396",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Network Client] Does SharedMempool::new() validate that network_client is properly initialized and connected? Can passing an uninitialized or disconnected network_client cause silent transaction broadcast failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e01129b-6b7f-4c98-9f0c-9761c090ffec?mode=deep",
+    "timestamp": "2026-01-20 15:57:09.238330",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Validator State] Does the function verify that validator Arc<RwLock<TransactionValidator>> is initialized with correct VM state? Can stale or uninitialized validator cause incorrect transaction validation allowing invalid transactions into mempool? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5376f7c7-e1dd-402e-a3ec-3846b1930878?mode=deep",
+    "timestamp": "2026-01-20 15:57:32.738431",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Subscriber Management] The subscribers Vec<UnboundedSender> is passed to SharedMempool at line 63. Can closed or dropped channels in this vector cause panics when coordinator attempts to notify subscribers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_350d486f-4594-4057-84ad-fe2874bffaa3?mode=deep",
+    "timestamp": "2026-01-20 15:57:58.239734",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Type Safety] The function uses generic type parameters TransactionValidator and ConfigProvider. Can type parameter substitution with malicious or buggy implementations bypass transaction validation or on-chain config processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8db579fb-ae8b-4a15-892d-1128e39aa16a?mode=deep",
+    "timestamp": "2026-01-20 15:58:23.410082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Database Reader] Is the db Arc<dyn DbReader> verified to be in consistent state before passing to SharedMempool? Can stale or corrupted database state cause mempool to accept already-committed transactions leading to consensus conflicts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6f559b9-d054-45a9-bfc5-4a62b743ac53?mode=deep",
+    "timestamp": "2026-01-20 15:58:49.337226",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Peers Metadata] The peers_and_metadata Arc<PeersAndMetadata> is passed to coordinator. Can concurrent modifications to peer metadata by network layer and coordinator cause data races or inconsistent peer state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb3ec15f-af22-4ca2-a163-b6a1169e7e99?mode=deep",
+    "timestamp": "2026-01-20 15:59:15.412297",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Quorum Store Integration] The quorum_store_requests Receiver is passed directly to coordinator. If this channel is closed prematurely, does coordinator handle it gracefully or panic causing mempool shutdown? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27a8d3c7-5c23-4382-9903-c4a9b4fd2e06?mode=deep",
+    "timestamp": "2026-01-20 15:59:41.438369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Mempool Listener] The mempool_listener MempoolNotificationListener is passed to coordinator. Can malicious or buggy commit notifications from state sync cause coordinator to incorrectly remove transactions or corrupt mempool state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e95a2958-43dd-4613-8589-f6ff6f0e7992?mode=deep",
+    "timestamp": "2026-01-20 16:00:08.128128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Reconfig Events] The mempool_reconfig_events ReconfigNotificationListener is passed to coordinator. Can malformed on-chain config updates cause coordinator to panic or apply incorrect mempool parameters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ff90d4c-b3e2-4187-b71c-e09001851734?mode=deep",
+    "timestamp": "2026-01-20 16:00:34.084390",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Node Type Extraction] Line 53 calls NodeType::extract_from_config(). Can this function be exploited to misidentify node type (validator vs fullnode) causing security bypasses in mempool broadcast logic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5bc84d9d-9471-4433-a12f-554e2e72b77f?mode=deep",
+    "timestamp": "2026-01-20 16:01:01.568398",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Transaction Filter] The transaction_filter_config from config.transaction_filters.mempool_filter is cloned at line 54. Can malicious filter configuration allow prohibited transactions into mempool or incorrectly reject valid transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14d2203d-286d-4d83-8bad-8e0af7cec91f?mode=deep",
+    "timestamp": "2026-01-20 16:01:27.720310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Conditional Execution] The snapshot_job is only spawned if aptos_logger::enabled!(Level::Trace) at line 84. Can an attacker manipulate logger settings at runtime to enable/disable this check, causing unexpected task spawning or resource leaks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a6755b3-ebce-4c42-ac23-75fb13e99a96?mode=deep",
+    "timestamp": "2026-01-20 16:01:52.716410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Executor Handle] The executor Handle is cloned and passed to coordinator at line 69. Can multiple clones of the same executor handle cause tasks to be spawned on incorrect runtime causing thread safety issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5295b26-3754-49a4-aa68-e078c12db3dd?mode=deep",
+    "timestamp": "2026-01-20 16:02:17.002573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [SharedMempool Construction] SharedMempool::new() is called synchronously at line 55-65. Can this constructor block for extended periods (e.g., slow network_client initialization) causing timeout or preventing other mempool initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ec9f4cb-fcc7-4ca4-b04e-666cbbfa0481?mode=deep",
+    "timestamp": "2026-01-20 16:02:42.005325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Memory Safety] All Arc pointers (mempool, db, validator) are cloned multiple times. Can incorrect Arc reference counting lead to premature deallocation while tasks are still using shared state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2c210f4-e1a1-46a6-bf94-06f16fa1f3a4?mode=deep",
+    "timestamp": "2026-01-20 16:03:07.203160",
+    "report_generated": false
+  }
+]
