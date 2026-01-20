@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: new()] [State inconsistency] Can an attacker provide inconsistent head/tail pointers during initialization that don't match the actual num_items count, causing the LRU cache to enter an invalid state that could lead to state corruption or incorrect evictions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c44f55c9-284a-4130-a3e4-f0b82b58b511?mode=deep",
+    "timestamp": "2026-01-20 05:18:30.345397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: new()] [Integer manipulation] If num_items is set to a value that exceeds the actual number of items in the overlay and committed state combined, can this cause underflow during eviction operations or allow bypassing capacity limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79f305d2-bcf8-494d-87a9-ffff8565eb7d?mode=deep",
+    "timestamp": "2026-01-20 05:18:43.035142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: new()] [Linked list corruption] Can an attacker provide a head pointer that exists in committed/overlay state but whose next/prev pointers form a cycle not properly tracked by num_items, causing infinite loops or incorrect state traversal? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_078975c1-999c-4073-9f5f-90d0e304ee73?mode=deep",
+    "timestamp": "2026-01-20 05:18:55.925626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: new()] [Memory exhaustion] If capacity is set to NonZeroUsize::MAX and num_items is also set to a very large value, can this cause memory exhaustion before eviction logic triggers, leading to validator node crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_345efda9-72e0-45ba-8233-ac995834deb4?mode=deep",
+    "timestamp": "2026-01-20 05:19:09.310167",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: new()] [State divergence] Can mismatched head/tail pointers between different validator nodes during parallel execution cause state divergence where nodes have different LRU orderings, breaking consensus determinism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_284ea36a-7e9b-4e7c-a8d3-105a2d2e4d98?mode=deep",
+    "timestamp": "2026-01-20 05:19:23.643532",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert()] [Assertion bypass] The assertion checks slot.is_hot() before insertion - can an attacker craft a StateSlot that passes this check initially but becomes cold during insert_as_head(), causing cold slots to be inserted into hot state cache? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf5ecdf4-9543-4bb9-bc85-6abb254ed67f?mode=deep",
+    "timestamp": "2026-01-20 05:19:39.225827",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert()] [Counter overflow] If delete() returns None (key doesn't exist), num_items is incremented without checking if it would exceed capacity before insert_as_head() completes - can this cause num_items to exceed capacity temporarily and break eviction invariants? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_842448f1-3754-468a-9706-e7ed5c8f890a?mode=deep",
+    "timestamp": "2026-01-20 05:19:56.890342",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert()] [Race condition] Between the delete() call and insert_as_head(), can concurrent operations modify the LRU state such that head/tail pointers become corrupted, leading to linked list inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_995f74d3-ace6-4d71-a72f-c89e4d97cad5?mode=deep",
+    "timestamp": "2026-01-20 05:20:16.861084",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert()] [Re-entrancy] If insert() is called recursively (e.g., through state slot operations that trigger additional inserts), can the num_items counter become inconsistent or the linked list structure corrupted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_302c7bca-f3b0-4e75-bb9e-031a8e3175ba?mode=deep",
+    "timestamp": "2026-01-20 05:20:36.329093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert()] [State slot mutation] After delete() returns Some(old_slot), can that old_slot still be referenced elsewhere in the cache, and would inserting a new slot at the same key cause dangling references or use-after-free scenarios? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80502fc4-9630-4887-b382-a86b9a2333d8?mode=deep",
+    "timestamp": "2026-01-20 05:20:56.855341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert_as_head()] [Linked list corruption] When taking self.head with take() and setting a new head, if expect_hot_slot() panics, the head is already set to None - can this leave the LRU in a corrupted state where head is None but tail and num_items indicate non-empty cache? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be270bd3-261a-4f27-b2fb-4eba29289c6f?mode=deep",
+    "timestamp": "2026-01-20 05:21:19.212172",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert_as_head()] [Pointer inconsistency] When setting old_head_slot.set_prev(Some(key.clone())), if the key being inserted is the same as the old head key, does this create a self-referencing node that breaks the linked list traversal? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e2869dd-fed8-4033-b1bc-3cc104545863?mode=deep",
+    "timestamp": "2026-01-20 05:21:42.320607",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert_as_head()] [Clone vulnerability] Multiple clone() operations on StateKey occur - if StateKey cloning is expensive or can fail, can this cause performance degradation or panics that leave the cache in an inconsistent state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c1d801a-b0dc-4ca2-bae0-c5b1e361cacb?mode=deep",
+    "timestamp": "2026-01-20 05:22:05.879707",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert_as_head()] [Empty cache initialization] When head is None (empty cache), both head and tail are set to the same key - if subsequent operations assume head != tail for non-empty caches, can this single-element case cause logic errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdb09761-ea2a-418c-b970-8fd398391144?mode=deep",
+    "timestamp": "2026-01-20 05:22:30.713644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert_as_head()] [Pending map size] The pending HashMap grows unboundedly within a block - can an attacker insert many unique keys in a single block to cause memory exhaustion before maybe_evict() is called? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d4bd887-2bd0-479a-915f-ef2876210438?mode=deep",
+    "timestamp": "2026-01-20 05:22:57.326626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: insert_as_head()] [Prev/Next consistency] When modifying old_head_slot's prev pointer and new slot's next pointer, these are inserted into pending separately - can an intermediate state be observed where only one update is visible, breaking linked list integrity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e016111-5668-4ed8-ae94-2f9f306e70a2?mode=deep",
+    "timestamp": "2026-01-20 05:23:24.689853",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: maybe_evict()] [Integer underflow] The while loop decrements num_items, but if num_items becomes inconsistent due to concurrent operations or bugs, can this cause underflow when subtracting 1 from num_items? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42f99225-cbb9-455d-b016-e535fa19150f?mode=deep",
+    "timestamp": "2026-01-20 05:23:49.879673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: maybe_evict()] [Eviction ordering violation] If the tail pointer is manipulated between calls to maybe_evict(), can the eviction order violate LRU semantics, potentially evicting recently accessed hot state and causing state availability issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_272432a1-1e6f-40eb-8d84-754a3ed0e4dc?mode=deep",
+    "timestamp": "2026-01-20 05:24:16.529754",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: maybe_evict()] [Infinite loop] The while loop iterates while num_items > capacity - if delete() fails to decrement num_items properly or returns a slot without proper prev pointers, can this create an infinite loop that hangs the validator? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b14529ae-a84b-4474-9e34-e0b724580b37?mode=deep",
+    "timestamp": "2026-01-20 05:24:42.090764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: maybe_evict()] [Expectation panic] The expect() on line 95 assumes there are entries to evict when over capacity - can num_items be manipulated to be > capacity but with no actual entries in the cache, causing panic and validator crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff137118-cb1d-4671-9d41-635260506371?mode=deep",
+    "timestamp": "2026-01-20 05:25:06.627843",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: maybe_evict()] [Prev pointer manipulation] The expect() on line 98 assumes there's always a prev entry when num_items > capacity - can the tail entry have no prev pointer but num_items still be > capacity, causing panic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83a44b5d-d062-4ca4-b67a-6cf649c7f181?mode=deep",
+    "timestamp": "2026-01-20 05:25:32.739125",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: maybe_evict()] [Cold slot insertion] Evicted slots are converted to cold with to_cold() and inserted into pending - if to_cold() fails or returns an invalid slot, can this corrupt the pending updates map? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e08c24fb-aefd-4f3c-98ec-9a45bbb1d7d3?mode=deep",
+    "timestamp": "2026-01-20 05:25:58.795641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: maybe_evict()] [State divergence] If different validators evict different entries due to timing differences or inconsistent num_items counts, can this cause state divergence where validators have different cold/hot state distributions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_245a0231-2adf-44be-9cd5-87405a4159b8?mode=deep",
+    "timestamp": "2026-01-20 05:26:24.938966",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: maybe_evict()] [Memory leak] The evicted Vec is returned but contains cloned StateSlots - if the caller doesn't properly handle this, can this cause memory leaks over many blocks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9706b7ae-28b8-4f7c-9b13-0ed43e82e260?mode=deep",
+    "timestamp": "2026-01-20 05:26:51.538668",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/hot_state.rs] [Function: maybe_evict()] [Capacity boundary] At exactly capacity threshold (num_items == capacity.get()), no eviction occurs - can an attacker keep inserting and deleting to maintain exactly at capacity, preventing legitimate evictions and causing state bloat? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_717d668d-02dd-4dbb-b71f-1bca8cf8b067?mode=deep",
+    "timestamp": "2026-01-20 05:27:18.266740",
+    "report_generated": false
+  }
+]
