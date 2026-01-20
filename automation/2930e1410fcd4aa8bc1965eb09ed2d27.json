@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: charge()] [Integer underflow] Can an attacker craft a module where the balance.checked_sub(amount) operation returns None prematurely, causing the balance to be set to 0 and allowing subsequent complexity checks to be bypassed for the remaining module components? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7a4132a-69da-44af-a6be-2bd29d22b0f8?mode=deep",
+    "timestamp": "2026-01-20 21:37:10.093092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: charge()] [Budget bypass] If charge() sets balance to 0 on underflow but continues processing, can an attacker front-load expensive operations early to exhaust the budget, then include malicious complex code that never gets properly metered? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae066894-2a1e-4d27-bcea-19357161d1f2?mode=deep",
+    "timestamp": "2026-01-20 21:37:22.564748",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: charge()] [Error handling] Does the PROGRAM_TOO_COMPLEX error propagate correctly through all call chains, or can certain code paths swallow this error allowing overly complex modules to be loaded? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1f321ef-122f-4caf-a6d8-c90ab0c87ec5?mode=deep",
+    "timestamp": "2026-01-20 21:37:35.378749",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: charge()] [Race condition] Since balance is in a RefCell, can concurrent calls to charge() from multiple threads create race conditions where the balance check passes but multiple threads deduct simultaneously, bypassing the budget limit? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf3a9ccb-28d2-4bc6-95a5-fdd5109b00e8?mode=deep",
+    "timestamp": "2026-01-20 21:37:48.596871",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: charge()] [RefCell panic] Can an attacker trigger a scenario where balance.borrow_mut() is called while another borrow is active, causing a panic that crashes the validator node during module loading? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0591e96b-3241-4ded-b5a7-218df3ba501a?mode=deep",
+    "timestamp": "2026-01-20 21:38:02.448622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: signature_token_cost()] [Integer overflow] Does the saturating_add for cost accumulation properly prevent exploits where an attacker creates deeply nested type signatures that would cause cost to overflow and wrap to a small value, bypassing complexity limits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f57d2233-be69-413d-8d9c-9522f2be3401?mode=deep",
+    "timestamp": "2026-01-20 21:38:17.702548",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: signature_token_cost()] [Type recursion DoS] Can an attacker create circular or infinitely recursive type signatures that cause preorder_traversal() to loop indefinitely or consume excessive memory, causing validator DoS during complexity checking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bcbc9e44-4ab4-49ed-825f-c73ccc57cacc?mode=deep",
+    "timestamp": "2026-01-20 21:38:33.590366",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: signature_token_cost()] [Cost constant exploit] Are COST_PER_TYPE_NODE (8) and COST_PER_IDENT_BYTE (1) values properly calibrated, or can an attacker create pathological type structures with very long identifier names that consume disproportionate VM resources relative to their metered cost? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98dff573-0b2c-48bf-9439-a13fe7406622?mode=deep",
+    "timestamp": "2026-01-20 21:38:51.535182",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: signature_token_cost()] [Table index manipulation] In the Struct/StructInstantiation branches, can an attacker provide malformed struct_handles or module_handles indices that bypass safe_get_table checks but still get processed, leading to out-of-bounds access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a28fb76e-9c48-42d9-b1cb-e3a39cc8d65b?mode=deep",
+    "timestamp": "2026-01-20 21:39:10.475979",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: signature_token_cost()] [Typo vulnerability] The variable name 'moduel_name' (line 65) is misspelled - could this indicate incorrect validation logic that allows module name costs to be calculated incorrectly or skipped entirely? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fce9d633-98ad-4693-b4c5-2ac18ca79e9c?mode=deep",
+    "timestamp": "2026-01-20 21:39:30.052974",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: signature_token_cost()] [Missing complexity charges] For Function, TypeParameter, Reference, and MutableReference signature tokens, no additional cost beyond COST_PER_TYPE_NODE is charged - can attackers exploit these to create complex closures or reference chains that consume excessive resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a7f01ea-1566-46e3-a6b6-a4d9a2caeb2a?mode=deep",
+    "timestamp": "2026-01-20 21:39:49.868677",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: signature_token_cost()] [Saturating arithmetic bypass] Since cost uses saturating_add, can an attacker craft types that would naturally overflow but instead saturate at u64::MAX, making all subsequent cost calculations meaningless and bypassing budget limits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04f29711-43d8-4b1c-81de-241ce2a8205a?mode=deep",
+    "timestamp": "2026-01-20 21:40:10.810728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_signature()] [Cache poisoning] Can an attacker craft a module where signature indices are reused maliciously, causing the cached_signature_costs to store incorrect values that are then reused, bypassing proper complexity metering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26533b7f-ec5b-4313-a99b-4c614973ebc3?mode=deep",
+    "timestamp": "2026-01-20 21:40:32.629175",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_signature()] [Cache collision] If multiple signatures hash to the same SignatureIndex, does the BTreeMap caching correctly handle collisions or could an expensive signature be cached with a cheap signature's cost? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_123d5d43-6ed8-4063-99b5-3f780b3fe38b?mode=deep",
+    "timestamp": "2026-01-20 21:40:55.553380",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_signature()] [RefCell borrow panic] The function borrows cached_signature_costs mutably - can an attacker trigger re-entrant calls that attempt to borrow while the mutable borrow is active, causing a panic and validator crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70fa6c3e-6719-4f44-8e63-92026668306f?mode=deep",
+    "timestamp": "2026-01-20 21:41:17.574819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_signature()] [Double charge vulnerability] After calculating and caching the cost, the function calls self.charge(cost) - but if the cache already contains the value, is the cost charged twice (once from cache, once from calculation)? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6cfc4b4d-1c39-489d-8824-615b09654761?mode=deep",
+    "timestamp": "2026-01-20 21:41:41.650342",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_signature()] [Zero cost bypass] If signature_token_cost returns 0 for certain type combinations (all saturating_add with 0), can an attacker create signatures that are cached with 0 cost but actually consume significant resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ec50e2d-c25b-459e-bdd3-37c0986429b1?mode=deep",
+    "timestamp": "2026-01-20 21:42:06.836097",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_signature()] [Cost accumulation error] When iterating over sig.0 types, the cost uses saturating_add - if one type causes saturation, do all subsequent types in the signature get properly accounted for? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8087eaf7-7a22-45d6-a2a4-5856d87831a8?mode=deep",
+    "timestamp": "2026-01-20 21:42:31.447803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: safe_get_table()] [Index type casting] The function casts TableIndex to usize - on 32-bit systems or when TableIndex is u16, can this casting lead to incorrect bounds checking or allow out-of-bounds access? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56c9db75-cd38-4bb3-a1b5-d714e683ac92?mode=deep",
+    "timestamp": "2026-01-20 21:42:57.057038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: safe_get_table()] [Error message leak] The error message 'Index out of bounds while checking binary complexity' reveals internal implementation details - could this help attackers craft targeted exploits by understanding index validation logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e451e952-f8f5-437e-8fd2-af4aca41c658?mode=deep",
+    "timestamp": "2026-01-20 21:43:22.858157",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: safe_get_table()] [UNKNOWN_INVARIANT_VIOLATION_ERROR abuse] Is this error code properly distinguished from other index errors, or could legitimate out-of-bounds access be misclassified as an invariant violation, hiding real bugs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3566b595-6aad-4c48-900a-1e6f54dee381?mode=deep",
+    "timestamp": "2026-01-20 21:43:48.940622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_identifier()] [Identifier length exploit] Identifiers are charged at COST_PER_IDENT_BYTE (1 per byte) - can an attacker create extremely long but valid identifiers that pass parsing but consume excessive memory or processing time relative to their cost? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32730822-def5-494b-bff7-81ed2962d9cd?mode=deep",
+    "timestamp": "2026-01-20 21:44:14.075296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_identifier()] [UTF-8 encoding bypass] If identifier lengths are counted in bytes but processed as UTF-8 characters, can multi-byte unicode characters be used to bypass complexity limits while consuming more processing resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_791ea3ca-992e-4584-b1b1-e9d0c464b650?mode=deep",
+    "timestamp": "2026-01-20 21:44:41.227950",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_identifier()] [Zero-length identifier] Can an attacker include zero-length identifiers that pass this check without consuming budget but cause issues in later VM processing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37ef5fd9-6417-4526-b6f6-ad31fe53501f?mode=deep",
+    "timestamp": "2026-01-20 21:45:07.988059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/check_complexity.rs] [Function: meter_signatures()] [Early termination] If meter_signature fails mid-iteration with PROGRAM_TOO_COMPLEX, are the cached costs from successfully metered signatures before the failure cleaned up, or do they persist in the cache? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8aaf549-a3f6-447c-bc42-8341d842b0d2?mode=deep",
+    "timestamp": "2026-01-20 21:45:34.692106",
+    "report_generated": false
+  }
+]
