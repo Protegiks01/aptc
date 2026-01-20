@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: progress()] [Error handling] At line 82, get_progress() returns Result and uses unwrap_or(0) - if the metadata is corrupted and returns an error, defaulting to version 0 could cause the pruner to restart from genesis and re-prune already-pruned data, wasting resources and potentially causing conflicts (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa7d6249-ad1d-419f-a779-5f83ca066e8e?mode=deep",
+    "timestamp": "2026-01-20 17:50:07.924952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Panic on error] The try_for_each at line 61 can panic if batch operations fail in unexpected ways - can a malicious validator craft stale indices that trigger panics during deletion, causing the pruner to crash and halt chain progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5451b38c-5236-4e19-a931-1abcfde8dd67?mode=deep",
+    "timestamp": "2026-01-20 17:50:20.740948",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Struct: StateMerkleMetadataPruner] [Shared DB access] The metadata_db is an Arc<DB> at line 23 allowing shared access - can concurrent pruning operations from multiple threads cause write conflicts when both try to write_schemas simultaneously, leading to lost updates or corrupted batches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82f710a1-0aed-4f59-8680-17491210023b?mode=deep",
+    "timestamp": "2026-01-20 17:50:33.841271",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Concurrent pruning] If multiple StateMerkleMetadataPruner instances exist (one per schema type S), can they concurrently prune the same metadata_db causing race conditions in batch writes at line 71 where one pruner's batch overwrites another's? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28c90b0b-0db0-42fb-8f16-34612677fee6?mode=deep",
+    "timestamp": "2026-01-20 17:50:47.702013",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Lock-free synchronization] The AtomicVersion at line 24 uses lock-free atomic operations - can the lack of explicit locking around the entire maybe_prune_single_version() function allow interleaved execution where two threads read the same next_version, prune overlapping ranges, and corrupt the database? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_129e3589-cfea-4d1c-a020-efcf3eaf8b49?mode=deep",
+    "timestamp": "2026-01-20 17:51:03.031875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: progress()] [Concurrent reads] The progress() function at line 81 reads from metadata_db without synchronization - can it read stale or torn values if called concurrently with maybe_prune_single_version() actively writing progress metadata, returning incorrect progress values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e998a380-1e7f-46e3-8298-91398d6a1c6c?mode=deep",
+    "timestamp": "2026-01-20 17:51:18.488345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Struct: StateMerkleMetadataPruner] [Non-Sync guarantees] Does StateMerkleMetadataPruner properly implement Send+Sync bounds for safe concurrent usage, or can improper usage across threads cause data races with the AtomicVersion and Arc<DB> fields? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_115bf44a-81fb-420c-833f-bc2ed4a48aa2?mode=deep",
+    "timestamp": "2026-01-20 17:51:35.040000",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Struct: StateMerkleMetadataPruner] [Generic schema confusion] The generic type S can be either StaleNodeIndexSchema or StaleNodeIndexCrossEpochSchema - can mixing these two schema types in different pruner instances cause deletion conflicts where nodes needed by one schema are deleted by another? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c37de9ea-e781-469c-b8b9-785593b135e6?mode=deep",
+    "timestamp": "2026-01-20 17:51:54.226587",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Schema key conflict] The progress_metadata_key at line 67 is determined by S::progress_metadata_key(None) - can two different schema implementations return the same key, causing progress tracking to become corrupted when both pruners update the same metadata key? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80e35079-a85f-45c2-b57c-66098d523d7e?mode=deep",
+    "timestamp": "2026-01-20 17:52:14.159393",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Key codec mismatch] The bound StaleNodeIndex: KeyCodec<S> at line 30 is required - if KeyCodec is implemented incorrectly for a schema S, can it cause stale indices to be encoded/decoded incorrectly leading to deletion of wrong Merkle nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53ddfc29-ea57-45e9-b5bf-924a3d96d026?mode=deep",
+    "timestamp": "2026-01-20 17:52:35.667082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [PhantomData misuse] The _phantom: PhantomData<S> at line 25 is used to bind generic type S - can incorrect variance of PhantomData allow unsound type conversions that bypass schema type safety checks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5d57dfc-8fee-48dc-8553-1d0e5de47c42?mode=deep",
+    "timestamp": "2026-01-20 17:52:57.948366",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [JellyfishMerkleNode deletion] Deleting from JellyfishMerkleNodeSchema at line 62 using index.node_key - if node_key format differs between schema types, can this cause deletion to target wrong nodes in the Merkle tree? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71e2e4ab-ff69-4a45-82c6-b0ccbb2e0077?mode=deep",
+    "timestamp": "2026-01-20 17:53:20.907926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Merkle tree corruption] If JellyfishMerkleNode deletion at line 62 removes nodes that are still referenced by newer versions' Merkle proofs, can this break state proof verification causing validators to reject valid state commitments? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7004847a-2da7-402a-af22-aa450579e855?mode=deep",
+    "timestamp": "2026-01-20 17:53:45.195119",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Historical proof failure] After pruning nodes up to target_version_for_this_round at line 68, can clients requesting historical Merkle proofs for versions < target_version_for_this_round fail because required intermediate nodes were deleted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc0990b8-bc7d-41e2-accc-28b5883c8de2?mode=deep",
+    "timestamp": "2026-01-20 17:54:10.209122",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Cross-version dependencies] When deleting nodes from version range [current_progress, target_version_for_this_round], can there be cross-version dependencies where a node needed for version V+1 is incorrectly marked stale at version V and gets deleted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a69f900-4beb-4758-9a7e-3f794362eea9?mode=deep",
+    "timestamp": "2026-01-20 17:54:36.894544",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Snapshot consistency] If state snapshots are being created concurrently with pruning, can the deletion of JellyfishMerkleNodes at line 62 corrupt in-progress snapshots that reference those nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f897bda-8e44-4351-b9b4-88f1520d8c58?mode=deep",
+    "timestamp": "2026-01-20 17:55:03.314433",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Root node preservation] Does the pruning logic verify that root nodes for active state versions are never deleted, or can a bug in stale node indexing cause deletion of root nodes breaking the entire Merkle tree? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7dda7b0-0a59-4903-b5d1-77c6d3e10aa2?mode=deep",
+    "timestamp": "2026-01-20 17:55:31.191735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Progress update timing] The progress metadata is updated at lines 66-69 BEFORE verifying write_schemas success - if write fails, is the progress update rolled back, or does persisted progress incorrectly advance even though pruning failed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3019bda6-4d82-4e94-a9fc-c6f07ebb5c42?mode=deep",
+    "timestamp": "2026-01-20 17:56:00.307600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: progress()] [Progress initialization] At line 82, progress defaults to 0 with unwrap_or(0) - on first run before any pruning, does this cause confusion with next_version also being 0, potentially triggering incorrect pruning behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52cf48d6-2ed1-4366-b620-38bacdd1058f?mode=deep",
+    "timestamp": "2026-01-20 17:56:28.384142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Restart safety] After a crash between next_version.store() at line 76 and the function return, does restart recovery correctly resume from the persisted DbMetadataValue::Version or from the in-memory next_version? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c636803-3e8d-4555-bb01-e8902ccdea29?mode=deep",
+    "timestamp": "2026-01-20 17:56:56.304050",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: new()] [Recovery after crash] The constructor at line 32 initializes next_version to 0 - after a crash mid-pruning, does this cause the pruner to lose track of where it left off and potentially re-prune ranges or skip ranges? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84280af9-d312-4a83-8f9f-9bc502f7be85?mode=deep",
+    "timestamp": "2026-01-20 17:57:21.135427",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Idempotency violation] If maybe_prune_single_version() is called multiple times with the same parameters after a crash, can non-idempotent operations cause duplicate deletions or errors when trying to delete already-deleted nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5601135-c9b1-4867-a4fb-be34bc331e53?mode=deep",
+    "timestamp": "2026-01-20 17:57:46.977343",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Empty prune scenario] When target_version_for_this_round > target_version at line 48 returns Ok(None), does this properly signal that no work was done, or can callers misinterpret None as pruning completed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f57fb8bd-6175-4c6d-a949-1e5486177783?mode=deep",
+    "timestamp": "2026-01-20 17:58:13.759182",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Version equality edge case] When target_version_for_this_round == target_version exactly, does line 48's > comparison correctly allow pruning to proceed, or does it incorrectly skip the pruning operation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c4e2355-30e1-4f39-8258-822dac1cab30?mode=deep",
+    "timestamp": "2026-01-20 17:58:41.347473",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Genesis version handling] At version 0 (genesis), can the max(next_version, current_progress) at line 47 with both values being 0 cause incorrect behavior in stale node iteration starting from version 0? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fe474a8-3b7e-413f-903f-a6ee12a57eb3?mode=deep",
+    "timestamp": "2026-01-20 17:59:08.858300",
+    "report_generated": false
+  }
+]
