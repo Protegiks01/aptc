@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: verify()] [Epoch Boundary] At line 273, is_epoch_ending is detected by checking for new_epoch_event. Can an attacker inject fake epoch events in transaction data to trigger premature chunk processing, causing incomplete verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9753b39-a9a8-45bc-8cac-994545a2e130?mode=deep",
+    "timestamp": "2026-01-20 03:15:41.204885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: verify()] [Chunk Size Bypass] At line 279, chunk processing triggers when 'cur_txns.len() >= self.chunk_size' OR is_epoch_ending. Can an attacker craft transactions to always trigger epoch_ending, bypassing chunk_size limits and causing frequent expensive execute_and_verify calls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e8ae4d9-5ff2-42f4-89cb-74e958e29972?mode=deep",
+    "timestamp": "2026-01-20 03:15:53.942509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: verify()] [Loop Invariant] At lines 281-294, a while loop processes cur_txns until empty. If execute_and_verify doesn't properly drain vectors on certain errors, can this cause infinite loops, hanging the verification process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_faeb7937-a9ef-46d4-860d-2e4a167013b6?mode=deep",
+    "timestamp": "2026-01-20 03:16:07.744783",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: verify()] [Error Accumulation] At line 293, failed transactions are accumulated in total_failed_txns. If a single malicious transaction causes all subsequent transactions to fail, can the vector grow unbounded, causing memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39f41970-b1e3-4db6-b0e7-9dc8a2b48931?mode=deep",
+    "timestamp": "2026-01-20 03:16:21.396622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: verify()] [Counter Update] At line 295, replay_stat.update_cnt() is called with cnt. If cnt doesn't match actual processed transactions due to errors, can this cause incorrect TPS reporting and mask verification failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_617d5231-a0a0-4036-98b6-2666f86f09c6?mode=deep",
+    "timestamp": "2026-01-20 03:16:36.027466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: verify()] [Final Verification] At lines 300-308, remaining transactions are verified after the loop. If cur_txns is non-empty but execute_and_verify fails, are these failures properly propagated, or can transactions be silently skipped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a60db37-d8d2-4ee0-96e9-4bcf1d790338?mode=deep",
+    "timestamp": "2026-01-20 03:16:52.022184",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Version Underflow] At line 376, 'current_version.checked_sub(1)' is used to get state view. If current_version is 0, checked_sub returns None causing an error. But what if the error is silently caught and verification continues with wrong state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b694f78-a7b2-4ae1-b443-2ed6d51e0fa2?mode=deep",
+    "timestamp": "2026-01-20 03:17:09.621125",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [State View Consistency] At line 375-376, state_view_at_version(current_version - 1) is called. If multiple threads call this concurrently for overlapping version ranges, can database caching cause one thread to see state from another thread's execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4917fce-6377-449c-8601-fd0d7b5f283f?mode=deep",
+    "timestamp": "2026-01-20 03:17:27.827633",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Empty Transaction Batch] At lines 357-359, the function returns early if cur_txns is empty. Can an attacker trigger this condition repeatedly to bypass verification while appearing to succeed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dcdb07aa-1651-4de3-8d7d-aa880f074f7a?mode=deep",
+    "timestamp": "2026-01-20 03:17:47.461546",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Transaction Conversion] At lines 360-363, transactions are converted to SignatureVerifiedTransaction. Does this conversion skip signature verification? If so, can invalid signatures in archived transactions go undetected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6bbe3918-8c9f-4586-8002-7235a38bd49c?mode=deep",
+    "timestamp": "2026-01-20 03:18:08.466946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Auxiliary Info] At lines 366-370, PersistedAuxiliaryInfo is converted to AuxiliaryInfo with None for reconfiguration_events. Can this missing data cause different execution results compared to original execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac14c663-7dc3-465d-bec1-1ec385c506e3?mode=deep",
+    "timestamp": "2026-01-20 03:18:30.519233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Block Execution] At lines 371-383, execute_block() is called with BlockExecutorConfigFromOnchain::new_no_block_limit(). Does removing block limits allow replay of transactions that should have been rejected due to block gas limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae6e00d6-64a8-48e9-abc9-205b587bb542?mode=deep",
+    "timestamp": "2026-01-20 03:18:54.471045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Transaction Slice Metadata] At lines 378-381, TransactionSliceMetadata::Chunk is created with begin and end versions. Can incorrect metadata cause executor to skip validators' consensus checks, allowing invalid state transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_debb06a8-249c-4cb7-9521-fa426aff6a40?mode=deep",
+    "timestamp": "2026-01-20 03:19:19.532415",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Output Conversion] At line 383, BlockOutput::into_transaction_outputs_forced() is called. Does the 'forced' conversion suppress errors that should fail verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb57afc6-f1fd-4f5e-adb8-3076b00ebc5a?mode=deep",
+    "timestamp": "2026-01-20 03:19:44.397541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Assertion] At line 384, assert_eq! checks output length matches input length. Can the assertion panic instead of returning an error, causing abrupt verification termination without proper error reporting? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79b58c06-1db7-48ef-80a7-4f8c05ffa525?mode=deep",
+    "timestamp": "2026-01-20 03:20:09.187589",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Output Matching] At lines 390-395, ensure_match_transaction_info() is called to verify outputs. Can subtle differences in gas usage, event ordering, or write set structure cause false negatives, flagging correct transactions as failed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_246cc56a-3290-4730-a08b-df13fe1ce2e9?mode=deep",
+    "timestamp": "2026-01-20 03:20:33.592304",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Partial Drain] At lines 396-400, vectors are partially drained (drain(0..idx+1)) on error. Can this leave vectors in inconsistent state, causing subsequent verification to use wrong transaction data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88483715-b867-42cd-a3e6-73b3555e6ecf?mode=deep",
+    "timestamp": "2026-01-20 03:20:57.842629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Version Increment] At lines 387-388, current_version is incremented for each transaction. Can integer overflow of current_version cause it to wrap to 0, leading to state_view_at_version accessing wrong historical state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9cf381c5-0f94-46d6-ae93-a375c7614b79?mode=deep",
+    "timestamp": "2026-01-20 03:21:23.077887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Early Return] At line 402, the function returns Some(err) after partial drain. Does the caller properly handle this partial success case, or can it lead to duplicate verification attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af0f0fc4-068d-4bd3-9f94-765007fdc92f?mode=deep",
+    "timestamp": "2026-01-20 03:21:47.015639",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: execute_and_verify()] [Vector Clear] At lines 406-410, all vectors are cleared on success. Are there any references to vector elements still held elsewhere that become dangling after clear()? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_946b31f3-df70-4a96-ac5b-1b485844be10?mode=deep",
+    "timestamp": "2026-01-20 03:22:12.724665",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: Opt struct] [Input Validation] The chunk_size parameter at line 72 has default value 500 but no maximum limit. Can an attacker set chunk_size to u64::MAX causing massive memory allocations at line 246, leading to OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38ef8b0f-dde3-4d9f-bc17-3c4ffda398e4?mode=deep",
+    "timestamp": "2026-01-20 03:22:39.746571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: Opt struct] [Input Validation] The concurrent_replay parameter at line 75 defaults to 1 with no maximum. Can setting this to 100000 cause thread pool creation to fail or exhaust system resources at line 217? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c18261f1-ab9c-436c-b942-b0a3f03107cc?mode=deep",
+    "timestamp": "2026-01-20 03:23:08.183337",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: Opt struct] [Timeout Configuration] The timeout_secs at line 81 is optional. If not set, verification can run indefinitely. Can an attacker create a database with malicious transactions that cause infinite loops in VM execution, hanging verification forever? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_024856ac-3eb7-41c9-aa4f-5c470ddbed2b?mode=deep",
+    "timestamp": "2026-01-20 03:23:35.723732",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: Opt struct] [Path Traversal] The db_dir parameter at line 62 is a PathBuf with no validation. Can an attacker provide paths like '../../../sensitive/data' to access unauthorized database directories? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f61306c-6056-4272-b3ba-11317694c355?mode=deep",
+    "timestamp": "2026-01-20 03:24:04.352866",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/db-tool/src/replay_on_archive.rs] [Function: Opt::run()] [Process Exit] At line 100, process::exit(2) is called on verification failures. Does this prevent proper cleanup of open database handles, potentially corrupting database files? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45137ac6-d5b4-4c0a-a105-2056c4ca9374?mode=deep",
+    "timestamp": "2026-01-20 03:24:33.423642",
+    "report_generated": false
+  }
+]
