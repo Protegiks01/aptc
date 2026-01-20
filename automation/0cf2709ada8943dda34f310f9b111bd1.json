@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Struct: CoinInfo] [Hash Collision] Can an attacker craft two different coin types that produce the same SHA256 hash in coin_type_hash, causing database primary key conflicts that overwrite legitimate coin metadata with malicious data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84f536ea-67a4-4c33-b180-058674a5e085?mode=deep",
+    "timestamp": "2026-01-20 00:50:54.409116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Field: coin_type_hash] [Data Integrity] If SHA256 hash collisions occur (theoretically possible with sufficient resources), would the database constraint on coin_type_hash silently drop legitimate coin info records, causing data loss for valid tokens? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7006690b-32b0-4913-a117-97d0189eb7da?mode=deep",
+    "timestamp": "2026-01-20 00:51:07.274807",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Field: coin_type] [String Truncation] The coin_type field is truncated to 5000 characters - can an attacker create coins with nearly identical prefixes (first 5000 chars) to confuse users or cause display issues in indexer APIs, enabling phishing attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2a10fe8-d61a-4225-826c-88bd76dc87f6?mode=deep",
+    "timestamp": "2026-01-20 00:51:19.998579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Field: coin_type] [Injection Attack] Does the coin_type string undergo proper sanitization before database insertion, or can malicious Move type strings containing SQL injection patterns, null bytes, or control characters corrupt the PostgreSQL database? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b215f330-cf57-4842-8865-0308169ac629?mode=deep",
+    "timestamp": "2026-01-20 00:51:33.422352",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Field: name] [String Truncation] The name field is truncated to 32 characters via get_name_trunc() - can attackers create multiple coins with identical 32-char prefixes to cause confusion and enable token impersonation in wallet UIs querying the indexer? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2b3f512-b3ef-47f1-8c6c-7507c9e5ab9a?mode=deep",
+    "timestamp": "2026-01-20 00:51:47.582892",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Field: symbol] [String Truncation] The symbol field is truncated to 10 characters - can an attacker register coins with common symbol prefixes (e.g., 'USDC12345' and 'USDC67890' both become 'USDC123456' or similar) to impersonate well-known tokens in indexer query results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_674a65ea-743e-4b27-9b8c-014d2f12f74c?mode=deep",
+    "timestamp": "2026-01-20 00:52:05.518307",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Field: decimals] [Integer Validation] The decimals field is stored as i32 - can negative decimal values from malicious Move contracts cause integer underflow, display errors, or calculation bugs in downstream indexer APIs that compute token amounts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb143dc1-8d98-4a80-89aa-4768d526eaaa?mode=deep",
+    "timestamp": "2026-01-20 00:52:21.383322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Field: decimals] [Range Validation] Is there validation that decimals is within reasonable bounds (e.g., 0-18)? Can extremely large decimal values (e.g., i32::MAX = 2147483647) cause integer overflow when calculating display amounts in indexer query APIs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53470348-880a-4d91-8891-e4c0df25b564?mode=deep",
+    "timestamp": "2026-01-20 00:52:39.294480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Field: transaction_version_created] [Ordering Attack] Can an attacker exploit race conditions during concurrent indexing to insert a coin info with a future transaction_version_created, causing the indexer to reject legitimate earlier coin registrations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab3e9d1e-412d-43be-bd69-2a70488462bd?mode=deep",
+    "timestamp": "2026-01-20 00:52:57.903407",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Field: creator_address] [Address Validation] Is the creator_address properly validated and standardized to 66 characters (0x + 64 hex)? Can non-standard address formats cause database constraint violations or query inconsistencies? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71070d07-c73a-49f8-b386-694622bdd3ce?mode=deep",
+    "timestamp": "2026-01-20 00:53:17.190418",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: from_write_resource()] [Type Confusion] Can an attacker submit write resources with malformed generic_type_params that don't match CoinInfo structure, causing from_move_type() to panic or return incorrect coin_type_hash that overwrites unrelated coin data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_145aa933-9075-447a-aeb4-c9e2f53a6bae?mode=deep",
+    "timestamp": "2026-01-20 00:53:37.914413",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_infos.rs] [Function: from_write_resource()] [Array Index Panic] Line 58 accesses generic_type_params[0] without bounds checking - can a WriteResource with empty generic_type_params array cause an index out of bounds panic that crashes the indexer processor? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbdee0a7-1618-401b-bb2f-f46547c390c8?mode=deep",
+    "timestamp": "2026-01-20 00:53:59.375507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: from_write_resource()] [Resource Type Mismatch] If CoinResource::from_write_resource() returns Some(CoinResource::CoinStoreResource) instead of CoinInfoResource due to type confusion, will the pattern match at line 56 silently return Ok(None) and skip indexing legitimate coin info? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee3ffcc0-e427-46ca-a091-e655ec4bc719?mode=deep",
+    "timestamp": "2026-01-20 00:54:22.024150",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: from_write_resource()] [Error Propagation] If CoinInfoType::from_move_type() returns an error due to malformed type data, does the ? operator properly propagate the error, or can error handling allow partial coin info with corrupted coin_type_hash to be inserted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb21772c-2847-4986-bbab-b9ff2d4f9bdc?mode=deep",
+    "timestamp": "2026-01-20 00:54:45.510250",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: from_write_resource()] [Timestamp Validation] The txn_timestamp parameter is passed as chrono::NaiveDateTime without validation - can timestamps far in the future or past (e.g., year 9999 or year 0) cause database constraint violations or sorting issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f1f84eb-a9ba-43cc-9a74-8de68b848954?mode=deep",
+    "timestamp": "2026-01-20 00:55:08.410950",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: from_write_resource()] [Option Handling] Lines 61-64 use get_aggregator_metadata().map() with unwrap_or() - can None values in the aggregator chain cause unexpected behavior if the database expects specific null patterns for supply tracking? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0146bb74-baf9-4311-8ad9-7f6d063d2bf7?mode=deep",
+    "timestamp": "2026-01-20 00:55:30.977390",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: from_write_resource()] [Clone Operations] Line 70 clones creator_address from CoinInfoType - can this introduce race conditions if the same CoinInfoType is used across threads during concurrent indexing of the same transaction? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62065e06-73c1-4ecc-b560-ba1b78eddcfa?mode=deep",
+    "timestamp": "2026-01-20 00:55:54.778828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: from_write_resource()] [Match Exhaustiveness] The match statement at line 55 only handles CoinInfoResource - are there other CoinResource variants that should be handled, or can future additions to CoinResource enum cause silent data loss? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ccc6d848-7d4e-4618-abb1-bcf9822f0006?mode=deep",
+    "timestamp": "2026-01-20 00:56:19.396228",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: get_by_coin_type()] [SQL Injection] Does the coin_type parameter undergo proper escaping before being passed to diesel's eq() filter, or can specially crafted coin type strings inject SQL fragments that bypass query constraints? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c4ead87-6121-4b69-95c7-990a16da5344?mode=deep",
+    "timestamp": "2026-01-20 00:56:44.868285",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: get_by_coin_type()] [Case Sensitivity] Is the coin_type comparison case-sensitive? Can attackers register coins with different casing (e.g., '0x1::Aptos::COIN' vs '0x1::aptos::coin') to bypass uniqueness checks and create multiple database entries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4a35072-a975-4201-a330-a6c60f0d12c9?mode=deep",
+    "timestamp": "2026-01-20 00:57:10.894281",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: get_by_coin_type()] [Null Byte Injection] Can coin_type strings containing null bytes (\\\\0) cause the PostgreSQL TEXT column to truncate early, making queries return wrong results or match unintended coin types? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_091e6e96-b1b3-45b1-9eff-8ed83179bd7b?mode=deep",
+    "timestamp": "2026-01-20 00:57:35.682274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: get_by_coin_type()] [Performance DoS] Can an attacker repeatedly query with extremely long coin_type strings (up to 5000 chars) to cause excessive database CPU usage and slow down the indexer API for all users? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73373ecd-9078-4d89-812d-240290071dbb?mode=deep",
+    "timestamp": "2026-01-20 00:58:01.064171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: get_by_coin_type()] [Connection Exhaustion] Does this function hold the database connection for the entire query duration? Can slow queries from complex coin types cause connection pool exhaustion, making the indexer unavailable? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3cda1a34-0b9c-4080-b3fb-e5ce6dcb00c3?mode=deep",
+    "timestamp": "2026-01-20 00:58:25.831922",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Function: get_by_coin_type()] [Error Handling] The function returns diesel::QueryResult<Option<Self>> - can database errors (connection lost, table locked) be distinguished from legitimate",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cc95e35-748c-4ff7-97c7-0c67cb434d5a?mode=deep",
+    "timestamp": "2026-01-20 00:58:51.690530",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_infos.rs] [Schema: coin_infos table] [Primary Key Conflict] The upsert logic in coin_processor.rs updates on conflict with coin_type_hash - can an attacker cause a legitimate coin to be repeatedly overwritten by registering the same coin type in later transactions with manipulated metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27bc2605-17c2-45c7-9675-e125eba688cf?mode=deep",
+    "timestamp": "2026-01-20 00:59:18.083152",
+    "report_generated": false
+  }
+]
