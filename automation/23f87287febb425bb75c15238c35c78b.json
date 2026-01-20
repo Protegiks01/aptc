@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: prune()] [Race condition] Can concurrent calls to prune() read stale values from progress() and target_version() despite SeqCst ordering, leading to duplicate pruning attempts that corrupt state or waste resources? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_abb60fcb-850b-4b46-8c50-fdcf21122fab?mode=deep",
+    "timestamp": "2026-01-20 17:10:42.185208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: set_target_version()] [TOCTOU race] Can an attacker trigger a race between set_target_version() storing a new target and prune() loading it, causing the pruner to skip versions or prune incorrect ranges? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a692f70a-9915-4780-aa75-720cd3c51f30?mode=deep",
+    "timestamp": "2026-01-20 17:10:54.616458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: record_progress()] [Atomicity violation] If record_progress() is called concurrently from multiple threads, can the AtomicVersion store operations interleave in a way that causes progress to move backwards or skip forward incorrectly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f18b9e97-7139-4351-b518-15d146e63a8c?mode=deep",
+    "timestamp": "2026-01-20 17:11:07.502665",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 52-53, 89] [Memory ordering] Does the SeqCst ordering on lines 89 and 100 provide sufficient guarantees, or can reordering between progress.load() and target_version.load() cause the pruner to enter an inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75db69f9-87fb-4f3a-b90e-826129aa713a?mode=deep",
+    "timestamp": "2026-01-20 17:11:20.761279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: prune()] [Concurrent modification] Can multiple threads call prune() simultaneously, and if so, can they interfere with each other's batch processing leading to gaps or overlaps in pruned versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_524aebce-e7d6-4317-9afc-4ad682371852?mode=deep",
+    "timestamp": "2026-01-20 17:11:34.970116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 36-37] [Atomic initialization] Are target_version and progress atomically initialized together in new(), or can a race condition cause them to be observed with inconsistent values during initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85749700-a3c0-4502-9be5-45711d728ae2?mode=deep",
+    "timestamp": "2026-01-20 17:11:50.317442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: progress()] [Visibility issue] Can progress.load(Ordering::SeqCst) on line 89 return a stale cached value that doesn't reflect recent record_progress() calls from parallel shard pruners? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bc16acb-efd2-4f88-bcd0-21f661c6e860?mode=deep",
+    "timestamp": "2026-01-20 17:12:06.754482",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 94-96] [Metrics race] Can the PRUNER_VERSIONS metric update on line 95-96 race with concurrent set_target_version() calls, causing incorrect metrics to be reported or stale values to overwrite newer ones? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d22970b-38ec-4fb4-9e4e-efcb1bf107c3?mode=deep",
+    "timestamp": "2026-01-20 17:12:24.554328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: prune()] [Integer overflow] On line 57, can progress + max_versions overflow when both are near u64::MAX, potentially wrapping around to 0 and causing the pruner to delete the entire state history? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b953cac8-085b-4b51-a4fc-d0e1148f2a6b?mode=deep",
+    "timestamp": "2026-01-20 17:12:43.032491",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 56-57] [Arithmetic wraparound] If progress is u64::MAX and max_versions is non-zero, does the min() operation on line 57 handle overflow correctly, or could it result in pruning version 0 and destroying critical state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7391c9a3-c4dc-441c-9bc7-067cced80b3d?mode=deep",
+    "timestamp": "2026-01-20 17:13:03.357081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: prune()] [Type confusion] Can the cast 'max_versions as Version' on line 57 cause truncation or sign issues if max_versions is larger than Version can represent? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10706ba1-7f21-4c03-95ec-68219f1f1bb5?mode=deep",
+    "timestamp": "2026-01-20 17:13:24.455544",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 52, 80] [Progress manipulation] Can progress be manipulated to be greater than target_version before the while loop, causing the loop to never execute but still return target_version as if pruning completed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32441eae-564d-4caf-b9bb-4a133234ac23?mode=deep",
+    "timestamp": "2026-01-20 17:13:46.869729",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: prune()] [Batch size boundary] If max_versions is 0, does the while loop on line 55 become infinite since current_batch_target_version equals progress, preventing any progress updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54bfc3df-742d-45cb-bef0-89216bca34dd?mode=deep",
+    "timestamp": "2026-01-20 17:14:09.978765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 56-57] [Version underflow] If progress is somehow set to a value greater than target_version through a race condition, can the subtraction cause underflow issues in downstream pruner logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07ebd58a-746d-4316-9f45-16a988070b1c?mode=deep",
+    "timestamp": "2026-01-20 17:14:34.532716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 67-78] [Parallel pruning race] Can concurrent execution of shard_pruners.par_iter() cause race conditions where multiple shards try to update their progress simultaneously, leading to inconsistent pruning state across shards? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99618ddd-6e0c-4785-a3e1-9cfd87e79d41?mode=deep",
+    "timestamp": "2026-01-20 17:14:59.926082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: prune()] [Thread pool exhaustion] Can the THREAD_MANAGER.get_background_pool().install() call on line 67 fail or block indefinitely if the thread pool is exhausted, causing the pruner to hang and prevent state cleanup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_647ace4c-7f23-43b6-a4d1-5de19251f0c1?mode=deep",
+    "timestamp": "2026-01-20 17:15:25.703833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 68-77] [Partial shard failure] If one shard pruner fails during par_iter().try_for_each() on line 68, does the error propagation properly roll back changes from other shards, or can it leave shards in inconsistent pruning states? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e42d1c66-5d57-4735-a8f4-286d19996251?mode=deep",
+    "timestamp": "2026-01-20 17:15:51.979499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 64-78] [Ordering violation] Is metadata pruned before shard pruning (lines 64-65) guaranteed to complete before shard pruners start, or can parallel execution cause shards to reference metadata that's being concurrently deleted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a64119a-27d1-46ad-8c6f-7b1cfb2b9e9e?mode=deep",
+    "timestamp": "2026-01-20 17:16:18.079148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: prune()] [Rayon panic handling] If a shard pruner panics inside the par_iter() on line 68, can it cause the entire pruning operation to abort without updating progress, leading to repeated failed pruning attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37cd34a5-2dfc-40eb-8a7d-84ddd4e27d45?mode=deep",
+    "timestamp": "2026-01-20 17:16:44.997631",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 67-78] [Shard ordering dependency] Do shard pruners have dependencies on each other's pruning order, and if so, can parallel execution violate these dependencies causing state corruption or Merkle tree inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84685105-4faa-476c-8fd1-caa01dd3eb3a?mode=deep",
+    "timestamp": "2026-01-20 17:17:13.312500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: prune()] [Thread starvation] Can malicious or slow shard pruners in the parallel iteration starve other shards or the main pruning thread, causing liveness issues and preventing progress updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f04743c1-5a63-49cd-bba8-79dda70d07fd?mode=deep",
+    "timestamp": "2026-01-20 17:17:41.230948",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 80-81] [Progress update timing] Can progress be updated to current_batch_target_version on line 80-81 before all shard pruners have successfully committed their changes, causing record_progress() to record an incorrect state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e986df3-900d-4619-80d4-0a00caecf818?mode=deep",
+    "timestamp": "2026-01-20 17:18:09.674556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: record_progress()] [Metrics inconsistency] Can the PRUNER_VERSIONS metric on line 106-107 diverge from the actual progress stored in the AtomicVersion, causing monitoring systems to show incorrect pruning status? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b35c468d-dbb3-4c19-8e8f-fecbc741f1c9?mode=deep",
+    "timestamp": "2026-01-20 17:18:37.886515",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Lines: 52-53] [Stale progress read] Can the local variable 'progress' read on line 52 become stale during the while loop execution, causing the loop condition on line 55 to make incorrect decisions based on outdated progress? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1cacf68-543c-4dbd-bd28-b88d738e5270?mode=deep",
+    "timestamp": "2026-01-20 17:19:04.283513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: prune()] [Progress rollback] If pruning fails partway through a batch, is there any mechanism to roll back the progress recorded on line 81, or does it remain at the failed batch target causing inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5551698-654c-419f-b271-85686fe1db9f?mode=deep",
+    "timestamp": "2026-01-20 17:19:31.287948",
+    "report_generated": false
+  }
+]
