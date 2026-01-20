@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Signature aggregation ordering] SignedBatchInfo messages are sent to proof_coordinator (lines 61-66) without any ordering guarantees - can Byzantine validators exploit message timing to cause signature collection to timeout or aggregate signatures in non-deterministic order across honest validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a32df1a4-2a31-4e4c-8bcd-80171b7897d1?mode=deep",
+    "timestamp": "2026-01-20 21:47:14.904708",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Batch-proof ordering invariant] Is there an implicit ordering assumption that BatchMsg should be processed before SignedBatchInfo, which should be processed before ProofOfStore? Can Byzantine validators violate this ordering by sending messages out-of-sequence to cause validation failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c265f59-4574-4270-ba9a-a9df70bee4cc?mode=deep",
+    "timestamp": "2026-01-20 21:47:27.540476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Async await race condition] The start() function uses async/await at multiple points (lines 64, 92, 102) - can Byzantine validators send bursts of different message types simultaneously to create race conditions where proof_coordinator, batch_coordinator, and proof_manager access shared state concurrently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd8de55f-a974-4951-9a47-73a19bf591cb?mode=deep",
+    "timestamp": "2026-01-20 21:47:41.059216",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Round-robin counter race] The next_batch_coordinator_idx is modified without synchronization (lines 79-80) - although start() takes 'mut self', can there be any scenario where multiple NetworkListener instances exist or where this counter is accessed concurrently, causing race conditions in coordinator assignment? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a8a50ee-509f-48ba-bcc2-f4ac51896680?mode=deep",
+    "timestamp": "2026-01-20 21:47:54.496893",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: new()] [Channel initialization race] The new() constructor (lines 26-38) stores channels but doesn't validate they're connected to actual receivers - can a misconfiguration or race condition during initialization cause NetworkListener to start with disconnected channels that immediately panic on first send? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8053c68c-5879-419c-a1b2-023c72306677?mode=deep",
+    "timestamp": "2026-01-20 21:48:09.077798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Sender field inconsistency] The 'sender' PeerId extracted from messages (line 43) is used for attribution but processed asynchronously - can Byzantine validators exploit timing windows where sender identity verification happens separately from message processing, allowing sender substitution attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_733bacd1-ce35-49fb-b98f-e0e053d688f2?mode=deep",
+    "timestamp": "2026-01-20 21:48:24.647576",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Colluding Byzantine validators] Can <1/3 Byzantine validators coordinate to send conflicting SignedBatchInfo messages for the same batch to different honest validators through NetworkListener, causing honest validators to aggregate different signature sets and create competing ProofOfStore messages? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_114f4e6a-1797-443e-9064-a29ed57679e9?mode=deep",
+    "timestamp": "2026-01-20 21:48:41.702549",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Selective message withholding] Can Byzantine validators selectively withhold BatchMsg or ProofOfStore messages from specific honest validators via network layer manipulation, causing those validators to fall behind in batch processing while NetworkListener continues routing other messages normally? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fc43dd0-831e-41b0-896b-cd8ed1d802ff?mode=deep",
+    "timestamp": "2026-01-20 21:49:00.555817",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Signature farming attack] Can Byzantine validators repeatedly send the same BatchMsg through NetworkListener (lines 68-94) to farm SignedBatchInfo responses from honest batch coordinators, then use those signatures to create valid ProofOfStore for malicious batches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afc6e948-f9cd-4b8c-9d7e-28934c37995a?mode=deep",
+    "timestamp": "2026-01-20 21:49:20.226170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Batch author impersonation] Since batch_msg.author() (line 73) returns the author embedded in the batch rather than the sender, can Byzantine validators create batches claiming to be authored by honest validators, causing those honest validators to be blamed for malicious content when processed by batch coordinators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7cb4861f-a1b3-4cf4-bbb1-bc60fb53a19e?mode=deep",
+    "timestamp": "2026-01-20 21:49:41.007354",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Proof flooding by Byzantine cartel] Can Byzantine validators who control <1/3 stake flood NetworkListener with valid ProofOfStore messages for batches with low-value transactions, causing proof_manager to waste resources validating and storing worthless proofs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64049b0a-045c-49c1-a004-65a3eff6e557?mode=deep",
+    "timestamp": "2026-01-20 21:50:03.546202",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Memory exhaustion via batch accumulation] If batch coordinators process batches slower than NetworkListener receives them, can Byzantine validators send large BatchMsg objects (line 68-94) that accumulate in channel queues, causing memory exhaustion before channel backpressure activates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_953c8d59-ef22-49f8-a9c2-6fbdcfa16e0b?mode=deep",
+    "timestamp": "2026-01-20 21:50:27.335645",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Counter metric overhead] Every message increments counters (lines 48, 58, 69, 75, 87, 96) - can Byzantine validators send messages at extremely high rates to cause counter increment operations to consume significant CPU, creating performance degradation across all validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fd10fe0-b0d0-4874-8946-b050994bf662?mode=deep",
+    "timestamp": "2026-01-20 21:50:52.108425",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Coordinator worker starvation] With round-robin assignment to multiple batch coordinators (lines 78-86), can Byzantine validators craft attack patterns that cause some coordinators to be overloaded while others sit idle, wasting system resources and reducing effective throughput? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8bd0dca-560c-4cd2-950e-8e6d84c55af4?mode=deep",
+    "timestamp": "2026-01-20 21:51:17.909887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Trace logging DoS] The trace! macro at line 81-86 logs peer_id and coordinator assignment for every batch - can Byzantine validators flood with batch messages to cause excessive logging that fills disk space or degrades performance on honest validators with verbose logging enabled? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69a7c023-4b4e-4866-a26c-fd038e716d86?mode=deep",
+    "timestamp": "2026-01-20 21:51:44.908233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Quorum fragmentation via selective routing] Can Byzantine validators exploit the round-robin batch coordinator assignment (lines 78-80) by timing their batch submissions to ensure honest validators' batches are distributed across different coordinators, preventing quorum formation for any single batch? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_543e9989-8288-4236-9796-82ef94ac840b?mode=deep",
+    "timestamp": "2026-01-20 21:52:12.491036",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Proof aggregation delay attack] Can Byzantine validators delay sending their SignedBatchInfo messages (lines 57-67) to proof_coordinator until just before timeout, causing proof aggregation to barely succeed and reducing consensus throughput without triggering obvious Byzantine detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4636154-f8be-4157-a68d-6a013dc37aee?mode=deep",
+    "timestamp": "2026-01-20 21:52:40.120584",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Batch dissemination censorship] Can Byzantine validators control NetworkListener on their own nodes to selectively drop or delay BatchMsg forwarding (lines 68-94) for batches containing specific transactions, achieving censorship without being detected as offline? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59dd4c9b-5238-4253-bbf7-be476bc4e11c?mode=deep",
+    "timestamp": "2026-01-20 21:53:08.780087",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Competing proof creation] Can Byzantine validators send conflicting ProofOfStore messages (lines 95-104) for the same batch with different signature sets through NetworkListener, causing proof_manager to accept multiple competing proofs and creating consensus ambiguity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1f2cff8-ef10-4b69-bf3d-3de26b391b15?mode=deep",
+    "timestamp": "2026-01-20 21:53:37.122227",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Consensus round confusion] Are messages tagged with consensus round numbers and validated before routing? Can Byzantine validators send batch/proof messages from future rounds through NetworkListener to confuse downstream components about current consensus state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a47abaf-69de-40ce-bf12-f6ec9d37b3b2?mode=deep",
+    "timestamp": "2026-01-20 21:54:07.220440",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [SignedBatchInfo signature validation] The listener forwards SignedBatchInfo directly to proof_coordinator (lines 61-66) - does proof_coordinator perform cryptographic signature verification, or does it trust NetworkListener's VerifiedEvent designation, potentially allowing signature forgery if upstream verification is bypassed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a15e6638-c11e-4a0f-aee4-d1266500773a?mode=deep",
+    "timestamp": "2026-01-20 21:54:37.659609",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Batch content tampering] When BatchMsg is received (lines 68-94) and batch_msg.take() extracts the batches (line 74), are the batch contents cryptographically bound to the author signature, or can Byzantine validators modify transaction data before forwarding through NetworkListener? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e3034ae-911d-49eb-bcab-d9d06639acc2?mode=deep",
+    "timestamp": "2026-01-20 21:55:07.558479",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [ProofOfStore integrity] ProofOfStore messages (lines 95-104) are forwarded to proof_manager - does proof_manager validate the proof's signature aggregation and quorum threshold, or can Byzantine validators send invalid proofs that NetworkListener blindly forwards? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d957a96-3f36-4258-bc76-c2cf6a209f56?mode=deep",
+    "timestamp": "2026-01-20 21:55:38.959898",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Message size validation] Are there size limits enforced on BatchMsg, SignedBatchInfo, and ProofOfStore before routing? Can Byzantine validators send extremely large messages through NetworkListener that cause memory exhaustion in downstream components? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67ba7803-aeaf-4bab-a955-fd5d51328202?mode=deep",
+    "timestamp": "2026-01-20 21:56:10.923871",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/network_listener.rs] [Function: start()] [Digest collision attack] If batches are identified by cryptographic digests, can Byzantine validators exploit hash collision vulnerabilities to send different batch contents with the same digest through NetworkListener, causing inconsistent state across honest validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9ab19bf-b6a5-42c1-a9b2-7669a9b9badc?mode=deep",
+    "timestamp": "2026-01-20 21:56:41.008573",
+    "report_generated": false
+  }
+]
