@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Author Impersonation] Can a malicious validator submit a secret share with a forged author field that doesn't match the peer parameter, bypassing the author verification check at line 45 and allowing unauthorized share injection into the aggregation process? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bfd07111-1a20-48c6-9e60-fa026fdab7d7?mode=deep",
+    "timestamp": "2026-01-20 13:29:47.210251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Author Validation Bypass] Does the author comparison at line 45 use cryptographically secure equality checks, or can an attacker exploit timing attacks or hash collisions to make share.author() == peer evaluate to true for a mismatched author? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_190ae125-71ec-492c-b873-89ce0bdd5012?mode=deep",
+    "timestamp": "2026-01-20 13:30:00.464458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Metadata Manipulation] Can an attacker craft a secret share with manipulated metadata (epoch, round, or timestamp) that still passes the equality check at lines 46-51, allowing shares from different epochs or rounds to be aggregated together and corrupt randomness generation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afce5683-b45f-4280-b5e6-4ee57cee31be?mode=deep",
+    "timestamp": "2026-01-20 13:30:13.821646",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Metadata Confusion Attack] If the metadata contains fields beyond epoch and round, can an attacker exploit partial metadata matching where critical fields differ but the equality check still passes, leading to aggregation of incompatible shares? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3125fe47-c9ec-4185-bf84-e8a1f6224d1e?mode=deep",
+    "timestamp": "2026-01-20 13:30:27.706869",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Cryptographic Verification Bypass] Does share.verify() at line 52 perform complete cryptographic validation of the secret share against the secret_share_config, or can an attacker submit a share with valid structure but invalid cryptographic proofs that bypass verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d910812f-013e-4015-87be-901d0792b60b?mode=deep",
+    "timestamp": "2026-01-20 13:30:42.459434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Verification Config Manipulation] Can an attacker exploit inconsistencies between self.secret_share_config used for verification and the actual consensus configuration, allowing shares that fail proper threshold checks to be accepted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26bc6f66-ddd1-4aa3-9d95-0ae5ceb26da0?mode=deep",
+    "timestamp": "2026-01-20 13:30:58.503621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Race Condition on Mutex] Between acquiring the mutex lock at line 57 and calling store.add_share() at line 58, can concurrent add() calls from different threads create race conditions that allow double-counting of shares or inconsistent aggregation state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f752a674-3a5f-4c26-ab3f-ee3f285c4bfc?mode=deep",
+    "timestamp": "2026-01-20 13:31:16.031984",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Mutex Poisoning Attack] If store.add_share() panics while holding the mutex lock, does this poison the mutex and permanently block all future add() calls, causing a denial of service that halts randomness generation and consensus progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7df5e9be-bc81-4a96-aa9c-0c44a8b13b16?mode=deep",
+    "timestamp": "2026-01-20 13:31:35.972801",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Aggregation Logic Vulnerability] Does store.add_share() at line 58 properly validate that the share hasn't already been added, or can an attacker repeatedly submit the same valid share to artificially inflate the aggregation weight and trigger premature threshold satisfaction? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a38e2ce8-6e57-44a3-a5c8-6d5381c72cf6?mode=deep",
+    "timestamp": "2026-01-20 13:31:57.827466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Double-Share Attack] Can a Byzantine validator submit multiple distinct secret shares for the same epoch/round with the same author, bypassing deduplication checks and causing the same validator's contribution to be counted multiple times in aggregation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0bc7b570-898a-44ae-8715-67b29c7b4fa2?mode=deep",
+    "timestamp": "2026-01-20 13:32:21.490634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Return Value Manipulation] The function returns Ok(Some(())) when aggregated is true (line 59), but does the caller properly handle the None case, or can an attacker trigger conditions where None is returned inappropriately, blocking legitimate aggregation completion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db5d1ceb-3149-4967-84e4-7bc854bbe7de?mode=deep",
+    "timestamp": "2026-01-20 13:32:45.845545",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Error Handling Leak] When ensure! macro fails at lines 45 or 46-51, does the error message leak sensitive information about the expected metadata or author that could aid an attacker in crafting valid-looking malicious shares? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4eefe07-cb71-454c-9740-a195ee4dbb4c?mode=deep",
+    "timestamp": "2026-01-20 13:33:10.864667",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Logging Information Disclosure] Does the logging at lines 53-56 expose sensitive cryptographic material, share contents, or internal state that could be exploited by an attacker monitoring logs to predict or manipulate randomness output? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b09b64f9-8840-4d0d-a214-0978da9a3b6b?mode=deep",
+    "timestamp": "2026-01-20 13:33:36.670699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Epoch Boundary Attack] Can an attacker submit shares from a future epoch before the epoch transition completes, causing them to be accepted and aggregated with current epoch shares, leading to cross-epoch randomness corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_783157d9-635e-4f0d-a1a9-cf29d33096d9?mode=deep",
+    "timestamp": "2026-01-20 13:34:05.169833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Round Rollback Attack] Can an attacker submit shares for an old round number after that round has completed, causing the aggregation state to incorrectly process stale shares and potentially revert randomness decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5bb28683-1d27-44d6-90fa-d434646b85be?mode=deep",
+    "timestamp": "2026-01-20 13:34:34.885076",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Threshold Manipulation] Does the aggregation logic properly enforce the Byzantine fault tolerance threshold (< 1/3 malicious), or can an attacker exploit weight calculation errors in secret_share_config to achieve aggregation with insufficient honest validator participation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a881ab8e-d687-4075-ad44-8ffb24a4806f?mode=deep",
+    "timestamp": "2026-01-20 13:35:06.054443",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Weight Overflow Attack] If validator weights in secret_share_config are manipulated to near-maximum values, can adding multiple shares cause integer overflow in weight accumulation, wrapping around to low values and breaking threshold detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08021876-db21-4241-ae7c-f4257ce99b56?mode=deep",
+    "timestamp": "2026-01-20 13:35:36.653679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Sybil Share Attack] Can an attacker create multiple pseudonymous identities that each pass the author check at line 45, allowing a single Byzantine validator to submit shares under multiple identities and exceed their allocated voting weight? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_abb91252-7049-4c2b-b13f-4a1f472d0d88?mode=deep",
+    "timestamp": "2026-01-20 13:36:08.181377",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Timestamp Manipulation] If SecretShareMetadata includes a timestamp field, can an attacker manipulate timestamps to cause shares from different time periods to be incorrectly aggregated, violating consensus timing assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b13bfbf0-102a-4a56-b93a-e4c0ccab82b1?mode=deep",
+    "timestamp": "2026-01-20 13:36:39.627773",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Memory Exhaustion Attack] Can an attacker flood the system with valid but never-aggregating shares (each with unique metadata), causing unbounded memory growth in secret_share_store and eventually crashing validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d904d4b7-31ad-433b-8af7-02ec4ff934e2?mode=deep",
+    "timestamp": "2026-01-20 13:37:11.354871",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: add()] [Verification Performance DoS] Can an attacker submit computationally expensive shares that pass initial checks but take excessive time in share.verify(), blocking the mutex and preventing legitimate shares from being processed in time? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28244fdd-a4c8-4351-a52d-05759f0930cf?mode=deep",
+    "timestamp": "2026-01-20 13:37:41.948699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: new()] [Initialization Vulnerability] Does the new() constructor at lines 26-36 properly validate that secret_share_metadata and secret_share_config are consistent and authorized, or can an attacker construct a SecretShareAggregateState with mismatched or malicious configuration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f3aa2a0-ed63-4af6-b0aa-1f48072d02ff?mode=deep",
+    "timestamp": "2026-01-20 13:38:11.391881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: new()] [Config Injection Attack] Can an attacker supply a malicious secret_share_config to new() that has weakened threshold requirements, reduced validator weights, or compromised cryptographic parameters that facilitate later attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db1e3fec-71ae-409d-9d36-5837f71d1f8f?mode=deep",
+    "timestamp": "2026-01-20 13:38:37.426567",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Function: new()] [Store Sharing Vulnerability] Since secret_share_store is wrapped in Arc<Mutex<>>, can multiple SecretShareAggregateState instances share the same store, causing cross-contamination between different aggregation sessions or metadata contexts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42f8ceee-efd9-4213-a882-a2cf5a9854c7?mode=deep",
+    "timestamp": "2026-01-20 13:39:04.453423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/secret_sharing/reliable_broadcast_state.rs] [Struct: SecretShareAggregateState] [State Corruption] Are the three fields (secret_share_metadata, secret_share_store, secret_share_config) immutable after construction, or can an attacker exploit interior mutability to modify them during aggregation, invalidating verification assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_223cebd2-c251-49a7-954c-70eea14c83be?mode=deep",
+    "timestamp": "2026-01-20 13:39:32.494771",
+    "report_generated": false
+  }
+]
