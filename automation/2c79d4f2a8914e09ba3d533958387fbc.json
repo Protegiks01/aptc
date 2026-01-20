@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Singleton pattern] Is the created Arc<dyn TransactionDeduper> intended to be a singleton per validator, or could multiple instances with separate internal state be created, leading to inconsistent deduplication results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27ec4c10-4f17-4f70-97a1-a612dd4a2404?mode=deep",
+    "timestamp": "2026-01-20 23:41:20.153526",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [Hash collision] Does the TxnHashAndAuthenticatorDeduper implementation handle hash collisions in committed_hash() properly, or could two different transactions with the same hash but different authenticators both be filtered, causing one valid transaction to be dropped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52e793b4-b17c-4c62-9303-b85a36ece0a4?mode=deep",
+    "timestamp": "2026-01-20 23:41:32.912694",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [Signature verification bypass] Since deduplication happens before signature verification, can an attacker include transactions with invalid signatures that match valid transaction hashes, causing the valid transaction to be incorrectly filtered as a duplicate? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9386684c-d7ba-4b31-ad9d-018e4b1cb516?mode=deep",
+    "timestamp": "2026-01-20 23:41:45.862045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [Authenticator manipulation] Can a malicious user craft two transactions with identical raw transaction hashes but different authenticators (e.g., different signature schemes), and would both pass deduplication even though they represent the same operation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b49977f-0da8-445d-9ea1-a0ffcfd8d302?mode=deep",
+    "timestamp": "2026-01-20 23:41:59.435446",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [Sequence number reuse] For transactions with the same sender and sequence number but different transaction payloads and signatures, does the deduper correctly keep only the first one, or could all variations execute if they have different hashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7d6eab9-1298-4497-8b92-a5d9a7b24e4f?mode=deep",
+    "timestamp": "2026-01-20 23:42:13.915408",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [Sender spoofing] Does the deduper validate that the transaction sender matches the authenticator's public key, or does it assume this check happens elsewhere, potentially allowing sender spoofing attacks to bypass deduplication? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b88839e1-13a1-42d9-bc3d-0205e8133fe6?mode=deep",
+    "timestamp": "2026-01-20 23:42:29.267396",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [ReplayProtector bypass] Can an attacker exploit differences between sequence number and nonce-based replay protection to include duplicate transactions that the deduper doesn't catch because they have different replay_protector values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56b52dd5-4162-4c07-84c4-213d5feced68?mode=deep",
+    "timestamp": "2026-01-20 23:42:45.766477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [Cross-account collision] If two different senders happen to use the same sequence number, does the (sender, replay_protector) tuple prevent false positive duplicate detection, or could legitimate transactions from different accounts be incorrectly filtered? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70833bc7-8427-42dd-9d10-2e541aa00cd2?mode=deep",
+    "timestamp": "2026-01-20 23:43:04.295123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [Parallel hash computation] Does the parallel hash computation in TxnHashAndAuthenticatorDeduper using rayon maintain deterministic ordering of results, or could thread scheduling differences cause validators to deduplicate in different orders? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79b66874-f1d3-4c62-b879-7f5b973c1a40?mode=deep",
+    "timestamp": "2026-01-20 23:43:23.459434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper] [Thread safety] Is the TransactionDeduper trait required to be thread-safe (Send + Sync), and could implementations with interior mutability through RefCell or similar cause data races if dedup() is called concurrently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4edcc921-4097-4429-a182-5649fadf0cab?mode=deep",
+    "timestamp": "2026-01-20 23:43:44.650674",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [HashMap race condition] Does the seen HashMap in TxnHashAndAuthenticatorDeduper's dedup() implementation properly handle concurrent modifications if multiple threads somehow access the same deduper instance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c2f2348-8de3-4f7b-81bf-c010ddcaf208?mode=deep",
+    "timestamp": "2026-01-20 23:44:06.149715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [Metrics manipulation] Could the TXN_DEDUP_FILTERED counter be manipulated to hide duplicate transactions, making it appear that deduplication is working when it's actually being bypassed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_931a4bc5-250f-4b34-b27e-2c06e9a540b4?mode=deep",
+    "timestamp": "2026-01-20 23:44:28.915030",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Logging injection] Could the info! macro log statement be exploited to inject malicious log messages that confuse monitoring systems or trigger false alarms? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_443a53da-f50d-43f0-9c80-1bdf31354e61?mode=deep",
+    "timestamp": "2026-01-20 23:44:53.336314",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Empty input] Does dedup() handle an empty transaction vector correctly without panicking or allocating unnecessary memory? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c208a164-7548-44a8-8fa4-a164a07eeeae?mode=deep",
+    "timestamp": "2026-01-20 23:45:17.918170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Single transaction] For a single-transaction block, does deduplication add any overhead, or could it cause unexpected behavior compared to NoOpDeduper? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_835272ed-394e-4ae9-b300-1dc23b878486?mode=deep",
+    "timestamp": "2026-01-20 23:45:42.070898",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Module: txn_hash_and_authenticator_deduper] [All duplicates] If a block contains only duplicate transactions and all are filtered, does the system handle an empty result set correctly, or could this cause consensus to stall? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89b25caf-0baf-464a-97ee-b827ea7b0b58?mode=deep",
+    "timestamp": "2026-01-20 23:46:08.499685",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Maximum block size] At the maximum block size limit, could deduplication performance degrade to the point of causing consensus timeouts and liveness failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9049010b-fa35-4d16-8421-97b0d54a753f?mode=deep",
+    "timestamp": "2026-01-20 23:46:33.866585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper] [Trait object safety] Is the TransactionDeduper trait object-safe for use with Arc<dyn TransactionDeduper>, or could adding methods in the future break dynamic dispatch and cause compilation failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6be37a0-18fe-4f7f-a35a-fe04b6ad4349?mode=deep",
+    "timestamp": "2026-01-20 23:46:59.028385",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Drop implementation] Do NoOpDeduper and TxnHashAndAuthenticatorDeduper have proper Drop implementations, or could resources be leaked when the Arc reference count reaches zero during epoch changes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b33e866-7406-458a-9a2e-70c834330dc2?mode=deep",
+    "timestamp": "2026-01-20 23:47:24.077170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper] [Lifetime bounds] Does the TransactionDeduper trait properly specify lifetime bounds for borrowed data, or could dangling references occur if implementations store references to transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63d7b920-a322-482e-bf56-a140ca8c2e52?mode=deep",
+    "timestamp": "2026-01-20 23:47:48.610650",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [Gas estimation] If duplicate transactions are filtered after gas estimation has occurred in the proposer, could this cause the actual block gas usage to be lower than estimated, affecting block packing efficiency? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f556c435-d582-49d9-8657-e5b383d2dbff?mode=deep",
+    "timestamp": "2026-01-20 23:48:12.075195",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper] [Prologue execution] Does deduplication happen before or after transaction prologue execution, and could this ordering allow transactions that should be rejected in prologue to affect deduplication decisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f23f9e19-7fd7-4bba-bf5a-fae899afbb8f?mode=deep",
+    "timestamp": "2026-01-20 23:48:36.989674",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Trait: TransactionDeduper::dedup()] [State access] Do any deduper implementations require state access (e.g., checking on-chain sequence numbers), and could state read failures during deduplication cause consensus failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aab584b6-82b8-4e45-a2cf-d976b5c6a777?mode=deep",
+    "timestamp": "2026-01-20 23:49:02.859685",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Function: create_transaction_deduper()] [Version skew] During a protocol upgrade, could validators running old code with NoOpDeduper and new code with TxnHashAndAuthenticatorV1 produce different block execution results, causing a chain split? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d75d978-b9c2-406f-b193-6f791f66ebab?mode=deep",
+    "timestamp": "2026-01-20 23:49:27.139760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/transaction_deduper.rs] [Type: TransactionDeduperType] [Backward compatibility] If TransactionDeduperType adds new variants in future versions, could old validators fail to deserialize the configuration and crash, causing liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ca595ba-c2c7-45c2-8c94-c5282be33286?mode=deep",
+    "timestamp": "2026-01-20 23:49:50.816503",
+    "report_generated": false
+  }
+]
