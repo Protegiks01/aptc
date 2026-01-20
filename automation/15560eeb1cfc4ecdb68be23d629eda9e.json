@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_key()] [Integer Overflow] Can an attacker cause integer overflow by providing Version or Index values close to u64::MAX, potentially causing Vec allocation failures or incorrect capacity calculations in the with_capacity call? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26740106-cbd0-4ef7-a1c8-f1831ca5440b?mode=deep",
+    "timestamp": "2026-01-20 06:42:48.677180",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_key()] [Memory Exhaustion] Does the Vec::with_capacity call at line 38 properly validate that size_of::<Version>() + size_of::<Index>() doesn't exceed reasonable bounds, or can repeated encoding operations exhaust memory? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fdcac0f-d01f-4068-a377-6d937929c26c?mode=deep",
+    "timestamp": "2026-01-20 06:43:01.717609",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_key()] [Endianness Manipulation] Can an attacker exploit the BigEndian encoding at lines 39-40 to create key collisions by crafting version/index pairs that produce identical byte sequences, allowing event overwriting or data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_022d546e-4438-4ead-b41a-218838dd58ac?mode=deep",
+    "timestamp": "2026-01-20 06:43:15.032677",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_key()] [Write Operation Failure] If write_u64::<BigEndian> fails at line 39 or 40, does the error propagation properly prevent partial key writes that could corrupt the database schema, or can partial writes create invalid database states? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da7fc350-7a7e-417c-9145-029cf969b0f7?mode=deep",
+    "timestamp": "2026-01-20 06:43:28.735337",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_key()] [Key Uniqueness] Does the (Version, Index) tuple guarantee true uniqueness across all transactions, or can Byzantine validators create duplicate events with identical version/index pairs causing key collisions and event loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd37860e-1a26-4b57-a391-36cb6fce09b9?mode=deep",
+    "timestamp": "2026-01-20 06:43:43.293123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_key()] [Buffer Underflow] Can an attacker provide malformed data with length less than size_of::<Self>() that bypasses the ensure_slice_len_eq check at line 45, causing read_u64 operations to fail or read uninitialized memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_643367eb-b020-4c26-94cd-31867d5977e5?mode=deep",
+    "timestamp": "2026-01-20 06:43:59.192744",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_key()] [Type Confusion] Does the slice operation at line 49 (&data[..version_size]) properly handle edge cases where version_size exceeds data length, or can this cause panics and denial of service in the indexer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b35bd61-74aa-4042-8dd7-e730724ca741?mode=deep",
+    "timestamp": "2026-01-20 06:44:16.217438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_key()] [Size Validation Bypass] Can ensure_slice_len_eq at line 45 be bypassed by providing data with correct length but corrupted content, allowing invalid Version/Index values to be decoded and stored? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33b7932b-7d8f-4f2a-aecd-ebcbe3de62b9?mode=deep",
+    "timestamp": "2026-01-20 06:44:35.520920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_key()] [Endianness Attack] If an attacker writes keys using different endianness than BigEndian, can they create keys that decode to different Version/Index values, causing event retrieval failures or returning wrong events to API clients? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f269ca4a-8204-4db7-87f5-9f9ebec7ecb0?mode=deep",
+    "timestamp": "2026-01-20 06:44:55.748130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_key()] [Off-by-One Error] Does the slice operation at line 50 (&data[version_size..]) correctly handle boundary conditions, or can off-by-one errors cause reading beyond buffer bounds or missing the last byte of the index? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de976369-45f1-4752-a055-9f396bf5f0bd?mode=deep",
+    "timestamp": "2026-01-20 06:45:18.355932",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_value()] [BCS Serialization DoS] Can an attacker craft a ContractEventV1 with deeply nested TypeTag structures or extremely large event_data that causes bcs::to_bytes at line 57 to consume excessive CPU/memory, creating denial of service in the indexer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37296d88-ec94-46a9-8fb3-811a958d45ba?mode=deep",
+    "timestamp": "2026-01-20 06:45:40.348746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_value()] [Resource Exhaustion] Does the BCS serialization at line 57 have size limits to prevent malicious events with multi-gigabyte event_data fields from exhausting storage or memory during batch writes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9afd6988-54fe-414f-94b2-d67d0b17928f?mode=deep",
+    "timestamp": "2026-01-20 06:46:04.387859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_value()] [Serialization Failure Handling] If bcs::to_bytes fails for a ContractEventV1 at line 57, does the error properly roll back the entire batch transaction, or can partial event writes create inconsistent database state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0de3a7a3-6199-4a94-85e7-8ea8cea93856?mode=deep",
+    "timestamp": "2026-01-20 06:46:28.076645",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_value()] [Type Safety Bypass] Can an attacker create a ContractEventV1 that passes initial validation but contains malformed type_tag or event_data that corrupts the BCS encoding, causing downstream deserialization failures for other validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4934d0da-ff0d-414b-8bd8-854a2a586886?mode=deep",
+    "timestamp": "2026-01-20 06:46:53.156016",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: encode_value()] [EventKey Manipulation] Since ContractEventV1 contains an EventKey field, can an attacker manipulate the key during encoding to create events that appear to originate from different accounts, breaking event access control? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_904d312f-e40d-4d27-beaf-c7e49bdad99c?mode=deep",
+    "timestamp": "2026-01-20 06:47:18.494951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_value()] [Deserialization Bomb] Can an attacker store specially crafted BCS data that expands exponentially during bcs::from_bytes at line 61, causing memory exhaustion when API queries retrieve translated events? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d8a3374-cdfb-4aa6-aa48-1fe98df9c637?mode=deep",
+    "timestamp": "2026-01-20 06:47:44.682048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_value()] [Type Confusion Attack] Does bcs::from_bytes at line 61 properly validate that the decoded data matches ContractEventV1 structure, or can type confusion allow decoding arbitrary data as events with invalid EventKey or sequence numbers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d13c87bc-c5a4-4198-99ad-1d91da341387?mode=deep",
+    "timestamp": "2026-01-20 06:48:11.776137",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_value()] [Malformed Data Handling] If the stored BCS data is corrupted or truncated, does decode_value return appropriate errors, or can partial deserialization create invalid ContractEventV1 instances that crash API endpoints? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43f06238-f737-4482-9077-386f068a502b?mode=deep",
+    "timestamp": "2026-01-20 06:48:38.926888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_value()] [EventData Validation] After BCS deserialization at line 61, is there validation that the ContractEventV1.event_data field is non-empty and within size limits, or can empty/oversized event data cause API failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b4f6065-0ac4-46c3-874d-8093f636b55d?mode=deep",
+    "timestamp": "2026-01-20 06:49:04.989796",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Function: decode_value()] [Sequence Number Manipulation] Can decode_value be exploited to return ContractEventV1 instances with manipulated sequence_number fields that break event ordering guarantees expected by clients? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28d85fcd-16e3-4daa-991c-a9785d8ccabe?mode=deep",
+    "timestamp": "2026-01-20 06:49:32.353777",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Schema: TranslatedV1EventSchema] [Column Family Isolation] Does TRANSLATED_V1_EVENT_CF_NAME at line 28 properly isolate translated events from other event schemas, or can key collisions occur with EventByVersionSchema or EventByKeySchema causing data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e911e27-79a6-4fca-9bf8-7a7a53516a29?mode=deep",
+    "timestamp": "2026-01-20 06:49:59.742116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Schema: TranslatedV1EventSchema] [Key Ordering] Does the (Version, Index) key structure at line 32 guarantee correct lexicographic ordering in RocksDB, or can Version/Index values cause out-of-order storage that breaks range queries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c04a7fd2-dff9-4099-976f-84b22d6c01f8?mode=deep",
+    "timestamp": "2026-01-20 06:50:28.336142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Type Definition: Key] [Index Overflow] Can the Index type defined as u64 at line 31 overflow when translating V2 events with extremely high event counts per transaction, causing index wraparound and event collision? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2892aee4-02b4-4ed4-8914-56d3bc0914d6?mode=deep",
+    "timestamp": "2026-01-20 06:50:56.662685",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Type Definition: Key] [Version Manipulation] Can Byzantine validators manipulate the Version field in the Key tuple to create future-dated or backdated events that corrupt the chronological event history? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12740b6f-1836-4dfb-946d-afe92185440c?mode=deep",
+    "timestamp": "2026-01-20 06:51:25.656067",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/indexer_schemas/src/schema/translated_v1_event/mod.rs] [Schema: TranslatedV1EventSchema] [Atomic Write Guarantees] When batch operations write multiple events with sequential (Version, Index) keys, is atomicity guaranteed, or can partial batch failures leave gaps in the event sequence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86dc28f0-a419-46c4-99ff-35dcdc39fa0b?mode=deep",
+    "timestamp": "2026-01-20 06:51:53.822627",
+    "report_generated": false
+  }
+]
