@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: new()] [Configuration bypass] Can an attacker exploit the Features::fetch_config() fallback to unwrap_or_default() at line 42 to force the system to use default deserialization config when Features cannot be fetched, potentially bypassing security restrictions in the deserializer and allowing malicious bytecode to pass validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58b146aa-8ec7-4f6b-93e0-21aba0b183b6?mode=deep",
+    "timestamp": "2026-01-20 02:13:44.589852",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: view_compiled_module()] [Cache poisoning] In the module_cache lookup at lines 57-60, can a malicious validator insert a crafted module into the cache that differs from the actual state storage, causing honest validators to execute different bytecode and producing divergent state roots leading to consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16fd993f-ae63-4260-ad50-be38f928a68a?mode=deep",
+    "timestamp": "2026-01-20 02:13:57.264072",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: view_compiled_module()] [Race condition] The RefCell borrow_mut() at line 57 allows mutable access without thread-safety guarantees - can concurrent calls to view_compiled_module() from multiple threads cause cache corruption or use-after-free if two threads simultaneously modify the HashMap, potentially leading to wrong module execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8e77a3f-0c98-4671-8d46-1205c0b0912b?mode=deep",
+    "timestamp": "2026-01-20 02:14:10.139178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: view_compiled_module()] [Deserialization attack] At lines 71-78, CompiledModule::deserialize_with_config() processes untrusted bytes from state storage - can an attacker craft malicious bytecode that exploits deserialization vulnerabilities to cause buffer overflow, infinite loop during deserialization, or bypass Move bytecode verifier leading to arbitrary code execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46357e55-f3e4-491e-95ed-55e7d4940d47?mode=deep",
+    "timestamp": "2026-01-20 02:14:23.561755",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: view_compiled_module()] [Error handling bypass] The error mapping at lines 72-77 converts deserialization errors to anyhow::Error - can an attacker craft bytecode that causes specific deserialization failures that get silently ignored or mishandled upstream, allowing invalid modules to be cached and executed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cf0a7c2-2131-43bd-a95a-31a206d877be?mode=deep",
+    "timestamp": "2026-01-20 02:14:38.159872",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: view_compiled_module()] [Memory exhaustion] The module_cache HashMap at line 35 has no size limit - can an attacker force the system to cache unlimited modules by repeatedly requesting different module_ids, causing unbounded memory growth and node crashes affecting network liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a81cfe19-4c28-4ea8-b711-0e31934bc9ed?mode=deep",
+    "timestamp": "2026-01-20 02:14:53.461763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: view_compiled_module()] [State inconsistency] At lines 64-67, get_state_value_bytes() failures are converted to anyhow::Error - can transient storage errors cause the cache to return None for existing modules, breaking transaction execution and causing validators to disagree on transaction outcomes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86df7040-f093-4ff8-9d77-8d3f53f63b09?mode=deep",
+    "timestamp": "2026-01-20 02:15:10.155229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: view_compiled_module()] [Cache invalidation] After inserting a module at line 81, there's no mechanism to invalidate stale cache entries when the underlying state changes - can this cause validators to execute old module versions after upgrades, leading to state divergence and consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_844934c7-acf1-4e09-8147-84ca8329ea26?mode=deep",
+    "timestamp": "2026-01-20 02:15:28.628266",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Struct: ModuleView] [Type confusion] The Arc<CompiledModule> wrapping at line 80 shares ownership across cache - can reference counting issues or premature drops cause use-after-free when modules are accessed after being removed from cache, potentially corrupting VM execution state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04b0f402-f37a-4b60-876e-96e620dfd0b2?mode=deep",
+    "timestamp": "2026-01-20 02:15:48.004102",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: view_compiled_module()] [Clone semantics] At line 59, the cached module is cloned via Arc::clone() - can this shallow clone cause issues if the underlying CompiledModule contains mutable state that gets shared unsafely across execution contexts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d548cfa5-c2d1-4c08-bc49-9d20fe151693?mode=deep",
+    "timestamp": "2026-01-20 02:16:08.411254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: new()] [Environment initialization] At line 113, AptosEnvironment::new() is called without validation - can an attacker provide a malicious state_view that causes the environment to be initialized with incorrect gas configs, feature flags, or VM settings, allowing them to bypass execution limits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9e51c3d-edc5-4834-9469-b56cd17ea2f7?mode=deep",
+    "timestamp": "2026-01-20 02:16:29.413653",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: reset_state_view()] [State synchronization] At lines 123-125, only the state_view is updated while environment and module_cache remain unchanged - can this cause stale environment configs or cached modules to be used with new state, leading to incorrect transaction execution and state divergence across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dff99e01-cdee-4b55-92dd-807df48e293f?mode=deep",
+    "timestamp": "2026-01-20 02:16:52.950109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: reset_state_view()] [Version drift] When reset_state_view() updates only state_view, the module_cache versions may no longer match actual storage versions - can this allow execution of stale modules even after on-chain upgrades, potentially enabling exploits patched in newer versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7302d488-a601-48ff-9c2f-f77c2072ec89?mode=deep",
+    "timestamp": "2026-01-20 02:17:16.486199",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: state_view_id()] [ID verification] At lines 128-130, state_view_id() returns the current ID but there's no validation that cached modules match this ID - can validators with mismatched state view IDs execute transactions differently, causing consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54d1531d-52e2-4842-86b7-37ae5d16362a?mode=deep",
+    "timestamp": "2026-01-20 02:17:41.222962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: reset_all()] [Atomic reset] Lines 134-138 reset state_view, environment, and module_cache sequentially without atomicity - can a crash or interrupt between these operations leave the CachedModuleView in an inconsistent state where cache and environment don't match the state_view? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3e35007-5737-4189-956a-d344b1a54724?mode=deep",
+    "timestamp": "2026-01-20 02:18:06.762935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: reset_all()] [Cache invalidation timing] At line 137, UnsyncModuleCache::empty() drops all cached modules - can this cause in-flight module references to become invalid, leading to use-after-free if another thread is accessing cached modules during reset? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6bde94c-18c9-4e24-9d66-54b2c8645a40?mode=deep",
+    "timestamp": "2026-01-20 02:18:33.914905",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Struct: CachedModuleView] [Unsync cache safety] The UnsyncModuleCache at lines 101-102 is explicitly unsynchronized - can concurrent access from multiple threads cause data races when accessing or modifying the cache, leading to corrupted module code being executed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21b438c5-86b1-4707-81d4-88fa94f15c81?mode=deep",
+    "timestamp": "2026-01-20 02:19:01.855998",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Struct: CachedModuleView] [Version type overflow] The module cache uses usize for versions at line 102 - on 32-bit systems or after billions of updates, can version counter overflow cause version comparisons to malfunction, allowing stale modules to be treated as newer versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5197ccca-2807-4f01-957e-cbb223102286?mode=deep",
+    "timestamp": "2026-01-20 02:19:30.776520",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: try_override_bytes_and_deserialized_into_compiled_module_with_ext()] [Override bypass] At lines 147-151, get_module_bytes_override() can replace state_value bytes - can an attacker exploit this override mechanism to inject malicious bytecode that bypasses normal state storage validation, executing arbitrary code with system privileges? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ba0095a-4082-4347-82f5-353a9ad95cfa?mode=deep",
+    "timestamp": "2026-01-20 02:19:59.469220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: try_override_bytes_and_deserialized_into_compiled_module_with_ext()] [State mutation] The state_value.set_bytes() call at line 151 mutates the input - can this cause the caller to inadvertently use modified state values, leading to incorrect state hash calculations or storage inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b6da5ab-1eb8-46dc-9ff3-59d760f84ea5?mode=deep",
+    "timestamp": "2026-01-20 02:20:29.950802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: try_override_bytes_and_deserialized_into_compiled_module_with_ext()] [Deserialization context] At lines 153-156, deserialize_into_compiled_module() is called on potentially overridden bytes - does this deserialization use the same security checks as normal modules, or can override paths bypass verifier checks allowing invalid bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9dcd371-ac75-4d3a-b423-c317172e377f?mode=deep",
+    "timestamp": "2026-01-20 02:20:59.816944",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: try_override_bytes_and_deserialized_into_compiled_module_with_ext()] [Extension construction] At line 157, AptosModuleExtension::new(state_value) wraps the (possibly modified) state_value - can mismatches between extension metadata and actual bytecode cause type confusion or metadata spoofing in the VM? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67cbb1cb-5dcb-4720-8667-d4a05685a9d9?mode=deep",
+    "timestamp": "2026-01-20 02:21:29.311472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: try_override_bytes_and_deserialized_into_compiled_module_with_ext()] [Error propagation] VMResult errors from deserialization at line 154 propagate up - can an attacker trigger specific deserialization errors that cause transaction execution to fail at unexpected points, breaking atomicity guarantees or leaving partial state changes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3e41e7c-cb60-47fa-b283-5703ccdbd642?mode=deep",
+    "timestamp": "2026-01-20 02:21:59.834045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: try_override_bytes_and_deserialized_into_compiled_module_with_ext()] [TODO comment security] The TODO comment at line 146 mentions removing override once mainnet framework is updated - is this temporary override mechanism audited for security, or does it create a persistent backdoor for module injection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87cd0c9b-3c82-4b46-a3b2-6957783511dd?mode=deep",
+    "timestamp": "2026-01-20 02:22:30.031405",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-resource-viewer/src/module_view.rs] [Function: insert_deserialized_module()] [Cache insertion race] At lines 177-186, insert_deserialized_module() delegates to module_cache without additional validation - can concurrent insertions of the same module_id with different versions or bytecode cause cache corruption or execution of wrong module version? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e849fa84-123e-4a4f-82f7-39b529143afc?mode=deep",
+    "timestamp": "2026-01-20 02:22:57.506654",
+    "report_generated": false
+  }
+]
