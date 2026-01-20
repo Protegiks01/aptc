@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Author Spoofing] Can an attacker craft a VoteMsg where the vote's internal author field differs from the sender parameter, bypassing the author check at line 58-63 if the ensure! macro doesn't properly halt execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d14bdad8-010b-41ca-8673-73881165ef68?mode=deep",
+    "timestamp": "2026-01-20 14:32:47.682025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Author Verification Bypass] Does the author comparison at line 59 use a constant-time equality check, or could timing attacks leak information about valid validator addresses to facilitate targeted attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0747a7d0-6041-4d73-88ee-d005b3257616?mode=deep",
+    "timestamp": "2026-01-20 14:33:00.844882",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Race Condition] Can concurrent calls to verify() with different sender parameters for the same VoteMsg lead to TOCTOU vulnerabilities where author validation passes but subsequent operations use a different author? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ad2fcf2-0e02-4242-b0bb-00cdf5ad80ec?mode=deep",
+    "timestamp": "2026-01-20 14:33:14.351535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Null/Empty Author] What happens if vote.author() returns a default/empty Author value at line 59 - could this bypass the author check if sender is also default, allowing unauthorized votes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57507a07-e55c-47ca-96ba-c54fa43496ec?mode=deep",
+    "timestamp": "2026-01-20 14:33:27.790947",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Epoch Mismatch Attack] Can a Byzantine validator craft a VoteMsg where vote.epoch() and sync_info.epoch() are different but both valid for different reconfiguration events, causing the check at line 65 to pass while creating state inconsistencies? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c017a915-bfa9-4d7f-9c81-66f8a7bacf48?mode=deep",
+    "timestamp": "2026-01-20 14:33:42.487475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Integer Overflow] Could epoch values overflow at line 65 during the equality comparison, especially near u64::MAX, allowing votes from future epochs to appear as current epoch votes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f00729b-1a45-49c8-b323-b557f4d28bdc?mode=deep",
+    "timestamp": "2026-01-20 14:33:58.111672",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Epoch Boundary] During epoch transitions, can an attacker send VoteMsgs with epoch N while sync_info has epoch N+1, exploiting the window where validators have inconsistent epoch states? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c489d6a-936b-4cc0-9ca8-fe804012c9ed?mode=deep",
+    "timestamp": "2026-01-20 14:34:14.458886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Epoch Rollback] If an attacker can manipulate time or validator set, could they create VoteMsgs with older epochs that pass the check at line 65, enabling double-spending via epoch rollback? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a882541e-f08a-4e32-afa8-f1fc5a2b582d?mode=deep",
+    "timestamp": "2026-01-20 14:34:32.891277",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Round Manipulation] Can an attacker craft a vote where proposed().round() is exactly sync_info.highest_round() + 1, passing the check at line 69 but violating consensus safety by skipping required rounds? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ae2f70b-52d8-4006-a0e0-aeafcc451533?mode=deep",
+    "timestamp": "2026-01-20 14:34:51.520070",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Integer Overflow Round] Could vote_data.proposed().round() overflow at line 69, causing a high round number to wrap around and appear lower than sync_info.highest_round(), bypassing the validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ec82eb8-0065-4509-9b57-7f1d85ea6edb?mode=deep",
+    "timestamp": "2026-01-20 14:35:11.532207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Round Comparison Edge Case] What if sync_info.highest_round() returns u64::MAX at line 69 - does the comparison handle this edge case, or could votes with round 0 incorrectly pass validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f3a7f6f-ef88-4e63-9e6d-cefa397394c0?mode=deep",
+    "timestamp": "2026-01-20 14:35:32.552508",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [SyncInfo Manipulation] Can a malicious validator provide a SyncInfo with artificially low highest_round() at line 69, allowing them to vote for old rounds and potentially cause forks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_303afc6b-c5a7-48c9-a49d-3a6816ce761b?mode=deep",
+    "timestamp": "2026-01-20 14:35:54.169763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Concurrent Round Updates] If sync_info.highest_round() is read from mutable state at line 69, could race conditions allow votes for outdated rounds to pass validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08e1d14f-20bd-4081-a593-2bda69bf11fc?mode=deep",
+    "timestamp": "2026-01-20 14:36:16.482710",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Timeout Certificate Forgery] Can an attacker craft a two_chain_timeout at line 72 with an hqc_round() that's slightly below sync_info.highest_certified_round(), exploiting off-by-one errors in the validation at line 74? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b31cd254-5865-4b45-8d0c-e29e6ccf73cc?mode=deep",
+    "timestamp": "2026-01-20 14:36:40.486947",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Timeout HQC Manipulation] What prevents an attacker from setting timeout.hqc_round() to 0 at line 74, which would always pass the <= check, potentially bypassing timeout validation entirely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15901ea1-d03b-49ca-bba7-747612dfdd0e?mode=deep",
+    "timestamp": "2026-01-20 14:37:04.983189",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Option<> Exploitation] Since two_chain_timeout() returns an Option at line 72, can an attacker send Some(timeout) and None variants interchangeably to confuse validators about timeout status? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b577f45-a925-47e6-a74d-347a53c90c69?mode=deep",
+    "timestamp": "2026-01-20 14:37:30.939880",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Timeout Signature Missing] The validation at lines 72-77 checks hqc_round but doesn't verify the timeout signature itself - is this validated elsewhere, or could unsigned timeouts pass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55c174ec-2ac7-49e9-8220-31b345e2c42a?mode=deep",
+    "timestamp": "2026-01-20 14:37:56.679593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [SyncInfo Certified Round Manipulation] Can sync_info.highest_certified_round() at line 74 be manipulated to be lower than the actual highest QC, allowing invalid timeout certificates to pass validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72adfa75-d371-49bf-a1c9-8de0e5517770?mode=deep",
+    "timestamp": "2026-01-20 14:38:22.746584",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Deferred Verification Bypass] The comment at lines 78-80 states SyncInfo is not verified during vote aggregation - can an attacker exploit this by sending invalid SyncInfo that's never validated if QC forms before verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b5c097b-de4f-4a80-970f-dd32956aaa3f?mode=deep",
+    "timestamp": "2026-01-20 14:38:48.309434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [O(n^2) Attack Amplification] The comment mentions avoiding O(n^2) signature verifications at line 80 - could an attacker flood the system with votes containing complex SyncInfo to cause computational DoS despite the optimization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0c6b632-66ca-4b24-b247-21f43c618abc?mode=deep",
+    "timestamp": "2026-01-20 14:39:14.374914",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [SyncInfo Time-of-Check-Time-of-Use] Since SyncInfo verification is deferred at line 78-80, could the SyncInfo change between initial acceptance and later verification, causing safety violations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_588d443f-57bd-4fc4-aae1-497a9f447a1d?mode=deep",
+    "timestamp": "2026-01-20 14:39:40.249012",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Never-Verified SyncInfo] What guarantees that the deferred SyncInfo verification actually happens? Could votes be accepted and aggregated into QCs without ever validating their SyncInfo? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aad28d1a-9896-403d-aa7f-f94aa92a6f91?mode=deep",
+    "timestamp": "2026-01-20 14:40:06.512926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Vote Signature Bypass] The verify() call delegates to vote.verify(validator) at line 81 - if that function has vulnerabilities (e.g., signature malleability), could attackers bypass cryptographic verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d712776f-e5df-48b9-a9c9-ae7db956eef1?mode=deep",
+    "timestamp": "2026-01-20 14:40:33.347943",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [ValidatorVerifier Manipulation] Can an attacker provide a malicious ValidatorVerifier at line 81 that always returns Ok(), bypassing all cryptographic checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9df5e0f-5b28-42ab-bc80-3371c1159bad?mode=deep",
+    "timestamp": "2026-01-20 14:41:00.341940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/vote_msg.rs] [Function: verify()] [Partial Verification] If vote.verify() at line 81 succeeds but vote_data.verify() fails internally, could partially-validated votes cause consensus inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_240b02a3-3b5f-44a0-a9fd-7a92aaee81da?mode=deep",
+    "timestamp": "2026-01-20 14:41:27.263944",
+    "report_generated": false
+  }
+]
