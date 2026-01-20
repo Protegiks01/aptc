@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Struct: TokenOwnership] [Primary Key Collision] Can an attacker manipulate the composite primary key (token_data_id_hash, property_version, transaction_version, table_handle) to create hash collisions that overwrite legitimate token ownership records, enabling unauthorized ownership claims? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81abec34-4340-40e1-9bdd-4bed92f1213c?mode=deep",
+    "timestamp": "2026-01-20 21:45:21.488650",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Struct: TokenOwnership] [Primary Key Manipulation] Does the indexer verify that token_data_id_hash values are collision-resistant, or can an attacker craft token metadata that produces identical hashes to existing tokens, allowing them to create duplicate ownership records? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d36de6ec-6850-48e7-aba2-25e8e32c454f?mode=deep",
+    "timestamp": "2026-01-20 21:45:34.441442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Struct: CurrentTokenOwnership] [Primary Key Race Condition] In the CurrentTokenOwnership table with primary key (token_data_id_hash, property_version, owner_address), can concurrent transactions at the same block create race conditions where ownership updates are lost or incorrectly applied? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5268ab4a-a298-458c-8a7e-a2451b97f993?mode=deep",
+    "timestamp": "2026-01-20 21:45:47.645635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Primary Key Validation] Does the from_token() function validate that all components of the composite primary key are non-null and within valid ranges before insertion, or can malformed data cause database constraint violations or silent failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c74326e-17b4-49a1-8fd1-d01f1ca011a1?mode=deep",
+    "timestamp": "2026-01-20 21:46:02.898715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Address Validation Bypass] At lines 87, 101-102, 130-131, the standardize_address() function is called on table_handle and addresses - can an attacker provide malformed addresses (e.g., non-hex, wrong length) that bypass standardization and create inconsistent database records? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a0cf746-3236-45e7-94c6-327cfbfff618?mode=deep",
+    "timestamp": "2026-01-20 21:46:17.685029",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Address Truncation Attack] Does standardize_address() properly handle addresses shorter than expected, or can an attacker provide truncated addresses (less than 64 hex chars) that get incorrectly padded, causing ownership to be attributed to wrong addresses? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_583dfcbb-4da5-4fa3-a268-0def42210d49?mode=deep",
+    "timestamp": "2026-01-20 21:46:33.850689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Address Overflow Attack] If an attacker provides addresses longer than 66 characters (0x + 64 hex), does standardize_address() at line 87 panic or silently truncate, potentially causing ownership records to point to wrong table handles? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a118fec-5eaf-4023-b203-116572193244?mode=deep",
+    "timestamp": "2026-01-20 21:46:50.830782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Case Sensitivity Bypass] Does standardize_address() handle uppercase vs lowercase hex characters consistently, or can an attacker create duplicate ownership records by varying case (0xABC vs 0xabc) that point to the same actual address? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89927e62-79f9-4fad-9a69-d7b536fc19fe?mode=deep",
+    "timestamp": "2026-01-20 21:47:09.526238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Null Address Injection] At line 130, owner_address uses Option::map with standardize_address - can an attacker inject null/empty addresses that bypass validation and create ownership records without valid owners? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bbae576-f2db-4e81-8c26-8665638e0c37?mode=deep",
+    "timestamp": "2026-01-20 21:47:28.684984",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Struct: TokenOwnership] [BigDecimal Overflow] The amount field at line 38 uses BigDecimal - can an attacker provide extremely large token amounts (e.g., 2^256) that cause arithmetic overflow in downstream calculations or database storage issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9f061c4-16cc-4384-9b88-7725f3e4158d?mode=deep",
+    "timestamp": "2026-01-20 21:47:49.556982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Negative Amount Bypass] At line 134, the amount parameter is directly assigned without validation - can an attacker pass negative BigDecimal amounts that bypass the ensure_not_negative() check in the caller, creating invalid ownership records with negative balances? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22c52903-b1bd-449f-a347-165113d4f1a6?mode=deep",
+    "timestamp": "2026-01-20 21:48:11.143673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Zero Amount Token Deletion] In from_delete_table_item() (tokens.rs line 332), tokens are deleted with BigDecimal::zero() amount - does the indexer properly handle zero-amount records, or can they be exploited to hide token ownership or create phantom tokens? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32d89ba0-7444-4968-a0ae-214dc17ce5b7?mode=deep",
+    "timestamp": "2026-01-20 21:48:34.536659",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Struct: CurrentTokenOwnership] [Amount Precision Loss] When BigDecimal amounts are stored/retrieved at line 54, can precision loss during database round-trips cause discrepancies between actual token balances and indexed balances, enabling micro-theft attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4cdf120d-cd53-46ff-a911-ae892b486134?mode=deep",
+    "timestamp": "2026-01-20 21:48:58.132735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Amount Cloning Attack] At line 105 and 134, token.amount is cloned - if the underlying Token struct has mutable amount, can race conditions during cloning cause inconsistent amounts between TokenOwnership and CurrentTokenOwnership? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a563c83-dc14-4dd0-9aad-d0fd57a70b32?mode=deep",
+    "timestamp": "2026-01-20 21:49:22.488634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Table Type Bypass] At lines 90-93, the function only accepts table_type '0x3::token::TokenStore' - can an attacker register a custom table type with similar naming to bypass this check and inject malicious ownership records? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db10de8f-ec7c-4206-b2a1-ecfddeae1516?mode=deep",
+    "timestamp": "2026-01-20 21:49:48.321859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Table Type Spoofing] Does the table_type validation at line 91 use exact string matching or pattern matching? Can an attacker spoof the type string with unicode lookalikes or whitespace to bypass the check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f4c24c9-2805-4801-a3fa-d06809b578b3?mode=deep",
+    "timestamp": "2026-01-20 21:50:15.678355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Missing Table Metadata Exploitation] At lines 114-122, when table metadata is missing, the function logs a warning but continues with None values - can an attacker deliberately omit table metadata to create ownership records without proper validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb6e8f3c-4c9d-47c6-b9f2-4d3cec0bca37?mode=deep",
+    "timestamp": "2026-01-20 21:50:43.445715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Table Type Mutation] At line 108, table_type is cloned from table metadata - if the TableHandleToOwner mapping is mutated during processing, can race conditions cause table_type to be inconsistent between checks and actual storage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4fc790c-7acd-44e8-a9d5-2fe26d12d040?mode=deep",
+    "timestamp": "2026-01-20 21:51:12.062629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Struct: TokenOwnership] [Property Version Overflow] The property_version field at line 31 uses BigDecimal - can an attacker mint tokens with extremely large property versions (e.g., 2^256) to cause database indexing issues or query failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca220755-ce58-4e5d-a86e-5162db692e65?mode=deep",
+    "timestamp": "2026-01-20 21:51:42.225639",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Property Version Collision] At lines 100 and 129, property_version is cloned from token data - can two different tokens have identical (token_data_id_hash, property_version, owner_address) tuples, causing CurrentTokenOwnership primary key violations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_448772a0-05ba-48f3-89eb-e26a80ead18a?mode=deep",
+    "timestamp": "2026-01-20 21:52:09.517875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Struct: CurrentTokenOwnership] [Property Version Rollback] If a token's property_version is decremented in a transaction, does the CurrentTokenOwnership update properly handle version rollbacks, or can it create inconsistent state where old versions overwrite new versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85c2e79b-cec2-479b-a822-fa03d6f5cd7c?mode=deep",
+    "timestamp": "2026-01-20 21:52:38.109511",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Negative Property Version] Does the code validate that property_version is non-negative, or can an attacker create tokens with negative property versions that break database queries or cause sorting issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51c6051b-3532-43af-92ca-7a0c3bbbf9aa?mode=deep",
+    "timestamp": "2026-01-20 21:53:07.979832",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Struct: TokenOwnership] [Transaction Version Reordering] The transaction_version field at line 32 is part of the primary key - can out-of-order transaction processing cause ownership records to be inserted with incorrect ordering, breaking historical audit trails? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c2e7dc2-d735-4dcd-9553-bf440c4c2228?mode=deep",
+    "timestamp": "2026-01-20 21:53:39.172735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Function: from_token()] [Timestamp Manipulation] At lines 109 and 138, transaction_timestamp is copied from token data - can malicious validators manipulate transaction timestamps to reorder ownership events or create temporal inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_259ef6d0-17ad-4421-b055-1219f5b9bcb4?mode=deep",
+    "timestamp": "2026-01-20 21:54:09.627414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/token_ownerships.rs] [Struct: CurrentTokenOwnership] [Version Downgrade Attack] At line 56, last_transaction_version is stored - if a later transaction has a lower version number due to indexer bugs, can it incorrectly overwrite current ownership state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_146d4664-afc6-4ebf-8f22-d5c0d8dff114?mode=deep",
+    "timestamp": "2026-01-20 21:54:38.916708",
+    "report_generated": false
+  }
+]
