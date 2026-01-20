@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_hash_bytes_no_len()] [Hash collision - Critical] Can an attacker exploit the absence of length encoding in pad_and_hash_bytes_no_len() to create hash collisions between different byte arrays that differ only in trailing zeros (e.g., [1,2,0] vs [1,2,0,0]), potentially allowing identity commitment forgery and unauthorized account access in keyless authentication? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f181d91-1094-4a52-be68-d920dcb13b56?mode=deep",
+    "timestamp": "2026-01-20 18:52:44.513654",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_pack_bytes_to_scalars_no_len()] [Hash collision - Critical] Does pad_and_pack_bytes_to_scalars_no_len() create collision vulnerabilities where byte arrays like [0x00] and [0x00, 0x00] produce identical scalar representations after padding, enabling attackers to forge alternative preimages for identity commitments and break keyless account security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8520fa40-dd02-42da-87d8-7b5fa44ff2e3?mode=deep",
+    "timestamp": "2026-01-20 18:52:57.100838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_hash_string()] [Hash collision - High] Since pad_and_hash_string() calls pad_and_hash_bytes_with_len() which includes length encoding, can an attacker still exploit string collisions if the string contains null bytes before termination, potentially creating multiple valid identity commitments for the same user? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d49f0a4-2091-4089-8d4b-4d29edb74780?mode=deep",
+    "timestamp": "2026-01-20 18:53:09.932993",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_pack_bytes_to_scalars_with_len()] [Length encoding bypass - Critical] In pad_and_pack_bytes_to_scalars_with_len(), the length scalar is appended AFTER the data scalars - can an attacker manipulate the order to create preimage attacks where different (data, length) combinations produce the same hash, breaking identity commitment uniqueness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2bb464ec-fc0b-435a-a77b-150d2aa6dc83?mode=deep",
+    "timestamp": "2026-01-20 18:53:23.427143",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pack_bytes_to_one_scalar()] [Modular reduction attack - Critical] Does pack_bytes_to_one_scalar() using Fr::from_le_bytes_mod_order() allow attackers to create multiple 31-byte chunks that reduce to the same scalar modulo the BN254 field order, enabling hash collisions and identity commitment forgery? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dd7d761-a737-4db0-a798-faee44765d99?mode=deep",
+    "timestamp": "2026-01-20 18:53:37.791106",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: hash_bytes()] [Exposure risk - Medium] The hash_bytes() function is marked #[allow(unused)] and includes a WARNING comment about not exposing it - if this function is accidentally made public or used incorrectly, can attackers exploit the lack of padding to create collision attacks on identity commitments? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_196593c2-68e8-4136-b42e-71734f8cc1c1?mode=deep",
+    "timestamp": "2026-01-20 18:53:52.945114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_hash_bytes_with_len()] [Length overflow - High] In pad_and_hash_bytes_with_len(), when encoding the length with pack_bytes_to_one_scalar(&len.to_le_bytes()), can an attacker on a 64-bit system cause the length (usize) to exceed the BN254 field capacity, leading to modular wraparound and length spoofing attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f55830a4-be9c-4997-a857-cf04a4cce1fb?mode=deep",
+    "timestamp": "2026-01-20 18:54:09.667518",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_pack_limbs_to_scalars_with_len()] [Type confusion - High] Does pad_and_pack_limbs_to_scalars_with_len() properly differentiate between byte-encoded and limb-encoded data when hashing? Can an attacker craft byte arrays that hash to the same value as u64 limb arrays, creating cross-representation collisions in identity commitments? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d67e8678-7f89-4f67-83fa-bb86bdef5f9b?mode=deep",
+    "timestamp": "2026-01-20 18:54:28.001117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Constants: BYTES_PACKED_PER_SCALAR] [Packing efficiency exploit - Medium] The constant BYTES_PACKED_PER_SCALAR=31 leaves 6 bits unused per scalar (254-248=6 bits) - can an attacker exploit this unused space by crafting inputs that map differently in SNARK circuits vs Rust implementation, breaking ZK proof verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_043241c0-9429-47f7-a4f5-31ae72bc9441?mode=deep",
+    "timestamp": "2026-01-20 18:54:47.046092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Constants: MAX_NUM_INPUT_BYTES] [Boundary manipulation - High] With MAX_NUM_INPUT_BYTES = 496 bytes, can an attacker craft inputs at exactly this boundary that behave differently in error handling vs successful hashing paths, potentially bypassing validation in keyless signature verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd246c83-8b99-4dce-9f05-69bb3a353ad0?mode=deep",
+    "timestamp": "2026-01-20 18:55:08.433544",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pack_bytes_to_scalars()] [Overflow check bypass - Critical] In pack_bytes_to_scalars() line 50-54, the length check 'if bytes.len() > MAX_NUM_INPUT_BYTES' could be bypassed on systems where usize overflows - can an attacker provide extremely large byte arrays that wrap around and pass validation, causing memory corruption or DoS? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17ea9e50-8d7d-4348-8054-e4ba84ecf0d5?mode=deep",
+    "timestamp": "2026-01-20 18:55:29.618189",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: zero_pad_bytes()] [Memory exhaustion - High] In zero_pad_bytes() at line 252-253, 'padded.resize(size, 0x00)' could allocate massive amounts of memory if 'size' is close to MAX_NUM_INPUT_BYTES (496 bytes × 16 = ~8KB) - can an attacker trigger repeated padding operations to exhaust validator node memory and cause crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05e449cc-be78-407b-abb1-fb578d158e52?mode=deep",
+    "timestamp": "2026-01-20 18:55:52.706860",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_pack_bytes_to_scalars_with_len()] [Unsigned wraparound - High] At lines 97-102, if 'len > max_bytes', the function bails - but what if an attacker provides a crafted input where 'bytes.len()' wraps around in the comparison, bypassing the check and causing out-of-bounds access in subsequent packing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ac62b9c-8e32-45dd-b560-874e44346df9?mode=deep",
+    "timestamp": "2026-01-20 18:56:16.820913",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pack_limbs_to_one_scalar()] [Limb conversion overflow - Critical] In pack_limbs_to_one_scalar() at lines 297-301, converting u64 limbs to bytes with 'limb.to_le_bytes()' and then to Fr could cause overflow if the combined value exceeds the BN254 field modulus - can attackers craft limb arrays that reduce differently than intended, breaking hash determinism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cc14952-6685-4a7c-82af-add0d9fc2560?mode=deep",
+    "timestamp": "2026-01-20 18:56:42.298690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_pack_bytes_to_scalars_no_len()] [Off-by-one in bounds check - High] At line 156, the check 'if bytes.len() > max_bytes' uses strict inequality - can an attacker exploit edge cases where bytes.len() == max_bytes triggers different behavior in chunking (line 59) vs padding (line 164), causing inconsistent hashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aedc87ae-939a-4c06-a987-b940c793eed5?mode=deep",
+    "timestamp": "2026-01-20 18:57:08.531174",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pack_bytes_to_scalars()] [Chunk boundary manipulation - High] At line 59, 'bytes.chunks(BYTES_PACKED_PER_SCALAR)' creates chunks - if the last chunk is smaller than 31 bytes, can an attacker craft inputs where the padding behavior differs from SNARK circuit expectations, breaking proof verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f74cccc0-9165-4991-a8ad-364dc089b3df?mode=deep",
+    "timestamp": "2026-01-20 18:57:35.649939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pack_limbs_to_scalars()] [Limb count overflow - Medium] At lines 66-72, checking 'if limbs.len() > MAX_NUM_INPUT_LIMBS' - since MAX_NUM_INPUT_LIMBS = 48, can an attacker on a 32-bit system cause usize overflow in the length comparison, bypassing the check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5a21e67-19b8-4ebd-a5c3-234e4f633c5b?mode=deep",
+    "timestamp": "2026-01-20 18:58:01.287290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: zero_pad_bytes()] [Size validation bypass - High] At line 248-249, the check 'if bytes.len() > size' could be exploited if 'size' is manipulated through MAX_NUM_INPUT_BYTES constant changes - can future code modifications accidentally increase MAX_NUM_INPUT_BYTES beyond safe limits, breaking this invariant? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3bb6b5e-fd2a-4260-a43b-208ad26adf67?mode=deep",
+    "timestamp": "2026-01-20 18:58:27.653307",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: fr_to_bytes_le()] [Panic on conversion - Medium] At lines 307-310, 'try_into().expect()' will panic if the BigInt is not exactly 32 bytes - can an attacker craft Fr values that serialize to non-32-byte representations, causing validator crashes during identity commitment reconstruction? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b92b826e-4e38-4f60-a974-adef7942e39b?mode=deep",
+    "timestamp": "2026-01-20 18:58:53.285718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pack_bytes_to_one_scalar()] [Chunk size validation - Medium] At line 277-282, checking chunk.len() <= BYTES_PACKED_PER_SCALAR - if chunk is empty (0 bytes), does Fr::from_le_bytes_mod_order() handle it correctly, or could it introduce a zero scalar that collides with legitimate empty inputs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6301748-6f14-470f-9f32-a0ff64888b27?mode=deep",
+    "timestamp": "2026-01-20 18:59:18.713135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pack_bytes_to_one_scalar()] [Modular reduction weakening - Critical] Using Fr::from_le_bytes_mod_order() at line 284 means inputs >= BN254 field modulus get reduced - can an attacker find two different 31-byte inputs that reduce to the same Fr value, creating second preimage attacks on identity commitments? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c6ec6ab-1b8c-4e92-b890-f061c7952297?mode=deep",
+    "timestamp": "2026-01-20 18:59:44.404756",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_hash_bytes_with_len()] [Domain separation weakness - Critical] There's no explicit domain separation prefix in the hash function - can an attacker create collisions between different keyless protocol contexts (e.g., identity commitment vs nonce commitment) by manipulating the length encoding scalar? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6088009-57a7-4e96-98ca-97e5628497e2?mode=deep",
+    "timestamp": "2026-01-20 19:00:10.417567",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: hash_scalars() (from mod.rs)] [Empty input attack - High] The hash_scalars() function from mod.rs bails on empty inputs - but if pad_and_pack functions somehow produce empty scalar vectors, could this cause DoS where legitimate identity commitments fail to hash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2bef4be3-2539-4ae1-ba42-0f7527e704f5?mode=deep",
+    "timestamp": "2026-01-20 19:00:33.072925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pad_and_hash_limbs_with_len()] [Cross-type collision - Critical] Since both bytes and u64 limbs get packed to Fr scalars, can an attacker find a byte array and a limb array that produce identical scalar representations, allowing them to forge identity commitments across different data type encodings? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25796ae8-5492-421a-972f-31c5bf4f847d?mode=deep",
+    "timestamp": "2026-01-20 19:00:57.446095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/poseidon_bn254/keyless.rs] [Function: pack_bytes_to_scalars()] [Determinism failure - Critical] If bytes.chunks() ordering is non-deterministic across Rust versions or platforms, could different validators compute different hashes for the same identity commitment, causing consensus failures in keyless authentication? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8ee8ee3-a5ec-4358-9629-98e26bff9614?mode=deep",
+    "timestamp": "2026-01-20 19:01:20.729551",
+    "report_generated": false
+  }
+]
