@@ -1,0 +1,62 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::start()] [Stream Exhaustion] What happens if all_events stream completes but validators are still online - is there a reconnection mechanism? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4157ab9-2885-4bde-9906-7a866449de68?mode=deep",
+    "timestamp": "2026-01-20 18:17:55.002156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: RealRpcResponseSender::send()] [Very Large Response] Can responses exceeding maximum network packet size cause fragmentation issues or be rejected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e703aad-4f64-49a0-957e-94990e019d5f?mode=deep",
+    "timestamp": "2026-01-20 18:18:08.457675",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Zero Timeout] Can a zero-duration timeout be specified, and if so, does it immediately fail or use a minimum timeout? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4836e58c-29fb-42f5-9bc2-a12514c069b5?mode=deep",
+    "timestamp": "2026-01-20 18:18:21.951884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkSender::new()] [Duplicate NetworkSender] Can multiple NetworkSender instances share the same author and jwk_network_client, causing message duplication? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3de554b8-be36-4802-83ba-3c2381b7122c?mode=deep",
+    "timestamp": "2026-01-20 18:18:36.120557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::start()] [Consensus Integration] If messages are dropped due to channel overflow (line 201), how does the JWK consensus layer detect and recover from missing messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_962b2a39-dab3-4050-b3e6-3bd8ba1e9c89?mode=deep",
+    "timestamp": "2026-01-20 18:18:51.435331",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Reliable Broadcast Violation] Can message loss or reordering in this network layer violate the properties of the reliable broadcast protocol (agreement, validity, integrity)? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb81f5a0-de46-404c-8a82-1311715493b0?mode=deep",
+    "timestamp": "2026-01-20 18:19:07.753081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: RealRpcResponseSender::send()] [Response Processing] If responses contain errors, how does the requesting validator distinguish between network errors and application-level consensus rejection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1775ce6-93c6-4c0f-9f1b-fc3782b606fd?mode=deep",
+    "timestamp": "2026-01-20 18:19:25.375937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Timeout Chain] Can cascading timeouts (where one timeout causes others) create avalanche effects that bring down the entire JWK consensus network? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ca313fe-c2b6-450d-a7e5-139c33f97237?mode=deep",
+    "timestamp": "2026-01-20 18:19:46.612959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::start()] [Event Type Confusion] Can malicious code craft events that appear to be RpcRequest but have corrupted fields, bypassing pattern matching logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00a73f5b-1b9f-416d-891a-3d93e562abbc?mode=deep",
+    "timestamp": "2026-01-20 18:20:08.955101",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: to_bytes_by_protocol()] [Inconsistent Message Content] Can the same JWKConsensusMsg serialize differently for different peers due to peer-specific logic, causing\n\n### Citations\n\n**File:** crates/aptos-jwk-consensus/src/network.rs (L1-211)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{\n    network_interface::{JWKConsensusNetworkClient, RPC},\n    types::JWKConsensusMsg,\n};\nuse anyhow::bail;\nuse aptos_channels::{aptos_channel, message_queues::QueueStyle};\nuse aptos_config::network_id::NetworkId;\nuse aptos_consensus_types::common::Author;\n#[cfg(test)]\nuse aptos_infallible::RwLock;\nuse aptos_logger::warn;\nuse aptos_network::{\n    application::interface::{NetworkClient, NetworkServiceEvents},\n    protocols::network::{Event, RpcError},\n    ProtocolId,\n};\nuse aptos_reliable_broadcast::RBNetworkSender;\nuse aptos_types::account_address::AccountAddress;\nuse bytes::Bytes;\nuse futures::Stream;\nuse futures_channel::oneshot;\nuse futures_util::{\n    stream::{select, select_all, StreamExt},\n    SinkExt,\n};\n#[cfg(test)]\nuse std::sync::Arc;\nuse std::{collections::HashMap, time::Duration};\n\npub struct IncomingRpcRequest {\n    pub msg: JWKConsensusMsg,\n    pub sender: AccountAddress,\n    pub response_sender: Box<dyn RpcResponseSender>,\n}\n\npub struct NetworkSender {\n    author: AccountAddress,\n    jwk_network_client: JWKConsensusNetworkClient<NetworkClient<JWKConsensusMsg>>,\n    self_sender: aptos_channels::Sender<Event<JWKConsensusMsg>>,\n}\n\nimpl NetworkSender {\n    pub fn new(\n        author: AccountAddress,\n        jwk_network_client: JWKConsensusNetworkClient<NetworkClient<JWKConsensusMsg>>,\n        self_sender: aptos_channels::Sender<Event<JWKConsensusMsg>>,\n    ) -> Self {\n        Self {\n            author,\n            jwk_network_client,\n            self_sender,\n        }\n    }\n}\n\n#[async_trait::async_trait]\nimpl RBNetworkSender<JWKConsensusMsg> for NetworkSender {\n    async fn send_rb_rpc_raw(\n        &self,\n        receiver: AccountAddress,\n        raw_message: Bytes,\n        timeout: Duration,\n    ) -> anyhow::Result<JWKConsensusMsg> {\n        Ok(self\n            .jwk_network_client\n            .send_rpc_raw(receiver, raw_message, timeout)\n            .await?)\n    }\n\n    async fn send_rb_rpc(\n        &self,\n        receiver: AccountAddress,\n        message: JWKConsensusMsg,\n        timeout: Duration,\n    ) -> anyhow::Result<JWKConsensusMsg> {\n        if receiver == self.author {\n            let (tx, rx) = oneshot::channel();\n            let protocol = RPC[0];\n            let self_msg = Event::RpcRequest(self.author, message, protocol, tx);\n            self.self_sender.clone().send(self_msg).await?;\n            if let Ok(Ok(Ok(bytes))) = tokio::time::timeout(timeout, rx).await {\n                let response_msg =\n                    tokio::task::spawn_blocking(move || protocol.from_bytes(&bytes)).await??;\n                Ok(response_msg)\n            } else {\n                bail!(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d960cbee-d687-43a8-8473-fa7d39e14935?mode=deep",
+    "timestamp": "2026-01-20 18:20:32.158076",
+    "report_generated": false
+  }
+]
