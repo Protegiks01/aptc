@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: metrics_ingest()] [Authorization bypass] Can an attacker submit metrics with a valid JWT token but for a different node type (e.g., UnknownFullNode claiming to be Validator) to bypass client routing and send malicious metrics to trusted backends, potentially poisoning validator telemetry data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06d50fb6-26cc-49fa-a958-f8c7d10bca72?mode=deep",
+    "timestamp": "2026-01-20 08:16:04.279577",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: metrics_ingest()] [Authorization bypass] Does the with_auth filter at line 26-32 properly validate that the NodeType in the JWT Claims matches the actual node type, or can an attacker with expired credentials from a previous role still submit metrics as that privileged role? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd93beab-dbf9-42a4-8732-7dc8d84141f9?mode=deep",
+    "timestamp": "2026-01-20 08:16:16.561883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: metrics_ingest()] [Time-of-check-time-of-use] Between JWT validation in with_auth (line 26) and actual metrics processing in handle_metrics_ingest (line 40), can the claims.node_type be modified by a race condition, causing untrusted metrics to be routed to trusted backends? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_038fc31c-f554-4202-8fbb-3dcb9cc5ea9c?mode=deep",
+    "timestamp": "2026-01-20 08:16:28.951314",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: metrics_ingest()] [Authorization scope] Does the NodeType allowlist at lines 27-31 include UnknownValidator and UnknownFullNode which should potentially have restricted access, allowing unauthorized nodes to pollute metrics with arbitrary data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1960a040-7aa7-4ee7-88b4-c9c5535a8c78?mode=deep",
+    "timestamp": "2026-01-20 08:16:42.486001",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [JWT replay attack] After a node's authentication status changes (e.g., validator removed from set), can an attacker replay old valid JWT tokens to continue submitting metrics as the old privileged role, bypassing the updated authorization state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_192b392e-d68e-463d-8118-a3d6ddeee438?mode=deep",
+    "timestamp": "2026-01-20 08:16:56.239274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: metrics_ingest()] [Content length bypass] The MAX_CONTENT_LENGTH limit at line 34 is set to 1MB, but can an attacker send compressed metrics that expand to significantly larger sizes after decompression, causing memory exhaustion in downstream Victoria Metrics backends? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5f9f066-d9d6-4d29-ba34-34f58ce1f3e5?mode=deep",
+    "timestamp": "2026-01-20 08:17:10.715173",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Malformed encoding] At line 43, the encoding parameter is optional and passed directly to post_prometheus_metrics without validation - can an attacker specify an invalid or malicious encoding header (e.g., 'gzip; rm -rf /') that causes code execution in the metrics backend? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad1c76f5-8b10-4716-9d2b-fa3f6206fba5?mode=deep",
+    "timestamp": "2026-01-20 08:17:26.182606",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Metrics body injection] The metrics_body at line 44 is accepted as raw Bytes without format validation - can an attacker inject malicious Prometheus metrics syntax that exploits parsing vulnerabilities in Victoria Metrics, potentially causing crashes or arbitrary code execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b5b7c52-adf9-42f4-ab53-7ccf088e7a9a?mode=deep",
+    "timestamp": "2026-01-20 08:17:43.123475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Label injection via metrics] Can an attacker craft metrics_body containing label definitions that override or conflict with the extra_labels added at lines 60-78, allowing them to spoof their identity (chain_id, peer_id, role) in the metrics database? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a59b99cd-b589-4910-981a-d3de550806e2?mode=deep",
+    "timestamp": "2026-01-20 08:18:00.901175",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Null byte injection] Can metrics_body contain null bytes or other control characters that truncate or corrupt the extra_labels when concatenated, causing metrics to be attributed to wrong peers or chains? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48800dc6-7609-49ae-9be9-22a509b59556?mode=deep",
+    "timestamp": "2026-01-20 08:18:19.439848",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Environment variable injection] At lines 48-50, FEATURE_LOCATION_LABELS_ENABLED is parsed with unwrap_or(false) on parse error - if an attacker can manipulate environment variables (e.g., through container escape), can they set this to arbitrary values causing unexpected behavior or crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9051b0c-4222-41eb-af71-39458d6ebfac?mode=deep",
+    "timestamp": "2026-01-20 08:18:38.425969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Integer overflow in config] At lines 56-58, max_random_value is parsed from FEATURE_RANDOM_LABEL_MAX_VALUE as i32 with default 20 - can an attacker set this to i32::MAX causing integer overflow in rand::gen_range at line 72, potentially causing panics or infinite loops? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_464e163b-46aa-4307-980e-521f4a3c7f63?mode=deep",
+    "timestamp": "2026-01-20 08:18:58.244848",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Negative random range] At line 72, gen_range(0, max_random_value) will panic if max_random_value is negative or zero - can an attacker set FEATURE_RANDOM_LABEL_MAX_VALUE to -1 or 0 to cause denial of service by crashing the metrics ingestion handler? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db4b1982-b17a-44cf-9455-48853c12ae42?mode=deep",
+    "timestamp": "2026-01-20 08:19:19.054545",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Feature flag race condition] Environment variables are read on every request at lines 48-58 - can an attacker exploit TOCTOU by changing these values between requests to cause inconsistent label application across metrics batches from the same peer? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c578bd41-68ed-4672-91fe-213803a609ac?mode=deep",
+    "timestamp": "2026-01-20 08:19:40.590831",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Boolean parsing vulnerability] At lines 49 and 53, parse::<bool>() is called on environment variable strings - can malformed input like 'TruE' or '1' cause parse failures that silently fall back to false, disabling security-critical features? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_474e4f1e-ebd5-4133-ad10-51d190a759b4?mode=deep",
+    "timestamp": "2026-01-20 08:20:02.958479",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: claims_to_extra_labels()] [Label injection via chain_id] At lines 159-163, chain_id is directly formatted into labels without sanitization - can an attacker with a malicious JWT containing chain_id with special characters (e.g., 'chain=1,role=admin') inject arbitrary labels to escalate privileges in metrics queries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db5df254-3d70-4b3d-b191-58e2ede7edf7?mode=deep",
+    "timestamp": "2026-01-20 08:20:27.987761",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: claims_to_extra_labels()] [PeerId spoofing] At lines 166-177, peer_id is converted to hex and embedded in kubernetes_pod_name label - can an attacker register a peer_id containing Prometheus special characters (',', '=', newlines) to break out of the label value and inject malicious labels? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e788950-262e-48e9-9b54-bf7897e11a78?mode=deep",
+    "timestamp": "2026-01-20 08:20:51.348857",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: claims_to_extra_labels()] [Common name injection] At line 167, the common_name from peer_identities map is directly interpolated into the pod_name label without validation - can an attacker with control over peer identity strings inject malicious label syntax to poison metrics attribution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27a78a42-9953-4d8c-b9f6-8211199c2cad?mode=deep",
+    "timestamp": "2026-01-20 08:21:15.130973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: claims_to_extra_labels()] [NodeType enum exhaustion] At line 180, claims.node_type is formatted directly - if new NodeType variants are added to the enum without updating label sanitization, can this cause label injection vulnerabilities through unexpected enum values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1964904e-d795-4ea3-883a-84834823c6c0?mode=deep",
+    "timestamp": "2026-01-20 08:21:36.890038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: claims_to_extra_labels()] [UUID format injection] At line 185, run_uuid is formatted without validation - can a malformed UUID in claims contain Prometheus metacharacters that break label parsing in Victoria Metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eca517ec-d470-4609-8076-ccfe80f92f9b?mode=deep",
+    "timestamp": "2026-01-20 08:21:58.115877",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: peer_location_labels()] [Location injection] At lines 199 and 202, country and region strings are passed to sanitize_location but the sanitized result is still interpolated into labels - can special characters like quotes or backslashes in location data break out of label values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_899dc23a-6a9f-442b-8f9d-9b61b3f595e1?mode=deep",
+    "timestamp": "2026-01-20 08:22:18.669798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: sanitize_location()] [Insufficient sanitization] At lines 189-191, only spaces are replaced with underscores and lowercase conversion is performed - can attacker-controlled location strings containing '=', ',', newlines, or quotes inject arbitrary labels or corrupt the metrics format? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_955fc2a5-d249-4d58-9948-0d150fa8f33a?mode=deep",
+    "timestamp": "2026-01-20 08:22:39.783611",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Random label collision] At lines 71-78, a random_label is added to extra_labels_with_random_label - can multiple nodes with the same random number collision cause metrics to be incorrectly aggregated, masking performance issues or attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94fc43db-9232-48db-8d7e-4cd9c944ea7f?mode=deep",
+    "timestamp": "2026-01-20 08:22:59.779952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Label ordering attack] Extra labels are constructed in specific order (lines 179-186) - can an attacker exploit Victoria Metrics label ordering to cause hash collisions or performance degradation by submitting metrics with adversarial label patterns? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1887c82d-583b-47e5-9635-3d529deb04ae?mode=deep",
+    "timestamp": "2026-01-20 08:23:19.985821",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry-service/src/prometheus_push_metrics.rs] [Function: handle_metrics_ingest()] [Trust boundary violation] At lines 80-85, UnknownValidator and UnknownFullNode metrics are routed to untrusted_ingest_metrics_clients, but can an attacker with a compromised known validator JWT send malicious metrics to the trusted ingest_metrics_client, poisoning critical validator telemetry? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_677068d3-7588-409f-802e-ab9edeb52471?mode=deep",
+    "timestamp": "2026-01-20 08:23:40.218836",
+    "report_generated": false
+  }
+]
