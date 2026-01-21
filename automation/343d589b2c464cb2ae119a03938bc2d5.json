@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Gas Calculation] Does hot state promotion tracking affect gas calculations, and if promoted keys get cheaper access, can attackers manipulate promotion to reduce their gas costs below fair market rates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc82b9d2-f888-45c1-bcf4-3e78bb3f02ec?mode=deep",
+    "timestamp": "2026-01-21 04:39:53.680231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Block Limits] Can an attacker deliberately trigger max_promotions_per_block limit to prevent important state from being promoted to hot cache, forcing subsequent legitimate transactions to pay higher gas for cold state access? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3ee9cb8-3556-49c8-80ad-287f785d8eed?mode=deep",
+    "timestamp": "2026-01-21 04:40:06.444476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Field: max_promotions_per_block] [Economic Attack] If hot state promotions are limited to 10,240 per block, can an attacker fill this quota with junk reads to prevent critical system state (governance, staking) from being cached, degrading system performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d181ad22-a93c-4953-8055-9372f0453bc2?mode=deep",
+    "timestamp": "2026-01-21 04:40:18.764984",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Constant: MAX_PROMOTIONS_PER_BLOCK] [Config Migration] Line 30 TODO suggests making MAX_PROMOTIONS_PER_BLOCK an on-chain config - if governance can change this value, what prevents setting it to 1 to effectively disable hot state optimization and degrade validator performance? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_419498a5-c3f8-4979-8602-944d341406f2?mode=deep",
+    "timestamp": "2026-01-21 04:40:33.313213",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Constant: REFRESH_INTERVAL_VERSIONS] [Config Migration] Line 32 TODO suggests making REFRESH_INTERVAL_VERSIONS an on-chain config - if this becomes configurable, can malicious governance proposals set it to 1 causing every version to refresh all hot state, creating massive performance overhead? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f901e71-d99a-44dc-b0b7-65bad4645df5?mode=deep",
+    "timestamp": "2026-01-21 04:40:47.567986",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Field: _refresh_interval_versions] [Unused Field] The _refresh_interval_versions field (line 23, prefixed with _) is stored but never used - if future code implements refresh logic based on this field, can bugs in refresh handling cause hot state inconsistencies? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3265d46b-f597-4d05-a668-a6e1c673201b?mode=deep",
+    "timestamp": "2026-01-21 04:41:01.551109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Clone Panics] Line 76 calls key.clone() which can panic if Clone implementation panics - can malicious Key types with panicking Clone implementations crash validators during block execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_525d9a21-c125-42e4-9e64-e264f0f73d3a?mode=deep",
+    "timestamp": "2026-01-21 04:41:17.874673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: get_keys_to_make_hot()] [Clone Cost] Line 81 clones entire BTreeSet with up to 10,240 elements - if Key type is large (e.g., complex state paths), can this clone operation take seconds, blocking block epilogue and affecting block time? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7c4e4b6-19c9-419c-9acb-15a7774cc11a?mode=deep",
+    "timestamp": "2026-01-21 04:41:36.614746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Trait Bound: Clone] Why does Key require Clone when it could use Cow or references instead - does unnecessary cloning create performance bottlenecks or memory pressure that affects validator operation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_453fc6b3-5e5c-4b84-b418-31fca6cf4e44?mode=deep",
+    "timestamp": "2026-01-21 04:41:56.397146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Insertion Behavior] Line 65 uses hashbrown::HashSet::get_or_insert_owned(key) - if this returns a reference to existing key instead of inserting, can the original key's lifetime end while reference is still held, causing use-after-free? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f08a4082-9984-439d-98c8-97d2cb8bf8f4?mode=deep",
+    "timestamp": "2026-01-21 04:42:17.119770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Owned Insertion] Does get_or_insert_owned() take ownership of key, and if so, can the original iterator's key reference become invalid, violating Rust's borrow checker in unsafe ways? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6da43f1-e634-4e70-addd-f8a9018696b7?mode=deep",
+    "timestamp": "2026-01-21 04:42:38.662187",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Insert Return Value] Line 76 calls to_make_hot.insert(key.clone()) but ignores the boolean return value - if insert returns false (key already present), does this indicate logic errors where reads are being double-processed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cf4b01b-5926-4183-8822-45ae47cf4bac?mode=deep",
+    "timestamp": "2026-01-21 04:43:01.992073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Remove Return Value] Line 62 uses to_make_hot.remove(key) return value for counter increment - if remove returns false but is expected to return true, does this indicate state corruption where keys were never added or already removed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf10ef3a-8574-42ac-8fd0-50e69ffdec60?mode=deep",
+    "timestamp": "2026-01-21 04:43:26.836214",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Field: to_make_hot] [BTreeSet Panics] Can BTreeSet operations (insert, remove, clone) panic due to Ord inconsistencies or memory allocation failures, and would such panics crash validators during critical block execution paths? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5661d8c1-ae57-443c-8a58-b07be323056b?mode=deep",
+    "timestamp": "2026-01-21 04:43:52.334823",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Iterator Trust] The function trusts that write and read iterators contain valid Key references - can malicious or buggy iterator implementations yield invalid data causing panics or undefined behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3606b7dc-b580-417d-b7b6-87fad87ae2af?mode=deep",
+    "timestamp": "2026-01-21 04:44:17.985114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Iterator Length] If reads iterator yields millions of items, does the function have protection against excessive iteration time, or can long-running iteration block validator execution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5a4ac1d-04cf-4fff-9f09-4970d43118a0?mode=deep",
+    "timestamp": "2026-01-21 04:44:44.893766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: new_with_config()] [Parameter Validation] Lines 42-52 do not validate max_promotions_per_block or refresh_interval_versions parameters - can zero or MAX values cause unexpected behavior in downstream logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8393e884-40f6-4a86-a4a1-a3591d031166?mode=deep",
+    "timestamp": "2026-01-21 04:45:13.442452",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: get_keys_to_make_hot()] [Consensus Divergence] If different validators' accumulators have different keys in to_make_hot due to transaction reordering or parallel execution races, will this cause state root divergence where validators commit different hot state operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22d3b5de-1edf-4eb6-9715-6dc450bad9ce?mode=deep",
+    "timestamp": "2026-01-21 04:45:41.985131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Byzantine Validator] Can a Byzantine validator manipulate their local accumulator to promote/demote different keys than honest validators, and does this affect their ability to validate blocks or participate in consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4186f76e-088d-416e-97ce-f5dae4bea5ea?mode=deep",
+    "timestamp": "2026-01-21 04:46:06.907355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Struct: BlockHotStateOpAccumulator] [Block Validation] When validators receive proposed blocks, do they independently compute expected keys_to_make_hot and verify they match the proposer's epilogue state operations, or can proposers include incorrect hot state promotions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5878757-06d3-4b3c-85e2-97ee29050833?mode=deep",
+    "timestamp": "2026-01-21 04:46:29.730859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Invariant: Mutual Exclusion] Is the invariant maintained that keys in to_make_hot and keys in writes are mutually exclusive, and can race conditions or logic errors cause keys to appear in both, violating this critical invariant? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_289bed18-64f0-488f-9f95-04f10ba4b56f?mode=deep",
+    "timestamp": "2026-01-21 04:46:53.624480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Invariant: Write Priority] The logic ensures writes take priority over reads for hot state promotion - can transaction execution order changes break this invariant, causing written keys to be redundantly promoted via to_make_hot? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b797aaf-c69c-4ca8-8f23-06fbed1e546a?mode=deep",
+    "timestamp": "2026-01-21 04:47:19.555651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Invariant: Max Limit] Is it guaranteed that to_make_hot.len() <= max_promotions_per_block at all times, and can the continue statement (line 71) be bypassed allowing over-insertion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a178306-0c65-4178-b72c-f6992e344fae?mode=deep",
+    "timestamp": "2026-01-21 04:47:43.821781",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [No Error Handling] The function has no Result return type and cannot signal errors - if operations fail (e.g., memory allocation), can silent failures cause incorrect hot state tracking without validator awareness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19f04762-c424-405f-b575-5de279308f0d?mode=deep",
+    "timestamp": "2026-01-21 04:48:09.690453",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: new_with_config()] [No Validation] There's no validation or error return for invalid configurations - should this function return Result to signal configuration errors, or can invalid configs silently cause problems later? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_326cd08e-89ce-459f-9b43-b6a1e1212766?mode=deep",
+    "timestamp": "2026-01-21 04:48:36.100790",
+    "report_generated": false
+  }
+]
