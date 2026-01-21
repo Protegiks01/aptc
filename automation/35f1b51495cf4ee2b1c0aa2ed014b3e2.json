@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Epoch manipulation] Can a malicious validator submit a DKG transcript with a future epoch number that gets accepted before the epoch actually transitions, allowing them to pre-commit validator set changes and manipulate the next epoch's validator composition? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9fcda149-4c1d-4856-83f8-a7855a0b693f?mode=deep",
+    "timestamp": "2026-01-21 06:00:45.155315",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Epoch replay] Does the epoch check at line 96 prevent replay attacks where an attacker resubmits a valid DKG transcript from a previous epoch to force a rollback or create conflicting validator sets across nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_faea8596-10db-43d2-8deb-a6d2028adba8?mode=deep",
+    "timestamp": "2026-01-21 06:00:58.119436",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Race condition] Can concurrent epoch transitions create a TOCTOU (Time-of-Check-Time-of-Use) vulnerability where the epoch number is validated at line 96 but changes before VM execution at line 120, allowing stale DKG results to be committed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7eed4f34-a386-4970-a78c-7db8dc09c6de?mode=deep",
+    "timestamp": "2026-01-21 06:01:11.217747",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Integer overflow] If dkg_node.metadata.epoch or config_resource.epoch() overflow or wrap around at maximum u64 values, can an attacker craft epoch numbers that bypass the equality check at line 96 and submit fraudulent transcripts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0e79ba5-5c4b-4ba7-b0fd-de3c7812e8a3?mode=deep",
+    "timestamp": "2026-01-21 06:01:25.100497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Configuration manipulation] Can an attacker exploit the ConfigurationResource fetch at line 89-90 by corrupting the on-chain configuration to make config_resource.epoch() return a manipulated value that always matches malicious transcript epochs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8a7c21d-dd00-459f-8ff2-ea55d509548b?mode=deep",
+    "timestamp": "2026-01-21 06:01:39.746925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Deserialization DoS] Can an attacker submit extremely large transcript_bytes (e.g., GB-sized) that consume excessive memory during bcs::from_bytes deserialization at line 102-104, causing validator nodes to crash or OOM before the expected failure is caught? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60c81a24-ac84-4031-8df6-0e8dbf4080c0?mode=deep",
+    "timestamp": "2026-01-21 06:01:55.292008",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Type confusion] Can malicious transcript_bytes be crafted with valid BCS structure but incorrect type layout that deserializes successfully at line 102-104 but causes undefined behavior or memory corruption during subsequent verification at line 107-108? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0accbf32-8f56-4f22-aed1-5447ef833c7e?mode=deep",
+    "timestamp": "2026-01-21 06:02:11.705671",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Malformed BCS bypass] Does the bcs::from_bytes call at line 102-104 properly validate all BCS invariants, or can specially crafted bytes bypass deserialization errors while creating invalid Transcript objects that later crash the verification logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38b787b0-d4ee-4255-85e8-4a89f2b9ed9b?mode=deep",
+    "timestamp": "2026-01-21 06:02:31.124709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Recursion attack] Can deeply nested BCS structures in transcript_bytes cause stack overflow during deserialization at line 102-104, bypassing the expected TranscriptDeserializationFailed error and causing validator crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f099294-59e0-41c4-9e5d-cd94911c7034?mode=deep",
+    "timestamp": "2026-01-21 06:02:51.536041",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Panic vulnerability] If bcs::from_bytes panics instead of returning an Err during malformed input processing at line 102-104, can this bypass the map_err handler and crash the validator thread, causing consensus disruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec025849-7d49-4aae-bf9b-32359285b8a4?mode=deep",
+    "timestamp": "2026-01-21 06:03:12.151608",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Weak parameters] Can an attacker exploit weaknesses in pub_params generation at line 101 by manipulating in_progress_session_state.metadata to create DKG parameters that make verify_transcript always succeed regardless of transcript validity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5837e242-a1f4-4ec4-9f79-7337b9d6bcd6?mode=deep",
+    "timestamp": "2026-01-21 06:03:34.889883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Verification bypass] Does DefaultDKG::verify_transcript at line 107-108 perform constant-time operations, or can timing side-channels leak information allowing attackers to forge transcripts through repeated submission and timing analysis? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13607c70-dce3-485a-ad78-db754cfbfe33?mode=deep",
+    "timestamp": "2026-01-21 06:03:59.205513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Cryptographic downgrade] Can an attacker manipulate in_progress_session_state.metadata to downgrade cryptographic parameters (e.g., smaller group orders, weaker curves) used in new_public_params at line 101, weakening the DKG verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_750d8e4d-d634-4937-b425-43547685f2fc?mode=deep",
+    "timestamp": "2026-01-21 06:04:24.399485",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Signature malleability] If the transcript contains malleable signatures or proofs, can an attacker create multiple valid transcripts from a single legitimate one, causing consensus disagreement when different validators accept different malleable versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16f7a2b1-da0f-4c40-bcf4-cbc20eb48ed9?mode=deep",
+    "timestamp": "2026-01-21 06:04:51.300610",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Batch verification weakness] Does verify_transcript verify the entire transcript atomically, or can partial verification allow attackers to construct transcripts that pass verification but contain invalid components that corrupt state when published on-chain? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2c87766-42f5-4eeb-a750-110fbc6e5003?mode=deep",
+    "timestamp": "2026-01-21 06:05:18.314510",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Missing resource exploitation] When DKGState is missing at line 87-88 and MissingResourceDKGState is returned, can an attacker exploit the discarded transaction status at line 72 to repeatedly submit DKG transactions that burn gas/fees without penalty? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3b01adf-18c5-4741-9350-aff2c46dda7f?mode=deep",
+    "timestamp": "2026-01-21 06:05:46.712152",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [State race condition] Can concurrent access to OnChainConfig::fetch_config at line 88 and line 89-90 create inconsistent state reads where DKGState and ConfigurationResource are from different epochs, causing verification against mismatched parameters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_734e5afb-3bc7-4d54-b886-6ad686b8e280?mode=deep",
+    "timestamp": "2026-01-21 06:06:16.258288",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [in_progress manipulation] Can an attacker exploit the unwrap of in_progress.ok_or at line 92-93 by corrupting the DKGState such that in_progress is Some() but contains malicious metadata, bypassing the MissingResourceInprogressDKGSession check? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb69d414-6702-4782-adcd-af8a76f4de7f?mode=deep",
+    "timestamp": "2026-01-21 06:06:47.125581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Resource exhaustion] Can repeated OnChainConfig::fetch_config calls at lines 88 and 89-90 be exploited to cause excessive state reads and database lookups, degrading validator performance during critical epoch transitions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b66c72a3-f396-4335-abfd-0642c5ce7e6d?mode=deep",
+    "timestamp": "2026-01-21 06:07:18.196717",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Stale state attack] If the resolver provides cached state instead of latest committed state, can attackers submit DKG transcripts that verify against stale in_progress_session_state but are invalid for current epoch, causing state divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43db8e04-6c78-42b1-8e48-fc6e81d8dd49?mode=deep",
+    "timestamp": "2026-01-21 06:07:49.031555",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Infinite computation] Since UnmeteredGasMeter is used at line 111, can an attacker craft a DKG transcript that causes the FINISH_WITH_DKG_RESULT function to enter infinite loops or perform unbounded computation, freezing validator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ee6ff80-5168-4bfb-a18e-96c7f6841612?mode=deep",
+    "timestamp": "2026-01-21 06:08:20.133328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Memory exhaustion] With UnmeteredGasMeter at line 111 providing unlimited gas, can malicious transcript_bytes trigger excessive memory allocation in execute_function_bypass_visibility at lines 120-128, causing validator OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_214f485d-796f-4eb1-ba08-87220f57db5f?mode=deep",
+    "timestamp": "2026-01-21 06:08:52.696299",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Storage explosion] Can the unmetered execution at line 111 allow FINISH_WITH_DKG_RESULT to write unlimited state data to storage, filling validator disks and causing consensus failure when nodes run out of space? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2ede707-4aa5-4219-97b2-22c545657f3d?mode=deep",
+    "timestamp": "2026-01-21 06:09:26.491281",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Stack overflow] Without gas limits from UnmeteredGasMeter at line 111, can deeply recursive Move code in FINISH_WITH_DKG_RESULT cause stack overflow and validator crashes during DKG result processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98d291a6-8e19-41f2-a73b-ef7c80afe36c?mode=deep",
+    "timestamp": "2026-01-21 06:09:58.577776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/validator_txns/dkg.rs] [Function: process_dkg_result_inner()] [Determinism violation] Can the absence of gas metering at line 111 cause non-deterministic execution where different validators timeout at different points, leading to state divergence and consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5ec3313-dc73-46a7-9cfd-4d08092bf007?mode=deep",
+    "timestamp": "2026-01-21 06:10:30.244211",
+    "report_generated": false
+  }
+]
