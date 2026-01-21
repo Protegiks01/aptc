@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new()] [Integer overflow] Can an attacker provide an extremely large request_interval_ms value (e.g., u64::MAX) that causes integer overflow when multiplied by 1000 at line 24, resulting in a wrapped-around small interval that bypasses rate limiting and enables request flooding? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f10bc6dd-4da8-41b5-a78a-e6846e73950e?mode=deep",
+    "timestamp": "2026-01-21 03:53:34.443279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new()] [Integer overflow] If request_interval_ms is set to a value greater than u64::MAX/1000, does the multiplication at line 24 silently overflow without detection, causing the tracker to use an incorrect (much smaller) interval that could allow excessive peer requests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23e98e31-4e51-4b38-adf1-17dc32a7ff9b?mode=deep",
+    "timestamp": "2026-01-21 03:53:47.089049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: record_response_failure()] [Integer overflow] Can repeated calls to record_response_failure() increment num_consecutive_request_failures beyond u64::MAX at line 103, causing it to wrap around to 0 and resetting failure tracking, potentially masking consistently failing malicious peers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef3d8e6a-6156-4249-a6fb-4f025470285d?mode=deep",
+    "timestamp": "2026-01-21 03:53:59.809380",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: record_response_failure()] [DoS via overflow] Can a malicious peer deliberately trigger continuous failures to increment num_consecutive_request_failures at line 103, and if this counter is used elsewhere for exponential backoff calculations, could the overflow cause underflow in backoff durations leading to request storms? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0726aee-41fd-43f8-8818-1503e7d1456c?mode=deep",
+    "timestamp": "2026-01-21 03:54:12.997929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Time manipulation] Can an attacker who controls the TimeService manipulate time_service.now() at line 85 to always return a value far in the future, causing the comparison to always be true and triggering excessive requests that overwhelm peer monitoring? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c8094fa-c13c-4454-829f-9d76b304ecab?mode=deep",
+    "timestamp": "2026-01-21 03:54:27.170774",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Clock skew attack] If the system clock is adjusted backward after last_request_time is set at line 66, can the addition at line 86 produce a target time that's now far in the future, preventing new_request_required() from ever returning true and causing permanent request starvation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33159d9a-ce18-406d-af34-4091c1b831fd?mode=deep",
+    "timestamp": "2026-01-21 03:54:42.296364",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: request_started()] [Time service inconsistency] Can time_service.now() at line 66 return non-monotonic time values (e.g., if system clock adjusts backward), causing last_request_time to be earlier than a previous value and breaking interval calculations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c85e2b37-b855-47f3-a7e1-9945c58cdea8?mode=deep",
+    "timestamp": "2026-01-21 03:54:58.488316",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Duration overflow] Can the Duration::from_micros(self.request_interval_usec) at line 86 panic or overflow if request_interval_usec is extremely large (e.g., close to u64::MAX), causing a denial of service when checking if new requests are required? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16c0a807-90b6-45ff-922f-fa82d27bdd81?mode=deep",
+    "timestamp": "2026-01-21 03:55:16.395070",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Instant overflow] Can the add() operation at line 86 panic if last_request_time + Duration exceeds Instant's internal representation limits, causing the request tracking system to crash when checking for new requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6a59b32-dcdd-4259-8045-2c42641a089d?mode=deep",
+    "timestamp": "2026-01-21 03:55:34.845830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Struct: RequestTracker] [Race condition] Since RequestTracker is Clone at line 11, can multiple threads hold cloned copies and simultaneously call request_started() and request_completed(), causing inconsistent in_flight_request states across copies that lead to duplicate requests or missed responses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_945fa3b2-07be-4d44-9d15-9df566c3b157?mode=deep",
+    "timestamp": "2026-01-21 03:55:54.723997",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: request_started()] [Race condition] Can concurrent calls to request_started() from different threads set in_flight_request to true at line 63 multiple times without synchronization, allowing multiple in-flight requests despite the check at line 78 returning false? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_661c4b64-5427-4cab-a871-75a31065c792?mode=deep",
+    "timestamp": "2026-01-21 03:56:15.116061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: request_completed()] [Race condition] If request_completed() at line 70-72 is called concurrently with new_request_required() at line 76-90, can the in_flight_request flag be read as false during the check at line 78 but then set to false again, causing TOCTOU (time-of-check-time-of-use) issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1d29558-5df2-48b2-a430-7ed9c510617c?mode=deep",
+    "timestamp": "2026-01-21 03:56:37.030181",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Race condition] Can the check at line 78 for in_flight_request() race with request_completed() at line 71, where the request is marked complete between the check and return, allowing two new requests to be triggered simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d59ce10a-e213-4ebc-a2d4-a960f957f453?mode=deep",
+    "timestamp": "2026-01-21 03:56:58.454058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: record_response_success()] [Race condition] Can concurrent calls to record_response_success() and record_response_failure() create a race where num_consecutive_request_failures is reset at line 98 while being incremented at line 103, leading to incorrect failure counts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2bd11c02-517b-41d9-a2e7-2f452e193ec9?mode=deep",
+    "timestamp": "2026-01-21 03:57:21.491115",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: request_completed()] [State inconsistency] Can request_completed() at line 70 be called without a prior request_started() call, setting in_flight_request to false when it was already false, and does this create inconsistent state where last_request_time is None but in_flight_request was just set to false? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_978bf011-e6c1-476d-9e2a-c0c1ef075450?mode=deep",
+    "timestamp": "2026-01-21 03:57:43.450091",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: record_response_success()] [State inconsistency] Can record_response_success() at line 93 be called without request_completed() being called first, leaving in_flight_request as true while last_response_time is updated, creating a state where the tracker believes a request is still in-flight but a response was received? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aaea5280-dc53-4470-a471-a92f3964ebe6?mode=deep",
+    "timestamp": "2026-01-21 03:58:06.096922",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: record_response_failure()] [State inconsistency] Does record_response_failure() at line 102 fail to update last_response_time, meaning that last_response_time can become stale even after many failed attempts, potentially causing incorrect freshness calculations elsewhere in the system? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8acf0262-3547-4cb6-a148-785d5731356b?mode=deep",
+    "timestamp": "2026-01-21 03:58:28.016262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Logic error] Can a malicious caller trigger request_started() but never call request_completed(), permanently setting in_flight_request to true at line 63 and causing new_request_required() to always return false at line 79, effectively disabling all future peer monitoring requests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07ad94f4-e2aa-4a4d-bebb-787dc037e1d6?mode=deep",
+    "timestamp": "2026-01-21 03:58:50.076110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Edge case] When last_request_time is None at line 83, new_request_required() immediately returns true at line 88, but if in_flight_request is true, does this create a scenario where requests are never sent because the first request gets stuck? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5ccac43-8334-4234-bf86-155214c25a77?mode=deep",
+    "timestamp": "2026-01-21 03:59:11.601141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new()] [Missing validation] Can an attacker pass request_interval_ms of 0 to new(), causing request_interval_usec to be 0 at line 24, which would make new_request_required() always return true at line 86 (since now > last_request_time + Duration::from_micros(0)) and enable request flooding? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e29ce775-0451-4f26-9d55-bcb653b9ffd5?mode=deep",
+    "timestamp": "2026-01-21 03:59:34.331102",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_with_microseconds()] [Missing validation] Does new_with_microseconds() at line 29 accept request_interval_usec of 0 without validation, allowing creation of trackers that bypass rate limiting and could flood peers with monitoring requests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c8e9967-99ab-4a18-a472-6d643022730e?mode=deep",
+    "timestamp": "2026-01-21 03:59:57.200175",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_with_microseconds()] [Missing validation] Can new_with_microseconds() accept negative values (via casting) or extremely small values that effectively disable rate limiting, allowing malicious actors to overwhelm the peer monitoring service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_008ab00b-d460-4f93-b5b4-aa6c3b619d66?mode=deep",
+    "timestamp": "2026-01-21 04:00:20.351632",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Struct: RequestTracker] [Missing validation] Does the struct lack any maximum bound on num_consecutive_request_failures at line 16, allowing it to grow unbounded and potentially cause memory issues if stored in collections that track this value? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_404742e4-de21-48fc-ab8c-bcc8c38c6857?mode=deep",
+    "timestamp": "2026-01-21 04:00:43.527206",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new()] [Precision loss] When converting milliseconds to microseconds at line 24 (multiply by 1000), could precision requirements be lost if the caller expects nanosecond-level timing, and could this cause issues in high-frequency peer monitoring scenarios? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9eca87a-de81-400b-b63b-59388ed9034f?mode=deep",
+    "timestamp": "2026-01-21 04:01:06.971534",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Precision loss] Does the Duration::from_micros() conversion at line 86 lose precision for sub-microsecond intervals, and could this cause requests to be sent slightly earlier than intended, gradually drifting from the desired interval? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0b295a4-2fd7-4f17-8145-26035b274447?mode=deep",
+    "timestamp": "2026-01-21 04:01:29.191010",
+    "report_generated": false
+  }
+]
