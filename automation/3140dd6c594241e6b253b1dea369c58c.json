@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: BatchEvaluationDomain::new()] [Memory Ordering] When initializing the omegas vector across lines 125-131, if this is later wrapped in Arc and shared across threads, could reordering of vector writes cause another thread to see partially initialized omegas, corrupting FFT computations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e05c92c1-9785-4913-8b4c-92298203a6df?mode=deep",
+    "timestamp": "2026-01-21 02:43:30.346007",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_Nth_root_of_unity()] [Mathematical Soundness] For log_N at the boundary (log_N = Scalar::S - 1), omega is squared only once, producing omega^2 where omega = 2^S-th root, is omega^2 truly a primitive 2^(S-1)-th root, or could this be a 2^(S-2)-th root violating FFT requirements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf07f29a-3cdc-4c4e-8c5e-cdd532290788?mode=deep",
+    "timestamp": "2026-01-21 02:43:43.253082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: EvaluationDomain] [Mathematical Invariant] The relationship omega^N = 1 must hold, but is there validation that omega is primitive (i.e., omega^k != 1 for all 0 < k < N), or could omega be a non-primitive N-th root, causing FFT outputs to have unexpected symmetries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c0637b2-f572-42a8-9429-836be8b02dbc?mode=deep",
+    "timestamp": "2026-01-21 02:43:56.348714",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: BatchEvaluationDomain::new()] [Numerical Accuracy] When computing omega^i for i up to N-1 via repeated multiplication at lines 128-131, could accumulated rounding errors in finite field arithmetic (though fields are exact) or bugs in blstrs library cause omegas[N-1] != omega^(N-1), breaking FFT correctness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6722c773-1873-4c19-a726-53ad0d4ea504?mode=deep",
+    "timestamp": "2026-01-21 02:44:12.099550",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: EvaluationDomain::new()] [Field Order] The function assumes BLS12-381 scalar field has 2^S as a divisor of (p-1) where p is the field order, if the blstrs library is updated with a different curve where this doesn't hold, would the code fail gracefully or produce invalid domains? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc1a9845-0495-4127-ab0a-16c849f742a8?mode=deep",
+    "timestamp": "2026-01-21 02:44:26.767570",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: BatchEvaluationDomain::new()] [Memory Allocation] For n close to usize::MAX, smallest_power_of_2_greater_than_or_eq() could return N = 2^63 on 64-bit systems, then Vec::with_capacity(N) at line 124 would try to allocate ~2^63 * sizeof(Scalar) bytes, causing allocation failure or system crash, is there a size limit check? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa65a70c-ba65-423d-a24c-a1a0f82359f2?mode=deep",
+    "timestamp": "2026-01-21 02:44:40.820543",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: BatchEvaluationDomain::new()] [Stack Overflow] If log_N is very large (e.g., 50), the loop at line 137 would create a deep call stack if N_inverses.push() triggers reallocations, could this cause stack overflow on systems with limited stack space? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4ca68d7-d260-4b27-8b49-960b5e8000dd?mode=deep",
+    "timestamp": "2026-01-21 02:44:57.960976",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: BatchEvaluationDomain] [Memory Leak] The omegas and N_inverses vectors are owned by the struct, if BatchEvaluationDomain is created but never fully consumed (e.g., due to early return in calling code), could large allocations persist unnecessarily, causing memory leaks in long-running validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b5928d3-6131-4178-9d59-8331e6e1a33d?mode=deep",
+    "timestamp": "2026-01-21 02:45:16.727001",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: EvaluationDomain::new()] [Input Validation] The function accepts any usize value for n without range checking beyond Scalar::S limit, should there be additional validation to reject unreasonably large domains that would exhaust memory, or domains smaller than 2 that might break FFT assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b609d0ea-ab82-4ea0-ad29-1bdb13f53cb3?mode=deep",
+    "timestamp": "2026-01-21 02:45:36.993205",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: BatchEvaluationDomain::new()] [Input Validation] Unlike EvaluationDomain::new(), this function doesn't check log_N against Scalar::S, could constructing a batch domain with n requiring log_N >= Scalar::S cause subsequent get_subdomain() calls to return invalid domains? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_588b092d-8d89-4c81-ba29-cf1be2eea7dd?mode=deep",
+    "timestamp": "2026-01-21 02:45:58.247738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Input Validation] The function uses assert_le! and assert_ne! at lines 164-165, which panic on invalid input, should these return Result<EvaluationDomain, Error> instead to handle untrusted input gracefully without crashing validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f005c266-24f0-4bd3-8eda-a4082b8d1ad6?mode=deep",
+    "timestamp": "2026-01-21 02:46:20.755256",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_root_of_unity()] [Input Validation] No bounds check on parameter i, allowing out-of-bounds array access that panics, should this be checked and return an Option<Scalar> or Result to prevent validator crashes from untrusted indices? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7e16427-73bf-456b-a905-502e22837edb?mode=deep",
+    "timestamp": "2026-01-21 02:46:44.710417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: smallest_power_of_2_greater_than_or_eq()] [Type Safety] The return type is (usize, usize) for (N, log_N), but there's no newtype wrapper to prevent accidental swapping of these values at call sites, could misuse cause N to be used as log_N or vice versa? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f481e208-1613-450a-83bc-cc95175076db?mode=deep",
+    "timestamp": "2026-01-21 02:47:09.838695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: EvaluationDomain] [Visibility] Fields are pub(crate) at lines 19-30, allowing any code within aptos-crypto crate to directly mutate omega, N, etc., bypassing invariants, should these be private with getter methods to enforce immutability? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a02c2b3b-efd6-429a-8a32-cf710c21a482?mode=deep",
+    "timestamp": "2026-01-21 02:47:36.289170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: BatchEvaluationDomain] [Visibility] The omegas field is private at line 43 but N_inverses is also private, yet get_root_of_unity() returns Scalar by value (not reference), could this allow mutation if Scalar has interior mutability? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_412ab49a-6666-4aa5-8336-6680b4d787e1?mode=deep",
+    "timestamp": "2026-01-21 02:48:02.497763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Derive: Clone] Both structs derive Clone at lines 16 and 38, for large BatchEvaluationDomain with millions of omegas, cloning copies the entire Vec which is expensive, should Clone be removed and use Arc for sharing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3aee797b-9b68-420b-9254-c5ed5e3b17d2?mode=deep",
+    "timestamp": "2026-01-21 02:48:29.280741",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Derive: PartialEq] BatchEvaluationDomain derives PartialEq at line 38, comparing two large omegas vectors element-by-element is O(N), could this be a DoS vector if equality checks are in hot paths? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1335c9f-bbe7-4bb4-807d-33716936974d?mode=deep",
+    "timestamp": "2026-01-21 02:48:55.276889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Integration] If EvaluationDomain is used in polynomial commitment schemes (e.g., KZG), and an attacker can cause omega to be a non-primitive root via deserialization, could committed polynomials have undetected symmetries allowing proof forgery? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab09debe-71a6-4894-a2dc-382ace747c2f?mode=deep",
+    "timestamp": "2026-01-21 02:49:20.673833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Integration] If BatchEvaluationDomain is used to prepare FFT domains for multi-scalar multiplication in BLS signature aggregation, could incorrect roots of unity cause aggregated signatures to verify incorrectly, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7b516a7-6c79-48ce-bb4c-ef29e9b547e0?mode=deep",
+    "timestamp": "2026-01-21 02:49:48.024464",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Integration] In FFT-based polynomial multiplication used for accumulator proofs, if N_inverse is wrong due to the u64 cast issue, would inverse FFT produce scaled polynomials that still pass verification but represent different data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fffb277a-0a34-434b-8001-2e863da2def7?mode=deep",
+    "timestamp": "2026-01-21 02:50:14.979104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Integration] If evaluation domains are used in SNARK/STARK proofs for transaction verification, could domain size manipulation (via integer overflow) allow an attacker to forge proofs by creating artificially small domains? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bf43c57-8fd7-4d51-ae0f-bc2165aaf5a1?mode=deep",
+    "timestamp": "2026-01-21 02:50:42.624817",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: EvaluationDomain::new()] [Error Propagation] The function returns Result but only has one error case (WrongLengthError), should there be additional error types for n=0, integer overflow, or other invalid inputs to provide better error context? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ee483ab-57c7-48a4-ad6b-57f843ba3a27?mode=deep",
+    "timestamp": "2026-01-21 02:51:08.888869",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Panic Safety] Multiple assert macros at lines 164-165, 168 can panic, in a consensus-critical code path, should these use checked operations and return Results to prevent validator crashes from malformed data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b9a3813-fcbd-4fc2-8a51-db99c5408540?mode=deep",
+    "timestamp": "2026-01-21 02:51:34.371718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: BatchEvaluationDomain::new()] [Unwrap Safety] Three unwrap() calls at lines 138, 144, 145 assume inversions never fail, but if the blstrs field implementation has bugs or malicious state, could these panic and DoS validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8078fe9c-597c-4bca-beb1-b2c00e2fb393?mode=deep",
+    "timestamp": "2026-01-21 02:51:59.541265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: EvaluationDomain::new()] [Unwrap Safety] Two unwrap() calls at lines 91, 93 assume omega and N are always invertible, should these return Result and propagate errors instead of panicking to allow graceful degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2bd0af2e-97bb-4a6e-8cd7-ad51cd112475?mode=deep",
+    "timestamp": "2026-01-21 02:52:27.045485",
+    "report_generated": false
+  }
+]
