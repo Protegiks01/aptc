@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: flush()] [Blocking Call] The comment says flush is expensive and should only be used off critical path - if flush() is accidentally called during consensus (e.g., in error handling), can the blocking flush operation cause the validator to miss votes or proposals, breaking liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e98c50a-28ee-46a8-9aac-239136b0b8c0?mode=deep",
+    "timestamp": "2026-01-21 04:49:22.513972",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: flush()] [No Timeout] Does flush() have any timeout mechanism - can a buggy Logger implementation block in flush() forever, causing graceful node shutdown to hang and preventing proper cleanup of consensus state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93356486-538a-427c-887d-ef9bfaff4dbd?mode=deep",
+    "timestamp": "2026-01-21 04:49:35.037453",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: flush()] [Data Loss] If logger.flush() panics or fails to write buffered logs, is there any recovery mechanism, or are all buffered security events permanently lost, hiding evidence of attacks that occurred before the flush? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25da4879-f6dd-4b5c-9c3d-35a8d61e9131?mode=deep",
+    "timestamp": "2026-01-21 04:49:47.519873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Import: Event] [Event Lifetime] The Event struct has lifetime 'a - can this cause issues if a Logger implementation tries to store the Event beyond its lifetime, leading to dangling references and use-after-free vulnerabilities in unsafe logger code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbe8fd8a-7c18-42eb-a898-598b19a2644e?mode=deep",
+    "timestamp": "2026-01-21 04:50:01.148462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: dispatch()] [Event Injection] Can an attacker craft a malicious Event with specially formatted message or keys_and_values that exploit vulnerabilities in the Logger::record() implementation, such as format string bugs or injection attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_270e1af0-f0d8-4801-b38b-acdf267d411f?mode=deep",
+    "timestamp": "2026-01-21 04:50:15.108558",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Import: Event] [Metadata Forgery] Can an attacker create Events with forged Metadata (e.g., marking ERROR-level events as TRACE to bypass filters, or falsifying module_path to hide malicious code location), evading security monitoring? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e78d215-d22a-47d4-a42b-6bb5ad7ed34f?mode=deep",
+    "timestamp": "2026-01-21 04:50:29.888757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: enabled()] [Level Ordering] Does the enabled() check properly handle the Level enum ordering (Error=0, Warn=1, Info=2, Debug=3, Trace=4) - can an attacker exploit level comparison bugs to enable verbose logging that exhausts resources? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e86b66f-842c-44b7-a006-d3655ce9ebe0?mode=deep",
+    "timestamp": "2026-01-21 04:50:46.054730",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Import: Metadata] [Static Lifetime] Metadata contains &'static str fields - can this cause memory leaks if dynamically generated module paths are incorrectly marked as static, gradually consuming validator memory? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89cd14d2-1942-44a9-89ec-fa9c3c0bd4b7?mode=deep",
+    "timestamp": "2026-01-21 04:51:02.664594",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Global State: LOGGER] [Arc Cloning Cost] Every call to dispatch() and enabled() clones the Arc<dyn Logger> via get() - under high logging load (e.g., during consensus storms), can Arc reference counting become a bottleneck, causing performance degradation and missed consensus deadlines? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d512d0d-4603-4d25-a4c2-b04a71ef8d4a?mode=deep",
+    "timestamp": "2026-01-21 04:51:19.301060",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Global State: LOGGER] [Memory Ordering] OnceCell uses atomic operations for initialization - are the memory ordering semantics sufficient to guarantee all threads see a fully initialized Logger, or can weak memory models cause threads to see partially initialized state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c8b4b2b-05c4-4d03-a102-227e77f8e717?mode=deep",
+    "timestamp": "2026-01-21 04:51:37.879581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: set_global_logger()] [Arc Lifecycle] Once Arc<dyn Logger> is stored in LOGGER, it persists until program termination - can this prevent proper cleanup of resources (file handles, network connections) if the logger holds them, causing resource exhaustion over time? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0e3280b-9c0d-45c8-ab44-86969eb611a3?mode=deep",
+    "timestamp": "2026-01-21 04:51:56.854663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: dispatch()] [Counter Overflow] STRUCT_LOG_COUNT.inc() is called on every dispatch - can an attacker trigger integer overflow in the Prometheus IntCounter after 2^64 log events, causing the counter to wrap and break monitoring dashboards that detect anomalies? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e4f7420-bf60-48a4-aefc-d56650cb64a5?mode=deep",
+    "timestamp": "2026-01-21 04:52:16.293394",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Import: STRUCT_LOG_COUNT] [Metrics Poisoning] If an attacker can cause excessive logging (e.g., by triggering error conditions repeatedly), can they manipulate STRUCT_LOG_COUNT to hide the actual rate of security events by drowning them in noise? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcf44eaa-3bed-4155-a497-869388321450?mode=deep",
+    "timestamp": "2026-01-21 04:52:36.081453",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: dispatch()] [Counter Timing] STRUCT_LOG_COUNT is incremented before logger.record() - if record() filters out events internally, can this cause the counter to show inflated numbers that don't match actual logged events, breaking incident response procedures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0040272f-eaa2-46b2-8009-a386a6d8bad2?mode=deep",
+    "timestamp": "2026-01-21 04:52:57.226818",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: set_global_logger()] [Stderr Output] When logger is already set, an error is printed to eprintln! and error!() - if stderr is redirected to /dev/null and the logger isn't initialized yet, is the error completely lost, making double-initialization bugs hard to debug? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6218c44-6997-4d08-892b-d081be7a62a1?mode=deep",
+    "timestamp": "2026-01-21 04:53:19.261657",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: set_global_logger()] [Error Macro] The error!() call on line 47 happens when LOGGER may not be initialized - does error!() check if the logger exists, or can this cause a deadlock or infinite recursion trying to log an error about the logger not existing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33460d9c-7ab9-4e35-9478-be6157308aab?mode=deep",
+    "timestamp": "2026-01-21 04:53:41.287180",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: set_global_logger()] [Subscriber Chain] The tracing subscriber uses TracingToAptosDataLayer.with_subscriber(Registry::default()) - can the order of layer composition cause events to be processed incorrectly, duplicating logs or losing metadata? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1025c7ef-d0e7-4091-9d1d-a040740db28d?mode=deep",
+    "timestamp": "2026-01-21 04:54:03.788630",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: set_global_logger()] [Registry State] If tracing::subscriber::set_global_default() is called multiple times (in tests or during reinitialization), does it properly replace the old subscriber or can it leave the system in an inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_714befc1-43b0-4cae-9df6-7bf729c7a664?mode=deep",
+    "timestamp": "2026-01-21 04:54:26.876426",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Import: tracing_subscriber] [Layer Panics] If TracingToAptosDataLayer panics during event processing, does this poison the entire tracing system, preventing any further logs from being captured and hiding ongoing attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1183b546-6cdb-4fa3-ba48-563a15bb70a4?mode=deep",
+    "timestamp": "2026-01-21 04:54:50.012464",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: dispatch()] [Event Leakage] Can dispatch() be called with Events containing sensitive information (private keys, consensus votes, transaction data) that gets logged to disk or sent to remote log aggregators, enabling attackers with log access to compromise the validator? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_985e56c7-bec7-44a2-99ec-36d24b7da800?mode=deep",
+    "timestamp": "2026-01-21 04:55:13.844795",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Trait: Logger::record()] [Metadata Exposure] Does the Logger implementation sanitize or redact sensitive fields from Event metadata or message before writing logs - can an attacker gain information about validator internal state, timing, or implementation details from verbose logs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6b08ff5-0f00-41ab-baad-8326f96874cb?mode=deep",
+    "timestamp": "2026-01-21 04:55:37.449473",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: set_global_logger()] [Console Exposure] When tokio-console binds to 0.0.0.0, it exposes real-time task and resource information - can an attacker connect remotely to monitor validator performance, identify bottlenecks, and launch targeted DoS attacks on weak points? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2058acc-b96e-477b-acea-27b84ba25c04?mode=deep",
+    "timestamp": "2026-01-21 04:56:01.532222",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: dispatch()] [Unbounded Logging] If dispatch() is called at an extremely high rate (e.g., from a loop in consensus), can the underlying Logger implementation's buffers overflow, queues fill up, or disk space exhaust, causing node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70bdf8f8-41ca-4901-86f9-c0857497575c?mode=deep",
+    "timestamp": "2026-01-21 04:56:23.790906",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Function: flush()] [Memory Pressure] Does flush() cause a large number of buffered events to be written at once - can this spike memory usage or I/O, causing the validator to become unresponsive during critical consensus moments? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa7e4bce-e3be-4cd8-acf4-6c53a8f3c6c5?mode=deep",
+    "timestamp": "2026-01-21 04:56:43.102517",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/logger.rs] [Trait: Logger::enabled()] [Filter Bypass] If enabled() always returns true due to misconfiguration, can the system generate excessive TRACE/DEBUG logs that consume all available disk space, forcing the validator offline and impacting network liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_964ccf69-3171-4e13-b61a-10e2d2fcd002?mode=deep",
+    "timestamp": "2026-01-21 04:57:03.695147",
+    "report_generated": false
+  }
+]
