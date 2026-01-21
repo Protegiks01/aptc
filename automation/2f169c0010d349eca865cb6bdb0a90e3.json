@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Trait: AsMoveValue] [Gas metering bypass] When converting to MoveValue, are the Vec<u8> fields properly metered for gas? Can extremely large payloads bypass gas limits and cause free storage or computation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_135d5d98-53b3-41e2-ae4a-9bfc18a973e1?mode=deep",
+    "timestamp": "2026-01-21 01:07:37.587929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Trait: AsMoveValue] [Move resource safety] Does the conversion maintain Move's resource safety guarantees? Can multiple Rust-side references to the same UnsupportedJWK violate Move's linear type system when converted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_485844eb-5109-4d30-9820-a8b4731bd03f?mode=deep",
+    "timestamp": "2026-01-21 01:07:51.004350",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Equivocation] Can a Byzantine validator propose two different UnsupportedJWKs with the same id but different payloads to different honest validators, causing consensus to accept conflicting JWK states? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3655fad-1844-4609-a544-9c0691cbcda1?mode=deep",
+    "timestamp": "2026-01-21 01:08:04.696884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Replay attack] Since there's no timestamp or nonce in the struct, can old UnsupportedJWKs be replayed in later epochs to reintroduce deleted or outdated keys, bypassing security updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed9eaa96-9dac-4c7e-a510-b0a88eeb463f?mode=deep",
+    "timestamp": "2026-01-21 01:08:18.347616",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Version confusion] Without version information in the struct itself, can different versions of UnsupportedJWKs for the same id cause confusion about which is the current valid key during consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd61754a-7632-4866-801b-8bb944eb5ad0?mode=deep",
+    "timestamp": "2026-01-21 01:08:33.043721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Delete command bypass] When an UnsupportedJWK with payload equal to DELETE_COMMAND_INDICATOR is used (as seen in types/src/jwks/mod.rs line 321), can an attacker craft a legitimate JWK that happens to have this exact payload, causing it to be incorrectly treated as a deletion command? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70b9ab07-55f8-47a8-9fcf-9ee2535b25a7?mode=deep",
+    "timestamp": "2026-01-21 01:08:48.444186",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Delete injection] Can an attacker inject UnsupportedJWKs with the DELETE_COMMAND_INDICATOR payload to maliciously delete legitimate JWKs from the consensus state, breaking keyless authentication for users? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00338b1d-e3be-483b-aa7d-108677af1fb9?mode=deep",
+    "timestamp": "2026-01-21 01:09:05.150040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Command confusion] If the DELETE_COMMAND_INDICATOR check is case-sensitive or encoding-sensitive, can attackers use alternative encodings (UTF-8 vs ASCII, different capitalizations) to bypass deletion detection or inject false deletions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1916a428-cb1f-49d4-b20b-ced1057f8914?mode=deep",
+    "timestamp": "2026-01-21 01:09:21.404580",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: new_for_testing()] [Production leakage] The new_for_testing() function at lines 29-35 is gated by cfg(any(test, feature = 'fuzzing')). If the 'fuzzing' feature is accidentally enabled in production builds, can this allow arbitrary JWK creation bypassing proper validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_597e3288-c81d-4bd1-96d5-1cde6cb25647?mode=deep",
+    "timestamp": "2026-01-21 01:09:43.153724",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: new_with_payload()] [Test function exposure] Similarly, new_with_payload() at lines 37-44 is test-gated. Can feature flag misconfiguration expose this in production, allowing creation of UnsupportedJWKs without proper consensus validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_565a6bc7-e296-4b14-8979-1172797fc11a?mode=deep",
+    "timestamp": "2026-01-21 01:10:04.624424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Trait: PartialEq/Eq] [Equality bypass] The struct derives PartialEq and Eq at line 13. Is equality based on byte-exact comparison? Can two semantically identical JWKs with different byte representations (e.g., different JSON whitespace) be treated as different, causing state duplication? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ae1cf0e-3613-4bed-a534-037a3b4a1a61?mode=deep",
+    "timestamp": "2026-01-21 01:10:26.354171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Trait: PartialEq/Eq] [Hash consistency] Does the Eq implementation remain consistent with any Hash implementations? Can hash table lookups fail if equality and hashing use different criteria for comparing UnsupportedJWKs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1132b9a-a4b1-4db4-b7bd-a36bf98b8471?mode=deep",
+    "timestamp": "2026-01-21 01:10:49.549999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Authentication bypass] When keyless validation encounters an UnsupportedJWK (as seen in keyless_validation.rs), does it properly reject the authentication? Can an attacker force their transactions to use UnsupportedJWKs to bypass signature verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9c41909-35e6-47e7-b1ef-8f7bd6f22ac8?mode=deep",
+    "timestamp": "2026-01-21 01:11:14.329510",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Error handling bypass] If keyless validation fails to properly handle the UnsupportedJWK case, can this lead to default-allow behavior where unsupported keys are incorrectly accepted as valid? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60e37982-ac5b-4446-a2de-2e213e28ac9c?mode=deep",
+    "timestamp": "2026-01-21 01:11:40.195943",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: id()] [Type safety] The id() function returns KID which is type-aliased to Vec<u8>. Can type confusion between different Vec<u8> usages (id vs payload vs issuer) cause security issues in JWK lookup operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2642ed27-55fd-4e54-88e7-32316ff899a6?mode=deep",
+    "timestamp": "2026-01-21 01:12:07.538787",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: id()] [Empty id handling] Can id() return an empty Vec<u8>? If so, how do lookup mechanisms handle empty ids - could this cause all JWKs with empty ids to collide and overwrite each other in hash maps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30c41f1e-9831-4e7b-a57e-2342b94a6ffa?mode=deep",
+    "timestamp": "2026-01-21 01:12:36.074695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Race condition] If multiple threads access and clone UnsupportedJWKs concurrently during consensus, can race conditions in Vec<u8> allocation cause data corruption or use-after-free bugs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0822c92-2a93-4b2d-b256-f9adf2fbb7b4?mode=deep",
+    "timestamp": "2026-01-21 01:13:04.553328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Thread safety] The struct doesn't implement Send/Sync explicitly. Are there any internal references or raw pointers that could violate thread safety when UnsupportedJWKs are passed between consensus threads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f197dbc8-b3fd-4bf2-aa50-57e7973cb3c3?mode=deep",
+    "timestamp": "2026-01-21 01:13:33.746164",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Empty payload] Can an UnsupportedJWK have an empty payload Vec<u8>? If so, does SHA3-256 hash of empty bytes create a valid id that could collide with other uses of empty hash values in the system? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1db24518-9529-466b-9675-6048352b16c8?mode=deep",
+    "timestamp": "2026-01-21 01:14:03.566999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Null bytes in id] Can the id field contain null bytes that might terminate strings early in C FFI boundaries or cause issues in database keys using the id as identifiers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5af395e3-2975-46c3-b7fb-e31eac7fdb25?mode=deep",
+    "timestamp": "2026-01-21 01:14:32.945701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [All-zero payload] If payload is all zero bytes, does this have special meaning anywhere in the system that could be exploited, similar to the DELETE_COMMAND_INDICATOR pattern? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f6a5474-7866-4232-af7b-aca039bffb70?mode=deep",
+    "timestamp": "2026-01-21 01:15:01.718451",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Lookup collision] When get_jwk() in ProviderJWKs (types/src/jwks/mod.rs:179) compares unsupported_jwk.id with id.as_bytes(), can byte-encoding differences cause legitimate lookups to fail or malicious lookups to succeed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b99692e4-6a11-413b-b36c-53f21bfe9b6b?mode=deep",
+    "timestamp": "2026-01-21 01:15:31.071741",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Index poisoning] If UnsupportedJWKs are stored in ProviderJWKsIndexed hash maps keyed by id, can hash collisions or malicious ids cause legitimate JWKs to be overwritten or made inaccessible? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19fa42ab-bbcd-4df9-a3d9-e814aafaa75a?mode=deep",
+    "timestamp": "2026-01-21 01:16:01.115732",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: new_with_payload()] [Hash algorithm confusion] If the system is upgraded to use a different hash algorithm in the future, can old UnsupportedJWKs with SHA3-256 ids be confused with new ones using a different algorithm, causing security downgrades? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0c2ba76-df86-4d20-9b75-50f65ec07546?mode=deep",
+    "timestamp": "2026-01-21 01:16:29.719323",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: From<serde_json::Value>] [Side-channel attack] Does the SHA3-256 hashing operation leak timing information about the payload content through cache timing or branch prediction, potentially revealing sensitive JWK material? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e0bd644-db11-48b6-9026-41e9bd01c655?mode=deep",
+    "timestamp": "2026-01-21 01:16:56.069953",
+    "report_generated": false
+  }
+]
