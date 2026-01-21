@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Race Condition - TOCTOU] Can an attacker exploit the time-of-check to time-of-use gap between the two fs::rename() calls at lines 20 and 31 to inject malicious database files, causing validators to load corrupted state and produce invalid state roots leading to network partition? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_983af877-63cb-4ac6-b271-0814be7ff766?mode=deep",
+    "timestamp": "2026-01-21 06:50:51.427983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Non-Atomic State Transition] If the second fs::rename() at line 31 fails after the first rename succeeds at line 20, does this leave the system in an inconsistent state with the original database moved to temp_old_db_path and no database at original_db_path, causing permanent loss of blockchain state and requiring hardfork? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a23f83ee-7cfb-4e0b-b681-a607ed773614?mode=deep",
+    "timestamp": "2026-01-21 06:51:04.103735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Data Loss] If fs::remove_dir_all() at line 42 fails to delete the temporary old database, can repeated restore operations accumulate multiple copies of old databases causing disk exhaustion that halts validator operations and causes loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1050c0c-4409-4571-9823-93a2b86b47cf?mode=deep",
+    "timestamp": "2026-01-21 06:51:17.040033",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Partial Failure Recovery] Does the function provide any rollback mechanism if operations fail midway, or will a crash between line 20 and line 31 leave the database in an unrecoverable state requiring manual intervention and potentially causing validator downtime? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_416072f5-a05c-4b51-b7ce-d729b6c8ae6c?mode=deep",
+    "timestamp": "2026-01-21 06:51:30.106753",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Concurrent Access] Can multiple concurrent calls to this function create race conditions where two processes simultaneously try to rename the same directories, leading to file system corruption and permanent database corruption requiring chain restart? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_309ccb91-3387-4e2c-8562-4c65e8630e9c?mode=deep",
+    "timestamp": "2026-01-21 06:51:44.602985",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Symlink Attack] Are the provided PathBuf arguments validated to ensure they don't contain symlinks that could redirect the rename operations to arbitrary system locations, allowing an attacker to delete critical system files and achieve remote code execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2458c36-99c2-4302-8e78-d600bc0246b5?mode=deep",
+    "timestamp": "2026-01-21 06:51:59.910596",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Path Traversal] Can an attacker provide paths containing '../' sequences to break out of the intended directory structure and overwrite arbitrary files on the validator's filesystem, potentially replacing consensus or staking module binaries? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5cb0d091-1789-4799-b63e-f86560b21c0d?mode=deep",
+    "timestamp": "2026-01-21 06:52:16.344307",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Permission Escalation] Does the function check file ownership and permissions before performing operations, or can a malicious process with lower privileges manipulate the database directories to gain elevated access to validator state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c4b909e-8cd4-4c01-97aa-6a02747b28ad?mode=deep",
+    "timestamp": "2026-01-21 06:52:35.096644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Cross-Device Rename] If original_db_path and temp_old_db_path are on different filesystems, will fs::rename() at line 20 fail atomic guarantees and perform a copy-delete operation instead, creating a window where database corruption can occur? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0de70f1-f54f-4871-8ea6-2063f44d720f?mode=deep",
+    "timestamp": "2026-01-21 06:52:54.863307",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: rename_db_folders_and_cleanup()] [Disk Space Check] Does the function verify sufficient disk space exists before attempting the rename operations, or can disk exhaustion mid-operation cause partial state corruption and validator crash? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3463ca59-8e78-4e5d-8f37-b5d4dba393c3?mode=deep",
+    "timestamp": "2026-01-21 06:53:16.528745",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Path Traversal in Archive] Does the tar::Builder::append_dir_all() call at line 67 validate that archived paths don't contain '../' sequences that could later be exploited during extraction to write files outside the target directory and overwrite validator configuration files? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b386859-81ec-4414-96c7-8dffc91de41f?mode=deep",
+    "timestamp": "2026-01-21 06:53:37.939500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Symlink Inclusion] Can symlinks present in the source directory be included in the archive by append_dir_all() at line 67, allowing an attacker to create malicious archives that extract symlinks pointing to sensitive files like private keys or consensus state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8aa98d07-5fd9-4679-97d7-30a547ac2286?mode=deep",
+    "timestamp": "2026-01-21 06:54:01.144515",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Memory Exhaustion] Does the function loading the entire compressed archive into memory via Vec::new() at line 58 and compressed_data at line 79 create a memory exhaustion attack vector where extremely large databases cause validator OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a674649-f431-4d9d-97b6-1e61bec7cc9f?mode=deep",
+    "timestamp": "2026-01-21 06:54:25.258944",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Compression Bomb Creation] Can an attacker craft a database state that compresses to a deceptively small size but expands massively during decompression, creating a compression bomb that crashes validators during restore operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a640d932-436d-4518-9a44-b5f86d952905?mode=deep",
+    "timestamp": "2026-01-21 06:54:50.859434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Integer Overflow] Can extremely large database directories cause integer overflow in compression buffer sizing or tar header fields, leading to memory corruption and potential code execution during archive creation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7e73bfc-a025-457a-bbb9-8a6bf02a99cc?mode=deep",
+    "timestamp": "2026-01-21 06:55:14.903485",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [No Integrity Check] Does the created tar.gz archive include any checksums or digital signatures for integrity verification, or can an attacker perform man-in-the-middle attacks to replace backup archives with malicious versions containing modified consensus state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c4ff3aa-1495-434c-875c-05b9c42c41a4?mode=deep",
+    "timestamp": "2026-01-21 06:55:37.687268",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Atomic Write] Is the std::fs::write() operation at line 93 atomic, or can a crash mid-write create a corrupted partial archive that appears valid but contains incomplete database state causing state divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe5b58b0-ea8f-425f-93bb-2a8d728663c3?mode=deep",
+    "timestamp": "2026-01-21 06:55:58.736187",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Path Injection in Filename] Can the backup_file_name parameter contain path separators or special characters that allow writing the archive to arbitrary locations outside the intended directory via format!() at line 83? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9dfd550b-7ef3-408b-b417-d5ab95641365?mode=deep",
+    "timestamp": "2026-01-21 06:56:20.128815",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Compression Level] Does using Compression::fast() at line 58 create security risks where fast compression sacrifices compression ratio for speed, potentially allowing more effective compression bombs or reducing archive integrity? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4a2c2a9-5100-48db-a677-2d56bd21bab0?mode=deep",
+    "timestamp": "2026-01-21 06:56:42.781153",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Concurrent Archive Creation] Can multiple concurrent calls to create_tar_gz() on the same directory create race conditions in tar archive creation, leading to corrupted archives that mix data from different states? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfcd6893-2e50-48a6-9dfb-e9516fe92841?mode=deep",
+    "timestamp": "2026-01-21 06:57:06.194152",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [File Handle Exhaustion] Does iterating through large directories with append_dir_all() properly close file handles, or can exhaustion of file descriptors cause validator crash during backup operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_606e6398-89d4-41cb-94e3-11763f6c177c?mode=deep",
+    "timestamp": "2026-01-21 06:57:29.665104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: create_tar_gz()] [Hardlink Handling] Are hardlinks properly handled in the archive, or can hardlink manipulation create multiple copies of the same data leading to archive corruption or unexpected disk usage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40035b36-5ba6-4df5-bf1d-109aa95273dd?mode=deep",
+    "timestamp": "2026-01-21 06:57:54.668382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: unpack_tar_gz()] [Tar Slip Attack] Does archive.unpack() at line 108 validate that extracted files don't contain path traversal sequences like '../' that could write outside temp_dir_path, allowing an attacker to overwrite validator binaries or configuration files with malicious versions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb23bf3e-ffb3-4008-bce7-ee0e10570e42?mode=deep",
+    "timestamp": "2026-01-21 06:58:19.187166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: unpack_tar_gz()] [Absolute Path Extraction] Can a malicious tar archive contain absolute paths that cause extraction to arbitrary locations on the filesystem instead of the intended temp_dir_path, enabling remote code execution by overwriting system binaries? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76f47d02-d39e-4d94-a027-833f390a0a54?mode=deep",
+    "timestamp": "2026-01-21 06:58:44.200809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/backup_restore/fs_ops.rs] [Function: unpack_tar_gz()] [Symlink Attack During Extraction] Can a tar archive contain symlinks that point outside the extraction directory, and when followed during subsequent extractions, write to arbitrary filesystem locations including validator private keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a747f010-d94a-4bdd-8277-be1360c90a7c?mode=deep",
+    "timestamp": "2026-01-21 06:59:08.716204",
+    "report_generated": false
+  }
+]
