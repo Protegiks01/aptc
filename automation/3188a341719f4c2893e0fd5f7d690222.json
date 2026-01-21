@@ -1,0 +1,56 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Transaction Content Validation] Are transaction signatures or hashes validated before storing, or can invalid transactions be persisted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a254f625-de12-4db1-a475-fb29b24ebbfa?mode=deep",
+    "timestamp": "2026-01-21 02:59:16.830443",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [file_folder_size Mismatch] If FILE_ENTRY_TRANSACTION_COUNT changes between runs, can metadata.file_folder_size mismatch cause read errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56ad6c1c-9bcc-453b-8668-7562c20d7260?mode=deep",
+    "timestamp": "2026-01-21 02:59:29.780544",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: get_file_store_metadata()] [Metadata Schema Evolution] If FileStoreMetadata schema changes, can old metadata files cause deserialization failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6354ece5-cf2f-4b50-8e31-47e9449d6619?mode=deep",
+    "timestamp": "2026-01-21 02:59:42.817637",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_with_timeout()] [Multiple Metadata Files] Can multiple metadata.json files exist in subdirectories causing confusion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6fbf6d8d-dbb5-4cb1-983f-a027f2ecbeb3?mode=deep",
+    "timestamp": "2026-01-21 02:59:57.067491",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Compression Bomb] When using Lz4CompressedProto, can specially crafted transaction data create compression bombs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7afe8d36-bd2e-4da3-96d5-127ee847ef2c?mode=deep",
+    "timestamp": "2026-01-21 03:00:11.514326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: get_raw_file()] [Decompression Vulnerabilities] Can malformed compressed data exploit decompression vulnerabilities causing crashes or RCE? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9bbb187-f1d1-4882-be90-31a68ff03462?mode=deep",
+    "timestamp": "2026-01-21 03:00:27.302862",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Chunk Processing Race] Chunks processed in parallel - can race conditions in FileEntry::from_transactions() corrupt data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_042bba01-c50e-4429-b161-aa20980001ae?mode=deep",
+    "timestamp": "2026-01-21 03:00:44.126853",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [Self Mutation Race] &mut self with async - can re-entrancy or concurrent access corrupt latest_metadata_update_timestamp? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a33a786c-5514-4899-8b94-d006a84e8cf6?mode=deep",
+    "timestamp": "2026-01-21 03:01:03.186851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core\n\n### Citations\n\n**File:** ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs (L1-227)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{\n    compression_util::{FileEntry, FileStoreMetadata, StorageFormat, FILE_ENTRY_TRANSACTION_COUNT},\n    file_store_operator::{\n        FileStoreOperator, FILE_STORE_UPDATE_FREQUENCY_SECS, METADATA_FILE_NAME,\n    },\n};\nuse aptos_protos::transaction::v1::Transaction;\nuse itertools::{any, Itertools};\nuse std::path::PathBuf;\nuse tracing::info;\n\n#[derive(Clone)]\npub struct LocalFileStoreOperator {\n    path: PathBuf,\n    /// The timestamp of the latest metadata update; this is to avoid too frequent metadata update.\n    latest_metadata_update_timestamp: Option<std::time::Instant>,\n    storage_format: StorageFormat,\n}\n\nimpl LocalFileStoreOperator {\n    pub fn new(path: PathBuf, enable_compression: bool) -> Self {\n        let storage_format = if enable_compression {\n            StorageFormat::Lz4CompressedProto\n        } else {\n            StorageFormat::JsonBase64UncompressedProto\n        };\n        Self {\n            path,\n            latest_metadata_update_timestamp: None,\n            storage_format,\n        }\n    }\n}\n\n#[async_trait::async_trait]\nimpl FileStoreOperator for LocalFileStoreOperator {\n    async fn verify_storage_bucket_existence(&self) {\n        tracing::info!(\n            bucket_name = self.path.to_str().unwrap(),",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a87d89f1-b500-4d12-9a7d-a74969ea8f50?mode=deep",
+    "timestamp": "2026-01-21 03:01:23.301714",
+    "report_generated": false
+  }
+]
