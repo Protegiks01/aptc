@@ -1,0 +1,56 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/keyless/bn254_circom.rs] [Static: EMPTY_OVERRIDE_AUD_FIELD_HASH] [Lazy init race] Does EMPTY_OVERRIDE_AUD_FIELD_HASH initialization handle concurrent access correctly, or can races cause inconsistent hash values across validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49c9771b-1303-4879-8c27-a0d62017cc33?mode=deep",
+    "timestamp": "2026-01-21 08:16:36.018189",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/bn254_circom.rs] [Static: PAD_AND_HASH_STRING_CACHE] [Lazy init panic] Can PAD_AND_HASH_STRING_CACHE initialization panic due to allocation failure, causing all keyless authentication to fail system-wide? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d57d9d6-d068-4cd7-8e1f-a53c3edd7e6c?mode=deep",
+    "timestamp": "2026-01-21 08:16:49.502333",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/bn254_circom.rs] [Static: JWK_HASH_CACHE] [Lazy init panic] Does JWK_HASH_CACHE initialization properly handle memory allocation failures, or can initialization panic crash validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51cad028-7db8-4031-8e31-a8ff31892564?mode=deep",
+    "timestamp": "2026-01-21 08:17:03.620635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/bn254_circom.rs] [Static: EMPTY_EXTRA_FIELD_HASH] [Init error propagation] Can errors from pad_and_hash_string() during EMPTY_EXTRA_FIELD_HASH initialization be silently ignored, causing invalid default hash to be used? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc050e37-7325-42a3-a3c0-a03c3b4b3eec?mode=deep",
+    "timestamp": "2026-01-21 08:17:18.005293",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/bn254_circom.rs] [Static: EMPTY_OVERRIDE_AUD_FIELD_HASH] [Init error propagation] Does unwrap() on EMPTY_OVERRIDE_AUD_FIELD_HASH initialization properly propagate errors, or can initialization failures cause panics during runtime? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29a559df-c484-4c65-9085-30284c72427e?mode=deep",
+    "timestamp": "2026-01-21 08:17:33.689884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/bn254_circom.rs] [Function: G1Bytes::new_unchecked()] [Coordinate zero] Can G1Bytes::new_unchecked() accept points with x=0 or y=0 that might have special algebraic properties exploitable in pairing operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67e7e9eb-f6f4-4d4d-820d-111aaa0ad37e?mode=deep",
+    "timestamp": "2026-01-21 08:17:50.441208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/bn254_circom.rs] [Function: G2Bytes::new_unchecked()] [Coordinate zero] Does G2Bytes::new_unchecked() properly handle G2 points where Fq2 components are zero, which could enable small-subgroup attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da135efa-62ca-45e3-b35a-f6af46aa9caf?mode=deep",
+    "timestamp": "2026-01-21 08:18:08.696847",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/bn254_circom.rs] [Function: hash_public_inputs()] [Zero timestamp] Can exp_timestamp_secs=0 cause issues in Fr conversion or later validation, allowing signatures with no expiration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b39bc62c-9eea-4b9e-9d7d-4679f049eea3?mode=deep",
+    "timestamp": "2026-01-21 08:18:29.474385",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/bn254_circom.rs] [Function: hash_public_inputs()] [Zero horizon] Does exp_horizon_secs=0 create signatures with\n\n### Citations\n\n**File:** types/src/keyless/bn254_circom.rs (L1-453)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse super::circuit_constants::MAX_EXTRA_FIELD_BYTES;\nuse crate::{\n    jwks::rsa::RSA_JWK,\n    keyless::{\n        base64url_encode_str, Configuration, EphemeralCertificate, IdCommitment, KeylessPublicKey,\n        KeylessSignature,\n    },\n    serialize,\n    transaction::authenticator::EphemeralPublicKey,\n};\nuse anyhow::bail;\nuse aptos_crypto::{poseidon_bn254, poseidon_bn254::pad_and_hash_string, CryptoMaterialError};\nuse ark_bn254::{Fq, Fq2, Fr, G1Affine, G1Projective, G2Affine, G2Projective};\nuse ark_ff::PrimeField;\nuse ark_serialize::{CanonicalDeserialize, CanonicalSerialize};\nuse num_traits::{One, Zero};\nuse once_cell::sync::Lazy;\nuse quick_cache::sync::Cache;\nuse serde::{Deserialize, Deserializer, Serialize, Serializer};\nuse serde_big_array::BigArray;\n\n// TODO(keyless): Some of this stuff, if not all, belongs to the aptos-crypto crate\n\npub const G1_PROJECTIVE_COMPRESSED_NUM_BYTES: usize = 32;\npub const G2_PROJECTIVE_COMPRESSED_NUM_BYTES: usize = 64;\n\n// When the extra_field is none, use this hash value which is equal to the hash of a single space string.\nstatic EMPTY_EXTRA_FIELD_HASH: Lazy<Fr> = Lazy::new(|| {\n    poseidon_bn254::keyless::pad_and_hash_string(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bf1adaf-9477-4a90-bddd-3c0ebc569f20?mode=deep",
+    "timestamp": "2026-01-21 08:18:52.148913",
+    "report_generated": false
+  }
+]
