@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: encode_key()] [Integer overflow] Can an attacker cause stale_since_version to overflow u64::MAX when encoded with write_u64::<BigEndian>, potentially wrapping to zero and causing incorrect key ordering that breaks pruning logic and enables retention of nodes that should be pruned? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc969bf6-508d-4527-a085-5c5ce3e42675?mode=deep",
+    "timestamp": "2026-01-21 03:06:36.884157",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: encode_key()] [Buffer overflow] If node_key.encode() produces an unexpectedly large byte vector (e.g., due to malicious nibble path construction), can this cause memory exhaustion during encoded.write_all() that crashes validator nodes and causes loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc807ec0-ac50-4360-864c-f63f91bf0cd5?mode=deep",
+    "timestamp": "2026-01-21 03:06:50.150505",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: encode_key()] [Error handling bypass] If node_key.encode() returns an error, does the error propagation via '?' operator properly prevent partially encoded keys from being written to the database, or can this lead to corrupted database entries causing state verification failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4980445-66dd-4e3d-b783-57fcfde69d41?mode=deep",
+    "timestamp": "2026-01-21 03:07:03.741202",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: decode_key()] [Buffer underflow] When reading stale_since_version from data[..VERSION_SIZE], can an attacker craft a malicious database entry with less than 8 bytes that bypasses ensure_slice_len_gt validation and causes a panic or undefined behavior in read_u64::<BigEndian>? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80d3ae11-a4f1-4bcf-8887-a61aeb246468?mode=deep",
+    "timestamp": "2026-01-21 03:07:17.743829",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: decode_key()] [Integer truncation] Does the VERSION_SIZE constant correctly match size_of::<Version>() on all target platforms (32-bit vs 64-bit), or can architecture-specific size differences cause incorrect slicing and data corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_010b2d38-e72e-4117-9ac3-acaaace56d28?mode=deep",
+    "timestamp": "2026-01-21 03:07:32.856032",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: decode_key()] [Slice bounds violation] When calling NodeKey::decode(&data[VERSION_SIZE..]), if data.len() == VERSION_SIZE exactly, does this pass an empty slice that could cause NodeKey::decode to fail unexpectedly or accept invalid zero-length keys? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_240d103a-e88a-4a85-9732-f62112eb40a1?mode=deep",
+    "timestamp": "2026-01-21 03:07:50.630136",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: decode_key()] [Endianness attack] Since stale_since_version is encoded in BigEndian, can an attacker on a LittleEndian system manipulate raw database bytes to create version values that appear valid but decode to incorrect versions, causing pruning to delete wrong nodes and corrupt state history? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_043f83ff-ad29-412b-b243-3206a413e894?mode=deep",
+    "timestamp": "2026-01-21 03:08:08.863165",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: decode_key()] [NodeKey validation bypass] Does NodeKey::decode() perform sufficient validation on the decoded node_key, or can an attacker inject malformed NodeKeys (e.g., with invalid version/nibble_path combinations) that pass validation but cause crashes during subsequent merkle tree operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24e29795-dd5f-4c35-8d8d-f8a8afc5fcfb?mode=deep",
+    "timestamp": "2026-01-21 03:08:28.803120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: encode_value()] [Empty value assumption] Since the value is always empty (unit type), can an attacker exploit the fact that Ok(Vec::new()) always succeeds to bypass any validation that might be expected during write operations, potentially allowing invalid StaleNodeIndex entries to be persisted? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_128dd6ac-57ba-40a3-a714-8dbb4f0e2384?mode=deep",
+    "timestamp": "2026-01-21 03:08:49.770853",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: decode_value()] [Length validation bypass] Does ensure_slice_len_eq(data, 0) properly reject non-empty values, or can an attacker store non-empty data alongside StaleNodeIndex keys that gets ignored during decode but causes database bloat or parsing errors in other tools? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84c2e397-8188-4cd3-a88a-51332e50f2b5?mode=deep",
+    "timestamp": "2026-01-21 03:09:12.189282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: encode_seek_key()] [Version overflow in seek] When encoding a Version for seeking with to_be_bytes(), if the version is u64::MAX, does this correctly seek to the end of the database, or does BigEndian encoding cause unexpected wraparound behavior in RocksDB iterator positioning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ead3ba0-fda4-4663-acab-682995551196?mode=deep",
+    "timestamp": "2026-01-21 03:09:34.470193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: encode_key()] [Key ordering corruption] Since stale_since_version is serialized in BigEndian for RocksDB ordering, can inconsistent encoding between different nodes (e.g., due to version mismatches or corrupted binaries) cause validators to disagree on the order of stale node indices, leading to divergent pruning and state root mismatches? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d55821bd-24e3-4947-99aa-128e82056c23?mode=deep",
+    "timestamp": "2026-01-21 03:09:58.886418",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: encode_key()] [Composite key collision] Can two different StaleNodeIndex instances with different (stale_since_version, node_key) pairs produce identical encoded keys due to overlapping byte patterns, causing one entry to overwrite another and resulting in missing stale node records that prevent proper pruning? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79b889e6-ca9d-4f30-9ff7-0aaf29216961?mode=deep",
+    "timestamp": "2026-01-21 03:10:25.823653",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Schema definition] [Key uniqueness violation] Is the combination of stale_since_version and node_key guaranteed to be unique across all epochs, or can the same node become stale at the same version in different shards, causing key collisions that corrupt the stale node index? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05ad9058-dbe5-4399-aba3-6db967b62147?mode=deep",
+    "timestamp": "2026-01-21 03:10:52.747540",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: encode_key()] [Lexicographic ordering attack] Since node_key is appended after stale_since_version, can an attacker craft NodeKeys with specific nibble paths that exploit lexicographic ordering to position malicious entries before or after legitimate entries, disrupting pruning order and potentially causing premature deletion of required nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_047d1d7a-28b1-471b-8344-8648d64c36bc?mode=deep",
+    "timestamp": "2026-01-21 03:11:20.494663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: encode_seek_key()] [Seek precision loss] When seeking to a specific Version using encode_seek_key(), does the seek operation correctly position the iterator at the first key with stale_since_version >= target, or can off-by-one errors cause the iterator to skip critical entries during pruning? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_411e65a0-91e7-41b7-886a-d6995a7a3f32?mode=deep",
+    "timestamp": "2026-01-21 03:11:49.441088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Schema definition] [Cross-epoch boundary confusion] Can stale nodes created exactly at epoch boundaries (previous_epoch_ending_version) be incorrectly classified as belonging to the wrong schema (StaleNodeIndexSchema vs StaleNodeIndexCrossEpochSchema), causing them to be pruned with the wrong retention policy and corrupting epoch snapshots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ee5e0b2-2686-41e0-93bf-10fc13db629d?mode=deep",
+    "timestamp": "2026-01-21 03:12:19.506685",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Schema integration] [Differential pruning race] Since StaleNodeIndexCrossEpochSchema is pruned separately from StaleNodeIndexSchema by epoch_snapshot_pruner, can a race condition between the two pruners cause the same JellyfishMerkleNode to be deleted twice, resulting in a database error that crashes the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3196b13-dfb4-410a-9199-544e91febd57?mode=deep",
+    "timestamp": "2026-01-21 03:12:49.062206",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Schema integration] [Premature epoch snapshot deletion] If the epoch_snapshot_pruner has a longer prune window than state_merkle_pruner but processes entries out of order due to iterator seeking issues, can this cause epoch-ending state snapshots to be pruned before they're needed for state sync, breaking fast sync capabilities? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00286ed0-ec03-4622-b217-a0146e2080ad?mode=deep",
+    "timestamp": "2026-01-21 03:13:17.389640",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Function: decode_key()] [Version comparison vulnerability] When the pruner compares index.stale_since_version <= target_version to determine if a node should be pruned, can integer overflow in the comparison (if versions approach u64::MAX) cause incorrect pruning decisions that delete active nodes or retain garbage? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0521f3c8-23f8-47f8-9407-ef6e1989bbd9?mode=deep",
+    "timestamp": "2026-01-21 03:13:48.142811",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Schema integration] [Orphaned merkle nodes] If a StaleNodeIndex entry is successfully deleted from StaleNodeIndexCrossEpochSchema but the corresponding JellyfishMerkleNode deletion fails (e.g., due to concurrent access), can this create orphaned nodes that accumulate indefinitely and cause database bloat leading to disk exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_295a9a6b-f924-4a23-9410-de7a2714e4e2?mode=deep",
+    "timestamp": "2026-01-21 03:14:18.582716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Schema integration] [Missing stale index] If a node becomes stale but the StaleNodeIndexCrossEpochSchema entry is never written (e.g., due to crash during commit), can this cause the corresponding JellyfishMerkleNode to persist forever, accumulating garbage that eventually exhausts storage and halts the network? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_794402a4-a8df-4abe-8082-f7eaf5e77719?mode=deep",
+    "timestamp": "2026-01-21 03:14:48.696879",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Schema integration] [Pruner progress corruption] If the epoch_snapshot_pruner's progress metadata is corrupted or reset to an earlier version, can this cause the pruner to re-process and delete stale nodes that were already processed, potentially double-deleting active nodes and causing state verification failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7eeee96-e30b-49e0-989b-d1b92721c0e2?mode=deep",
+    "timestamp": "2026-01-21 03:15:14.511177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Schema integration] [Epoch boundary classification] When determining if a node should be stored in StaleNodeIndexCrossEpochSchema based on whether node_key.version() <= previous_epoch_ending_version, can an off-by-one error in the comparison cause nodes at exact epoch boundaries to be misclassified and either not retained for snapshots or retained unnecessarily? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de57abb1-d3b1-43b8-ae90-65bcc0b61f1e?mode=deep",
+    "timestamp": "2026-01-21 03:15:40.820213",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index_cross_epoch/mod.rs] [Schema integration] [Missing epoch ending version] If previous_epoch_ending_version is None during commit, does the code correctly default to using StaleNodeIndexSchema for all stale nodes, or can this cause nodes that should be cross-epoch to be incorrectly pruned early, breaking epoch snapshot invariants? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d31e251b-b2a4-4071-b315-6b35137f9e7b?mode=deep",
+    "timestamp": "2026-01-21 03:16:06.690752",
+    "report_generated": false
+  }
+]
