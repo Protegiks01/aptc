@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Integer Underflow] Can an attacker trigger integer underflow by calling charge() with a cost value larger than the current self.0 value when self.0 < cost is false due to wraparound, causing the subtraction at line 18 to wrap around to usize::MAX and bypass all future limit checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3316bef5-9fd8-4db0-96f7-e0fad5cdca85?mode=deep",
+    "timestamp": "2026-01-21 07:22:11.108419",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Integer Overflow] If multiple charge() calls are made concurrently from different threads without synchronization, can race conditions in the subtraction operation (self.0 -= cost) cause integer underflow/overflow leading to bypassed limits or panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc6996ce-93c6-4b9e-9458-1fd778ee2952?mode=deep",
+    "timestamp": "2026-01-21 07:22:23.881605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Arithmetic Edge Case] Can an attacker pass usize::MAX as the cost parameter to charge(), causing the comparison at line 14 to always evaluate to true (since self.0 will always be < usize::MAX unless it's already MAX), triggering spurious errors and causing DoS by making all queries fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4622a9f1-893c-48eb-a067-961ad420267f?mode=deep",
+    "timestamp": "2026-01-21 07:22:37.030842",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Subtraction Safety] Does the subtraction self.0 -= cost at line 18 use checked arithmetic, or can it panic in debug mode if cost somehow bypasses the check at line 14, potentially crashing the validator node during query processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_804091f7-f6e4-414c-befd-73d89d8fd0ba?mode=deep",
+    "timestamp": "2026-01-21 07:22:50.395617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Constant: DEFAULT_LIMIT] [Integer Overflow] Is the DEFAULT_LIMIT value of 100_000_000 bytes properly validated to ensure it doesn't cause overflow when combined with other limits or counters in the broader resource viewer system, potentially leading to memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93b76e75-dd68-4052-840d-12e0af32438b?mode=deep",
+    "timestamp": "2026-01-21 07:23:04.525422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: Default::default()] [Initialization Bypass] Can an attacker create a Limiter instance directly using Limiter(custom_value) instead of Default::default(), bypassing the DEFAULT_LIMIT and setting an arbitrarily large or small limit that could enable resource exhaustion or trigger spurious errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9915b618-fbdb-441b-8b4d-c3d0846f4971?mode=deep",
+    "timestamp": "2026-01-21 07:23:19.364456",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: Default::default()] [Zero Limit Attack] If caller code accidentally creates Limiter(0) instead of using default(), will the first charge() call with any non-zero cost immediately fail, causing all resource queries to fail and resulting in total loss of query functionality? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bed636e-b187-45bf-b90c-7a8d8950d5a9?mode=deep",
+    "timestamp": "2026-01-21 07:23:35.352599",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Struct: Limiter] [Direct Construction] Can malicious code construct Limiter(usize::MAX) to effectively disable all limiting, allowing unbounded resource queries that could exhaust node memory and cause validator crashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc4977d1-264d-4218-8ce2-ae27d0a8fa7b?mode=deep",
+    "timestamp": "2026-01-21 07:23:53.473417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Constant: DEFAULT_LIMIT] [Configuration Attack] Is the DEFAULT_LIMIT of 100MB appropriate for all deployment scenarios, or could it be too high for resource-constrained validators or too low for legitimate large state queries, causing either resource exhaustion or functional DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3599d476-4cb1-4dee-a157-eda8834b4a84?mode=deep",
+    "timestamp": "2026-01-21 07:24:12.431492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [TOCTOU Race] If charge() is called concurrently from multiple threads on the same Limiter instance, can a Time-Of-Check-Time-Of-Use (TOCTOU) race between the check at line 14 and subtraction at line 18 allow multiple threads to all pass the check before any subtracts, causing total charges to exceed the limit? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b9bedc2-5513-47f9-8c2d-8abf59d97943?mode=deep",
+    "timestamp": "2026-01-21 07:24:32.242571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Struct: Limiter] [Non-Atomic Operations] Since Limiter contains a bare usize without Arc<Mutex<>> or AtomicUsize, is it memory-safe when shared across threads, or can data races in concurrent charge() calls lead to undefined behavior and potential security vulnerabilities? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8bd97e4-f844-4a7d-b938-bd7371ff10c0?mode=deep",
+    "timestamp": "2026-01-21 07:24:53.126471",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Concurrent Subtraction] If two threads simultaneously call charge(50_000_000) on a Limiter(100_000_000), can both pass the check at line 14 before either subtracts, resulting in self.0 potentially going negative (wrapping to usize::MAX) and bypassing all future limits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8876776a-ffb0-42c9-a1f0-5c76b914990a?mode=deep",
+    "timestamp": "2026-01-21 07:25:14.615117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Struct: Limiter] [Clone Safety] If Limiter is cloned (and it has no explicit Clone implementation restricting it), will multiple clones share the same underlying limit state, or will each get independent limits, potentially allowing attackers to bypass limits through cloning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9243df26-2610-44ac-beb3-501e82cd29f3?mode=deep",
+    "timestamp": "2026-01-21 07:25:35.536634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Zero Cost Bypass] Can an attacker repeatedly call charge(0) to perform unlimited operations without consuming any limit, effectively bypassing the limiter entirely if the calling code doesn't validate non-zero costs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7c4d867-5b3d-4eeb-af4f-55672b36a2c9?mode=deep",
+    "timestamp": "2026-01-21 07:25:57.345458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Cost Validation] Does charge() validate that the cost parameter is reasonable and not maliciously crafted (e.g., usize::MAX, or values that could cause integer issues), or does it blindly trust caller-provided costs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c10c49c-f17f-45f0-8471-1f48716cdfe8?mode=deep",
+    "timestamp": "2026-01-21 07:26:20.006481",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Negative Cost Simulation] If the cost parameter is passed from untrusted sources that perform type conversions from signed integers (i64, i32), could negative values wrap to large positive usize values, either triggering spurious errors or bypassing limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52329549-f151-4709-9150-802e71d0dc77?mode=deep",
+    "timestamp": "2026-01-21 07:26:42.589479",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Multiple Small Charges] Can an attacker make many small charge() calls just below the remaining limit to slowly exhaust the limiter, timing the final large request to pass the check before others complete, exploiting race conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6234d90c-76c1-49ef-b176-c4254810494b?mode=deep",
+    "timestamp": "2026-01-21 07:27:04.667891",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Error State Corruption] When charge() returns an error at line 15-16, does the Limiter state remain unchanged (no partial deduction), or could error handling bugs in callers cause state inconsistencies where limits are partially consumed without successful operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d865b57f-db86-4966-b53c-ceb685aef2ae?mode=deep",
+    "timestamp": "2026-01-21 07:27:27.450466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Error Message Leakage] Does the error message 'Query exceeds size limit' at line 16 leak sensitive information about the current remaining limit or query size that could help attackers fine-tune their attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_021bf4aa-c12b-4944-bb77-50582a1646de?mode=deep",
+    "timestamp": "2026-01-21 07:27:50.210732",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [StatusCode Selection] Is StatusCode::ABORTED at line 15 the correct error code for limit exceeded conditions, or should it use a more specific code (like RESOURCE_EXHAUSTED) to help callers distinguish limit errors from other abort conditions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_879f9aa6-53fc-4032-b1f7-2d2da2fd556c?mode=deep",
+    "timestamp": "2026-01-21 07:28:12.186520",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Recovery Mechanism] After charge() fails with an error, is there any mechanism to recover or reset the Limiter, or does it remain in a failed state potentially blocking all future queries even after the limit should have been replenished? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1166e0e-ce5c-47d7-84dc-8f5265de01ad?mode=deep",
+    "timestamp": "2026-01-21 07:28:34.099593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Partial Failure Handling] If a caller makes multiple charge() calls and one fails midway, is there a transaction-like rollback mechanism to undo previous charges, or could failed operations leave the limiter in an inconsistent partially-consumed state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f9f776c-337c-413a-a846-165fde7caff8?mode=deep",
+    "timestamp": "2026-01-21 07:28:56.384569",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Exact Limit Boundary] If self.0 equals cost exactly, does the comparison self.0 < cost at line 14 correctly allow the operation (returning false and proceeding to subtract), or should it use <= to prevent exact-limit edge cases? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0282da6f-36fc-431a-b86e-9a5222c63b8c?mode=deep",
+    "timestamp": "2026-01-21 07:29:17.549734",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Boundary Exploitation] Can an attacker probe the exact remaining limit by making charge() calls with incrementing costs until one fails, then use this information to craft maximally-sized queries that pass the limit check but cause downstream resource exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0937dc2-a299-4052-bf62-3fb472537ae8?mode=deep",
+    "timestamp": "2026-01-21 07:29:39.084651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-resource-viewer/src/limit.rs] [Function: charge()] [Post-Subtraction State] After successful charge() at line 18, if self.0 becomes 0, are subsequent charge(0) calls allowed, or does zero remaining limit create an invalid state that should be explicitly handled? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe9f7d47-f6b8-432c-b396-bb3f08b4206e?mode=deep",
+    "timestamp": "2026-01-21 07:30:01.047445",
+    "report_generated": false
+  }
+]
