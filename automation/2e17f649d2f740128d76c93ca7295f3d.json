@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [Semaphore try_acquire fairness] The code uses try_acquire() which fails immediately when semaphore is full - can an attacker flood the server with requests to starve legitimate users by holding all semaphore permits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfca3c65-a261-4cdd-98a1-4e83c8540957?mode=deep",
+    "timestamp": "2026-01-21 00:34:19.394111",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [Semaphore early drop on error] If an error occurs after acquiring the semaphore permit but before processing completes, the permit is dropped - can an attacker intentionally trigger errors to rapidly cycle through permits and bypass concurrency limits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91c2eb7a-1ad0-4437-a78f-1963d76677b6?mode=deep",
+    "timestamp": "2026-01-21 00:34:32.083831",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [Semaphore None configuration] If concurrent_requests_semaphore is None, no concurrency limiting is applied - can this lead to unbounded concurrent request processing causing resource exhaustion or race condition exploitation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e1bcf40-5113-4440-9deb-ac650dd1bdcc?mode=deep",
+    "timestamp": "2026-01-21 00:34:44.889218",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [Semaphore permit lifetime] The SemaphorePermit is returned from preprocess_request() and held until the function calling it completes - can slow downstream processing (e.g., blockchain transaction submission) cause permits to be held too long, reducing system throughput? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_955fe597-36d2-40bf-9976-279b61fd85c2?mode=deep",
+    "timestamp": "2026-01-21 00:34:59.993105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [Semaphore acquisition before validation] The semaphore is acquired before IP address and receiver validation - can an attacker submit invalid requests to hold semaphore permits without doing real work, causing denial of service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89ceae61-9fcf-43c8-a70f-8c6ea24666ce?mode=deep",
+    "timestamp": "2026-01-21 00:35:14.986125",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund_inner()] [Concurrent checker state modification] Multiple concurrent fund_inner() calls can execute checkers in parallel - can race conditions in checker state updates (e.g., rate limit counters) allow requests that should be rejected to pass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8927917-b1e8-48ab-9ea0-cdf68bcd4eeb?mode=deep",
+    "timestamp": "2026-01-21 00:35:30.481270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [RealIp None handling] If RealIp.0 is None, the request is immediately rejected - but can an attacker configure their proxy to always provide a valid IP even if it's spoofed, bypassing IP-based rate limiting entirely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45029058-5f07-49be-95e6-ff39bd0bba73?mode=deep",
+    "timestamp": "2026-01-21 00:35:46.595813",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [X-Forwarded-For spoofing] The code relies on RealIp which checks X-Forwarded-For and X-Real-IP headers - can an attacker spoof these headers to impersonate different IP addresses and bypass IP-based rate limiting? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50fceabe-035d-46c9-9e55-4b31cd575482?mode=deep",
+    "timestamp": "2026-01-21 00:36:03.848192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [IP validation timing] IP extraction happens early but is used by checkers later - can an attacker exploit race conditions where IP changes between extraction and checker validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e71d127-e8a8-4c99-8b20-3418231dd219?mode=deep",
+    "timestamp": "2026-01-21 00:36:22.226171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund_inner()] [IP logging but no re-validation] The source_ip is logged in fund_inner() but never re-validated - could the IP have changed between preprocess_request() and fund_inner() execution in async contexts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_265d6ba9-b5b6-43fd-9136-720f90d85b49?mode=deep",
+    "timestamp": "2026-01-21 00:36:41.683027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [No IP format validation] After extracting IP from RealIp, there's no validation that it's a valid IPv4/IPv6 address - can malformed IP strings cause checker crashes or bypass IP-based filtering? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5706cdc6-84a5-4a86-9333-46282b6e96ce?mode=deep",
+    "timestamp": "2026-01-21 00:37:02.277911",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [IP6 vs IP4 comparison inconsistency] If checkers compare IP addresses as strings, can an attacker use IPv6 representations of IPv4 addresses (e.g., ::ffff:192.168.1.1) to bypass rate limits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a8ae81e-75a4-4aaf-918f-8f07449eb1b2?mode=deep",
+    "timestamp": "2026-01-21 00:37:24.004019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund()] [Amount validation missing] The fund_request.amount is passed directly to funder.fund() without validation - can an attacker request amount = 0 or amount = u64::MAX to exploit edge cases in amount handling logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80bb2eaf-8188-4700-96c3-bd6f75d66e1d?mode=deep",
+    "timestamp": "2026-01-21 00:37:45.729005",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund_inner()] [Amount None default] If amount is None, the funder uses a default - but can an attacker exploit timing by rapidly alternating between None and explicit amounts to bypass rate limiting that tracks cumulative amounts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a771f42a-2e5a-41e9-8186-99379823583c?mode=deep",
+    "timestamp": "2026-01-21 00:38:08.289190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: FundRequest] [Amount overflow in logging] The requested_amount is logged but never validated - if checkers or funders modify the amount, could this log incorrect values and hide actual funding amounts for auditing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29aaac20-6e78-4af9-b08b-70d92f60164f?mode=deep",
+    "timestamp": "2026-01-21 00:38:31.455450",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund_inner()] [Amount not tracked in CheckerData] The amount is not included in CheckerData passed to checkers - can checkers properly rate-limit by amount, or can an attacker request many small amounts to bypass checkers that only track request counts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86d52959-b1c2-447f-9c1f-95e716c11953?mode=deep",
+    "timestamp": "2026-01-21 00:38:55.487581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund_inner()] [Transaction hash extraction on error] When fund_result is Err, txn_hashes are extracted from the error - can an attacker exploit this to cause partial transaction submission where some txns succeed but the error path is taken? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94b64b8d-ad66-4dc0-a377-4eb2cfb7e40b?mode=deep",
+    "timestamp": "2026-01-21 00:39:18.953193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund()] [Transaction hash return without confirmation] The function returns transaction hashes immediately without waiting for on-chain confirmation - can an attacker exploit this to double-spend by resubmitting before transactions are committed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8f4c7f6-e492-410a-8c68-f292d22af655?mode=deep",
+    "timestamp": "2026-01-21 00:39:43.269651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: get_hashes()] [Long hash format without 0x] Hashes are returned as hex strings without '0x' prefix using to_hex() - can this inconsistency with other Aptos APIs cause integration bugs where hashes are misinterpreted? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c05b409-62cc-419f-b2d0-e8b4bacd69c9?mode=deep",
+    "timestamp": "2026-01-21 00:40:05.840642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund_inner()] [Committed hash calculation] Uses committed_hash() instead of actual transaction hash - are these always identical, or can an attacker exploit differences to track/replay transactions differently? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9ca81d4-f711-41d3-a85c-3ab4754457d0?mode=deep",
+    "timestamp": "2026-01-21 00:40:28.809953",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund_inner()] [Empty txn_hashes logging] The txn_hashes might be empty if funding fails early - can this empty log entry be exploited to hide failed attacks or bypass monitoring systems that track funding attempts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12a1f908-9d35-4827-a362-c6a129603881?mode=deep",
+    "timestamp": "2026-01-21 00:40:50.515135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund_inner()] [Multiple transaction return] The function can return multiple SignedTransactions - can an attacker exploit the gap between transactions to cause partial funding where only some transactions succeed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acc10319-d35c-476a-8ef1-76c503bf9143?mode=deep",
+    "timestamp": "2026-01-21 00:41:13.165393",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [HeaderMap clone shared Arc] CheckerData contains Arc<HeaderMap> which is cloned - can modifications to the underlying HeaderMap after cloning affect checker decisions in unexpected ways? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d374519a-ef83-4efa-adde-7ca5ba60c370?mode=deep",
+    "timestamp": "2026-01-21 00:41:35.701489",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: fund_inner()] [JWT sub extraction] Uses jwt_sub() helper which can fail with .ok() swallowing errors - can an attacker provide malformed JWTs that cause silent auth failures but still allow funding? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b924c167-9f3b-4e87-9997-98d60b47c878?mode=deep",
+    "timestamp": "2026-01-21 00:41:58.099887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/endpoints/fund.rs] [Function: preprocess_request()] [Header validation timing] Headers are captured at preprocess time but used by bypassers/checkers later - can an attacker exploit time-of-check-time-of-use gaps by modifying headers between extraction and validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1dbb839e-a402-49e0-bec3-75e59703caec?mode=deep",
+    "timestamp": "2026-01-21 00:42:21.964999",
+    "report_generated": false
+  }
+]
