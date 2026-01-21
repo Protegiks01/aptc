@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Type confusion in BCS] Does BCS serialization preserve type information correctly for all fields in PrebuiltPackage and PrebuiltPackagesBundle, or can type confusion occur during deserialization leading to memory corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85d9852b-5911-4e73-8470-3a3ab8766ea8?mode=deep",
+    "timestamp": "2026-01-21 00:21:05.350143",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Path traversal write] The fs::write(base_dir.as_ref().join('prebuilt.mpb'), bundle_bytes) allows base_dir to be any path - can an attacker provide a base_dir containing '..' to write the prebuilt.mpb file to arbitrary filesystem locations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e8d51ad-8a6d-4af1-8e2f-a9f3b19317a6?mode=deep",
+    "timestamp": "2026-01-21 00:21:17.640261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [File overwrite attack] If prebuilt.mpb already exists at the target location, does fs::write silently overwrite it without validation, potentially replacing legitimate prebuilt packages with malicious ones? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_002fc452-5bfb-4b16-820a-c4c39be90abc?mode=deep",
+    "timestamp": "2026-01-21 00:21:30.142748",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Symlink attack] If base_dir/prebuilt.mpb is a symlink pointing to a sensitive system file, will fs::write follow the symlink and overwrite that file with bundle data, potentially corrupting system configuration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f923b311-02ce-44c2-8348-389c65b4c759?mode=deep",
+    "timestamp": "2026-01-21 00:21:43.158360",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Race condition TOCTOU] Between when base_dir.as_ref().join('prebuilt.mpb') computes the path and when fs::write executes, can an attacker replace base_dir or create/modify prebuilt.mpb to hijack the write operation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9d75c8e-b5c4-4065-995a-dfda7e61d859?mode=deep",
+    "timestamp": "2026-01-21 00:21:57.058814",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Permission escalation] If the process running create_prebuilt_packages_bundle has elevated privileges, can writing to user-controlled base_dir paths allow an attacker to create files in privileged directories? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_113c4c04-d9a6-4609-914e-5386346533ad?mode=deep",
+    "timestamp": "2026-01-21 00:22:11.457730",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Disk exhaustion] Can an attacker trigger creation of extremely large bundle_bytes that, when written to disk, exhaust available storage and cause denial of service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2faff883-06a2-4594-87f8-b77ef361b1d1?mode=deep",
+    "timestamp": "2026-01-21 00:22:28.015916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Code injection] The generated Rust code includes PREBUILT_BUNDLE_BYTES via include_bytes! macro with concat!(env!('CARGO_MANIFEST_DIR'), '/prebuilt.mpb') - can an attacker manipulate CARGO_MANIFEST_DIR to include malicious bytecode from a different file? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e4564cb-a0f4-47d0-ac10-7e6dacc6059a?mode=deep",
+    "timestamp": "2026-01-21 00:22:44.905442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Path injection in generated code] The concat!(env!('CARGO_MANIFEST_DIR'), '/prebuilt.mpb') in generated code performs string concatenation without validation - can path injection allow include_bytes! to read arbitrary files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a75d0366-d79f-406b-9b59-3c6660d0a16f?mode=deep",
+    "timestamp": "2026-01-21 00:23:03.745738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Output path traversal] The fs::File::create(output_rust_file) allows output_rust_file to be any path - can an attacker provide a path with '..' to overwrite critical Rust source files or system files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_308a2cfd-8482-4b55-9a60-7e97107e042a?mode=deep",
+    "timestamp": "2026-01-21 00:23:22.934908",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Generated code validation] The static PREBUILT_BUNDLE deserialization uses .expect('prebuilt.mpb can be deserialized') which will panic on invalid data - can corrupted prebuilt.mpb cause the generated crate to fail at runtime when accessed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1894074c-cfc8-49ce-b5e9-61b675a9c942?mode=deep",
+    "timestamp": "2026-01-21 00:23:42.723743",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Lazy initialization vulnerability] The Lazy::new(|| { ... }) for PREBUILT_BUNDLE runs deserialization once on first access - can race conditions during concurrent initialization cause multiple threads to deserialize simultaneously, leading to undefined behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_386199b4-03a5-48e9-9e32-9d5acb7907c8?mode=deep",
+    "timestamp": "2026-01-21 00:24:03.110526",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Supply chain attack] The generated code imports aptos_transaction_generator_lib::publishing::prebuild_packages::PrebuiltPackagesBundle - if an attacker compromises this dependency, can they inject malicious deserialization logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80e55f20-4cb4-4007-a259-735f2c4c2035?mode=deep",
+    "timestamp": "2026-01-21 00:24:24.357834",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [File handle leak] The fs::File::create(output_rust_file) creates a file handle that write!(file, ...) uses - if the write! fails midway, is the file handle properly closed, or does it leak causing resource exhaustion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6610c01e-90b4-42b7-9e3d-04876621ce83?mode=deep",
+    "timestamp": "2026-01-21 00:24:46.213420",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Partial write vulnerability] If write!(file, '{}', code.trim_start()) partially succeeds before an error, does it leave a malformed/incomplete Rust file that could cause compilation errors or undefined behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e7bb582-aa5e-40e9-9c67-34170096cce8?mode=deep",
+    "timestamp": "2026-01-21 00:25:08.020688",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Struct: PrebuiltPackage] [Memory exhaustion] Can an attacker create a PrebuiltPackage with extremely large modules BTreeMap or scripts Vec that, when cloned or serialized, causes memory exhaustion leading to denial of service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_740c163c-d7c6-4000-b270-5f5614fa91c8?mode=deep",
+    "timestamp": "2026-01-21 00:25:30.675421",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Struct: PrebuiltPackage] [Module name collision] The modules BTreeMap uses String keys for module names - can duplicate module names within a package cause later modules to overwrite earlier ones, potentially replacing legitimate modules with malicious code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cecb57ef-d187-4550-8690-d5bf19a66506?mode=deep",
+    "timestamp": "2026-01-21 00:25:52.225274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Struct: PrebuiltPackage] [Bytecode validation] The modules field stores Vec<u8> bytecode directly - is there any validation that this bytecode is valid Move bytecode, or can arbitrary binary data be stored and later executed by the VM? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c3c7b54-e538-4fb8-b7b4-234b9903bd8e?mode=deep",
+    "timestamp": "2026-01-21 00:26:13.494461",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Struct: PrebuiltPackage] [Script bytecode validation] The scripts Vec<Vec<u8>> stores script bytecode - are scripts validated to ensure they don't contain malicious operations, infinite loops, or resource exhaustion attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5f22a23-3150-431f-a3c0-31499027e33e?mode=deep",
+    "timestamp": "2026-01-21 00:26:34.877621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Struct: PrebuiltPackage] [Metadata tampering] Can the PackageMetadata be manipulated after extraction to misrepresent package dependencies, versions, or upgrade policies, leading to incorrect package resolution or upgrade enforcement? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c24bb9d-dce5-449d-aeb6-1fda223912b0?mode=deep",
+    "timestamp": "2026-01-21 00:26:55.512701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Struct: PrebuiltPackagesBundle] [Package name manipulation] The packages BTreeMap keys are package names - can an attacker craft package names with special characters, Unicode exploits, or extreme lengths to cause issues in downstream code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbde16c5-9e20-4d30-a7ea-9905aaf22189?mode=deep",
+    "timestamp": "2026-01-21 00:27:16.464163",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Struct: PrebuiltPackagesBundle] [Bundle size attack] Can an attacker create a PrebuiltPackagesBundle containing thousands of packages or extremely large packages that, when deserialized in generated code, causes stack overflow or heap exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5003198-b403-41e3-821c-2fe778593e26?mode=deep",
+    "timestamp": "2026-01-21 00:27:35.625588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Struct: PrebuiltPackagesBundle] [Serialization round-trip] When PrebuiltPackagesBundle is serialized and then deserialized, are all fields perfectly preserved, or can subtle changes occur that alter package behavior (e.g., module ordering, metadata corruption)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da86f12e-7187-4c19-b0dc-ab6e10564916?mode=deep",
+    "timestamp": "2026-01-21 00:27:54.495106",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [Framework dependency] The code relies on aptos_framework::BuiltPackage - if BuiltPackage::build has vulnerabilities (e.g., doesn't validate Move syntax properly), can malicious packages bypass security checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebf3c8ab-02c3-4b6c-a88e-13a83d53e1ee?mode=deep",
+    "timestamp": "2026-01-21 00:28:15.046873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/publishing/prebuild_packages.rs] [Function: create_prebuilt_packages_bundle()] [BCS dependency] The code uses aptos_sdk::bcs for serialization - are there known vulnerabilities in the BCS implementation that could be exploited through crafted PrebuiltPackagesBundle data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9241c20-3d83-4361-9ff3-c8f9dd8e1cbf?mode=deep",
+    "timestamp": "2026-01-21 00:28:35.859457",
+    "report_generated": false
+  }
+]
