@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Field: output_batch_size] [Latency Amplification] Can output_batch_size be set too low (e.g., 1), causing excessive gRPC message overhead and network round-trips, increasing end-to-end latency for clients requesting large transaction ranges? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9536817-7d25-41a5-bacf-c22d1a9851c7?mode=deep",
+    "timestamp": "2026-01-21 06:26:09.543284",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Arithmetic Overflow] When calculating total_concurrent_transactions = processor_task_count * processor_batch_size, can this overflow u32 bounds (65535 * 65535 = 4,294,836,225 > u32::MAX), causing wrapping behavior and incorrect memory allocation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d202024c-0735-42f1-b899-65388e60d7e1?mode=deep",
+    "timestamp": "2026-01-21 06:26:22.144113",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Division by Zero] If processor_batch_size or output_batch_size are somehow set to 0 (bypassing construction validation), can this cause division-by-zero panics in chunking logic within stream_coordinator module? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6440108c-f120-466f-ad01-8d2e5c27dcaa?mode=deep",
+    "timestamp": "2026-01-21 06:26:35.502168",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Saturating Math Bypass] Are processor_task_count, processor_batch_size, and output_batch_size operations performed with saturating arithmetic, or can overflow/underflow occur silently causing incorrect batch calculations and transaction gaps in client streams? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10a37112-4ac7-4c9d-8263-690a65ff1092?mode=deep",
+    "timestamp": "2026-01-21 06:26:48.901141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Uninitialized Context] Can ServiceContext be constructed with a Context that hasn't been fully initialized (e.g., db is None, chain_id is unset), causing null pointer dereferences or panics when the indexer attempts to serve transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b951d16e-6da7-4727-8a26-7205314f86b3?mode=deep",
+    "timestamp": "2026-01-21 06:27:03.119107",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Type Confusion] Since processor_task_count, processor_batch_size, and output_batch_size are all u16, can they be accidentally swapped during construction (e.g., output_batch_size used for task_count), causing severe misconfiguration and unpredictable behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28ca8279-a915-4db5-9487-dc2843999552?mode=deep",
+    "timestamp": "2026-01-21 06:27:18.617841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Configuration Drift] If ServiceContext is created once at startup but the underlying node_config changes (via config reload), can stale processor_task_count/batch_size values cause the indexer to operate with outdated limits, bypassing new safety constraints? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9760b79e-f65b-4472-98d6-09cf9fd22e76?mode=deep",
+    "timestamp": "2026-01-21 06:27:34.837299",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Field: context] [Concurrent DB Access] When multiple IndexerStreamCoordinator instances share the same Arc<Context>, can concurrent calls to context.db.get_transactions() with overlapping version ranges cause database lock contention or deadlocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_feffc45d-02b1-4851-9228-b0e6475c7e76?mode=deep",
+    "timestamp": "2026-01-21 06:27:52.865332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Field: context] [Indexer Reader Contention] If context.indexer_reader is accessed concurrently by multiple streams to get_latest_table_info_ledger_version(), can this cause race conditions where different streams see inconsistent highest_known_version values, leading to transaction gaps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51d361ea-80cf-4581-bc52-dc88694c5a08?mode=deep",
+    "timestamp": "2026-01-21 06:28:11.509105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Field: context] [Chain ID Verification Bypass] Can the chain_id stored in Arc<Context> be accessed without synchronization during concurrent stream initialization, allowing clients to connect before chain_id verification completes and receive transactions from the wrong chain? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f75de42b-3eb6-4b5a-bb7f-9f77b03f89f6?mode=deep",
+    "timestamp": "2026-01-21 06:28:31.627112",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Field: processor_task_count] [Integer Truncation] When processor_task_count (u16) is cast to usize for loop bounds or converted to u64 for version arithmetic, can truncation or sign extension cause incorrect calculations on 32-bit platforms? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85623765-61b0-4290-94be-ae8abd7226cf?mode=deep",
+    "timestamp": "2026-01-21 06:28:52.351479",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Field: processor_batch_size] [Narrowing Conversion] If processor_batch_size is used to calculate u64 version ranges (e.g., start_version + processor_batch_size), can the implicit widening conversion introduce off-by-one errors or version gaps in transaction fetching? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2204b27e-8063-4a1b-adff-f894964f5600?mode=deep",
+    "timestamp": "2026-01-21 06:29:13.777105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Field: output_batch_size] [Type Mismatch] When output_batch_size is compared against dynamic message sizes (usize) or protobuf limits (i32/i64), can type mismatches cause incorrect chunking decisions, leading to message size violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41e1bf9c-d47d-4e62-b36a-8cb9c3cdfa6e?mode=deep",
+    "timestamp": "2026-01-21 06:29:36.127529",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Field: context] [Arc Cycle] If Context internally holds references to ServiceContext or its modules, can this create Arc reference cycles preventing proper cleanup when the indexer is shut down, causing resource leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43180840-b9ff-4cfa-b34f-54d1e3639f70?mode=deep",
+    "timestamp": "2026-01-21 06:29:58.675324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Field: context] [Lifetime Extension] Can ServiceContext outlive the underlying db or indexer_reader in Context due to Arc keeping them alive beyond their intended scope, causing the indexer to serve stale data from a database that should have been closed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a129a3da-dde4-415e-b126-36076d91eb07?mode=deep",
+    "timestamp": "2026-01-21 06:30:21.217687",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Drop Order] Does ServiceContext implement Drop to ensure proper cleanup order (drop context last), or can the context Arc be dropped before child modules finish using it, causing use-after-free in active gRPC streams? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd139b98-ec4b-420b-815e-61c6fed371da?mode=deep",
+    "timestamp": "2026-01-21 06:30:44.903626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Module Integration] [Stream Coordinator Mismatch] Can fullnode_data_service create IndexerStreamCoordinator with different processor_task_count/processor_batch_size values than those in ServiceContext, causing configuration inconsistency and unpredictable batch processing behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_524fd152-17aa-4917-a534-7a9713d22e03?mode=deep",
+    "timestamp": "2026-01-21 06:31:08.727245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Module Integration] [Convert Module Bypass] Can stream_coordinator call conversion functions directly without going through proper ServiceContext validation, allowing malformed transactions to be sent to clients? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78a8230b-82c5-4295-aa9c-06bfb65e6ee9?mode=deep",
+    "timestamp": "2026-01-21 06:31:32.969326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Module Integration] [Runtime Configuration Drift] If runtime module restarts the gRPC server with a new ServiceContext while old streams are still active using the old ServiceContext, can this cause version conflicts or transaction duplication for connected clients? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e79570b6-7ce2-4662-90f0-2a344efed61b?mode=deep",
+    "timestamp": "2026-01-21 06:31:55.719334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Panic Propagation] If ServiceContext construction panics due to invalid Context (e.g., null db), does this crash the entire fullnode or is the panic properly caught, and can this be triggered remotely via malicious configuration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_661d9d49-711c-4c72-b49a-a3bb7b7abfdd?mode=deep",
+    "timestamp": "2026-01-21 06:32:18.610613",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Unwrap Safety] Are all uses of ServiceContext fields wrapped in proper error handling, or can accessing context.db or context.indexer_reader panic if they become None at runtime due to reconfiguration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67fc8dc3-d8c8-4c5a-badb-cab7facb66d7?mode=deep",
+    "timestamp": "2026-01-21 06:32:42.402364",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Module: tests] [Test Code Leakage] Is the tests module properly cfg-gated with #[cfg(test)], or can test utilities be accidentally included in production builds, exposing mock implementations or test-only backdoors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41ba2fac-49e0-427b-a45b-49ad426949e8?mode=deep",
+    "timestamp": "2026-01-21 06:33:07.015640",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Module: tests] [Test Data Contamination] Can test code modify ServiceContext or inject test Context instances that bypass security checks, and are these properly isolated from production code paths? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0c4a458-7ca3-41d5-8f2b-e74387922170?mode=deep",
+    "timestamp": "2026-01-21 06:33:31.492990",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Serialization Attack] If ServiceContext is ever serialized/deserialized (e.g., for IPC or network transmission), can the Arc<Context> be improperly reconstructed, leading to dangling pointers or security context bypass? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66bc8d2f-0584-4259-bd4b-9014c431fccb?mode=deep",
+    "timestamp": "2026-01-21 06:33:56.007661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-fullnode/src/lib.rs] [Struct: ServiceContext] [Default Values] If ServiceContext uses default values for processor_task_count, processor_batch_size, or output_batch_size when configuration is missing, are these defaults secure, or can they be exploited to cause resource exhaustion or performance degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae108ffe-90fb-4e18-951b-4d71e56321f6?mode=deep",
+    "timestamp": "2026-01-21 06:34:19.604649",
+    "report_generated": false
+  }
+]
