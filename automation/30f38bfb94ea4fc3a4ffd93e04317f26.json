@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: new()] [Arc clone ordering] The Arc::clone(&ledger_db) calls at lines 139, 144, 148, 152, 158, 162, 168 - can excessive cloning cause memory exhaustion or reference counting overflow if called repeatedly? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41e89e13-6a8d-4d64-a12a-a7edf15af4f4?mode=deep",
+    "timestamp": "2026-01-21 02:28:14.199948",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: new()] [Transaction store race] TransactionStore::new() at line 136 takes Arc<LedgerDb> - can concurrent modifications to ledger_db during initialization cause TransactionStore to have stale or inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e21db83c-5615-49ae-9062-12d8c613884f?mode=deep",
+    "timestamp": "2026-01-21 02:28:27.421711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: new()] [Internal indexer dependency] Lines 140-141 and 165-166 pass internal_indexer_db to specific sub-pruners. If internal_indexer_db.is_some() but becomes unavailable during pruning, can this cause sub-pruners to fail with unhandled errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21784c55-2a00-4cf0-9a44-38803ccd07c4?mode=deep",
+    "timestamp": "2026-01-21 02:28:41.793039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: new()] [Expect panic] Line 126 uses .expect() which will panic on error. Can an attacker trigger conditions that cause ledger_metadata_pruner initialization to fail, crashing the validator node? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5e857bb-3581-4148-b492-b79cd5cd2674?mode=deep",
+    "timestamp": "2026-01-21 02:28:56.073400",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: new()] [AtomicVersion initialization] Lines 173-174 initialize target_version and progress to the same metadata_progress value. Is this atomic, or can concurrent access during initialization see inconsistent values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da42a2ef-1cef-4036-b19b-64998bf3e949?mode=deep",
+    "timestamp": "2026-01-21 02:29:11.311129",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Error recovery] If ledger_metadata_pruner.prune() fails at line 75-76, the error is returned immediately. Does the caller have sufficient context to retry or rollback, or will the pruner be left in an inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7b3dad4-d160-4cf5-8bd0-943c4a07e9b6?mode=deep",
+    "timestamp": "2026-01-21 02:29:27.835278",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Sub-pruner error context] The anyhow! macro at line 82 only includes the sub-pruner name. Is this sufficient for debugging which specific version range or database operation failed, or will critical context be lost? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86b70e76-f0a4-4a50-a463-05a1db36540f?mode=deep",
+    "timestamp": "2026-01-21 02:29:45.973618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Error state cleanup] If prune() returns an error at line 76 or 84, is there cleanup logic to revert partial changes, or will the database remain in a partially pruned state requiring manual intervention? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c440bcaa-7c66-4034-af13-36112d90bab5?mode=deep",
+    "timestamp": "2026-01-21 02:30:05.838850",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Progress rollback] If pruning fails after line 86 sets progress = current_batch_target_version but before record_progress() at line 87, will progress be incorrectly advanced causing the pruner to skip retrying the failed batch? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_550d13e0-3034-4254-b3f7-504b273ea091?mode=deep",
+    "timestamp": "2026-01-21 02:30:27.383734",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Result unwrapping] The ? operators at lines 76 and 84 propagate errors upward. Does the caller properly handle Result<Version> errors, or can they be ignored causing silent pruning failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91f77a15-243f-4c88-b697-d711e7a028db?mode=deep",
+    "timestamp": "2026-01-21 02:30:49.981071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Retry logic] If pruning fails transiently (e.g., disk I/O error), is there automatic retry logic, or will the pruner permanently fail to advance past the error point? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba700320-f18c-4973-ae2a-c6d5ad8366ac?mode=deep",
+    "timestamp": "2026-01-21 02:31:13.281461",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Error propagation loss] In the par_iter().try_for_each() at line 79, if multiple sub-pruners fail simultaneously, is only the first error reported or are all errors aggregated for proper diagnosis? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33d0c0e4-5e20-4ab9-adbc-478c6f479403?mode=deep",
+    "timestamp": "2026-01-21 02:31:38.246610",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Atomicity violation] Is the pruning operation at lines 75-84 atomic? If the process crashes between metadata pruning (line 75) and sub-pruner completion (line 79), can the database be left with metadata pruned but transaction data remaining? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27d00780-5ea7-4995-82ee-bf8af2a48031?mode=deep",
+    "timestamp": "2026-01-21 02:32:04.838245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Referential integrity] If TransactionInfoPruner deletes transaction info but EventStorePruner fails to delete corresponding events, will there be dangling event references causing query failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6193f24a-e7e0-4049-8b2c-e625ddd777e8?mode=deep",
+    "timestamp": "2026-01-21 02:32:32.033466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Merkle tree corruption] If TransactionAccumulatorPruner at line 147 deletes accumulator nodes but crashes before completing, can this corrupt the transaction accumulator Merkle tree causing invalid proofs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6c2dbb0-936b-4d3f-a4a2-9411a91f3c60?mode=deep",
+    "timestamp": "2026-01-21 02:33:00.579435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Inconsistent progress] If record_progress() at line 87 completes but the database write buffer hasn't flushed, can a crash cause recorded progress to be ahead of actual pruned state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf77c2bc-3770-4169-b818-bb3c7cc9ac39?mode=deep",
+    "timestamp": "2026-01-21 02:33:30.212885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Batch boundary corruption] At line 68, current_batch_target_version is calculated. If this splits a transaction's data across batches (events in one batch, transaction info in another), can partial pruning corrupt multi-table transaction consistency? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63c7310a-d238-4e11-94a6-b0caf4408154?mode=deep",
+    "timestamp": "2026-01-21 02:34:01.423475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Concurrent write conflict] Can concurrent write operations to ledger_db race with pruning at lines 75-84, causing write-write conflicts or lost updates in the underlying RocksDB? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b25c236-a12e-43f0-a14f-4e56808d9f07?mode=deep",
+    "timestamp": "2026-01-21 02:34:33.257592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: record_progress()] [Metrics divergence] If metrics recording at lines 111-113 succeeds but the actual progress store at line 110 fails silently, will monitoring show incorrect pruning progress misleading operators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f077d584-0053-4762-b6a5-f44442b7dd7f?mode=deep",
+    "timestamp": "2026-01-21 02:35:04.324822",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: set_target_version()] [Unauthorized pruning] Is there access control on set_target_version() at line 98? Can an attacker call this with target_version=0 to trigger pruning of all historical data causing permanent data loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a87ace8c-9372-432a-be20-7d9563a3412f?mode=deep",
+    "timestamp": "2026-01-21 02:35:35.826797",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: set_target_version()] [Target manipulation] Can an attacker set target_version to u64::MAX at line 99, causing the pruner to attempt pruning future versions and potentially corrupt the database or enter an infinite loop? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9d37424-40a2-4b83-948a-0627e489d8d9?mode=deep",
+    "timestamp": "2026-01-21 02:36:06.601482",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: set_target_version()] [Backward pruning] Can target_version be set to a value less than current progress, causing the pruner to attempt backward pruning or skip necessary forward pruning? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_337f2e8c-ff5b-4d4d-980f-5ccb80b05935?mode=deep",
+    "timestamp": "2026-01-21 02:36:39.597626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Unauthorized execution] Is prune() at line 62 protected by access control? Can any code path invoke it repeatedly to exhaust disk I/O or create resource contention? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ef90142-06cf-4fa4-9acd-67b6efcd4fdd?mode=deep",
+    "timestamp": "2026-01-21 02:37:12.812508",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Struct: LedgerPruner] [Public field access] Are target_version and progress at lines 48-50 accessible outside this module? Can external code directly modify AtomicVersion bypassing validation logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69bb05a7-c119-4291-97c8-514b62ae6551?mode=deep",
+    "timestamp": "2026-01-21 02:37:42.946094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: prune()] [Unbounded loop] The while loop at line 66 has no iteration limit. Can an attacker set max_versions=1 and target_version=u64::MAX, forcing billions of iterations and causing node unresponsiveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74272144-abda-4b8c-8d7f-65aadaf849f3?mode=deep",
+    "timestamp": "2026-01-21 02:38:13.650620",
+    "report_generated": false
+  }
+]
