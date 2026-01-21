@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Struct: RealRpcResponseSender] [None state exploitation] After send() is called, inner becomes None - can this state be exploited if another part of the code tries to use the sender after it's been consumed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a7aaf20-7f8e-4fd7-9dfe-e84cbd978de9?mode=deep",
+    "timestamp": "2026-01-21 00:19:22.388244",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: RealRpcResponseSender::new()] [Protocol injection] The constructor takes ProtocolId separately (line 195) - can an attacker construct a RealRpcResponseSender with a different protocol than the request used, causing serialization/deserialization mismatches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56486eb9-7d0d-4461-a190-3fbae3bfb389?mode=deep",
+    "timestamp": "2026-01-21 00:19:35.050724",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: RealRpcResponseSender::send()] [Serialization error suppression] Line 205-207 converts response to bytes with error mapping to RpcError::ApplicationError - does this hide critical serialization failures that indicate malicious DKG messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40bb4974-5c9e-44c6-9664-baa775b8d44b?mode=deep",
+    "timestamp": "2026-01-21 00:19:47.835731",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: RealRpcResponseSender::send()] [Ignored send failure] Line 208 ignores the Result from inner.send() with underscore - can send failures cause the requester to hang indefinitely waiting for a response? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d0d8f61-e47b-4df3-8680-b52413c9723c?mode=deep",
+    "timestamp": "2026-01-21 00:20:02.051776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: RealRpcResponseSender::send()] [Error type conversion] ApplicationError wrapping may lose important error details - can this prevent proper diagnosis of DKG protocol violations or malicious message detection? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf1e1b7e-85c3-429e-9a23-88252bd2c4fc?mode=deep",
+    "timestamp": "2026-01-21 00:20:17.465720",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: RealRpcResponseSender::send()] [Response injection] Since send() consumes self mutably, can concurrent access to the same sender before it's consumed cause race conditions in multi-threaded DKG processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7882171-d6fa-4eb1-8659-6acce294b9ae?mode=deep",
+    "timestamp": "2026-01-21 00:20:33.032595",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: RealRpcResponseSender::send()] [Bytes conversion] Line 206 uses Bytes::from() on serialized data - can extremely large DKG transcripts cause memory exhaustion during this conversion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_869fa638-1847-435b-b56d-96999a591269?mode=deep",
+    "timestamp": "2026-01-21 00:20:49.252024",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: RealRpcResponseSender::send()] [Protocol to_bytes safety] Calling protocol.to_bytes() at line 206 - can malicious DKGMessage variants cause panic during serialization if they contain invalid internal state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73ddff77-b23e-4e2b-ae57-3c92bc7d51a7?mode=deep",
+    "timestamp": "2026-01-21 00:21:06.732675",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Struct: DummyRpcResponseSender] [Test code in production] Is DummyRpcResponseSender used only in tests, or can it accidentally be used in production causing RPC responses to be collected in memory instead of sent over the network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddbc4edb-667b-4824-9ecf-69e98692432c?mode=deep",
+    "timestamp": "2026-01-21 00:21:25.510761",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Struct: DummyRpcResponseSender] [Memory leak] The rpc_response_collector is an Arc<RwLock<Vec>> that grows unbounded (line 226) - can an attacker trigger infinite response collection causing memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90327915-0750-4565-b6a8-1082765f9d3b?mode=deep",
+    "timestamp": "2026-01-21 00:21:45.570150",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: DummyRpcResponseSender::send()] [Lock contention] Line 226 acquires a write lock - can concurrent sends from multiple threads cause lock contention that delays DKG message processing and violates timeout guarantees? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_107102e8-f6cc-444b-90ff-b0b2e204eee2?mode=deep",
+    "timestamp": "2026-01-21 00:22:05.112392",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: DummyRpcResponseSender::send()] [No capacity limit] The Vec in rpc_response_collector has no size limit - in test scenarios with many messages, can this cause OOM crashes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a09b0a89-862f-4b55-b420-298d57e1da00?mode=deep",
+    "timestamp": "2026-01-21 00:22:25.427661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Function: DummyRpcResponseSender::send()] [Error propagation] Errors in responses are stored as anyhow::Result but never checked - can this hide critical DKG failures during testing that would manifest as security issues in production? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4ff44e2-7d80-4fb4-938a-92b1e9945286?mode=deep",
+    "timestamp": "2026-01-21 00:22:47.566306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Cross-function: send_rpc + start()] [Epoch confusion] Can an attacker send DKGMessage requests from a future epoch while the validator is processing the current epoch, causing it to prematurely advance DKG state or mix transcripts across epochs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f1b7410-bd25-4cad-b003-26d677eec0c6?mode=deep",
+    "timestamp": "2026-01-21 00:23:10.310832",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Cross-function: send_rpc + send_rb_rpc()] [Double send] Can reliable broadcast send_rb_rpc() call send_rpc() multiple times for the same message, causing duplicate DKG transcript processing and incorrect aggregation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a4ec38b-d538-4b91-ad68-2f6db3eb0bab?mode=deep",
+    "timestamp": "2026-01-21 00:23:34.403058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Cross-function: to_bytes_by_protocol + send_rb_rpc_raw()] [Serialization bypass] Can an attacker pre-serialize malicious DKG messages with to_bytes_by_protocol() then send them via send_rb_rpc_raw() to bypass runtime validation that would occur in send_rb_rpc()? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f17ea9fc-e2e0-4cfa-a082-66a2a0e92692?mode=deep",
+    "timestamp": "2026-01-21 00:23:59.501900",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Cross-function: NetworkTask::new + start()] [Initialization race] If new() and start() are called concurrently or start() is called before new() completes, can race conditions cause partial initialization of the network task? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9a1b102-7f2f-4819-8227-12677a560a50?mode=deep",
+    "timestamp": "2026-01-21 00:24:23.363369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Cross-function: send_rpc + RealRpcResponseSender] [Response timeout mismatch] If send_rpc() times out but RealRpcResponseSender still sends a late response, can the late response be mismatched with a subsequent request? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2fedf66-ff1a-4162-a572-0e213e3cfb2c?mode=deep",
+    "timestamp": "2026-01-21 00:24:48.860129",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Async: send_rpc()] [Tokio runtime panic] Line 76 uses tokio::task::spawn_blocking() for deserialization - can blocking thread exhaustion cause the validator to deadlock if many RPCs are in flight simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef3a87ba-ac03-4cf7-a383-b2541ca4e269?mode=deep",
+    "timestamp": "2026-01-21 00:25:14.346419",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Async: send_rpc()] [Timeout precision] The timeout at line 74 uses tokio::time::timeout - can timer wheel inaccuracies cause DKG messages to timeout prematurely or hang beyond the specified duration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a17ed99-10a3-4e19-972e-1959be0bef03?mode=deep",
+    "timestamp": "2026-01-21 00:25:38.559885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Async: start()] [Stream polling fairness] The select() combinator in all_events (line 153) - does it poll both streams fairly, or can network_events flood starve self_receiver messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e74d754-4486-4423-a9bb-899aa94922a6?mode=deep",
+    "timestamp": "2026-01-21 00:26:03.788720",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Async: Channel operations] [Send/recv race] Between self_sender.send() (line 73) and rx await (line 74), can the receiver be dropped causing permanent channel closure and validator failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9009a267-b82d-45ef-9497-ff7d2295db38?mode=deep",
+    "timestamp": "2026-01-21 00:26:29.256267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Async: Clone + Send] NetworkSender is Clone - can cloned instances share state unsafely when used across multiple async tasks, violating Send/Sync guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af9cd5c6-3172-498c-9a5b-d8abaf974cb6?mode=deep",
+    "timestamp": "2026-01-21 00:26:55.203232",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Type: DKGMessage] [Variant confusion] DKGMessage has TranscriptRequest and TranscriptResponse variants - can sending a TranscriptResponse when a TranscriptRequest is expected cause type confusion in the receiver logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_702fc5cb-e2a2-4f79-ad2e-5a33883e3c96?mode=deep",
+    "timestamp": "2026-01-21 00:27:21.160705",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/network.rs] [Type: AccountAddress] [Address validation] AccountAddress is used as sender/receiver - is there validation that these addresses are currently active validators, or can removed validators still send DKG messages? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_947615e9-04c1-4266-9cbc-fbbb2241270f?mode=deep",
+    "timestamp": "2026-01-21 00:27:47.538662",
+    "report_generated": false
+  }
+]
