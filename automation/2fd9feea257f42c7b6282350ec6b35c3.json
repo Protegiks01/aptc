@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Secret Leakage - CRITICAL] The deal() function stores secret key shares directly in plaintext as C: Vec<Scalar> without any encryption. Can a Byzantine validator or network attacker intercept these plaintext secrets during transmission or storage, allowing them to reconstruct the master secret key and compromise the entire DKG ceremony? This violates the fundamental security property of PVSS where secrets should be encrypted. (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_415c6294-50b9-48fd-a07a-ae71f9e7b1be?mode=deep",
+    "timestamp": "2026-01-21 01:40:56.450700",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: decrypt_own_share()] [Authentication Bypass - CRITICAL] The decrypt_own_share() function at line 172-180 ignores the decryption key parameter (_dk) and directly returns the plaintext share C[player.id] without any authentication or decryption. Can a malicious player request any other player's secret share by manipulating the player.id, allowing them to steal shares and reconstruct secrets they shouldn't have access to? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dfb1227-a501-430f-9708-fb83ddd90864?mode=deep",
+    "timestamp": "2026-01-21 01:41:08.701573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Weak Verification - CRITICAL] The verify() function uses thread_rng() at line 137 to generate random challenge scalars for the linear combination check. Since thread_rng() is not cryptographically secure in all contexts and isn't deterministic, can an attacker exploit this by causing verification to fail inconsistently across nodes, leading to consensus disagreement on valid transcripts and network partition? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c2555a6-fd0b-45ae-ac00-661aeb318c74?mode=deep",
+    "timestamp": "2026-01-21 01:41:21.153621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Parameter Validation - HIGH] The deal() function only asserts eks.len() == sc.n at line 92 but doesn't validate other critical parameters like signing keys, public parameters, or dealer identity. Can a malicious dealer submit invalid or malformed auxiliary data (_aux), signing keys (_ssk, _spk), or public parameters (pp) that bypass validation and cause downstream cryptographic operations to fail or produce invalid results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc2468a9-8388-411e-a396-bc0897985d2d?mode=deep",
+    "timestamp": "2026-01-21 01:41:34.076884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct: Transcript] [Production Use Risk - CRITICAL] The scheme is named 'insecure_field_pvss' and explicitly uses plaintext secret storage. If this testing-only module is accidentally used in production consensus or DKG instead of the secure encrypted variant, it would expose all validator private keys in plaintext over the network, allowing any observer to compromise the entire validator set and steal funds. Is there a compile-time or runtime guard preventing production use? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0820bb1-74b3-46dc-8f2c-cf5696891191?mode=deep",
+    "timestamp": "2026-01-21 01:41:47.678652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: decrypt_own_share()] [Array Out-of-Bounds - HIGH] At line 179, the function accesses self.C[player.id] without validating that player.id < self.C.len(). Can a malicious player or corrupted data structure provide a player.id >= sc.n, causing a panic or undefined behavior that crashes validator nodes and halts consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6afbc96-1300-442a-9862-621b9b6424d5?mode=deep",
+    "timestamp": "2026-01-21 01:42:01.792980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: get_public_key_share()] [Array Out-of-Bounds - HIGH] At line 165, the function accesses self.V[player.id] without bounds checking. Can an attacker craft a malicious Player struct with an out-of-bounds id that causes a panic during public key share retrieval, potentially during critical consensus operations leading to validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a75ffb7-d81f-44f1-aac2-09e48a7eaa9a?mode=deep",
+    "timestamp": "2026-01-21 01:42:17.618465",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: get_dealt_public_key()] [Panic on Empty - HIGH] At line 169, the function calls self.V.last().unwrap() which panics if V is empty. Can a malicious transcript be crafted with an empty V vector that causes all validators attempting to retrieve the public key to crash simultaneously, halting the network? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd3fc72c-2ef3-4241-af95-048720df9433?mode=deep",
+    "timestamp": "2026-01-21 01:42:34.417080",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Array Index Overflow - HIGH] The aggregate_with() function at lines 208-212 accesses self.V[sc.n] without checking if self.V.len() > sc.n. If a malicious transcript has V.len() == sc.n instead of sc.n+1, this causes an out-of-bounds access. Can an attacker exploit this during DKG aggregation to crash validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5dd86e2-e910-4d4d-9661-f2df72d70e30?mode=deep",
+    "timestamp": "2026-01-21 01:42:52.063365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Vector Length Mismatch - MEDIUM] Lines 98-101 create vector V with sc.n+1 elements through a chain operation. If shamir_secret_share() returns vectors with unexpected lengths, can this cause a mismatch between C.len() and V.len() that violates the invariants checked in debug_assert at lines 103-104, potentially causing issues in release builds where asserts are disabled? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbccee0a-ea13-4e74-a327-423f62b07a59?mode=deep",
+    "timestamp": "2026-01-21 01:43:10.430466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Determinism Violation - HIGH] The verify() function generates random alphas using thread_rng() at line 137, making verification non-deterministic. Different validators will use different random challenges, yet all must agree on transcript validity. Can this cause consensus divergence where some validators accept a transcript while others reject it, leading to network partition during DKG? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3ca8a7b-d8df-4a11-98a1-98e2f0b16136?mode=deep",
+    "timestamp": "2026-01-21 01:43:29.401511",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Linear Combination Bypass - HIGH] The verification at lines 140-151 only checks that one randomly-weighted linear combination matches. Can a sophisticated attacker craft a malicious transcript where this single linear combination check passes with high probability (e.g., 1/2^256 chance) but the actual commitments are invalid, allowing them to inject bad shares into the DKG that later compromise the master secret? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51a97c20-090d-4c89-b18d-50d8338e1e8d?mode=deep",
+    "timestamp": "2026-01-21 01:43:49.686727",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Encryption Key Validation - HIGH] The verify() function receives encryption keys (eks) at line 118 but only checks their length at lines 121-123. It never validates that the keys are well-formed, on the correct curve, or non-zero. Can an attacker provide maliciously crafted encryption keys that pass length checks but cause cryptographic operations in other parts of the system to fail or produce weak keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23d11219-02ad-40be-8c23-de0977fc4e7f?mode=deep",
+    "timestamp": "2026-01-21 01:44:09.582945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Empty Signing Keys - MEDIUM] The verify() function receives signing public keys (_spks) at line 117 but completely ignores them (prefixed with underscore). Since signature verification is skipped, can an attacker submit transcripts without valid signatures from authorized dealers, allowing unauthorized parties to participate in DKG and potentially inject malicious shares? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1ebece2-fa92-4747-aa5a-58b3694f0ff4?mode=deep",
+    "timestamp": "2026-01-21 01:44:30.104347",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Auxiliary Data Bypass - MEDIUM] The auxiliary data parameter (_aux) at line 119 is ignored during verification. If auxiliary data contains critical context like epoch numbers, dealer identities, or protocol versions, can an attacker replay old transcripts in new epochs or mix transcripts from different contexts, causing state confusion or DKG failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_472b82c0-c664-4bec-ba4b-85ee1dfb9a6f?mode=deep",
+    "timestamp": "2026-01-21 01:44:51.269071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Dealer List Pollution - HIGH] At line 213, the function extends the dealer list without checking for duplicates or validating dealer identities. Can a Byzantine dealer submit multiple transcripts with the same dealer ID, causing their contributions to be counted multiple times and giving them disproportionate influence over the final aggregated secret? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_381c6d60-276a-4921-ab45-8ce52bc82d71?mode=deep",
+    "timestamp": "2026-01-21 01:45:13.473461",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Integer Overflow - HIGH] Lines 209-212 perform addition operations on Scalar values (self.C[i] += other.C[i]). While Scalar arithmetic is modular, can an attacker craft multiple transcripts whose shares sum to specific values (like zero or predictable patterns) that compromise the security of the final aggregated secret or enable share reconstruction attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e106ce13-bddc-44ec-b775-9dd81a60e747?mode=deep",
+    "timestamp": "2026-01-21 01:45:36.119642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Length Validation Timing - MEDIUM] The debug_assert at lines 205-206 checks vector lengths, but these are removed in release builds. If aggregate_with() is called with transcripts of mismatched sizes in production, lines 208-212 will perform out-of-bounds access. Can an attacker exploit this by submitting malformed transcripts that only cause crashes in production but not during testing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c50ac65-8cd4-44c9-aa7c-056138e58ffe?mode=deep",
+    "timestamp": "2026-01-21 01:45:59.671087",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Commutativity Assumption - MEDIUM] The aggregation assumes that transcript addition is commutative and order-independent. If the underlying algebraic operations have subtle ordering dependencies or if some transcripts contain NaN/infinity values in edge cases, can an attacker exploit order-dependent aggregation to cause different validators to compute different final results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82ee837e-3e80-4935-9c60-8a18b1c12fa6?mode=deep",
+    "timestamp": "2026-01-21 01:46:25.843799",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Return Value Ignored - LOW] The function returns anyhow::Result<()> but always returns Ok(()) at line 218. If aggregation fails (e.g., due to incompatible transcripts), the function doesn't detect or report this. Can this silent failure mode cause validators to use partially-aggregated or corrupted transcripts in subsequent operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4014e76e-8160-443e-96cf-38dfb3dacf04?mode=deep",
+    "timestamp": "2026-01-21 01:46:48.370880",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: to_bytes()] [Panic on Serialization - MEDIUM] At line 41, the function uses .expect() which panics on serialization failure. Can an attacker craft a Transcript with values that cannot be serialized (e.g., malformed G2Projective points) and trigger this panic during network transmission, causing validator crashes during critical DKG operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fbd916f-bde1-4760-b586-28b63cdaa01d?mode=deep",
+    "timestamp": "2026-01-21 01:47:11.662533",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: try_from()] [Deserialization DoS - MEDIUM] The try_from() implementation at lines 45-50 converts all deserialization errors to DeserializationError without size limits. Can an attacker send extremely large or deeply nested serialized transcripts that consume excessive CPU/memory during parsing, causing validator nodes to slow down or crash? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c9c5a60-d681-4c5f-8c7d-dfea65e6f191?mode=deep",
+    "timestamp": "2026-01-21 01:47:35.302883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct: Transcript] [Missing Validation - MEDIUM] The Transcript struct derives Deserialize at line 24, allowing direct deserialization without validation. Can an attacker construct a serialized Transcript with invalid cryptographic elements (e.g., points not on the curve, zero values) that bypass verification and cause downstream cryptographic failures or security vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a19ac5e9-36af-40cf-96ce-c570d504d9be?mode=deep",
+    "timestamp": "2026-01-21 01:48:00.031967",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Trait: ValidCryptoMaterial] [Empty AIP-80 Prefix - LOW] The AIP_80_PREFIX is set to empty string at line 38. If this is used in protocol contexts where prefixes prevent cross-protocol attacks, can an attacker replay transcripts from other protocols or contexts where the same serialization format is used? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3aafa9e6-3e35-4b36-9977-863726b1f2df?mode=deep",
+    "timestamp": "2026-01-21 01:48:25.780798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [RNG Manipulation - HIGH] The verify() function uses thread_rng() which is not provided by the caller, making it impossible to ensure deterministic verification across validators. Can an attacker exploit differences in thread_rng() state across nodes (e.g., through RNG state manipulation or timing attacks) to cause some validators to accept and others to reject the same transcript? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6addeacf-2619-4dfc-a0f4-86a6d9ba3095?mode=deep",
+    "timestamp": "2026-01-21 01:48:51.064464",
+    "report_generated": false
+  }
+]
