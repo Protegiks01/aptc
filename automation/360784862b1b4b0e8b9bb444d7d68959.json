@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Database connection exhaustion] Can an attacker cause repeated transaction failures to exhaust the connection pool by sending malformed transactions that trigger database errors, leading to denial of service for the indexer and preventing coin balance updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e681c345-73e7-47ab-a245-ac3da180cc59?mode=deep",
+    "timestamp": "2026-01-21 06:03:27.269001",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Integer overflow] When casting version numbers from u64 to i64 at line 110 via CoinActivity::from_transaction, can an attacker create transactions with version numbers > i64::MAX (9223372036854775807) causing integer overflow and negative version numbers in the database? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_945ade81-7aed-476b-983f-ecd02fd3edb1?mode=deep",
+    "timestamp": "2026-01-21 06:03:40.348733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Panic vulnerability] At line 286, the code calls unwrap() on CoinInfoQuery::get_by_coin_type without error handling - can an attacker cause a database error or corrupted aptos_coin_info entry to panic the entire indexer process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02c0063e-ed70-49fb-9c51-55540200c4b9?mode=deep",
+    "timestamp": "2026-01-21 06:03:53.683170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Data inconsistency] Between lines 282-286, aptos_coin_info is fetched once per batch - if the coin info changes mid-batch (e.g., decimals updated), can this cause supply calculation inconsistencies across transactions in the same batch? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_810d35c1-69c1-4ad2-a9c2-06370e5bb4db?mode=deep",
+    "timestamp": "2026-01-21 06:04:07.534124",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Race condition] The comment at line 281 states 'TODO: This only needs to be fetched once' - can concurrent process_transactions calls with overlapping transaction ranges cause race conditions where different threads use stale aptos_coin_info? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e602a257-a2fe-484f-a7e1-348f2944a84b?mode=deep",
+    "timestamp": "2026-01-21 06:04:22.421407",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [HashMap collision] At lines 290-292, HashMap is used for coin_infos with String keys - can an attacker craft malicious coin types with hash collisions to cause excessive HashMap chaining and DoS the processing loop? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed4a66fb-044d-4315-9c41-fc2572d87aa8?mode=deep",
+    "timestamp": "2026-01-21 06:04:38.565216",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Data loss] At lines 309-311, only the first version of coin_info is kept via entry().or_insert() - if an attacker creates a malicious coin_info in an early transaction, can legitimate updates in later transactions be silently dropped? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2cc042a-51cd-46f5-9d8e-43ce94c57712?mode=deep",
+    "timestamp": "2026-01-21 06:04:55.970460",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Data overwrite] At line 312, current_coin_balances.extend() will overwrite earlier balances if the same key appears - can an attacker reorder transactions in the batch to manipulate which balance gets recorded? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8072503b-481a-41cf-b514-8632e939def8?mode=deep",
+    "timestamp": "2026-01-21 06:05:15.308080",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Panic on unwrap] At line 314, AccountTransaction::from_transaction().unwrap() will panic if transaction parsing fails - can malformed transaction payloads crash the indexer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9557c181-c21e-4288-b765-60a601dffcd5?mode=deep",
+    "timestamp": "2026-01-21 06:05:36.726259",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Memory exhaustion] Between lines 288-323, all data is accumulated in memory before database insertion - can an attacker submit a batch with thousands of coin activities to exhaust indexer memory causing OOM? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68790d79-c7cd-4089-8647-ab8a44bc6739?mode=deep",
+    "timestamp": "2026-01-21 06:05:59.060073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Sorting manipulation] At lines 325-332, data is sorted by primary keys before insertion - can unsorted or adversarially ordered data cause the sorting algorithm to exceed time complexity limits and delay processing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d945f2f9-f5ff-4366-8bf6-00728a99ac73?mode=deep",
+    "timestamp": "2026-01-21 06:06:23.248990",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Version range mismatch] If start_version and end_version parameters don't match the actual transaction versions in the batch, can this cause incorrect version numbers to be logged at line 80-85 while actual data has different versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e8d72a5-20dc-427c-89c2-e55c5d6c4f72?mode=deep",
+    "timestamp": "2026-01-21 06:06:51.275707",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Empty batch handling] If transactions vector is empty, does process_transactions handle this gracefully or will the database operations fail with empty inserts causing errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21333f0d-a0c2-4035-ac48-4fb5981bd5f1?mode=deep",
+    "timestamp": "2026-01-21 06:07:17.838663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: process_transactions()] [Transaction type filtering] At line 106 of coin_activities.rs, non-UserTransaction and non-GenesisTransaction return Default::default() - can an attacker flood the indexer with other transaction types causing wasted processing cycles? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9c78c9d-fff7-464c-bf93-0722c46c42b1?mode=deep",
+    "timestamp": "2026-01-21 06:07:45.655682",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_to_db()] [Data corruption on retry] At lines 101-123, when the first transaction fails, data is cleaned via clean_data_for_db(true) which removes null bytes - can an attacker inject null bytes strategically so the retry succeeds but with corrupted/truncated data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a6a3479-8d68-42e3-90b6-bdf7cb11b2b2?mode=deep",
+    "timestamp": "2026-01-21 06:08:12.423935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_to_db()] [Double processing vulnerability] If the first transaction (lines 86-99) partially succeeds before failing, then the retry at lines 101-123 runs - can this cause duplicate inserts if some tables succeeded in the first attempt? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8defa113-1c80-4b9f-b427-cf7687ca5cfe?mode=deep",
+    "timestamp": "2026-01-21 06:08:39.235083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_to_db()] [Silent data modification] The clean_data_for_db function modifies data via serialization/deserialization - can this alter BigDecimal precision, timestamps, or other sensitive fields causing balance discrepancies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95f6e7be-7743-46b2-8544-e718d383981d?mode=deep",
+    "timestamp": "2026-01-21 06:09:05.089937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_to_db()] [Transaction isolation] The build_transaction().read_write() at lines 86-99 creates a database transaction - what isolation level is used and can concurrent indexers cause dirty reads or non-repeatable reads? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a9f34fd-2447-409a-be5a-070cc6fa8fca?mode=deep",
+    "timestamp": "2026-01-21 06:09:30.742175",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_to_db()] [Error information loss] At line 101, the original error from the first transaction attempt is discarded when matching Err(_) - does this hide important security-relevant error information like constraint violations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b5f22d1-26a4-4e20-975f-ac7adbeee9f8?mode=deep",
+    "timestamp": "2026-01-21 06:09:56.774577",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_to_db()] [Nested transaction behavior] Lines 86-99 and 101-123 both use build_transaction() - if the database doesn't support nested transactions, can this cause undefined behavior or transaction scope issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68e0d740-701c-432b-b20a-54b07bf2e634?mode=deep",
+    "timestamp": "2026-01-21 06:10:23.201276",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_to_db()] [Partial commit risk] Between lines 59-65 in insert_to_db_impl, six different insert functions are called - if the transaction commits after some but not all inserts, can this leave the database in an inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4bad6e1-69d1-4e86-9bf3-ad175f6821a4?mode=deep",
+    "timestamp": "2026-01-21 06:10:49.874118",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_to_db()] [Connection leak] If an exception occurs after getting the connection but before transaction completion, is the connection properly returned to the pool or does this leak connections? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae16f389-7cab-4507-af98-16191342746c?mode=deep",
+    "timestamp": "2026-01-21 06:11:19.380035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_to_db()] [Logging timing attack] At lines 80-85, start_version and end_version are logged - can an attacker monitor logs to determine processing speed and launch targeted attacks during slow periods? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_008e722d-277c-42fd-9f1d-52e3d8b60ed2?mode=deep",
+    "timestamp": "2026-01-21 06:11:46.808117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_coin_activities()] [Primary key collision] At lines 137-142, the composite key (transaction_version, event_account_address, event_creation_number, event_sequence_number) uses do_nothing() on conflict - can an attacker create fake events that collide with legitimate ones to prevent real activities from being recorded? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e61adf0a-20d5-4b79-8bd6-3540fa3e0a3a?mode=deep",
+    "timestamp": "2026-01-21 06:12:14.765509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/processors/coin_processor.rs] [Function: insert_coin_activities()] [Chunk boundary attack] At line 131, get_chunks calculates chunk boundaries based on field count - can an attacker craft transactions with fields that exceed chunk size causing chunking errors or incomplete inserts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_247e901a-7517-4d24-bbec-e2c0c50845f6?mode=deep",
+    "timestamp": "2026-01-21 06:12:42.506398",
+    "report_generated": false
+  }
+]
