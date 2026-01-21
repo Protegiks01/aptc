@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: ScopedMap::enter_scope()] [Scope management vulnerability] Can an attacker craft deeply nested Move code that causes excessive scope depth, leading to stack overflow when enter_scope() repeatedly pushes new BTreeMaps onto the maps vector, potentially causing compiler crashes during contract compilation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f389cc99-9a23-498a-ba04-916cda2563dd?mode=deep",
+    "timestamp": "2026-01-21 07:59:44.263704",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: ScopedMap::exit_scope()] [Panic vulnerability] If exit_scope() is called more times than enter_scope() due to a compiler bug in visiting logic, can the expect() call on line 160 cause a panic that crashes the compiler, potentially allowing DoS attacks through maliciously crafted Move contracts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bfa0ed67-a1dc-45cd-b867-b61740219b04?mode=deep",
+    "timestamp": "2026-01-21 07:59:57.096275",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: ScopedMap::insert()] [Panic vulnerability] Does the pop() operation on line 166 followed by push() on line 168 create a window where the maps vector is temporarily empty, and if exit_scope() is called concurrently (in multithreaded compilation), could this cause a panic and compiler crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6015a5cc-8803-43ad-8542-7404be0bac81?mode=deep",
+    "timestamp": "2026-01-21 08:00:10.448986",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: ScopedMap::remove()] [Panic vulnerability] Similar to insert(), does the pop()/push() pattern on lines 174-176 in remove() create race conditions in concurrent compilation that could lead to imbalanced scope stack and incorrect variable shadowing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f9d2663-45b4-43e9-acb2-99ca8eb81d05?mode=deep",
+    "timestamp": "2026-01-21 08:00:23.938600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: ScopedMap::get()] [Incorrect scope resolution] If the maps vector contains Option<V> values where None represents removed keys, can the iteration in get() (lines 180-184) incorrectly return values from outer scopes when an inner scope explicitly removed a key, violating Move's variable shadowing semantics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_114abe83-db2a-42d3-b740-e598eaa27289?mode=deep",
+    "timestamp": "2026-01-21 08:00:38.368765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: ScopedMap::clear()] [State corruption] Does clear() on lines 148-150 properly reset all internal state, or could leftover entries in cleared maps cause variable values to leak across function boundaries during batch compilation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffcf2a4e-84ba-4b46-94c9-8166d7663408?mode=deep",
+    "timestamp": "2026-01-21 08:00:54.268848",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Struct: ScopedMap] [Memory exhaustion] Can an attacker create Move code with pathological nesting patterns that cause the ScopedMap to accumulate excessive BTreeMap entries without cleanup, leading to memory exhaustion and compiler DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa03aab4-3f86-4ce0-9f48-255c6d1449de?mode=deep",
+    "timestamp": "2026-01-21 08:01:10.717534",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: ScopedMap::insert()] [Incorrect variable binding] If two variables with the same Symbol are inserted at different scopes, does the Option<V> mechanism correctly hide outer bindings, or can constant propagation incorrectly substitute values from the wrong scope? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6342f8eb-2ef6-435f-b19c-88b9f5b9ae2d?mode=deep",
+    "timestamp": "2026-01-21 08:01:29.548538",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Constant propagation safety] If this function fails to detect that a variable is modified through a mutable borrow in Operation::Borrow(ReferenceKind::Mutable) (lines 321-340), can the simplifier incorrectly perform constant propagation on that variable, leading to wrong bytecode where the variable's updated value is ignored? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a5dda69-55d2-4648-bd2d-c68f32c720f3?mode=deep",
+    "timestamp": "2026-01-21 08:01:49.908099",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Move operation tracking] Does the tracking of Operation::Move on lines 323-340 correctly identify all cases where a variable's value is consumed, or can missing cases allow the simplifier to reuse a moved value, violating Move's ownership semantics? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d02af96-3aba-41dc-b16d-afa6854d8d73?mode=deep",
+    "timestamp": "2026-01-21 08:02:11.163131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Modifying stack imbalance] Can the modifying_stack push/pop operations (lines 329-335, 351-359, etc.) become imbalanced if the visit_positions callback returns false early, causing incorrect modification tracking for subsequent variables? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67898fa0-5cc9-4894-b5eb-87be501cff6a?mode=deep",
+    "timestamp": "2026-01-21 08:02:32.554928",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Select operation handling] The comment on lines 341-346 says Select operations may be borrowed if they occur in Borrow parameters - does leaving modifying state alone for Select correctly handle all cases, or can nested Select operations escape modification detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff38d27f-35ff-4d52-96c1-0fb30a5e086c?mode=deep",
+    "timestamp": "2026-01-21 08:02:56.484043",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Temporary parameter mapping] If the param_map lookup on lines 247-263 fails to find a Temporary's corresponding parameter, the code traces a warning but continues - can this lead to incorrectly tracking parameter modifications and enabling unsafe constant propagation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_661bed27-a104-4268-947b-021afa7d752b?mode=deep",
+    "timestamp": "2026-01-21 08:03:20.906068",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Free variable handling] When a LocalVar has no current_binding_id (lines 246-272), it's treated as a free variable or parameter - can malformed AST with truly free variables cause the function to miss modifications, allowing invalid optimizations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ebcc37e-67c3-4385-9993-d9fa7391de62?mode=deep",
+    "timestamp": "2026-01-21 08:03:45.746037",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Lambda scope handling] When entering Lambda expressions (lines 376-396), does the visiting_binding.enter_scope() correctly isolate lambda-bound variables from enclosing scopes, or can variable capture in closures confuse the modification tracking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3d44812-4ed1-4f0a-babf-585b29a36bfd?mode=deep",
+    "timestamp": "2026-01-21 08:04:11.035701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Block scope handling] For Block expressions (lines 397-423), the code turns off modifying before entering the binding RHS evaluation (lines 401-407) - is this correct for all cases, or can mutable borrows in the RHS escape detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_010415bd-333b-4450-8dba-50ffeffc1273?mode=deep",
+    "timestamp": "2026-01-21 08:04:35.016139",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Match arm scope handling] In Match expressions (lines 424-445), each match arm gets its own scope (lines 431-439) - can variables bound in one arm leak into another arm's modification tracking, causing incorrect optimization across match branches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9be1fbab-cb14-488a-a53f-20bf5e329c2f?mode=deep",
+    "timestamp": "2026-01-21 08:04:59.980064",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Assign pattern variables] When processing Assign expressions (lines 458-505), does the pattern variable extraction (line 462) correctly handle all pattern types (struct destructuring, tuple unpacking), or can complex patterns hide modified variables? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ceee0e31-1b1b-42e1-9ef3-00c00a6c2691?mode=deep",
+    "timestamp": "2026-01-21 08:05:26.165264",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Severity bug diagnostic] If a free symbol appears in an assignment pattern (lines 481-492), the code emits a Severity::Bug diagnostic - but does compilation continue after this bug, potentially generating incorrect bytecode with untracked variable modifications? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2abd285-9524-4429-984c-60271aeae4fd?mode=deep",
+    "timestamp": "2026-01-21 08:05:51.115914",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [Temporary aliasing bug] When a Temporary references a parameter that's also used in a let binding (lines 283-298), the code emits a bug diagnostic about aliasing - does this indicate a soundness hole where the same value could be modified through multiple paths? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c2b4a05-b758-43e7-8168-c043920f6ddc?mode=deep",
+    "timestamp": "2026-01-21 08:06:16.774945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [VisitorPosition state machine] The visitor uses Pre/Post/BeforeBody/BeforeMatchBody/AfterMatchBody positions - can incorrect ordering of these position callbacks cause modifying_stack or visiting_binding to become corrupted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ec0553b-d35c-416e-938e-c5bb95c20d3f?mode=deep",
+    "timestamp": "2026-01-21 08:06:42.767089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: find_possibly_modified_vars()] [BTreeSet completeness] The returned BTreeSet of possibly_modified_vars - if this set is incomplete due to any of the above bugs, can the subsequent constant propagation phase incorrectly optimize variables that are actually modified? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c665c483-9feb-4759-8af2-820489eae219?mode=deep",
+    "timestamp": "2026-01-21 08:07:10.157493",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: run_simplifier()] [Concurrent modification] The function iterates over modules and functions to rewrite definitions, storing them in new_definitions vector (line 80) - if GlobalEnv is accessed concurrently during compilation, can race conditions cause definitions to be overwritten with wrong simplified versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5690222-ff70-4267-973c-d44d27abf5a1?mode=deep",
+    "timestamp": "2026-01-21 08:07:35.446375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: run_simplifier()] [Pointer equality check] The ExpData::ptr_eq check on line 96 determines whether to save the rewritten definition - can this check fail to detect semantic changes when the AST structure is identical but node IDs or types differ, causing inconsistent compilation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a7e89c3-4834-4481-8d7c-30e7b9da4002?mode=deep",
+    "timestamp": "2026-01-21 08:08:02.123920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/ast_simplifier.rs] [Function: run_simplifier()] [Function definition mutation] The set_function_def() call on line 105 mutates GlobalEnv - if multiple modules define functions with the same qualified ID, can this cause one function's simplified definition to overwrite another's? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_853f3bff-5899-41f9-a208-8ca35f7ece0d?mode=deep",
+    "timestamp": "2026-01-21 08:08:30.084296",
+    "report_generated": false
+  }
+]
