@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-87] [Integer Overflow in Amount] Can an attacker pass u64::MAX as the transfer amount to trigger integer overflow in balance calculations within the CoinClient::transfer() or underlying Move smart contract logic, potentially minting unlimited tokens? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb8fe945-86aa-47c2-b30f-acec4a6681e3?mode=deep",
+    "timestamp": "2026-01-21 00:25:53.285911",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Line: 85] [Mutable Alice Reference Safety] Does passing &mut alice to coin_client.transfer() properly increment alice's sequence number in a thread-safe manner using AtomicU64, or can concurrent transfers from the same LocalAccount cause sequence number collisions leading to transaction replay attacks or dropped transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5dea504-4c9c-48cb-9859-fc2b2c7551ee?mode=deep",
+    "timestamp": "2026-01-21 00:26:06.025931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-87] [None Options Vulnerability] By passing None for TransferOptions, does the code use insecure defaults for max_gas_amount (5_000), gas_unit_price (100), and timeout_secs (10), potentially causing transactions to fail due to insufficient gas or expire before confirmation in congested network conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f27a6c40-c756-47e8-a6e0-132f9d03751b?mode=deep",
+    "timestamp": "2026-01-21 00:26:19.344881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-91] [Transaction Hash Integrity] Is the returned txn_hash from coin_client.transfer() cryptographically bound to the submitted transaction, or can a man-in-the-middle attacker substitute a different transaction hash, causing wait_for_transaction() to wait for the wrong transaction while the attacker's transaction executes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_783c1041-2c20-4952-9d21-3e2688866fc1?mode=deep",
+    "timestamp": "2026-01-21 00:26:32.820535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 113-116] [Second Transfer Sequence Number] Does the second coin_client.transfer(&mut alice, bob.address(), 1_000, None) call properly use the incremented sequence number from Alice's LocalAccount, or can a missing increment cause this transaction to be rejected as a duplicate of the first transfer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_358772d7-02a9-46c1-a037-d7d558237410?mode=deep",
+    "timestamp": "2026-01-21 00:26:47.107592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-87, 113-116] [Transfer Recipient Validation] Is there validation that bob.address() is a valid, non-zero address before transfer, or can transfers to 0x0, 0x1, or other reserved addresses cause funds to be burned or sent to system accounts, resulting in permanent loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7dfd9954-49dd-4c43-97fe-9b8e288331ef?mode=deep",
+    "timestamp": "2026-01-21 00:27:02.530864",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-87] [Self-Transfer Vulnerability] Does the code prevent or handle the case where alice.address() == bob.address(), or can self-transfers cause unexpected behavior in balance tracking, sequence number management, or gas calculations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b662fd91-593a-4fd8-95ea-9ed8f82f9cdb?mode=deep",
+    "timestamp": "2026-01-21 00:27:18.854358",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 88-91] [Wait Timeout Handling] Does rest_client.wait_for_transaction(&txn_hash) have a timeout, or can it wait indefinitely if the transaction is never included in a block, causing the application to hang and consume resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2dca2d18-c2c7-42be-80b3-63e6b2a0c30f?mode=deep",
+    "timestamp": "2026-01-21 00:27:37.325592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 88-91] [Transaction Failure Detection] Does wait_for_transaction() detect if the transaction failed during execution (out of gas, Move abort, invalid signature), or does it only wait for inclusion, potentially missing critical execution failures that leave Alice's balance unchanged? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c1c04c4-0acc-4670-8dc3-dd6e2bb00b13?mode=deep",
+    "timestamp": "2026-01-21 00:27:56.336059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 88-91] [Blockchain Reorganization] If a blockchain reorganization occurs after wait_for_transaction() returns but before the next balance query, can the transaction be reverted, causing the code to display incorrect balances and misleading the user about transaction finality? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7928c042-67fb-4282-bd1e-eb558f78157b?mode=deep",
+    "timestamp": "2026-01-21 00:28:16.714874",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 88-91, 118-121] [Concurrent Wait Calls] Can multiple concurrent calls to wait_for_transaction() for different transactions cause race conditions in the REST client's internal state tracking, polling logic, or connection management, leading to incorrect transaction status reports? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_106d7592-42f9-40aa-a62a-d6cee6b06978?mode=deep",
+    "timestamp": "2026-01-21 00:28:37.799535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 118-121] [Second Wait Redundancy] Is the second wait_for_transaction() call necessary after the second transfer, or is it redundant since the final balance queries (lines 125-138) would implicitly wait for state updates, potentially wasting time and resources? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03e5be92-6460-46df-8921-4f3604e36656?mode=deep",
+    "timestamp": "2026-01-21 00:29:00.948330",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Line: 37] [Tokio Runtime Configuration] Does the #[tokio::main] macro properly configure runtime thread pools, stack sizes, and panic handling, or can default configurations be exploited to cause stack overflows, thread exhaustion, or unhandled panics that crash the application? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_970210a7-9688-43bc-bbe5-0a68b8a97b4b?mode=deep",
+    "timestamp": "2026-01-21 00:29:24.419576",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Throughout] [Context Error Propagation] Do all .context() error annotations provide sufficient detail to diagnose failures in production, or can vague error messages obscure root causes of security-relevant failures like signature validation errors or consensus issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b42b216f-76d9-4ed3-92d1-304c6e9b7773?mode=deep",
+    "timestamp": "2026-01-21 00:29:49.417584",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Throughout] [Async Cancellation Safety] If the main() async function is cancelled (Ctrl+C, process termination), can incomplete transactions leave accounts in inconsistent states with incremented sequence numbers but uncommitted transactions, causing future transaction nonce mismatches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ab27613-c9e1-4087-b3c3-6d2322f67d0f?mode=deep",
+    "timestamp": "2026-01-21 00:30:15.609823",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Line: 140] [Missing Cleanup] Does the Ok(()) return properly clean up resources (close network connections, flush logs, zeroize key material), or do resource leaks persist that could be exploited in long-running applications? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60d007ac-8ce7-4139-b0c7-30c2007dbb3d?mode=deep",
+    "timestamp": "2026-01-21 00:30:41.141142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-87] [CoinClient::transfer Implementation] Does the underlying CoinClient::transfer() in sdk/src/coin_client.rs properly validate transaction expiration timestamps (lines 85-89), or can attacker-controlled system time manipulation cause transactions to use expired timestamps that are rejected by validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_503f6f27-a6e8-48c7-a869-26f85d55ad62?mode=deep",
+    "timestamp": "2026-01-21 00:31:08.379967",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-87] [EntryFunction Type Safety] Does the CoinClient::transfer() call to aptos_account::transfer_coins entry function (coin_client.rs lines 73-84) properly validate the coin type parameter, or can type confusion attacks cause transfers of unintended token types or bypass type safety checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14751cda-3018-4794-9b23-5e63112f8332?mode=deep",
+    "timestamp": "2026-01-21 00:31:35.133839",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-87] [BCS Serialization Safety] In the underlying CoinClient implementation, does bcs::to_bytes() serialization of to_account and amount (coin_client.rs lines 81-82) properly handle edge cases (max u64, special addresses), or can malformed serialization bypass validation in the Move VM? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b9800e9-5c8e-4ea3-9e50-d91d7bb1b5ec?mode=deep",
+    "timestamp": "2026-01-21 00:32:01.427653",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 47-48] [LocalAccount Signature Security] Does LocalAccount::generate() create accounts with Ed25519 keys that properly implement deterministic signing (RFC 8032), or can signature malleability allow attackers to create multiple valid signatures for the same transaction, bypassing transaction deduplication? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d178714-a0a6-4f19-84de-8d0b5bf27248?mode=deep",
+    "timestamp": "2026-01-21 00:32:28.747336",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Line: 85] [Sequence Number Atomicity] Does LocalAccount::increment_sequence_number() use atomic operations (AtomicU64) with proper memory ordering (sdk/src/types.rs line 133), or can weak memory ordering allow sequence number updates to be reordered or lost, causing transaction nonce collisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aff7109e-7d58-4b3f-8a9c-8eccee6dd91b?mode=deep",
+    "timestamp": "2026-01-21 00:32:55.162208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 57-64] [FaucetClient Transaction Parsing] Does FaucetClient::fund() properly validate the BCS-deserialized SignedTransaction returned by the faucet (faucet.rs lines 100-102), or can a malicious faucet return crafted transactions with hidden payloads, multiple operations, or invalid signatures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3cf84687-8345-44fe-8c85-1a798bb1f44d?mode=deep",
+    "timestamp": "2026-01-21 00:33:21.137733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 57-64] [Faucet Response Validation] Does FaucetClient decode the hex-encoded response body (faucet.rs line 72) with proper bounds checking, or can malicious faucet responses with oversized hex strings cause buffer overflows or memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7165a8a1-b753-4970-80dd-f8e37666f546?mode=deep",
+    "timestamp": "2026-01-21 00:33:46.922293",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-87] [Gas Price Manipulation] Does the None TransferOptions use the hardcoded gas_unit_price of 100 (coin_client.rs line 127), or can network congestion cause transactions to be deprioritized, and can attackers exploit this to front-run transfers by submitting higher gas price transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8a8771f-325f-4760-9965-6e086a8527f2?mode=deep",
+    "timestamp": "2026-01-21 00:34:11.786593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/sdk/examples/transfer-coin.rs] [Lines: 84-87] [Max Gas Insufficient] Is the default max_gas_amount of 5_000 (coin_client.rs line 126) sufficient for all transfer scenarios, or can complex recipient account initialization, events, or module upgrades cause transfers to exceed this limit and fail, losing the gas fees? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef0c7f3f-3c16-4255-9176-6b1d86fcc826?mode=deep",
+    "timestamp": "2026-01-21 00:34:37.993668",
+    "report_generated": false
+  }
+]
