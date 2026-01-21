@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: continuously_fetch_latest_data()] [Clone semantics] The task.clone() at line 43 creates shared futures - can this cause unexpected behavior where multiple consumers await the same future, leading to only one receiving the result while others hang indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7552f5f-1a3c-4b3a-b079-69e02786c53b?mode=deep",
+    "timestamp": "2026-01-21 00:33:32.563529",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_past_data()] [Return value semantics] The function returns usize representing number of transactions - can returning 0 be ambiguous between 'no new transactions' and 'fetch failed', causing callers to misinterpret errors as successful operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e831cb3a-d593-4205-bc30-8f12417884cc?mode=deep",
+    "timestamp": "2026-01-21 00:33:45.525045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_and_update_cache()] [Static method confusion] This is an async fn taking Arc parameters rather than &self - can this cause confusion about ownership and lead to incorrect usage patterns where callers create multiple redundant Arc clones? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_faaf012f-2b20-4709-ad7c-85061d89844b?mode=deep",
+    "timestamp": "2026-01-21 00:33:58.866288",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_past_data()] [Timer accuracy] The timer at line 35 measures only the fetch operation - can expensive DataManager operations outside the timer scope cause incorrect performance metrics that hide actual bottlenecks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_265633f6-4d69-485c-b60f-1d8f97caab3b?mode=deep",
+    "timestamp": "2026-01-21 00:34:13.023974",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_latest_data()] [Logging injection] The info! log at line 68 includes version from untrusted DataManager - can an attacker manipulate end_version to inject malicious log data or cause log parsing errors in monitoring systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_463700b2-f179-49dd-8719-3521fb4144ee?mode=deep",
+    "timestamp": "2026-01-21 00:34:28.458915",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_latest_data()] [Metric cardinality] The timer label 'fetch_latest_data' at line 71-72 lacks version differentiation - can this hide performance issues at specific version ranges or make it impossible to debug version-specific slowdowns? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b3aa2c0-0b1a-4d0c-94a1-dc546b2f64b1?mode=deep",
+    "timestamp": "2026-01-21 00:34:44.948456",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Struct: FetchManager] [Single point of failure] Is there any redundancy or failover mechanism if the DataClient fails, or will the entire indexer become unavailable, preventing all downstream applications from accessing blockchain data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_557df23a-2fe6-4332-9b69-f7efb776abff?mode=deep",
+    "timestamp": "2026-01-21 00:35:03.580680",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: continuously_fetch_latest_data()] [Backpressure handling] There's no backpressure mechanism - can the fetch rate exceed the processing rate of downstream consumers, causing unbounded memory growth as cached transactions accumulate faster than they're consumed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c00b4760-34ce-4200-be28-f8242f959c63?mode=deep",
+    "timestamp": "2026-01-21 00:35:23.712754",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_latest_data()] [Sleep duration] The 200ms sleep at line 85 is hardcoded - can this cause excessive CPU usage when the chain is slow (too short) or unacceptable latency when the chain is fast (too long), requiring a dynamic adjustment mechanism? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef48ab33-4d18-4834-a2e5-17b694c5e92d?mode=deep",
+    "timestamp": "2026-01-21 00:35:46.861476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_and_update_cache()] [DataClient trust] The function unconditionally trusts data_client.fetch_transactions() - can a compromised or malicious DataClient return malformed Transaction objects that cause panics in DataManager.update_data() or corrupt the cache? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_106d8ac6-5b33-400d-bcbc-aeaca49b8ef6?mode=deep",
+    "timestamp": "2026-01-21 00:36:09.605843",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_and_update_cache()] [DataManager consistency] Does DataManager.update_data() guarantee atomic updates, or can partial updates occur if the write lock is released mid-operation, causing cache inconsistency where some transactions from a batch are stored but others are lost? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c43164db-6d77-4872-8221-1bce834a9784?mode=deep",
+    "timestamp": "2026-01-21 00:36:32.490484",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: new()] [ConnectionManager validation] The ConnectionManager is wrapped in Arc but not validated - can an attacker provide a ConnectionManager with malicious grpc clients that always return adversarial data, compromising the integrity of the entire indexer service? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0d1e4ed-b8c7-4d4e-afc0-968febedbcb0?mode=deep",
+    "timestamp": "2026-01-21 00:36:55.391718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: continuously_fetch_latest_data()] [Future cancellation] If the continuously_fetch_latest_data() task is cancelled, can it leave the fetching_latest_data_task in an inconsistent state with a shared future that's still being awaited elsewhere, causing undefined behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33bf5dc8-d33d-4ff7-aa50-c0ba6ee34b2e?mode=deep",
+    "timestamp": "2026-01-21 00:37:17.621973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_past_data()] [Async spawn safety] Is this function safe to call from multiple tokio tasks concurrently, or can the Arc<RwLock<DataManager>> serialization cause all callers to block, defeating the purpose of async concurrency? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03641f73-8a94-4358-b8bf-05f21c00c516?mode=deep",
+    "timestamp": "2026-01-21 00:37:39.662772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_and_update_cache()] [Yield point vulnerability] The .await points at lines 53, 58 can yield control - can an attacker exploit yield timing to interleave operations in a way that violates cache invariants or causes version number inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa331242-df4e-4bca-91a0-8f7d6ead45f9?mode=deep",
+    "timestamp": "2026-01-21 00:38:01.189725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_latest_data()] [Gap detection] If the blockchain reorgs or forks, can fetch_latest_data() detect and handle version gaps correctly, or will it create cache entries with missing intermediate transactions causing data loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_344b16da-4c87-4440-8892-19fc97923ad6?mode=deep",
+    "timestamp": "2026-01-21 00:38:23.938730",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_and_update_cache()] [Version validation] Is the version parameter validated against DataManager's current end_version to prevent backwards seeks, or can an attacker cause the cache to regress by fetching old data and overwriting newer transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27bf9426-957c-4f42-9749-0986b8b94e6d?mode=deep",
+    "timestamp": "2026-01-21 00:38:46.315852",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_latest_data()] [Stale version read] The version read at line 67 could be stale by the time fetch_and_update_cache is called - can this cause duplicate fetches of the same version range if end_version is updated by another task between read and fetch? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e180a2db-45d5-4f81-939f-2f6508819814?mode=deep",
+    "timestamp": "2026-01-21 00:39:10.300040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: continuously_fetch_latest_data()] [Graceful shutdown] There's no mechanism to break the infinite loop - can this prevent the indexer from shutting down cleanly, requiring forceful termination that could corrupt in-flight writes to the DataManager? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5c0d4cb-67e1-4985-9e27-f1b80d8b6fd5?mode=deep",
+    "timestamp": "2026-01-21 00:39:33.292470",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Struct: FetchManager] [Resource cleanup] When FetchManager is dropped, are all Arc references properly cleaned up, or can circular references between components prevent proper deallocation and cause memory leaks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb51ec39-7f2a-49d2-b687-da22053c0b0d?mode=deep",
+    "timestamp": "2026-01-21 00:39:56.578798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Type: FetchTask<'a>] [Lifetime safety] The Shared<BoxFuture<'a, usize>> type requires careful lifetime management - can incorrect variance or lifetime bounds cause the shared future to reference data that's been dropped, leading to use-after-free? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4a14d95-dc47-44da-86dd-5101c12b51a0?mode=deep",
+    "timestamp": "2026-01-21 00:40:22.340695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_and_update_cache()] [Length overflow] When calculating len at line 54, can transactions.len() overflow usize on 32-bit platforms if the Vec is extremely large, causing incorrect return values? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f82f2d8a-d167-469a-8464-90495dd8a0a4?mode=deep",
+    "timestamp": "2026-01-21 00:40:47.599251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_and_update_cache()] [Cache overflow interaction] When update_data() triggers cache eviction in DataManager, can this cause newly fetched data to be immediately evicted if the transaction batch is larger than cache capacity, wasting resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_831324e8-6086-4944-b262-a8752476e363?mode=deep",
+    "timestamp": "2026-01-21 00:41:14.047473",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_past_data()] [Historical data accuracy] For historical fetches, does the system verify that fetched transactions match the canonical chain, or can an attacker serving reorged/forked data poison the cache with non-canonical transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95ce9c26-b9de-4d91-9bd8-083fcbf1fc4c?mode=deep",
+    "timestamp": "2026-01-21 00:41:41.532780",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/live_data_service/fetch_manager.rs] [Function: fetch_latest_data()] [Busy-wait pattern] The loop continuously fetches with 200ms sleep - can this cause unnecessary load on the gRPC server during quiet periods when no new transactions exist, and should it use event-driven notifications instead? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3738fc8-c7a8-46b0-a8fb-3cab2cc20965?mode=deep",
+    "timestamp": "2026-01-21 00:42:09.557977",
+    "report_generated": false
+  }
+]
