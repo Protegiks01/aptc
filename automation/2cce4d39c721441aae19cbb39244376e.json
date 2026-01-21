@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: get_random_eligible_subset_of_players()] [Player Duplication] If the range (0..self.get_total_num_shares()) at line 90 produces duplicate values or get_player(i) returns the same Player for different i values, could the subset contain fewer than t unique players, breaking reconstruction threshold assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7ee116f-b64d-4600-a930-d0a6ea450402?mode=deep",
+    "timestamp": "2026-01-20 23:57:16.423478",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: get_random_eligible_subset_of_players()] [Empty Subset Attack] If get_total_num_shares() returns 0 or choose_multiple(self.t) is called with t=0, could the function return an empty Vec, allowing invalid 'reconstruction' attempts with zero shares that should fail but might expose secret material through error messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6128d6b7-8d64-40fc-bc57-b262acf957d1?mode=deep",
+    "timestamp": "2026-01-20 23:57:29.429577",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: get_random_eligible_subset_of_players()] [Resource Exhaustion] If self.t is extremely large (but still <= n), could choose_multiple allocate excessive memory or CPU time to sample the subset, causing DoS when this function is called during DKG testing or benchmarking? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a36db86a-ee24-4a53-9954-a56c788bb3d3?mode=deep",
+    "timestamp": "2026-01-20 23:57:42.636636",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: get_batch_evaluation_domain()] [Reference Leak] Does returning a reference &BatchEvaluationDomain at line 58-60 allow callers to hold this reference while the ThresholdConfigBlstrs is modified elsewhere, potentially causing use-after-free or data races in concurrent DKG operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d907a7c-045f-45a7-bb41-9c4f862d4496?mode=deep",
+    "timestamp": "2026-01-20 23:57:57.036333",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: get_evaluation_domain()] [Domain Consistency] If the dom field was constructed incorrectly in new(), does get_evaluation_domain() at line 63-65 perform any validation before returning the reference, or could callers receive invalid domains that produce incorrect FFT results in PVSS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb41cb73-fb5e-4b3d-bc03-c04a3a3daeae?mode=deep",
+    "timestamp": "2026-01-20 23:58:12.287988",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: get_threshold()] [Threshold Manipulation] Since get_threshold() at line 135-137 simply returns self.t without validation, could race conditions or memory corruption cause t to be modified after construction, allowing threshold changes mid-protocol that break DKG security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7164d9c2-ef95-4900-bb9d-42fd744a24dd?mode=deep",
+    "timestamp": "2026-01-20 23:58:27.838716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Struct: ThresholdConfigBlstrs] [Clone Safety] The struct derives Clone at line 20 - when cloning, are the dom and batch_dom fields (which contain precomputed roots of unity) deeply copied or do they share references? Could this lead to data races if one clone modifies shared cryptographic state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74c504cf-d617-434f-a383-52a86021fbe9?mode=deep",
+    "timestamp": "2026-01-20 23:58:44.546816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Struct: ThresholdConfigBlstrs] [PartialEq Semantics] The PartialEq implementation only compares serializable fields (due to #[serde(skip)] on dom and batch_dom) - could two ThresholdConfigBlstrs instances with same t,n but different domain states compare as equal, causing validators to accept mismatched configurations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dcf4b527-2176-47ff-bf70-e1d3e42f70b1?mode=deep",
+    "timestamp": "2026-01-20 23:59:03.738808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: new()] [Domain Size Mismatch] If BatchEvaluationDomain::new(n) creates a domain for the smallest power of 2 >= n, and get_subdomain(n) is called with the original n, could mismatches between N (power of 2) and n (actual player count) cause off-by-one errors in polynomial evaluation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93424e98-26f8-4d81-9702-41345ec4fccf?mode=deep",
+    "timestamp": "2026-01-20 23:59:25.130424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: new()] [Root of Unity Exhaustion] For very large n values, does BatchEvaluationDomain::new(n) check if the required N-th root of unity exists in the BLS12-381 scalar field (which has limited root-of-unity support), or could it silently fail and produce invalid domains? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa691858-e2b1-4eff-881b-0420dbd86ce4?mode=deep",
+    "timestamp": "2026-01-20 23:59:47.819819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: new()] [FFT Size Attack] If the smallest power of 2 >= n is significantly larger than n (e.g., n=2^20+1 requires N=2^21), could this force unnecessarily large FFT computations that exhaust validator memory or CPU during PVSS operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_452afa7c-5110-4464-8564-c040859904a6?mode=deep",
+    "timestamp": "2026-01-21 00:00:11.299813",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Struct: ThresholdConfigBlstrs] [Domain State Corruption] Since dom and batch_dom are not serialized, if a ThresholdConfigBlstrs is cloned, serialized, and deserialized, could the reconstructed domains have different internal state than the original, causing determinism failures in DKG across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70afb94b-1259-40a2-b1dc-76075f5e5914?mode=deep",
+    "timestamp": "2026-01-21 00:00:36.820828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Struct: ThresholdConfigBlstrs] [Scalar Field Overflow] When batch_dom stores all N-th roots of unity as Scalars, could arithmetic overflow in the scalar field during domain construction cause wraparound, producing incorrect roots that break FFT correctness and PVSS security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a44f53bf-a661-4758-9d76-ca1d759adca6?mode=deep",
+    "timestamp": "2026-01-21 00:01:02.529410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: fmt()] [Format String Injection] The Display implementation at line 70 constructs a string 'threshold/{t}-out-of-{n}' - if this output is logged or displayed in contexts where format string vulnerabilities exist, could attacker-controlled t/n values exploit log injection attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77e93680-bbb8-4421-9196-3820947f2d63?mode=deep",
+    "timestamp": "2026-01-21 00:01:29.722817",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Struct: ThresholdConfigBlstrs] [Debug Info Leak] The struct derives Debug at line 20 which will print all fields including dom and batch_dom containing cryptographic material - could debug logs expose sensitive domain parameters that aid attacks on DKG? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab17e82e-96d0-4f9a-bbb3-88b4871afd9f?mode=deep",
+    "timestamp": "2026-01-21 00:01:56.535112",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: get_total_num_players()] [Player Count Mismatch] Does get_total_num_players() returning self.n at line 97-99 always match the actual number of players in the PVSS protocol, or could desynchronization occur if n is modified without updating related validator state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c999158-40cb-414f-a9d3-365c47f06dbd?mode=deep",
+    "timestamp": "2026-01-21 00:02:25.889621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: get_total_num_shares()] [Share Count Invariant] Since get_total_num_shares() returns self.n (same as players) at line 101-103, is the assumption that shares==players always valid, or could weighted PVSS schemes break this invariant, causing share distribution attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_887ddf67-9034-4501-be93-75b5ee98cb23?mode=deep",
+    "timestamp": "2026-01-21 00:02:52.922662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: get_player()] [Player Construction] The code calls self.get_player(i) at line 93 but this method is not defined in this file - if get_player() is defined elsewhere and doesn't validate i < n, could out-of-bounds player IDs be created that bypass security checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c5e60c4-e188-44d7-bbe8-aa44a0d3d2e4?mode=deep",
+    "timestamp": "2026-01-21 00:03:20.474369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Trait: SecretSharingConfig] [Trait Confusion] Does implementing SecretSharingConfig allow ThresholdConfigBlstrs to be used interchangeably with weighted configurations, and could trait object type confusion enable attacks where unweighted thresholds are applied to weighted PVSS protocols? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e53d804-c2b6-4869-8447-91734904d37c?mode=deep",
+    "timestamp": "2026-01-21 00:03:46.901889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Struct: ThresholdConfigBlstrs] [Concurrent Clone] If multiple threads clone the same ThresholdConfigBlstrs concurrently (since it derives Clone), could race conditions in cloning the dom or batch_dom fields cause one thread to receive partially-initialized domains? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61fc0518-d48b-456e-9630-0fafc2fdf7c7?mode=deep",
+    "timestamp": "2026-01-21 00:04:14.552234",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Struct: ThresholdConfigBlstrs] [Send/Sync Safety] Is ThresholdConfigBlstrs Send + Sync? If it's sent between threads in a validator node, could race conditions in accessing shared EvaluationDomain state cause FFT computation failures that halt DKG? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69297acf-beb7-4711-9a23-9dd77cc79adc?mode=deep",
+    "timestamp": "2026-01-21 00:04:41.688868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Struct: ThresholdConfigBlstrs] [Interior Mutability] Although the struct fields appear immutable, do EvaluationDomain or BatchEvaluationDomain contain interior mutability (e.g., RefCell, Mutex) that could cause data races if ThresholdConfigBlstrs is accessed concurrently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_138ab225-e690-4560-949a-e39e2988f08e?mode=deep",
+    "timestamp": "2026-01-21 00:05:09.275586",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: new()] [Constructor Race] If two threads call new(t, n) concurrently with the same parameters, do they each get independent domain instances, or could caching/memoization in EvaluationDomain cause them to share state, leading to race conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89eaf655-2b23-4bbe-835e-b7ba5e5c2527?mode=deep",
+    "timestamp": "2026-01-21 00:05:37.503864",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: new()] [Threshold Too Low] Can an attacker create configurations with very low t values (e.g., t=1 for n=1000) that technically pass validation but provide insufficient security, making it trivial to reconstruct DKG secrets from a single compromised validator? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14d3dc36-c55e-4062-a72d-9d803b01c1ab?mode=deep",
+    "timestamp": "2026-01-21 00:06:05.282024",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/threshold_config.rs] [Function: new()] [Byzantine Threshold Violation] For AptosBFT requiring <1/3 Byzantine tolerance, does the code enforce that t > n/3 to prevent attackers from reconstructing secrets with fewer than Byzantine threshold shares, breaking consensus safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_445f25ba-f242-4bd0-8d97-4709c76c5571?mode=deep",
+    "timestamp": "2026-01-21 00:06:32.490891",
+    "report_generated": false
+  }
+]
