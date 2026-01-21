@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Ownership Manipulation] At line 112, the object owner address is inserted into the result HashMap - can an attacker transfer object ownership multiple times within a single transaction, causing only the final owner to be recorded and losing intermediate ownership state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a314314a-6a38-434a-a14f-4170e9c3d523?mode=deep",
+    "timestamp": "2026-01-21 08:04:09.928077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Missing Validation] At line 110, if ObjectWithMetadata.from_write_resource returns None (not an object), no owner tracking occurs - can attackers exploit this by converting objects to regular resources to evade ownership tracking and hide asset transfers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46d21b00-08f5-4729-b927-a8815b30ca08?mode=deep",
+    "timestamp": "2026-01-21 08:04:22.390096",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Data Consistency] The comment at line 98 mentions 'If the resource is an object, then we record the owner as well' - but what if the object owner is address 0x0 or another special address? Does inserting these into account_transactions create noise or security issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba978f1f-d4b9-4ab8-922d-948591fcf23e?mode=deep",
+    "timestamp": "2026-01-21 08:04:35.334667",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_delete_resource()] [Missing Owner Tracking] At lines 124-134, from_delete_resource only records the resource address, not the object owner - the TODO at line 121 mentions 'If the resource is an object, then we need to look for the latest owner' - can attackers delete objects without the owner being notified in account_transactions, allowing silent asset destruction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc15dcc8-41de-4f0e-8394-c1d259f329e2?mode=deep",
+    "timestamp": "2026-01-21 08:04:48.331495",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_delete_resource()] [Parallel Processing Race] The TODO at lines 121-123 states 'This isn't really possible right now given we have parallel threads so it'll be very difficult to ensure that we have the correct latest owner' - does this mean object deletions in parallel execution could be attributed to wrong owners, creating audit trail confusion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c6a76ec-3fcf-489d-87c9-01ca8aed3d4c?mode=deep",
+    "timestamp": "2026-01-21 08:05:02.146628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_delete_resource()] [Race Condition] The TODO comment at lines 121-123 explicitly mentions parallel threads making owner lookup difficult - if multiple transactions in parallel delete and recreate the same object, could the indexer record the wrong owner due to timing-dependent ordering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab87502d-90e7-4e19-a092-944337a4605d?mode=deep",
+    "timestamp": "2026-01-21 08:05:16.723499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Concurrency] At line 64, a new HashMap is created for each transaction - if from_transaction is called concurrently for multiple transactions, could there be race conditions in shared state (e.g., database connections, global caches) that cause inconsistent account_transactions records? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48c2d095-0dfb-4aa1-8ece-e85ab72db5eb?mode=deep",
+    "timestamp": "2026-01-21 08:05:32.806617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [State Consistency] At lines 110-115, ObjectWithMetadata.from_write_resource may query cached object data - in parallel execution, if object metadata is updated by transaction T1 while T2 is processing, could T2 see stale owner information leading to incorrect account_transactions entries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d18512a-f514-4b79-b2da-93f1529af120?mode=deep",
+    "timestamp": "2026-01-21 08:05:49.311710",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Transaction Ordering] At lines 74-84, write set changes are processed in order - if parallel transactions modify the same account, could out-of-order indexing cause account_transactions to have gaps or reversed transaction versions, breaking chronological history? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f34a90b3-a66f-49a5-8c3e-c6b65db7ace4?mode=deep",
+    "timestamp": "2026-01-21 08:06:07.883521",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Database Race] The returned HashMap at line 85 is presumably inserted into the database - if two parallel transactions insert records for the same (account_address, transaction_version), does the database handle this gracefully, or could one transaction's records be lost due to last-writer-wins semantics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fddaa211-282c-489d-adc7-d50c2aaddb9a?mode=deep",
+    "timestamp": "2026-01-21 08:06:27.084649",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Error Handling] At line 77, from_delete_resource returns anyhow::Result but the ? operator propagates errors - if a single malicious delete resource causes an error, does this abort processing the entire transaction, causing all account_transactions for that transaction to be lost? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de58d6c1-968f-462d-a7c5-552965a0314f?mode=deep",
+    "timestamp": "2026-01-21 08:06:47.201633",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Error Handling] At line 80, from_write_resource uses ? to propagate errors - if ObjectWithMetadata.from_write_resource fails due to malformed object data, does this cause the entire transaction's account associations to be skipped, creating gaps in account history? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76d7f0b4-0aa6-42f5-8b03-acb4297bd909?mode=deep",
+    "timestamp": "2026-01-21 08:07:08.999671",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Error Propagation] At line 110, ObjectWithMetadata.from_write_resource returns anyhow::Result - if this fails but the resource address was already inserted at line 106, does the function return Err, causing a partially-populated HashMap to be discarded? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_259de5bf-bf10-4309-a62f-69071cfc1577?mode=deep",
+    "timestamp": "2026-01-21 08:07:30.482750",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Partial Failure] At lines 71-84, if processing events succeeds but processing write set changes fails midway, is the HashMap returned with partial data, or is the entire result discarded? Could this lead to inconsistent account_transactions records? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_192773fd-c273-4de3-803a-b0458befd46e?mode=deep",
+    "timestamp": "2026-01-21 08:07:52.966168",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_delete_resource()] [Error Safety] Lines 124-134 use anyhow::Result but only return Ok - if standardize_address could panic (e.g., on malformed addresses), should this be wrapped in a Result to prevent indexer crashes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41a992bc-6a16-4c0d-a53b-84b6acfe17a9?mode=deep",
+    "timestamp": "2026-01-21 08:08:16.245177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Error Safety] At line 105, if write_resource.address.to_string() returns an unexpected format that causes standardize_address to panic, does this crash the entire indexer or just fail this transaction gracefully? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d27792bb-8c9b-4165-a9d8-abcbd93ee48b?mode=deep",
+    "timestamp": "2026-01-21 08:08:40.016931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Signature Bypass] At line 45, UserTransaction.get_signatures is called with parameters (inner, inner.info.version.0 as i64, 0) - if get_signatures fails to extract secondary signers or fee payer addresses, will these accounts not appear in account_transactions despite being part of the transaction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1079eada-a05e-48d2-bef1-1973091c4d95?mode=deep",
+    "timestamp": "2026-01-21 08:09:04.368948",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Multi-Agent Bypass] At lines 65-69, the code iterates over signatures and uses sig.signer as the account address - for multi-agent transactions, if get_signatures only returns the primary signer, will secondary signers not be tracked in account_transactions, breaking multi-sig transaction audit trails? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c169ca17-ed35-4b65-b78e-b8938927369d?mode=deep",
+    "timestamp": "2026-01-21 08:09:28.867253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Fee Payer Bypass] At line 45, if the transaction has a separate fee payer (FeePayer signature type), does get_signatures include this address, or will the fee payer not appear in account_transactions despite paying for the transaction? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fd6af0f-a892-4650-85bf-a466753c93e7?mode=deep",
+    "timestamp": "2026-01-21 08:09:53.057298",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Signature Duplication] At lines 66-69, if get_signatures returns duplicate signer addresses (e.g., same address in multi-agent and fee payer roles), will HashMap.insert deduplicate them, or could this cause unnecessary duplicate database writes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c0e9e4d-acac-4b25-994d-20cf12773515?mode=deep",
+    "timestamp": "2026-01-21 08:10:17.013689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Empty Signatures] At lines 51 and 57, GenesisTransaction and BlockMetadataTransaction return empty vec![] for signatures - is this correct, or should proposer addresses (for BlockMetadata) be included to track validator participation in account_transactions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04c179a3-f50e-429d-8abf-b1e9882a9295?mode=deep",
+    "timestamp": "2026-01-21 08:10:39.428766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_event()] [Data Duplication] At lines 90-96, from_event creates a HashMap with a single entry - if a transaction has multiple events with the same guid.account_address, will each call to from_event create duplicate keys that overwrite each other when extend() is called at line 72? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f51de13-ac62-42fd-807b-72b34e0b899c?mode=deep",
+    "timestamp": "2026-01-21 08:11:02.831433",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_event()] [Object Events] The comment at line 89 states 'We don't really have to worry about objects here because it'll be taken care of in the resource section' - but what if an event is emitted by an object that has no corresponding WriteResource change? Will the object owner not be tracked in account_transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf83481c-fdf2-4f1d-bab8-62d259054617?mode=deep",
+    "timestamp": "2026-01-21 08:11:27.342173",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_event()] [Event Ordering] At line 72, events are processed in order via iteration - if a malicious transaction emits events with manipulated account addresses to create many account_transactions entries, could this be used to bloat the database or create DoS via excessive writes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88f8c68e-93bf-4af7-bdcb-a6589a41795c?mode=deep",
+    "timestamp": "2026-01-21 08:11:53.224300",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Event vs Resource Priority] At lines 71-84, events are processed before write set changes - if both an event and a resource change reference the same account, does the HashMap collision cause the resource version to overwrite the event version, losing information about which mechanism triggered the account association? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_207bc0e0-09ac-4c58-ae57-b450cbca947c?mode=deep",
+    "timestamp": "2026-01-21 08:12:19.148846",
+    "report_generated": false
+  }
+]
