@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: emit()] [Logic error] The function checks s.ends_with('\\\\n') but str::lines() ignores trailing newlines, so for strings ending with multiple newlines (e.g., '\\\\n\\\\n'), does the function correctly preserve all newlines or drop some? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d56c1918-0e31-4e7a-acbf-74c93b3b7a9a?mode=deep",
+    "timestamp": "2026-01-21 04:21:19.717476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: emit()] [Whitespace handling] The trim_trailing_whitespace() is called before each newline, but what if the input string intentionally contains meaningful trailing spaces (e.g., in string literals)? Can this cause incorrect code generation that changes semantics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d0cc378-4930-4b72-a5d5-a8021629b709?mode=deep",
+    "timestamp": "2026-01-21 04:21:32.227642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: trim_trailing_whitespace()] [Incorrect trimming] The function only trims spaces (' '), not tabs or other whitespace, so can mixed whitespace (tabs + spaces) at line ends cause inconsistent formatting or incorrect string truncation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84cfef30-5164-4adc-bcc2-6d62eb7d375d?mode=deep",
+    "timestamp": "2026-01-21 04:21:45.113891",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: emit_line()] [Data loss] The function calls trim_end_matches(' ') on the input, potentially removing intentional trailing spaces before emitting, which could alter code semantics if the input represents string literals or formatted output. Can this cause incorrect code generation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54be7567-8b52-4a32-92ab-31eea3e293a0?mode=deep",
+    "timestamp": "2026-01-21 04:21:58.468419",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: process_result()] [Incorrect truncation] The function finds j = output.trim_end().len() and checks if output[j..] starts with '\\\\n', but what if trim_end() removes multiple newlines and other whitespace? Can the range output[0..j] exclude important trailing content? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64b74600-e9d0-4f7c-9a60-0945eef5bded?mode=deep",
+    "timestamp": "2026-01-21 04:22:12.530018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: extract_result()] [Edge case] If the output is empty or contains only whitespace, does truncate(0) followed by checking !s.ends_with('\\\\n') behave correctly, or can this cause an empty string to gain an unintended newline? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0663febc-a81a-487e-8c08-ac8934b9830c?mode=deep",
+    "timestamp": "2026-01-21 04:22:27.291618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: emit_str()] [Unicode handling] When checking data.output.ends_with('\\\\n'), does this correctly handle UTF-8 multibyte characters, or can a multibyte character ending in the byte 0x0A be misinterpreted as a newline, causing incorrect indentation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ab15d1c-b3da-4516-a2de-d12ae06e38f4?mode=deep",
+    "timestamp": "2026-01-21 04:22:43.309238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: emit()] [Code injection] The emit_hook can arbitrarily rewrite emitted strings, so can a malicious emit_hook inject syntactically valid but semantically incorrect code, causing the generated Move code to have vulnerabilities or backdoors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50e3b977-3277-4e9d-9ef5-5300b5496716?mode=deep",
+    "timestamp": "2026-01-21 04:23:00.808295",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: set_emit_hook()] [Hook persistence] Once set_emit_hook() is called, the hook persists for the lifetime of the CodeWriter, so can a compromised component set a malicious hook early that affects all subsequent code generation, causing widespread code corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8043e24-7463-4f3f-95dd-6e91870d5aba?mode=deep",
+    "timestamp": "2026-01-21 04:23:18.790937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: emit()] [Infinite recursion] Can a malicious emit_hook that calls back into CodeWriter.emit() cause infinite recursion, leading to stack overflow and DoS of the code generation process? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f288de76-94bc-4eae-b67a-05bfdd2d5f1a?mode=deep",
+    "timestamp": "2026-01-21 04:23:37.835188",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: emit()] [Hook exception safety] If the emit_hook closure panics during execution, does this leave the CodeWriterData in a consistent state, or can partial string modifications corrupt the output before the panic unwinds? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f0ca8ff-5f6e-4ddd-8977-621bc47ef927?mode=deep",
+    "timestamp": "2026-01-21 04:23:57.130916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: set_emit_hook()] [Type confusion] Since emit_hook is Box<dyn Fn(&str) -> Option<String>>, can an attacker provide a hook that returns maliciously crafted strings with embedded null bytes or control characters that cause downstream processing errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8e4cb5a-8d22-4aae-a704-5d2b681786de?mode=deep",
+    "timestamp": "2026-01-21 04:24:18.582262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: indent()] [Unbounded growth] Since indent() adds 4 to data.indent without an upper bound check, can repeated calls cause indent to grow arbitrarily large, leading to memory exhaustion when emit_str() calls ' '.repeat(n) with enormous n? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f6190c3-b4f5-4d01-b62e-7ae5b5f13945?mode=deep",
+    "timestamp": "2026-01-21 04:24:40.502178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: unindent()] [Assertion failure] The assert!(data.indent >= 4) will panic if unindent() is called more times than indent(), but is this the correct behavior for a library, or should it return a Result to allow graceful error handling in callers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_307b45e0-60c8-4cd4-8382-8709226be428?mode=deep",
+    "timestamp": "2026-01-21 04:25:02.955483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: with_indent()] [Exception safety] If the closure f() panics after indent() is called but before unindent(), does the indentation level remain permanently increased, causing all subsequent code to be incorrectly indented? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3d67a93-e03e-40c3-8533-a92e21d046c0?mode=deep",
+    "timestamp": "2026-01-21 04:25:26.277908",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: emit_str()] [Incorrect indentation] The condition (data.output.is_empty() || data.output.ends_with('\\\\n')) determines whether to add indentation, but what if the last emit() added only spaces without newline? Can this cause indentation to be added mid-line, corrupting code formatting? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10cdadde-7795-45e4-aa4b-756c1b1f6b13?mode=deep",
+    "timestamp": "2026-01-21 04:25:49.753884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: get_source_location()] [Approximation error] The function returns the location of the 'next smaller index' if output_index is not in the map, but can this approximation be arbitrarily inaccurate if there are large gaps between location updates, causing source mapping to point to completely wrong code regions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_173d4925-2804-4860-acdb-2c060dfc7dfa?mode=deep",
+    "timestamp": "2026-01-21 04:26:10.039178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: get_output_byte_index()] [Temporary file map] The function creates a temporary Files structure and adds 'dummy' as the filename, but can this fail if the output string is not valid UTF-8 or contains characters that Files::add() rejects, causing the function to return None incorrectly? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5ba0cbb-f780-42ee-b5a7-750c9e0c1921?mode=deep",
+    "timestamp": "2026-01-21 04:26:30.672497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: get_output_byte_index()] [Line index bounds] When calling fmap.line_span(id, line), can an out-of-bounds line index cause an error that's converted to None, making it impossible to distinguish between invalid input and legitimate lookup failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1130c477-227c-4720-be85-9d543fb838bb?mode=deep",
+    "timestamp": "2026-01-21 04:26:52.409351",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Function: set_location()] [Comparison semantics] The comparison &data.current_location != loc uses derived PartialEq, but if Loc contains floating point or other types without total ordering, can this comparison behave unexpectedly, causing duplicate or missing location entries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6108eb6-3f25-4d2c-85d5-0c2ae45b1d90?mode=deep",
+    "timestamp": "2026-01-21 04:27:13.306228",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Struct: CodeWriterData] [Sparse mapping] The output_location_map is sparse and approximates locations, but can this cause debuggers or error reporters to show incorrect source locations when the approximation gap is large, misleading developers about error locations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d473ada-504a-4d31-bbd5-fb909ff3b385?mode=deep",
+    "timestamp": "2026-01-21 04:27:34.131690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Macro: emit!] [Type safety] The macro uses format!() with variadic arguments, but if the format string and arguments don't match (e.g., wrong number of placeholders), can this cause compilation errors that are difficult to debug due to macro expansion obscuring the error location? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6e5d7d6-c7b9-4d9a-a383-102b780dd795?mode=deep",
+    "timestamp": "2026-01-21 04:27:54.532298",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Macro: emitln!] [Expression evaluation] If the macro arguments contain side effects (e.g., emitln!(writer, '{}', get_next())), are these side effects evaluated multiple times, causing unexpected behavior or state changes in the caller? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8042b4dc-b651-404f-ac43-f4f96d1e0409?mode=deep",
+    "timestamp": "2026-01-21 04:28:15.272113",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Macro: emit!] [Format string injection] If the format string is constructed from user input or untrusted sources, can format string injection vulnerabilities allow an attacker to cause crashes or read memory through specially crafted format specifiers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bb03128-304b-44f7-8b14-116235552497?mode=deep",
+    "timestamp": "2026-01-21 04:28:36.543327",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/code_writer.rs] [Struct: CodeWriterData] [Invariant violation] Is there an invariant that label_map keys and values must always reference valid byte indices within the output string? If insert_at_label() updates label positions but output string insertion fails, can this invariant be broken? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c36e3222-ceee-4cef-bcca-fabbf32cc8fa?mode=deep",
+    "timestamp": "2026-01-21 04:28:57.671636",
+    "report_generated": false
+  }
+]
