@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: new()] [Integer overflow] Can an attacker pass usize::MAX values for default_bucket_size or default_fill_rate that cause integer overflow in subsequent calculations like saturating_mul() operations, leading to incorrect rate limiting and resource exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3b2a320-04c5-4e71-8fc3-9774f7a0a1e6?mode=deep",
+    "timestamp": "2026-01-21 03:44:48.240220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: new()] [Logic error] Does the assertion new_bucket_start_percentage <= 100 at line 76 prevent exploitation, or can an attacker pass values like 255 in u8 that pass the check but cause unexpected behavior when multiplied with bucket_size at line 156? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37539e4e-78bf-4926-8917-87cf0591378b?mode=deep",
+    "timestamp": "2026-01-21 03:45:00.948099",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: new()] [Validation bypass] Can an attacker exploit the assertion checks at lines 76-78 to cause panic attacks on validator nodes by triggering assertion failures with edge case inputs, resulting in service disruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_793a0444-06c5-41bf-abb2-e2fd9558071b?mode=deep",
+    "timestamp": "2026-01-21 03:45:13.874454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: open()] [Security bypass] Does the open() function at line 104 create a completely unprotected rate limiter with usize::MAX tokens that attackers can exploit to bypass all rate limiting controls, potentially enabling API flooding or resource exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b3b9a6a-fd40-480c-ad5f-22b65e3e20c5?mode=deep",
+    "timestamp": "2026-01-21 03:45:28.161152",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: open()] [State corruption] Can setting enabled=false at line 112 in open() be exploited to create buckets that permanently bypass rate limiting even after the system expects enforcement, leading to DoS vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd2d664f-98fd-41b8-9db1-1a4acc4a43cd?mode=deep",
+    "timestamp": "2026-01-21 03:45:42.432684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: bucket()] [Race condition] In bucket() at line 118, can concurrent threads exploit the read-then-write pattern (lines 140-141 read, then 148-162 write) to create multiple buckets for the same key, causing inconsistent rate limiting state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_519276dd-86de-4362-9c5a-2868ae13592f?mode=deep",
+    "timestamp": "2026-01-21 03:45:57.845205",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: bucket_inner()] [TOCTOU vulnerability] Can an attacker exploit the time-of-check-time-of-use gap between reading at line 140 and writing at line 148-162 to insert malicious buckets or bypass rate limits through race conditions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4797d33-814d-4b99-a6b0-2b3cd579388a?mode=deep",
+    "timestamp": "2026-01-21 03:46:14.328291",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: bucket_inner()] [Resource exhaustion] Does the or_insert_with() call at line 151 prevent attackers from creating unlimited buckets by repeatedly calling bucket() with unique keys, leading to memory exhaustion and validator node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f22ef77-0e3e-4b67-8f71-5d0988d72850?mode=deep",
+    "timestamp": "2026-01-21 03:46:32.885532",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: bucket_inner()] [Integer overflow] At line 156, can the calculation size.saturating_mul(self.new_bucket_start_percentage as usize) / 100 result in unexpected initial token counts when new_bucket_start_percentage is near 100 and size is large, bypassing rate limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3df8501-784d-4f14-8708-8d9bd45f3bb8?mode=deep",
+    "timestamp": "2026-01-21 03:46:52.412513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: bucket_inner()] [Arc pointer leak] Can the clone() operation at line 162 be exploited to leak Arc pointers and prevent garbage collection, leading to memory leaks and eventual validator node failure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7346d7b5-170c-4e83-8db0-9f18a2dae252?mode=deep",
+    "timestamp": "2026-01-21 03:47:13.220315",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: try_garbage_collect_key()] [Race condition] Can an attacker exploit the race between checking Arc::strong_count() at line 171 and removing at line 173 to prevent garbage collection or cause use-after-free bugs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82459e30-a0b7-4483-aa08-7ce8a2a465de?mode=deep",
+    "timestamp": "2026-01-21 03:47:35.102237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: try_garbage_collect_key()] [Reference counting attack] Can an attacker maintain weak references or manipulate Arc counts to keep buckets alive indefinitely, preventing cleanup and causing memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfb7f95c-4d05-4128-8577-1a349cc3e26e?mode=deep",
+    "timestamp": "2026-01-21 03:47:58.285123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: try_garbage_collect_key()] [Write lock DoS] Does holding the write lock at line 168 during garbage collection allow attackers to delay all bucket operations by repeatedly triggering GC, causing validator performance degradation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb2023e9-5eba-4cd1-ab9c-fb82ef9bfdf9?mode=deep",
+    "timestamp": "2026-01-21 03:48:22.330634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: refill()] [Time manipulation] Can an attacker exploit clock skew or time manipulation to cause last_refresh_time.elapsed().as_secs() at line 256 to return incorrect values, bypassing rate limits through premature refills? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e06371b-8e92-4993-bc70-7445c8607007?mode=deep",
+    "timestamp": "2026-01-21 03:48:46.319904",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: refill()] [Integer overflow] At line 287, can the calculation (num_intervals as usize).saturating_mul(self.rate) overflow when num_intervals is very large due to clock jumps, causing incorrect token additions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_516e0b5d-f037-4500-a6e0-528396e60b90?mode=deep",
+    "timestamp": "2026-01-21 03:49:11.435944",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: refill()] [Time drift] Can gradual time drift exploitation at line 290 where last_refresh_time is updated with Duration::from_secs(num_intervals) cause cumulative errors that permanently desynchronize rate limiting? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b16384a9-6137-4ff3-a463-cfbb286336b6?mode=deep",
+    "timestamp": "2026-01-21 03:49:35.785100",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: refill()] [Metrics manipulation] Can attackers trigger the metrics logging at lines 277-284 with crafted allowed/throttled counts to overflow histogram buckets or cause DoS through excessive logging? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2d858f1-0fb3-4a02-8ff4-636da2185acc?mode=deep",
+    "timestamp": "2026-01-21 03:50:01.103648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: refill()] [State inconsistency] If refill() is called concurrently from multiple threads (despite Mutex protection), can the state updates at lines 285-290 create inconsistent token counts or timestamp corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8888fd52-9693-4ef3-95bb-850e7ab01bc1?mode=deep",
+    "timestamp": "2026-01-21 03:50:27.210706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: refill()] [Saturating arithmetic bypass] Does the saturating_add() at line 272 hide critical overflow conditions that should trigger errors, allowing silent rate limit bypass when counters wrap? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_002f633c-652e-4525-b66c-752cd856c00a?mode=deep",
+    "timestamp": "2026-01-21 03:50:53.801800",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: acquire_all_tokens()] [Atomicity violation] Can an attacker exploit the non-atomic sequence of refill() at line 305, token check at line 307, and deduct at line 308 to acquire more tokens than available through race conditions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72624165-fcb5-46cf-ba78-3b1e6fbbf7d2?mode=deep",
+    "timestamp": "2026-01-21 03:51:18.659303",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: acquire_all_tokens()] [Zero-request bypass] Does the requested == 0 check at line 300 allow attackers to call this repeatedly without consuming tokens while still incrementing allowed_in_period, corrupting metrics and rate limiting logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_369083e1-21a2-44c1-804f-617402de34b8?mode=deep",
+    "timestamp": "2026-01-21 03:51:41.553931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: acquire_all_tokens()] [Integer overflow] Can the saturating_add() calls at lines 309 and 313 hide overflow conditions where allowed_in_period or throttled_in_period wrap around, causing incorrect rate limit decisions in subsequent periods? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d0734a6-2785-4ad8-9015-3b3e9bd3cf0f?mode=deep",
+    "timestamp": "2026-01-21 03:52:05.098824",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: acquire_all_tokens()] [Time calculation error] Can time_of_tokens_needed() at line 314 return None when it should return Some, or vice versa, causing incorrect throttling decisions and resource exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b45b2b2-2490-4cba-9774-c07c0a1034a9?mode=deep",
+    "timestamp": "2026-01-21 03:52:26.480437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: acquire_tokens()] [Partial acquisition attack] At line 320, can an attacker repeatedly call acquire_tokens() with large requests to always get partial allocations, effectively bypassing rate limits by accumulating small amounts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6cfff01-917a-4630-a250-b7c96a6fc6d5?mode=deep",
+    "timestamp": "2026-01-21 03:52:50.177656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rate-limiter/src/rate_limit.rs] [Function: acquire_tokens()] [State inconsistency] Can the different code paths at lines 330-332 (success) versus 334-336 (failure) create race conditions where token state becomes inconsistent with period counters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42373840-a91e-4187-ba02-215d280c9df5?mode=deep",
+    "timestamp": "2026-01-21 03:53:13.562202",
+    "report_generated": false
+  }
+]
