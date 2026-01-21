@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Field: to_make_hot] [Ordering Inconsistency] The to_make_hot BTreeSet requires Key: Ord - if Key::cmp() and Key::hash() are inconsistent (same hash, different ordering), can this cause to_make_hot BTreeSet and writes HashSet to disagree on key equality, leading to duplicate promotions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb62895f-f37c-48e0-a509-89b1e515275f?mode=deep",
+    "timestamp": "2026-01-21 07:23:51.689216",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Field: to_make_hot] [Ordering Attack] Can malicious Key implementations violate Ord transitivity requirements (a < b, b < c, but a > c), causing BTreeSet corruption where inserts/removes fail silently or panic, leading to validator crashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_705d878f-9c82-450e-b272-7cbc203604e6?mode=deep",
+    "timestamp": "2026-01-21 07:24:04.468084",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Field: to_make_hot] [Non-deterministic Ordering] If Key::cmp() uses floating point comparisons or other non-deterministic logic, can different validators produce different BTreeSet orderings, causing divergent hot state promotion decisions and consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fbaa5abc-81b9-40bf-ab2e-3f5b23a26578?mode=deep",
+    "timestamp": "2026-01-21 07:24:17.625114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Struct: BlockHotStateOpAccumulator] [Parallel Safety] The struct is used in BlockGasLimitProcessor during parallel Block-STM execution - is there any shared mutable access between parallel transaction executions that could cause data races, and should the accumulator be wrapped in Arc<Mutex<>> or similar? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8983750d-e98a-4f28-bdf5-240890396854?mode=deep",
+    "timestamp": "2026-01-21 07:24:31.988883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Struct: BlockHotStateOpAccumulator] [Memory Ordering] In parallel execution, if multiple threads call add_transaction() and one thread calls get_keys_to_make_hot(), are there memory ordering guarantees that ensure all prior add_transaction() effects are visible, or can stale reads occur? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6bbf6f87-995c-4529-8f72-45de30332c54?mode=deep",
+    "timestamp": "2026-01-21 07:24:46.393814",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Struct: BlockHotStateOpAccumulator] [Thread Safety] Does the Key type need to be Send + Sync for safe parallel access, and if Key contains internal mutability (e.g., Cell, RefCell), can this violate thread safety assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_273dcb82-2aa6-4cc9-a8b9-a7b30f5054f9?mode=deep",
+    "timestamp": "2026-01-21 07:25:02.258367",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Field: max_promotions_per_block] [Overflow] Line 31 sets MAX_PROMOTIONS_PER_BLOCK = 1024 * 10 - if this multiplication is changed to larger values in future configs, can it overflow usize on 32-bit systems, causing max_promotions_per_block to wrap to small values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08f04a04-62a5-403d-b069-8815d31075ba?mode=deep",
+    "timestamp": "2026-01-21 07:25:19.513976",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Length Overflow] If to_make_hot.len() or writes.len() exceeds usize::MAX (theoretical), can subsequent len() calls overflow or return incorrect values, causing comparison logic (line 69) to fail? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de600edb-1f9f-48c0-89c8-424c75ed093b?mode=deep",
+    "timestamp": "2026-01-21 07:25:37.939849",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Counter: COUNTER] [Counter Overflow] Lines 63 and 70 increment HOT_STATE_OP_ACCUMULATOR_COUNTER - can these counters overflow if incremented billions of times, causing wrap-around that corrupts metrics, and are they thread-safe in parallel execution? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a28113a-21d2-4ded-8fba-e86b9961e2e4?mode=deep",
+    "timestamp": "2026-01-21 07:25:57.919529",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Counter: COUNTER] [Metric Poisoning] Can an attacker repeatedly trigger max_promotions_per_block_hit (line 70) to flood monitoring systems with false alerts, causing operational confusion or masking real issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cee925b6-cf6a-425b-94a5-4ae53d5633c1?mode=deep",
+    "timestamp": "2026-01-21 07:26:19.050741",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Counter: COUNTER] [Side Channel] Do counter increments (lines 63, 70) provide timing side channels that reveal information about transaction read/write patterns, potentially leaking sensitive state access information? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca8c27e5-2acb-4e1c-9bc8-49bf31171b68?mode=deep",
+    "timestamp": "2026-01-21 07:26:40.799581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Use-After-Free] If iterators (writes, reads parameters) yield references to Keys that are deallocated during iteration, can this cause use-after-free when cloning keys (line 76) or calling contains/remove? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d6f446d-c114-4a8f-bc5a-119c5179cd89?mode=deep",
+    "timestamp": "2026-01-21 07:27:04.251429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Lifetime Safety] The lifetime parameter 'a in add_transaction signature ensures Key references outlive the function call - but can malicious iterator implementations return dangling references that violate this guarantee? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18148088-9445-4d3e-b718-40ace87a2e51?mode=deep",
+    "timestamp": "2026-01-21 07:27:28.542240",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Struct: BlockHotStateOpAccumulator] [Drop Safety] When BlockHotStateOpAccumulator is dropped, are BTreeSet and HashSet properly cleaned up, and can drop handlers panic causing validator crashes during cleanup? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d2f74aa-29d7-4aac-b033-3a3e3988944f?mode=deep",
+    "timestamp": "2026-01-21 07:27:54.621706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Empty Iterators] If both writes and reads iterators are empty, does add_transaction() handle this gracefully, or can empty blocks cause unexpected state like uncalled counter increments? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_498793b1-9469-4b24-8ff5-535a3ca48d86?mode=deep",
+    "timestamp": "2026-01-21 07:28:21.535497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Duplicate Keys] If writes iterator contains duplicate keys, does get_or_insert_owned() (line 65) handle this correctly, or can duplicate writes cause multiple counter increments (line 63) inflating metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9e2ef42-01d2-4c33-8522-417574fc2ee7?mode=deep",
+    "timestamp": "2026-01-21 07:28:50.402073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Same Key Read/Write] If a transaction both reads and writes the same key, is the order of writes/reads iteration guaranteed to process writes first, ensuring the key is removed from to_make_hot before being checked in reads processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32e478f0-ca57-4595-8045-e3f681df6e17?mode=deep",
+    "timestamp": "2026-01-21 07:29:17.107083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Max Capacity] When to_make_hot reaches max_promotions_per_block limit (10,240 keys), can continued processing of the same block with more transactions cause memory fragmentation or capacity issues in BTreeSet reallocation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5824b644-5343-4cc3-9e64-a6d6d3551a9b?mode=deep",
+    "timestamp": "2026-01-21 07:29:44.282479",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Struct: BlockHotStateOpAccumulator] [Non-Deterministic Order] hashbrown::HashSet iteration order is non-deterministic - if any code path iterates over writes HashSet, can this cause non-deterministic execution across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_833c6580-22b9-4a50-bd49-ecd750ea0873?mode=deep",
+    "timestamp": "2026-01-21 07:30:11.151047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: get_keys_to_make_hot()] [Deterministic Output] BTreeSet provides deterministic iteration order - is this ordering critical for consensus, and if keys_to_make_hot are applied in different orders by different validators, can state diverge? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_168de542-1346-4ae4-b78e-849462238358?mode=deep",
+    "timestamp": "2026-01-21 07:30:38.277849",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Transaction Ordering] Does the order of add_transaction() calls affect final to_make_hot set due to max_promotions_per_block limit (line 69), and can transaction reordering in parallel execution cause validators to produce different promotion sets? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4be6384d-7816-4cb7-878b-289e3201af86?mode=deep",
+    "timestamp": "2026-01-21 07:31:03.787403",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Resource Groups] According to BlockGasLimitProcessor context, keys can be resource group members - if Key represents both resource groups and individual resources, can collisions between group keys and member keys cause incorrect hot state tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9e5dbf9-eee6-442a-9f5f-85f79e5705b8?mode=deep",
+    "timestamp": "2026-01-21 07:31:28.705502",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Function: add_transaction()] [Granular Conflicts] When use_granular_resource_group_conflicts is enabled in BlockGasLimitProcessor, can fine-grained resource keys flood the accumulator beyond capacity, and does max_promotions_per_block account for resource group expansion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5dc5558-934c-4300-8003-85c896fec9bf?mode=deep",
+    "timestamp": "2026-01-21 07:31:51.022472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Struct: BlockHotStateOpAccumulator] [Optional Usage] The accumulator is wrapped in Option<> in BlockGasLimitProcessor - can None vs Some states cause inconsistent behavior where some blocks track hot state and others don't, leading to non-deterministic state promotion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d3a8230-f088-46fa-91f0-263358cff037?mode=deep",
+    "timestamp": "2026-01-21 07:32:13.331903",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/hot_state_op_accumulator.rs] [Struct: BlockHotStateOpAccumulator] [Conditional Creation] The accumulator is only created if add_block_limit_outcome_onchain() returns true - can changes to this flag mid-block cause validators to have different hot state accumulator states, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dad9b78-bf96-4181-b483-0ea735417e9b?mode=deep",
+    "timestamp": "2026-01-21 07:32:36.346540",
+    "report_generated": false
+  }
+]
