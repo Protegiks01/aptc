@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Integer Overflow] Can an attacker submit a transaction with version number >= 2^63, causing the cast `inner.info.version.0 as i64` to overflow into negative values, potentially corrupting the database primary key or causing sorting inconsistencies in transaction history? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_faf1a74f-ce80-4434-98f4-2f429388d0ac?mode=deep",
+    "timestamp": "2026-01-21 05:34:40.500848",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Integer Overflow] In the UserTransaction branch at line 46, does the conversion `inner.info.version.0 as i64` handle the maximum u64 value (18446744073709551615) correctly, or could it wrap to -1 and overwrite existing records in the account_transactions table? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85cdcdad-71e5-438c-959c-3500b408326a?mode=deep",
+    "timestamp": "2026-01-21 05:34:53.095509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Integer Overflow] For GenesisTransaction at line 52, can the version cast `inner.info.version.0 as i64` produce negative transaction versions that violate database constraints or create invalid primary keys in the composite key (account_address, transaction_version)? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7be69a9-9921-4254-a60f-e25e66e5e3f4?mode=deep",
+    "timestamp": "2026-01-21 05:35:05.817842",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Integer Overflow] In BlockMetadataTransaction handling at line 58, if a malicious validator crafts a block with version u64::MAX, will the i64 cast overflow and allow duplicate entries or primary key collisions in the account_transactions table? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fbbebdd1-229c-471d-95a2-f4edc60176e9?mode=deep",
+    "timestamp": "2026-01-21 05:35:19.833141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_event()] [Integer Overflow] At line 93, when creating AccountTransaction with `txn_version: i64`, if this value was derived from an overflowed u64 cast earlier, could it create inconsistent mappings between events and their actual transaction versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_650f9469-f1a6-453f-b592-89913b615d5d?mode=deep",
+    "timestamp": "2026-01-21 05:35:34.021484",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Integer Overflow] At line 107, the transaction_version field is set from txn_version parameter - if this was cast from u64 with overflow, could it cause resource writes to be attributed to wrong transaction versions, breaking audit trails? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22ec42cd-b56f-4162-8049-53a7e3cee060?mode=deep",
+    "timestamp": "2026-01-21 05:35:49.000604",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_delete_resource()] [Integer Overflow] At line 131, does the AccountTransaction creation with overflowed txn_version allow attackers to mask resource deletion operations by associating them with invalid transaction versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37d3b459-7523-4a3f-baaf-1558711cd105?mode=deep",
+    "timestamp": "2026-01-21 05:36:04.654081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Data Integrity] At line 64, the HashMap account_transactions is initialized empty and populated from multiple sources - can an attacker craft a transaction where the same (account_address, txn_version) tuple appears multiple times, causing later entries to silently overwrite earlier ones and lose critical account associations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_267b1709-c1d0-42e5-add5-23c7690509b9?mode=deep",
+    "timestamp": "2026-01-21 05:36:22.263256",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Data Integrity] Between lines 65-69 (signature processing) and lines 71-84 (event/resource processing), if the same account address appears as both a signer and in events/resources, does the HashMap insert at line 66 get overwritten by extend operations at lines 72 and 74-83, causing signature information to be lost? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21a8b1c4-1eac-49a8-b9cb-d0b2320b85cc?mode=deep",
+    "timestamp": "2026-01-21 05:36:40.334852",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Data Loss] At line 72, HashMap.extend() from from_event() can overwrite existing entries - if a malicious transaction has an event with account_address matching a signer, will the signer's AccountTransaction record be silently replaced, breaking signature audit trails? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45006fe1-41df-4bf8-b915-dad9b711559e?mode=deep",
+    "timestamp": "2026-01-21 05:36:58.884242",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Data Loss] At lines 77 and 80, HashMap.extend() is called for DeleteResource and WriteResource processing - can an attacker craft write set changes that deliberately collide with event account addresses to overwrite event-based AccountTransaction records? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48bd071c-12e5-48ba-8e01-0ea5e0817fa5?mode=deep",
+    "timestamp": "2026-01-21 05:37:17.271381",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Data Integrity] At line 106, the result HashMap inserts the resource address, then at line 112 potentially inserts the object owner address - if these addresses are identical (self-owned object), does the second insert overwrite the first, losing the resource-level tracking? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a55bc58-561c-4a62-823f-8969d192df56?mode=deep",
+    "timestamp": "2026-01-21 05:37:37.805913",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Logic Error] Between lines 106 and 112, if ObjectWithMetadata.from_write_resource returns Some with owner matching the resource address, the HashMap will have duplicate inserts for the same key - does this waste database writes or mask the fact that both resource and ownership changes occurred? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4863834-30c7-4452-9a65-873b9ba50073?mode=deep",
+    "timestamp": "2026-01-21 05:37:58.275045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_event()] [Address Manipulation] At line 91, standardize_address() pads addresses to 66 characters - can an attacker submit events with malformed addresses (e.g., too short, invalid hex) that bypass standardization or cause panics, allowing DoS of the indexer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_751446d1-3422-45a0-ab87-cd02628f952d?mode=deep",
+    "timestamp": "2026-01-21 05:38:20.496523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_event()] [Address Collision] At line 91, if standardize_address() uses format!('0x{:0>64}', &handle[2..]), could an attacker craft two different addresses that standardize to the same value by manipulating the prefix, causing account transaction records to incorrectly merge? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49a2264b-9ae4-4d73-aafd-9988b89a5a15?mode=deep",
+    "timestamp": "2026-01-21 05:38:43.799263",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Address Manipulation] At line 105, standardize_address(&write_resource.address.to_string()) assumes the address string is well-formed - can malicious validators inject write resources with addresses missing '0x' prefix, causing slice panic in standardize_address at &handle[2..]? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17508a9c-11f2-437a-9abe-01df955295c0?mode=deep",
+    "timestamp": "2026-01-21 05:39:08.055150",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_delete_resource()] [Address Manipulation] At line 129, if delete_resource.address.to_string() produces an address shorter than 2 characters (e.g., empty string), will standardize_address panic when accessing &handle[2..], causing indexer crash? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40d784b9-dd57-4145-92ed-a1d78663e4f3?mode=deep",
+    "timestamp": "2026-01-21 05:39:32.355094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Data Inconsistency] At line 114, ObjectCore.get_owner_address() calls standardize_address internally - if this standardization differs from the one at line 105, could object owners be tracked under different address formats, breaking parent-child object relationships? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_479d6cbb-7181-4c9b-b1ec-8b9d43c08b19?mode=deep",
+    "timestamp": "2026-01-21 05:39:56.832137",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Address Consistency] At line 68, sig.signer is used directly without calling standardize_address, but events (line 91), write resources (line 105), and delete resources (line 129) all call it - does this create inconsistent address formats in the HashMap keys, causing account transactions to be fragmented across multiple address variants? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_453be744-67f4-41dc-9606-f08f051ffb20?mode=deep",
+    "timestamp": "2026-01-21 05:40:21.553939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Transaction Bypass] At lines 60-62, the catch-all `_ => { return Ok(HashMap::new()); }` handles StateCheckpointTransaction and PendingTransaction types - can attackers use these transaction types to perform state changes that don't get indexed, creating blind spots in account transaction history? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c615be24-8d58-4981-9655-a9cf3fd68279?mode=deep",
+    "timestamp": "2026-01-21 05:40:46.149957",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Missing Coverage] The match statement at lines 41-62 only handles UserTransaction, GenesisTransaction, and BlockMetadataTransaction - if new transaction types are added to the Transaction enum, will they silently return empty results, causing missing account transaction records? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee983a48-ff3c-4ab7-8f54-147d91f81fc8?mode=deep",
+    "timestamp": "2026-01-21 05:41:10.143660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Data Loss] At line 51, GenesisTransaction returns empty vec![] for signatures - during genesis, if accounts are created with initial balances, will these accounts have no transaction records linking them to the genesis, breaking account history completeness? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91d43f45-c9a1-4f6f-9530-9ed17e739d52?mode=deep",
+    "timestamp": "2026-01-21 05:41:34.476443",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Data Loss] At line 57, BlockMetadataTransaction also returns empty vec![] for signatures - if block rewards are distributed via block metadata, will recipient accounts have no signature-based transaction records, making it impossible to attribute rewards to specific validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b4c88b7-1a9f-4a73-8ca8-fb2be331591c?mode=deep",
+    "timestamp": "2026-01-21 05:41:56.859927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Logic Inconsistency] Lines 48-52 and 54-58 extract events and write set changes for GenesisTransaction and BlockMetadataTransaction but not signatures - does this asymmetry cause account_transactions table to have incomplete data for non-user transactions, affecting account activity queries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1504e8d-1dde-4bc4-9a5e-1829f0517a80?mode=deep",
+    "timestamp": "2026-01-21 05:42:20.242812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Object Ownership] At lines 110-115, ObjectWithMetadata.from_write_resource is called to extract object ownership - if this function returns Some but inner.object_core.get_owner_address() points to a non-existent account, does this create dangling references in account_transactions that break referential integrity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5e07c25-5a88-460f-8481-628dc7e8ea9c?mode=deep",
+    "timestamp": "2026-01-21 05:42:42.176026",
+    "report_generated": false
+  }
+]
