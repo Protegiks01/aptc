@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: get_min_readable_version()] [Race condition] Can concurrent calls to get_min_readable_version() with load(Ordering::SeqCst) interleave with store operations in save_min_readable_version() or set_pruner_target_db_version(), causing readers to observe stale or inconsistent min_readable_version values that could allow queries to access already-pruned state data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f0ddb92-8afe-4183-b403-0af869020009?mode=deep",
+    "timestamp": "2026-01-21 05:19:46.574145",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: save_min_readable_version()] [Atomicity violation] Does the non-atomic sequence of storing min_readable_version to AtomicVersion, updating metrics, and writing to state_kv_db create a window where the in-memory version advances but disk persistence fails, leading to state inconsistency after node restart where pruning progress is lost? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b1c7a06-549b-4655-8b17-369075202ae1?mode=deep",
+    "timestamp": "2026-01-21 05:19:58.958148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Race condition] Can race conditions between maybe_set_pruner_target_db_version() and set_pruner_target_db_version() cause min_readable_version to be updated multiple times with different values for the same latest_version, potentially skipping pruning windows or pruning more aggressively than configured? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2778e1fe-b3c3-41e6-925d-21b16ff13a6e?mode=deep",
+    "timestamp": "2026-01-21 05:20:11.620122",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Memory ordering] Is SeqCst ordering in the AtomicVersion store operation necessary, or could relaxed ordering cause visibility issues where other threads see reordered updates to min_readable_version versus the pruner_worker target, leading to pruner working with incorrect version ranges? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39e9557f-e42d-4f4d-b3c3-59b4eb01126e?mode=deep",
+    "timestamp": "2026-01-21 05:20:24.671871",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Integer overflow] Can an attacker cause integer overflow in the calculation 'min_readable_version + self.pruning_batch_size as u64 + self.prune_window' by manipulating the ledger to have extreme version numbers, bypassing the pruning threshold check and preventing pruning from ever occurring? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca0f77e3-0391-484b-9e6b-ee1deb32bb04?mode=deep",
+    "timestamp": "2026-01-21 05:20:38.744605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Integer underflow] Does saturating_sub(self.prune_window) correctly handle the case where latest_version is less than prune_window, or can this lead to min_readable_version being set to 0 when it shouldn't be, allowing unauthorized access to genesis state that should be pruned? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41b6d5db-82fb-4a20-bf20-e6d0b45bb69e?mode=deep",
+    "timestamp": "2026-01-21 05:20:53.333423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Type conversion] Can casting pruning_batch_size from usize to u64 cause truncation or unexpected behavior on 32-bit systems where usize is smaller than u64, potentially causing incorrect pruning threshold calculations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95cd9381-1859-465f-82ed-515552090b30?mode=deep",
+    "timestamp": "2026-01-21 05:21:09.093489",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Version calculation] If prune_window is set to u64::MAX or a very large value, can saturating_sub cause min_readable_version to incorrectly saturate at 0, preventing proper pruning and causing database bloat or exposing historical state that should be inaccessible? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04ba69e2-cf70-42ad-a60b-edfa7978b10f?mode=deep",
+    "timestamp": "2026-01-21 05:21:26.618958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: new()] [Error handling] Does the .expect('Must succeed.') call on get_state_kv_pruner_progress() properly handle corrupted database state, or can an attacker cause database corruption that triggers panic during initialization, resulting in denial of service where validators cannot start? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0e3db0f-3cc1-4091-85d8-7a4dd00c85bd?mode=deep",
+    "timestamp": "2026-01-21 05:21:44.907348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: new()] [State inconsistency] Can min_readable_version loaded from get_state_kv_pruner_progress() be inconsistent with actual pruned state in state_kv_db if a previous pruning operation was interrupted, allowing queries to request versions that were partially pruned leading to incorrect or missing state reads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_800e4a5a-aa3f-440a-859c-b06441812fc8?mode=deep",
+    "timestamp": "2026-01-21 05:22:04.676488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: new()] [Configuration validation] Is prune_window validated to be non-zero and within reasonable bounds, or can setting prune_window to 0 cause division by zero or unexpected behavior in version calculations throughout the pruner lifecycle? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79a5ca3f-8a69-4a29-b982-636a29a1bb6b?mode=deep",
+    "timestamp": "2026-01-21 05:22:24.355280",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: new()] [Configuration validation] Is pruning_batch_size validated to be non-zero, or can setting batch_size to 0 in LedgerPrunerConfig cause division by zero or prevent pruning from ever triggering in maybe_set_pruner_target_db_version()? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d2c29bc-a947-4d4f-87a2-014297ed7c54?mode=deep",
+    "timestamp": "2026-01-21 05:22:44.741842",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: init_pruner()] [Error handling] Does the .expect('Failed to create state kv pruner.') properly handle all failure modes of StateKvPruner::new(), or can edge cases in database initialization cause unhandled panics that prevent validator startup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b20e98b5-23c2-4bcf-919b-978cd69fa222?mode=deep",
+    "timestamp": "2026-01-21 05:23:06.248407",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Logic error] Does the condition 'latest_version >= min_readable_version + self.pruning_batch_size as u64 + self.prune_window' correctly prevent over-pruning, or can edge cases where latest_version is slightly above the threshold cause premature pruning that violates the configured prune_window guarantee? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe605cc4-8ac0-46c8-a3f3-7cb30f228c79?mode=deep",
+    "timestamp": "2026-01-21 05:23:28.906999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Threshold bypass] Can an attacker manipulate the ledger state to artificially inflate latest_version through rapid block production, causing the pruner to wake up more frequently than intended and consume excessive resources, leading to performance degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bdfc397-b503-4997-960b-916c468737f9?mode=deep",
+    "timestamp": "2026-01-21 05:23:51.758509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: set_pruner_target_db_version()] [State corruption] If set_pruner_target_db_version() is called with latest_version that decreases (moving backwards), can this cause min_readable_version to move backwards, potentially re-exposing already-pruned state or causing inconsistencies in the state database? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c98e38c1-ce90-48b6-aa46-0d947cdf2c32?mode=deep",
+    "timestamp": "2026-01-21 05:24:16.321530",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Pruning starvation] If the ledger stops advancing or advances very slowly (less than pruning_batch_size + prune_window), can the pruner become permanently stuck never triggering, causing unbounded database growth even when pruning is enabled? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1341e830-d858-47d1-a110-1c9db059be4c?mode=deep",
+    "timestamp": "2026-01-21 05:24:41.104270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: is_pruning_pending()] [Race condition] Can the check in is_pruning_pending() race with the pruner_worker actually completing its work, causing callers to observe stale 'pending' status that leads to incorrect flow control decisions in upper layers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d146383c-8498-40ab-b664-c3a98814504f?mode=deep",
+    "timestamp": "2026-01-21 05:25:06.986788",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Thread synchronization] Does calling set_target_db_version() on pruner_worker properly synchronize with the worker thread's internal state, or can concurrent updates cause the worker to skip versions or process them out of order? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5c343c3-c6c7-4786-aac1-7414c1858a99?mode=deep",
+    "timestamp": "2026-01-21 05:25:33.902274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Assert violation] The assert!(self.pruner_worker.is_some()) can panic if called when pruning is disabled - can this be triggered by external API calls or configuration changes during runtime, causing unexpected validator crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8cadf58-40ab-47f1-b363-0d5bdd409922?mode=deep",
+    "timestamp": "2026-01-21 05:26:00.804239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: init_pruner()] [Worker lifecycle] If the PrunerWorker thread panics or terminates unexpectedly after initialization, does the StateKvPrunerManager detect this and handle it gracefully, or can this lead to a silent failure where pruning stops but the system believes it's still active? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2b3c198-5682-48e7-ac23-9d13be985445?mode=deep",
+    "timestamp": "2026-01-21 05:26:27.680517",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: save_min_readable_version()] [Metrics inconsistency] Can the ordering of AtomicVersion update, metrics update, and write_pruner_progress() create observability windows where metrics show a version that hasn't been persisted to disk, causing monitoring to report incorrect pruning progress? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d793add0-d7cc-454d-a28b-f7fe0d73da15?mode=deep",
+    "timestamp": "2026-01-21 05:26:53.932321",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: new()] [Metrics initialization] If get_state_kv_pruner_progress() returns a very large min_readable_version, can casting it to i64 for metrics cause integer overflow and incorrect negative values in Prometheus metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af360b01-b4c0-4074-828a-488b22567a6d?mode=deep",
+    "timestamp": "2026-01-21 05:27:19.320752",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Metrics race] Can rapid concurrent calls to set_pruner_target_db_version() cause metrics updates to interleave incorrectly, displaying non-monotonic min_readable_version values that confuse monitoring systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36702150-dd08-466b-b1e0-a5d53438e57d?mode=deep",
+    "timestamp": "2026-01-21 05:27:44.553021",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: init_pruner()] [Metrics overflow] Can prune_window or batch_size configuration values exceed i64::MAX, causing overflow when set as Prometheus metrics and displaying incorrect monitoring data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f91eb30-7d7e-4f54-8fd6-c939ea135430?mode=deep",
+    "timestamp": "2026-01-21 05:28:10.290585",
+    "report_generated": false
+  }
+]
