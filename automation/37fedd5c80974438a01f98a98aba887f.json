@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [NodeKey: Reference] [Dangling NodeKey] If a NodeKey in the stale index references a node that was already pruned by another mechanism, can repeated pruning attempts cause errors or performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4103cd02-722e-4b10-a9f8-2189b525c75c?mode=deep",
+    "timestamp": "2026-01-21 07:03:44.180994",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Concurrency: Write-Write] [Duplicate Index Creation] Can multiple threads simultaneously create stale indices for the same NodeKey with different stale_since_versions, causing the last-write-wins scenario to select the wrong pruning time? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2194efff-6b27-456d-af1b-bed10317f37d?mode=deep",
+    "timestamp": "2026-01-21 07:03:57.137776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Concurrency: Write-Read] [Dirty Read] Can the pruner read a partially-written stale index entry (version written but NodeKey not yet written) due to non-atomic batch operations, leading to decoding failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3feeb0eb-24a4-471e-ac97-a8d750a444f0?mode=deep",
+    "timestamp": "2026-01-21 07:04:10.004924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Concurrency: Read-Delete] [TOCTOU] Can a time-of-check-time-of-use race occur where pruner reads a stale index, another thread deletes it, then pruner attempts to delete the referenced node twice, causing errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ef991ed-937b-49dd-bacc-3e4f779dc644?mode=deep",
+    "timestamp": "2026-01-21 07:04:23.493045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Concurrency: Batch Operations] [Partial Commit] If a batch containing stale index writes fails halfway through, can partially committed indices cause the pruner to see incomplete pruning metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5d6ec3f-3368-418d-b514-47692ad46914?mode=deep",
+    "timestamp": "2026-01-21 07:04:37.882087",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Error Handling: Decode Failures] [Silent Corruption] When decode_key() at lines 48-59 encounters errors, can the pruner silently skip those entries, leading to unbounded accumulation of unprunable stale indices? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca9b258c-2dea-44c0-93c2-32402c66fa86?mode=deep",
+    "timestamp": "2026-01-21 07:04:53.282259",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Error Handling: Encode Failures] [Partial State] If encode_key() at lines 40-46 fails after partially writing version but before writing NodeKey, can this corrupted entry remain in memory and be flushed to disk later? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5e50ef8-62c1-49f8-8043-4a7f02b2e9fb?mode=deep",
+    "timestamp": "2026-01-21 07:05:09.655982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Error Handling: IO Errors] [Write Failure Handling] If write_u64::<BigEndian>() at line 42 or write_all() at line 43 returns an IO error, does the caller properly handle cleanup, or can failed writes leave the database in inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6d6fe9b-8a55-4e43-804b-20b7ec700b54?mode=deep",
+    "timestamp": "2026-01-21 07:05:28.533977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Edge Cases: Empty Database] [Initial State] When the stale index is empty (no entries), can seek operations using encode_seek_key() cause iterator errors or undefined behavior in RocksDB? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_819bf92d-2e98-4d10-9645-3dd660a9b996?mode=deep",
+    "timestamp": "2026-01-21 07:05:47.696918",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Edge Cases: Single Entry] [Boundary Condition] With only one stale index entry, can range operations using seek keys cause off-by-one errors that miss the single entry? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bcfeecc8-5f30-4c7e-ba28-47d8517d715e?mode=deep",
+    "timestamp": "2026-01-21 07:06:08.730889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Edge Cases: Maximum Capacity] [Storage Limits] When stale indices approach RocksDB's maximum keys per column family, can operations fail in ways that corrupt the index or prevent further stale node tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d67b5ffd-aede-4995-a329-93e25e90c66a?mode=deep",
+    "timestamp": "2026-01-21 07:06:30.108863",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [State Integrity: Hash Consistency] [State Root Mismatch] If pruning deletes nodes referenced by stale indices but the nodes are still part of a committed state root, can this cause state root verification failures across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a084bc6e-0136-4b0a-adc3-2bf6bbd6546e?mode=deep",
+    "timestamp": "2026-01-21 07:06:53.295949",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [State Integrity: Checkpoint Consistency] [Snapshot Inconsistency] Can stale indices in checkpoints reference nodes that don't exist in the same checkpoint, causing validators that restore from checkpoint to have corrupted state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66a414ce-685b-4300-af7f-2561b76dc318?mode=deep",
+    "timestamp": "2026-01-21 07:07:17.213115",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [State Integrity: Proof Generation] [Invalid Proofs] If nodes referenced by stale indices are pruned while still needed for Merkle proofs, can API queries return invalid proofs that fail verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d0ed434-92c6-461c-8f27-60d2e21836ce?mode=deep",
+    "timestamp": "2026-01-21 07:07:42.478977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Schema Definition: Macro] [define_schema Vulnerabilities] Can the define_schema! macro at lines 32-37 introduce vulnerabilities through improper trait implementations or missing validation that downstream code relies on? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1764152-06db-4950-a5cb-135a25bda5c6?mode=deep",
+    "timestamp": "2026-01-21 07:08:08.840870",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Schema Definition: Type Safety] [Unit Type Value] Using () as the value type ensures no actual data is stored, but can this interact poorly with generic database code expecting actual values, causing panics or undefined behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8117ed5f-ab51-4810-9f5c-4ff195189f73?mode=deep",
+    "timestamp": "2026-01-21 07:08:35.650455",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Schema Definition: CF Name] [Column Family Name Collision] Is STALE_NODE_INDEX_CF_NAME at line 36 guaranteed to be unique, or can CF name collisions with other schemas cause writes to wrong column families? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29a0d708-11ee-4e48-8b3b-413b406c5544?mode=deep",
+    "timestamp": "2026-01-21 07:09:02.752176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Pruning: Window Management] [Pruning Window Violation] Can stale indices be created with stale_since_version within the configured pruning window, and if pruned immediately, does this violate the window guarantee for state queries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5bdc1488-4414-495d-ba25-6ecb95844730?mode=deep",
+    "timestamp": "2026-01-21 07:09:30.671226",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Pruning: Batch Size] [Unbounded Batch] When pruning reads all stale indices for a version range, can an attacker create millions of indices for a single version to cause OOM during batch loading? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55239d2b-927c-4c52-864f-642395855a73?mode=deep",
+    "timestamp": "2026-01-21 07:09:59.541230",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Pruning: Progress Tracking] [Pruning Restart] If pruning is interrupted mid-operation, can partially-processed stale indices cause the pruner to delete nodes twice or skip nodes on restart? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fede392f-1310-4d19-9eef-14b8ad65e6e2?mode=deep",
+    "timestamp": "2026-01-21 07:10:28.692324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Pruning: Cross-Epoch] [Epoch Transition Handling] At epoch boundaries, can stale indices from the old epoch interfere with the new epoch's state, or can epoch transition logic fail to migrate indices properly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_723d7969-c542-44cb-945d-91a042277cb0?mode=deep",
+    "timestamp": "2026-01-21 07:10:57.535011",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Performance: Seek Overhead] [Iteration DoS] Can an attacker create stale indices with versions that cause excessive seek operations during pruning, degrading validator performance below consensus thresholds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec0f09bc-013e-4d04-beef-f0f6d7707274?mode=deep",
+    "timestamp": "2026-01-21 07:11:27.480009",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Performance: Encoding Cost] [CPU Exhaustion] Can encoding/decoding operations at lines 40-59 be exploited with pathological NodeKey patterns that cause excessive CPU usage during high-throughput state updates? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9b63117-d622-4a92-a7b4-fa24fce3ea55?mode=deep",
+    "timestamp": "2026-01-21 07:11:57.247652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Performance: Memory Usage] [Memory Leak] Can failed decode operations cause memory allocations that are never freed, leading to gradual memory exhaustion on validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6848dad2-de38-408e-9814-6aa5aafa59b1?mode=deep",
+    "timestamp": "2026-01-21 07:12:26.967002",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/stale_node_index/mod.rs] [Validation: Input Sanitization] [Unvalidated Version] Does decode_key() at lines 48-59 validate that the decoded stale_since_version is within reasonable bounds (e.g., ≤ current ledger version + safety margin)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e310f9aa-6b8d-4ff8-bf14-b37f24d7cf32?mode=deep",
+    "timestamp": "2026-01-21 07:12:56.463371",
+    "report_generated": false
+  }
+]
