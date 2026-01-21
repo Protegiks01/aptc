@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_shard_pruner.rs] [Function: prune()] [Infinite Loop Risk] The function has a loop that only breaks when done=true - if get_stale_node_indices keeps returning data due to corrupted index, can this loop forever and hang the pruner thread? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5f4eaaf-273c-4756-9048-9f11bbd0d6e1?mode=deep",
+    "timestamp": "2026-01-21 00:52:24.501689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_shard_pruner.rs] [Function: prune()] [Progress Update Timing] Progress is only written when done=true at the end - if the loop processes millions of nodes over hours, can the node crash and lose all progress, requiring re-pruning from the start? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0accc7a-31a6-4720-8eaa-6777781d02e2?mode=deep",
+    "timestamp": "2026-01-21 00:52:37.790131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_shard_pruner.rs] [Function: prune()] [Batch Accumulation] Each iteration creates a new SchemaBatch and writes it - if max_nodes_to_prune is huge, can a single batch become too large and cause write amplification or memory issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95cf73aa-d264-4d72-b20c-ddff3a6596ce?mode=deep",
+    "timestamp": "2026-01-21 00:52:51.238582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_shard_pruner.rs] [Function: prune()] [Deletion Order] Deletes JellyfishMerkleNodeSchema before the stale index - if first succeeds but second fails, can this cause the stale index to point to a non-existent node, breaking future pruning attempts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1d0f59c-1288-4034-a10f-cfd2851b7c20?mode=deep",
+    "timestamp": "2026-01-21 00:53:05.252011",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Next Version Initialization] Uses AtomicVersion for next_version initialized to 0 - on first call, uses max(next_version, current_progress) - can this cause the first pruning round to incorrectly target version 0 instead of current_progress? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3b7c6a1-ce78-46d9-9158-9caeb0f03469?mode=deep",
+    "timestamp": "2026-01-21 00:53:20.226942",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Version Update Logic] Stores next_version.unwrap_or(target_version) - if next_version is None (meaning no more stale nodes), it stores target_version - can this cause the pruner to incorrectly believe it's caught up when there might be more nodes at higher versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f03773b4-63db-4740-8a0d-d7c036e390c2?mode=deep",
+    "timestamp": "2026-01-21 00:53:36.427308",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_metadata_pruner.rs] [Function: maybe_prune_single_version()] [Atomic Operations] The function checks target_version_for_this_round > target_version and returns None - but next_version was already loaded - can another thread update next_version in between, causing inconsistent behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f52263a2-0755-4bef-b523-6c31e2433622?mode=deep",
+    "timestamp": "2026-01-21 00:53:53.876039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_metadata_pruner.rs] [Function: new()] [Fallback Initialization] If LedgerPrunerProgress doesn't exist, it seeks to first VersionDataSchema entry - if the DB is empty or corrupted, can this return incorrect version 0, causing the pruner to delete everything? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74dd5464-8fa8-4f25-a79c-90b78dbcc35a?mode=deep",
+    "timestamp": "2026-01-21 00:54:13.903921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_metadata_pruner.rs] [Function: prune()] [Range Iteration] Uses for version in current_progress..target_version to delete - is the end exclusive (correct) or should it be inclusive? Can off-by-one errors leave one version unpruned? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7be4570e-532e-453c-9697-a7cb351adf88?mode=deep",
+    "timestamp": "2026-01-21 00:54:35.671072",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_metadata_pruner.rs] [Function: progress()] [Error Handling] Returns error if LedgerPrunerProgress is None after initialization - but initialization should ensure it exists - can a corrupted DB cause this to fail after successful initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd9fc62e-63f7-4e36-b7ca-16bcc89df77e?mode=deep",
+    "timestamp": "2026-01-21 00:54:58.853726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_utils.rs] [Function: get_or_initialize_subpruner_progress()] [Race Condition] Checks if progress exists with get(), if not, puts metadata_progress - can two threads both see None and both try to put, causing database conflicts or incorrect progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0963af97-0cac-4f1d-8a14-44b3224a80ec?mode=deep",
+    "timestamp": "2026-01-21 00:55:22.310094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_utils.rs] [Function: get_ledger_pruner_progress()] [Default Value] Returns 0 if progress is not found - is 0 always safe as a default, or can this cause the pruner to attempt to delete data from genesis? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a373174f-288e-4fb5-8252-12fa51456cdc?mode=deep",
+    "timestamp": "2026-01-21 00:55:48.478155",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_utils.rs] [Function: get_state_kv_pruner_progress()] [Unwrap or Default] Uses unwrap_or(0) which silently defaults to 0 on any error - can this mask database corruption errors and cause the pruner to operate on incorrect assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a690ecc-1dba-48fc-8c8b-d944474c19d5?mode=deep",
+    "timestamp": "2026-01-21 00:56:15.316084",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_utils.rs] [Function: get_state_merkle_pruner_progress()] [Generic Type Safety] Uses generic type parameter S with trait bounds - can incorrect type instantiation cause the function to read progress from the wrong metadata key? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a9dbf5e-f1ee-4794-ab25-ebc9caf38603?mode=deep",
+    "timestamp": "2026-01-21 00:56:43.771573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/mod.rs] [Cross-Pruner Coordination] [State Consistency] The three pruner managers (Ledger, StateKv, StateMerkle) run independently - can they prune to different versions, causing state queries to see inconsistent data where some state is available but related transaction data is pruned? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b457427c-8f1b-410e-a968-507dc954ea2c?mode=deep",
+    "timestamp": "2026-01-21 00:57:12.997106",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/mod.rs] [Pruner Lifecycle] [Initialization Order] If LedgerPrunerManager initializes before StateKvPrunerManager, can commits happening in between cause the state pruners to have inconsistent initial progress values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f5f314d-4f8b-4377-857d-855228073542?mode=deep",
+    "timestamp": "2026-01-21 00:57:44.082341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/mod.rs] [Module Visibility] [Encapsulation Breach] While pruner_manager and sub-pruner managers are pub(crate), can malicious code in the same crate bypass safety checks by directly manipulating pruner workers or database state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0f6f698-7e26-4b0b-8677-dfeb44b4384a?mode=deep",
+    "timestamp": "2026-01-21 00:58:13.212375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/db_sub_pruner.rs] [Trait: DBSubPruner] [Error Handling] The prune() method returns Result<()> with no specification of error recovery - if a sub_pruner consistently fails, can this cause the parent pruner to get stuck retrying the same range indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8b2692e-513d-4095-89b0-0535014d68e0?mode=deep",
+    "timestamp": "2026-01-21 00:58:43.486916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/db_sub_pruner.rs] [Trait: DBSubPruner] [Version Range] The prune() method takes current_progress and target_version - is there validation that target_version > current_progress? Can passing equal or reversed values cause database corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd960636-2bc1-435c-9d71-8a33147e1468?mode=deep",
+    "timestamp": "2026-01-21 00:59:13.990356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [No Batch Check] Unlike ledger and state_kv pruners, this doesn't check for batch_size before waking - can this cause excessive wake-ups and CPU usage if called on every commit? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b04826dd-c5db-4f30-ab36-c5114a726a05?mode=deep",
+    "timestamp": "2026-01-21 00:59:45.643359",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Assertion] Uses assert!(self.pruner_worker.is_some()) - can this assertion fail in legitimate scenarios during shutdown or reconfiguration, causing node crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7468f5e7-8055-42e1-aed1-c0bd9afbd419?mode=deep",
+    "timestamp": "2026-01-21 01:00:16.191628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: new()] [Config Validation] Doesn't validate that batch_size and prune_window are reasonable values - can extremely small values cause excessive pruning overhead, or extremely large values cause unbounded memory usage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_649602a7-4e1f-4fa1-b7af-f8d84b06bf0b?mode=deep",
+    "timestamp": "2026-01-21 01:00:45.770352",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Same as Ledger] Uses identical logic to LedgerPrunerManager - if there's a bug in this calculation pattern, does it affect all pruners uniformly, causing chain-wide data loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c549b68-3293-48b6-83ff-50d012ba967a?mode=deep",
+    "timestamp": "2026-01-21 01:01:16.051683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_info_pruner.rs] [Function: prune()] [Static Method Call] Calls TransactionInfoDb::prune() as a static method - does this ensure proper database locking, or can concurrent access cause corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91617321-3241-4f2b-ba5e-44f04505925a?mode=deep",
+    "timestamp": "2026-01-21 01:01:46.185201",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/write_set_pruner.rs] [Function: prune()] [Same Pattern] Uses the same pattern as transaction_info_pruner - are all these sub-pruners subject to the same potential concurrency issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_595016bb-9b2a-4797-ab4d-1d445dac28d3?mode=deep",
+    "timestamp": "2026-01-21 01:02:16.806413",
+    "report_generated": false
+  }
+]
