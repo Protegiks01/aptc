@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: use_heap_memory()] [Integer Overflow] In the checked_sub operation at line 53, can an attacker craft a transaction with extremely large AbstractValueSize values that cause the checked_sub to always return None, forcing memory_quota to be set to 0 prematurely and causing legitimate transactions to fail with MEMORY_LIMIT_EXCEEDED? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f30f1d7-d262-4210-a218-7607eaa14bf6?mode=deep",
+    "timestamp": "2026-01-21 01:56:14.266802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: release_heap_memory()] [Integer Overflow] At line 71, the memory_quota is increased without bounds checking via += operator. Can an attacker trigger repeated releases to overflow the memory_quota value, bypassing memory limits and causing integer wraparound that allows unlimited memory allocation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58d25c81-7b73-4097-8f93-c0ecf994480b?mode=deep",
+    "timestamp": "2026-01-21 01:56:27.595231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: use_heap_memory()] [Feature Version Bypass] The memory tracking is only active when feature_version() >= 3 (line 52). Can an attacker manipulate or forge the feature version to bypass all memory tracking, enabling unlimited memory consumption and DoS attacks against validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0f094c2-38c7-4171-9b90-f73b0e203620?mode=deep",
+    "timestamp": "2026-01-21 01:56:41.050289",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: new()] [Memory Quota Initialization] At line 41, memory_quota is initialized from base.vm_gas_params().txn.memory_quota. Can an attacker manipulate gas parameters during VM initialization to set an extremely high or zero memory_quota value, either bypassing limits or causing immediate transaction failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_429f7ded-be2c-4011-8140-2e4e701413d6?mode=deep",
+    "timestamp": "2026-01-21 01:56:55.187622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: use_heap_memory()] [Race Condition] Between the checked_sub check (line 53) and the memory_quota assignment (line 55), can concurrent execution in parallel transaction processing cause race conditions where multiple threads pass the check simultaneously, allowing total memory consumption beyond the quota? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ff69ef2-0fb5-437b-b4b2-b2fdad9a24b4?mode=deep",
+    "timestamp": "2026-01-21 01:57:10.518827",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_call_generic()] [Special Case Bypass] Lines 211-215 set should_leak_memory_for_native flag for table and event modules from CORE_CODE_ADDRESS. Can an attacker create malicious modules with crafted addresses or names that match these conditions to enable memory leak behavior for non-core code? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da6366e3-9245-4200-8bd8-5922670835b9?mode=deep",
+    "timestamp": "2026-01-21 01:57:27.166877",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_native_function_before_execution()] [Memory Release Bypass] At line 228, memory is released only if !should_leak_memory_for_native. Can an attacker exploit the table/event module detection to prevent memory release, accumulating released memory across many calls until the quota overflows? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b889af66-7be7-40de-b259-b33784fba374?mode=deep",
+    "timestamp": "2026-01-21 01:57:44.622608",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_load_resource()] [Feature Version Inconsistency] Line 274 checks feature_version() != 0 instead of >= 3 like other functions. Can this inconsistency be exploited to cause memory tracking mismatches between different operations, leading to quota accounting errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca1774a7-65a6-4c10-9672-9bede63ad847?mode=deep",
+    "timestamp": "2026-01-21 01:58:04.127332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_native_function_before_execution()] [Arithmetic Overflow] The try_fold accumulator at lines 229-239 sums AbstractValueSize values without overflow checks. Can an attacker pass native functions with massive argument counts or sizes to overflow the accumulator, causing incorrect memory releases? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58eb9295-834c-4fb0-9cd2-250be817af07?mode=deep",
+    "timestamp": "2026-01-21 01:58:25.521279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_native_function()] [Arithmetic Overflow] Similar to above, lines 253-260 fold return values without overflow checks. Can extremely large return value sizes overflow the accumulator, resulting in incorrect memory allocation that bypasses the quota? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6531b448-7c69-4755-b686-52ef52ffb3ef?mode=deep",
+    "timestamp": "2026-01-21 01:58:48.307566",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_load_resource()] [Abstract Size Manipulation] At line 277-281, abstract_heap_size is calculated for loaded resources. Can an attacker craft malicious Move values with deceptive size representations that report smaller sizes than actual memory consumption, bypassing quota enforcement? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d8e70e9-ff05-4ea2-93f1-b56532806501?mode=deep",
+    "timestamp": "2026-01-21 01:59:12.650503",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_pop()] [Memory Release Error] Line 291-295 releases heap memory on pop without verifying the value was actually allocated. Can an attacker trigger pops of unallocated or already-freed values to artificially inflate the memory quota beyond its initial value? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed87a220-e5c5-4428-bd12-ef33b66da079?mode=deep",
+    "timestamp": "2026-01-21 01:59:37.719062",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_copy_loc()] [Size Calculation Inconsistency] Lines 318-322 call abstract_value_size_stack_and_heap to get separate stack and heap sizes. Can discrepancies between these calculations and other size methods cause memory tracking errors that accumulate over transaction execution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b813a8e-58d5-41a3-a3ba-32c1cac392a6?mode=deep",
+    "timestamp": "2026-01-21 02:00:04.755655",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_pack()] [Stack Size Misuse] At lines 336-342, stack_size is used to track heap memory consumption. Is this a semantic error where stack allocations are incorrectly charged against the heap quota, allowing actual heap usage to exceed limits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12fd190c-2bd3-4070-940b-93d0bb298f2d?mode=deep",
+    "timestamp": "2026-01-21 02:00:32.641332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_unpack()] [Memory Double-Release] Lines 354-364 release memory for unpacked values, but does the base gas meter also release this memory? Can this cause double-release scenarios where memory quota grows unbounded? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6db944a2-bb3a-4c64-b739-2fdcece4a80c?mode=deep",
+    "timestamp": "2026-01-21 02:01:01.214739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_write_ref()] [Old Value Release] Line 407-412 releases memory for the old value being overwritten. Can an attacker exploit reference semantics to trigger releases for values that are still referenced elsewhere, causing use-after-free equivalent memory corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bc4bb01-66e8-48fe-a476-84087a40fbe7?mode=deep",
+    "timestamp": "2026-01-21 02:01:29.969262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_eq()] [Double Memory Release] Lines 418-430 release heap memory for both lhs and rhs values during equality comparison. Since equality checks don't consume values, is this a logic error that allows attackers to artificially inflate quota through repeated comparisons? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4de59333-25cf-4be2-a006-b485f0a02477?mode=deep",
+    "timestamp": "2026-01-21 02:02:00.421314",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_neq()] [Double Memory Release] Identical issue to charge_eq at lines 436-450. Can repeated inequality checks on the same values cause cascading memory releases that overflow the quota? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_749cb0d6-cc97-4c98-8df5-efa65158be98?mode=deep",
+    "timestamp": "2026-01-21 02:02:31.549094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_vec_pack()] [Packed Size vs Heap Size] Line 466 uses abstract_packed_size instead of abstract_heap_size. Can the semantic difference between packed and heap sizes be exploited to charge less memory than actually consumed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3842742-dd11-4089-a15f-02ed6f1a64e8?mode=deep",
+    "timestamp": "2026-01-21 02:03:01.309637",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_vec_push_back()] [Incremental Overflow] At line 498-503, individual vec elements are charged using abstract_packed_size. Can an attacker push many small elements that individually pass quota checks but collectively exceed memory limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db5cf39e-e532-4ce7-9a73-a74b6eaa1539?mode=deep",
+    "timestamp": "2026-01-21 02:03:31.187249",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_call_generic()] [Feature Version 4 Bypass] Line 213 adds special handling for event module when feature_version() >= 4. Can an attacker downgrade or freeze the feature version to exploit older vulnerable memory tracking behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9988c00-f00a-48a8-a8fe-805506a8e178?mode=deep",
+    "timestamp": "2026-01-21 02:04:01.311430",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: use_heap_memory()] [Feature Version 3 Bypass] All memory tracking is gated behind feature_version() >= 3 checks. Can validators be tricked into using inconsistent feature versions, causing some to enforce limits while others don't, leading to state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eaf0d5ba-820f-4180-b39d-a82a8239e79c?mode=deep",
+    "timestamp": "2026-01-21 02:04:32.081094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: release_heap_memory()] [Feature Version Inconsistency] Line 70 checks feature_version() >= 3 before releasing memory. If an attacker can transition between feature versions mid-transaction, can they allocate with tracking but release without it, causing quota leaks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2e55c1c-8a04-4b90-bff1-efaccb027d19?mode=deep",
+    "timestamp": "2026-01-21 02:05:03.377518",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Struct: MemoryTrackedGasMeter] [Feature Version Caching] The feature_version() is called repeatedly throughout execution without caching. Can time-of-check-time-of-use issues arise if feature version changes during transaction execution, causing inconsistent memory tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12c57eea-4dbf-4f25-b54c-f07cecda8d41?mode=deep",
+    "timestamp": "2026-01-21 02:05:34.565656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-memory-usage-tracker/src/lib.rs] [Function: charge_call_generic()] [Module Name Comparison] Line 212 compares module_id.name().as_str() == \\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_454d4b99-44a8-4fde-85d6-d2033f6b0abc?mode=deep",
+    "timestamp": "2026-01-21 02:06:05.336639",
+    "report_generated": false
+  }
+]
