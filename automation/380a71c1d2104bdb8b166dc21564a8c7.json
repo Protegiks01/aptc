@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugmentedData::verify()] [APK derivation bypass] Line 202-204 calls derive_apk() but only maps the result to () - does this ensure the derived APK is valid, or can attackers craft deltas that derive to invalid APKs that are still accepted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_389f89df-5c73-4eb9-96f3-fffdc275d557?mode=deep",
+    "timestamp": "2026-01-21 07:06:34.691059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugmentedData::verify()] [Fast path inconsistency] Line 206-208 checks that fast_delta presence matches fast_rand_config presence, but doesn't validate the fast_delta derives to a valid APK - can attackers provide invalid fast_delta that passes this check but breaks fast path randomness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ed9e764-fe42-43fd-a870-613a4d2a14a6?mode=deep",
+    "timestamp": "2026-01-21 07:06:47.068331",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugmentedData::verify()] [Delta correlation validation] The function verifies slow and fast deltas independently on lines 202-204 and 211 - are there cryptographic constraints requiring correlation between these deltas that aren't checked, allowing attackers to provide contradictory deltas? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96a788b1-a9bc-418a-b842-81a404ccb7e1?mode=deep",
+    "timestamp": "2026-01-21 07:06:59.543940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugmentedData::verify()] [Error handling inconsistency] Line 203 returns Result from derive_apk then maps to (), while line 211 returns the Result directly - can this inconsistency cause different error types that are handled differently by callers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05ecfcf0-44d6-402e-a5fc-0fada5767667?mode=deep",
+    "timestamp": "2026-01-21 07:07:12.555928",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: MockShare::verify()] [Production bypass] Lines 219-226 implement MockShare that always returns Ok(()) - are there feature flags or build configurations that could enable mock implementations in production, completely bypassing randomness verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6304a3c2-9641-443a-b7d4-8bbe281d258a?mode=deep",
+    "timestamp": "2026-01-21 07:07:26.322199",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: MockShare::aggregate()] [Empty randomness] Lines 235-244 return Randomness with empty vec![] - if mock implementations are accidentally used in production, could this predictable empty randomness allow attackers to manipulate leader election? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b69463d0-e169-471a-9cfa-4facc33c3ae8?mode=deep",
+    "timestamp": "2026-01-21 07:07:40.712795",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: MockAugData::verify()] [No validation] Lines 263-270 return Ok(()) without any validation - could these mock types be confused with real types through type confusion vulnerabilities in Rust's type system? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79195729-68c0-4f1b-9c0a-6b8d87f82a1d?mode=deep",
+    "timestamp": "2026-01-21 07:07:55.899877",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Mock types] [Serialization confusion] MockShare and MockAugData derive Serialize/Deserialize on lines 35-38 - can attackers craft network messages that deserialize as Mock types instead of real Share/AugmentedData types to bypass all cryptographic verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c3e8a92-f548-4a51-9240-820b9db38f1a?mode=deep",
+    "timestamp": "2026-01-21 07:08:12.400612",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: RandShare::new()] [No validation] Lines 333-339 construct RandShare without validating author is in validator set or metadata is valid - can attackers create arbitrary RandShares that only fail later during verification? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d50a3cbd-63a7-455c-9168-9ab930e2acbf?mode=deep",
+    "timestamp": "2026-01-21 07:08:29.743766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: RandShare::verify()] [Delegation vulnerability] Line 362 delegates to share.verify() - if TShare trait is implemented incorrectly by a custom type, could this lead to verification bypass? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b00327a-5df3-469b-90c8-28d3a00ccdf0?mode=deep",
+    "timestamp": "2026-01-21 07:08:48.370269",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: RandShare::share_id()] [Hash collision] ShareId on lines 318-323 uses epoch, round, and author - with only these fields, can two shares from different contexts have the same ShareId causing deduplication errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ee018bb-8580-46be-a743-92e17e6e4663?mode=deep",
+    "timestamp": "2026-01-21 07:09:08.419099",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Struct: RandShare] [Metadata immutability] Lines 328-330 store metadata, author, share - are these fields truly immutable after construction, or can Rust's interior mutability patterns allow modification after verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b2e62cb-7466-4a1d-bcbe-05a02d5ab928?mode=deep",
+    "timestamp": "2026-01-21 07:09:28.704237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: RequestShare::new()] [Metadata validation] Line 380-382 accepts any RandMetadata without validation - can attackers request shares for future rounds beyond FUTURE_ROUNDS_TO_ACCEPT (line 26) to cause validators to generate shares prematurely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7669349d-21aa-4c2f-9d04-06b887ecd788?mode=deep",
+    "timestamp": "2026-01-21 07:09:50.423131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Struct: RequestShare] [Missing epoch validation] Lines 374-391 don't check if the requested epoch matches current validator set - can attackers request shares for past or future epochs to cause validators to waste resources or reveal historical randomness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9097d8d-8053-4b44-9ae0-33ff8b4ca5ec?mode=deep",
+    "timestamp": "2026-01-21 07:10:12.744025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: FastShare::new()] [Path validation] Line 399-401 wraps a RandShare without validating it was generated for fast path - can slow path shares be wrapped in FastShare to cause fast path aggregation to use wrong configuration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c33b150-6783-4795-ab11-d2f1083e7114?mode=deep",
+    "timestamp": "2026-01-21 07:10:35.789376",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: FastShare::rand_share()] [Clone exposure] Line 407-409 returns cloned RandShare - can this cloned share be modified and reused to bypass fast path verification, allowing the same randomness to be used in multiple contexts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06b2f814-158b-4b9e-aab0-04f76676ba46?mode=deep",
+    "timestamp": "2026-01-21 07:10:59.093726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: FastShare::verify()] [Insufficient validation] Line 427-429 only verifies the wrapped share against rand_config - does it validate the share was actually generated with fast_rand_config parameters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54ef77e7-5e96-4344-be11-50bc5b357e08?mode=deep",
+    "timestamp": "2026-01-21 07:11:22.259267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Struct: FastShare] [Type confusion] FastShare is just a wrapper (line 394-396) - can type system confusion cause FastShare to be used where RandShare is expected, bypassing fast path specific validations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57b42b08-0c0f-40c4-adcd-fc376f37182c?mode=deep",
+    "timestamp": "2026-01-21 07:11:47.399219",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugData::new()] [Epoch validation] Lines 464-470 construct AugData without validating epoch is current or future - can attackers create AugData for past epochs to replay old deltas and corrupt current APK derivation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0b09a5f-ff48-4afe-bedd-ba6dc004e2ec?mode=deep",
+    "timestamp": "2026-01-21 07:12:13.658176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugData::verify()] [Author mismatch] Line 493 checks self.author == sender but this validation is done AFTER data.verify() on line 494-495 - can attackers exploit the ordering to cause side effects in verify() before author validation fails? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7c94902-b521-44be-8d48-48838003b7a3?mode=deep",
+    "timestamp": "2026-01-21 07:12:37.238732",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugData::verify()] [Sender spoofing] The sender parameter on line 491 comes from the network layer - is there proper cryptographic binding between the sender identity and the AugData signature to prevent sender spoofing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ed2e898-6536-4573-b7fa-fc0a2d80dd61?mode=deep",
+    "timestamp": "2026-01-21 07:13:01.696251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Struct: AugData] [Hash derivation] Lines 456-457 derive CryptoHasher and BCSCryptoHash - is the hash function collision-resistant enough for the AugData to be used as a unique identifier in signature aggregation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ff782b9-dd9b-4e71-9676-d579c5ab51af?mode=deep",
+    "timestamp": "2026-01-21 07:13:25.499355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugDataSignature::new()] [Signature binding] Lines 507-509 store epoch and signature separately - is there cryptographic binding ensuring the signature commits to the specific epoch to prevent signature reuse across epochs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09f448e5-5e57-44c7-b513-72205531b752?mode=deep",
+    "timestamp": "2026-01-21 07:13:49.314318",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugDataSignature::verify()] [Verifier bypass] Line 521 delegates to verifier.verify() - if ValidatorVerifier is compromised or has bugs, could invalid signatures be accepted as valid? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab3e26da-3407-43b1-a796-444a0280cc71?mode=deep",
+    "timestamp": "2026-01-21 07:14:13.558721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: AugDataSignature::verify()] [Author binding] The author parameter on line 517 is checked by the verifier, but is there validation that this author matches the AugData.author field to prevent signature swapping between validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_337e9690-49fa-491a-a970-054078b27400?mode=deep",
+    "timestamp": "2026-01-21 07:14:38.122090",
+    "report_generated": false
+  }
+]
