@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [Consensus Disagreement] Different validators may have different serde library versions - can version differences in ToString::to_string() (line 21) or NumberDeserialize behavior cause identical Timestamp structs to serialize differently, breaking quorum certificate validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fa399b7-8b9c-4df3-b87d-5dceee95b86d?mode=deep",
+    "timestamp": "2026-01-21 04:03:26.790191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Byzantine Validator Attack] Can a Byzantine validator craft timestamps with 'seconds' values outside the protobuf-specified range (0001-01-01 to 9999-12-31) that serialize/deserialize successfully but violate higher-level validation, causing the validator to propose invalid blocks that honest validators must reject, wasting consensus rounds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_014b9130-ae2b-45ee-a0c2-169deff24135?mode=deep",
+    "timestamp": "2026-01-21 04:03:40.519580",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Time Travel Attack] The deserialization does not validate that timestamps are monotonically increasing - can an attacker deserialize a timestamp from the future (year 9999) or past (year 0001), and if consensus logic relies on this serde layer, could this enable time-travel attacks that break block ordering? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5700e08c-5655-430c-8422-7240e1e9580d?mode=deep",
+    "timestamp": "2026-01-21 04:03:55.608559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [Network Partition] If some validators use JSON serialization and others use binary protobuf (both using this serde code), can type inconsistencies (string vs varint for 'seconds') cause serialization format mismatches that partition the network into incompatible subsets? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2a873cb-51c0-47ab-aaa7-a4c441a2e50c?mode=deep",
+    "timestamp": "2026-01-21 04:04:10.925301",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Malleability Attack] Can the same logical timestamp (e.g., 1000 seconds, 0 nanos) be represented multiple ways in serialized form ('seconds' present vs omitted when ==0)? Could this malleability be exploited to create distinct serializations with the same deserialized value, breaking signature verification or merkle tree construction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4183023-ab9a-4c41-8a07-451cbf01d657?mode=deep",
+    "timestamp": "2026-01-21 04:04:27.149197",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [Epoch Boundary Attack] At epoch boundaries, can timestamps serialize with specific 'seconds'/'nanos' combinations that trigger edge cases in downstream epoch transition logic, such as allowing double-spending by making the same transaction appear in two epochs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce382227-f918-4ada-91ff-01870276c4fa?mode=deep",
+    "timestamp": "2026-01-21 04:04:44.393735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Validator Timestamp Desync] If validators deserialize timestamps at slightly different times and the deserialization depends on system clock or locale settings, could this cause validators to compute different consensus timeouts, breaking synchrony assumptions and causing liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d3baaf8-cbce-425b-8f7e-a85d4c0fac20?mode=deep",
+    "timestamp": "2026-01-21 04:05:04.195727",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [Block Proposal Manipulation] When a block proposal's timestamp is serialized (line 21), can a malicious leader set 'seconds' to a value that appears valid during serialization but when deserialized by voters, triggers timeout logic causing votes to be withheld, denying the leader's block and allowing the leader to grief consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ce17897-9a7c-47bf-97fc-5d56b98a609b?mode=deep",
+    "timestamp": "2026-01-21 04:05:24.983079",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Round Timeout Bypass] If consensus round timeouts are calculated using deserialized timestamps (line 109), can an attacker inject timestamps with missing fields (defaulting to 0) that reset timeout calculations, allowing a Byzantine validator to extend rounds indefinitely and halt consensus progress? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62dadcb0-5506-41ae-bb39-867a86357c95?mode=deep",
+    "timestamp": "2026-01-21 04:05:47.509730",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Quorum Certificate Forgery] When validators verify quorum certificates containing serialized timestamps, can deserialization inconsistencies (e.g., different handling of negative nanos) cause some validators to accept a QC while others reject it, breaking the 2f+1 quorum assumption and enabling safety violations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5db6293e-c984-4c01-a9f2-ee878ea01ac1?mode=deep",
+    "timestamp": "2026-01-21 04:06:12.484635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [Transaction Ordering Attack] If transaction timestamps are serialized/deserialized using this code, can precision differences in the 'nanos' field (line 24) cause transactions with identical timestamps to be ordered differently by different validators, breaking deterministic execution and causing state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6426c209-a458-433e-866c-64a29ae82bc2?mode=deep",
+    "timestamp": "2026-01-21 04:06:38.586971",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [State Merkle Tree Corruption] When timestamps are included in state merkle tree leaf values, can deserialization of malformed timestamps (e.g., with out-of-range nanos) cause different validators to compute different merkle roots for the same state, breaking consensus on state commitment? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce36ec5b-cf70-4a8f-8e93-987e81c4e449?mode=deep",
+    "timestamp": "2026-01-21 04:07:06.233171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Block Validation Bypass] If block validation checks rely on deserialized timestamp values (line 108), can an attacker craft timestamps that deserialize to seemingly valid values but contain hidden anomalies (like negative seconds) that bypass validation predicates and allow invalid blocks to be committed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99e94486-3199-4c60-930f-4ac12bc3a4d8?mode=deep",
+    "timestamp": "2026-01-21 04:07:35.672324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [API Response Manipulation] When API endpoints serialize block timestamps (line 21), can the string representation of 'seconds' be manipulated (e.g., adding leading zeros '0001234') to cause client applications to misparse timestamps, leading to incorrect transaction ordering or timing in user-facing applications? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1830426-a134-415c-a2c6-211099a276ef?mode=deep",
+    "timestamp": "2026-01-21 04:08:05.979270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [Nanos Overflow] Can 'nanos' field be set to values > 999,999,999 (e.g., 2,000,000,000) and successfully serialize (line 24)? When deserialized by validators, would this cause timestamp arithmetic to overflow, potentially making timestamps appear to go backwards and breaking monotonicity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e772027-326b-4df1-8ceb-4448f39eb8a7?mode=deep",
+    "timestamp": "2026-01-21 04:08:39.615914",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Negative Nanos Handling] The protobuf spec requires 'nanos' to be non-negative, but i32 can be negative - when deserializing nanos=-1 (line 103), does the code silently accept it? Could negative nanos cause underflow in timeout calculations (e.g., current_time - proposal_time), producing enormous positive values that bypass timeout checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c17dd088-65a1-475c-a0ad-a6321dfb5837?mode=deep",
+    "timestamp": "2026-01-21 04:09:16.073846",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Nanos Precision Attack] Can an attacker send 'nanos' values with sub-nanosecond precision (e.g., 123456789.999) that get truncated during deserialization (line 103)? Could this truncation be exploited in high-frequency consensus scenarios where microsecond precision matters, causing race conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dede6df-f875-472d-a9cb-10a52f699943?mode=deep",
+    "timestamp": "2026-01-21 04:09:50.512671",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [Nanos Comparison Attack] Since 'nanos' is serialized as an integer (line 24) while 'seconds' is a string (line 21), can type system inconsistencies cause timestamp comparisons to fail? For example, could JSON parsers treat nanos=0 (number) differently from nanos='0' (string) leading to incorrect ordering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2993d305-a692-4f57-9de6-95a020344849?mode=deep",
+    "timestamp": "2026-01-21 04:10:22.692914",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Boundary Value Attack] Can attackers send nanos=999999999 (maximum valid value) and if subsequent code adds 1 nanosecond without proper carry logic, cause nanos to become 1000000000 (invalid), corrupting timestamps throughout the system and causing validation failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b361a28-af74-44f9-8204-eca4000d0304?mode=deep",
+    "timestamp": "2026-01-21 04:10:55.422363",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [i64 String Conversion] When converting 'seconds' (i64) to string (line 21), does ToString handle all i64 values correctly including i64::MIN (-9223372036854775808)? Could edge cases in string conversion cause deserialization to parse different values, creating consensus disagreement? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60ae1ba8-0d90-4b5d-9639-cb3c63b5d10c?mode=deep",
+    "timestamp": "2026-01-21 04:11:23.216751",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Year Range Bypass] The protobuf spec limits seconds to years 0001-9999, but deserialization uses i64 which supports much larger ranges (line 95) - can an attacker deserialize timestamps representing year 999,999+ and if these bypass validation, cause integer overflow in date arithmetic used by smart contracts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99c2803f-c252-4897-8a87-39e7024c4549?mode=deep",
+    "timestamp": "2026-01-21 04:11:49.824091",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Negative Timestamp Attack] Can an attacker deserialize negative 'seconds' values (before Unix epoch) that represent dates before year 1970? Could this be exploited to create blocks with timestamps in the past that bypass monotonicity checks if validation only checks relative ordering without absolute value validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81892bfc-7746-4f46-9214-6c1260283ccb?mode=deep",
+    "timestamp": "2026-01-21 04:12:16.536931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::serialize()] [Leading Zero Attack] When serializing 'seconds' to string (line 21), does the output include leading zeros (e.g., '0000001234')? Could different deserializers interpret leading zeros as octal notation, causing the same serialized timestamp to deserialize to different values on different validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57a8e1a7-6648-4319-bc21-7b7b10866a2b?mode=deep",
+    "timestamp": "2026-01-21 04:12:43.343238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Scientific Notation Attack] Can 'seconds' string be provided in scientific notation (e.g., '1.23e9') and successfully parse through NumberDeserialize (line 95)? Could precision loss in scientific notation conversion cause timestamps to be rounded, breaking exact timestamp matching required for consensus? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be9b76d7-3db0-4b1e-8f46-6f59840d8bbd?mode=deep",
+    "timestamp": "2026-01-21 04:13:11.951224",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/protos/rust/src/pb/aptos.util.timestamp.serde.rs] [Function: Timestamp::deserialize()] [Whitespace Injection] Does NumberDeserialize for 'seconds' (line 95) trim whitespace from the input string? Could an attacker send ' 1234 ' (with spaces) that some validators parse as 1234 while others reject, causing consensus split on whether a block timestamp is valid? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b910a0d0-a8a7-4896-948c-08f1546d4627?mode=deep",
+    "timestamp": "2026-01-21 04:13:42.883410",
+    "report_generated": false
+  }
+]
