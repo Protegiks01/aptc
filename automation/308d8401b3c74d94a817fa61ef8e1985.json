@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Column family: NODE_CF_NAME] [Namespace collision] Can the column family name 'node' at line 20 collide with other storage schemas, causing DAG nodes to be mixed with unrelated data or overwritten? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e684599-9175-4105-81d5-7d2d841ea4b7?mode=deep",
+    "timestamp": "2026-01-21 02:06:43.523706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Column family: DAG_VOTE_CF_NAME] [Storage isolation] Does 'dag_vote' column family at line 45 properly isolate vote storage, or can votes leak into other schemas through key prefix collisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_411eee6a-1f47-4292-8a1d-4ee059a26aee?mode=deep",
+    "timestamp": "2026-01-21 02:06:56.544904",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Column family: CERTIFIED_NODE_CF_NAME] [Data recovery] Can corruption in 'certified_node' column family at line 69 cascade to other consensus data, or is it properly isolated for recovery? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4ab91a2-acc8-48ac-ac7c-c73d7f211b60?mode=deep",
+    "timestamp": "2026-01-21 02:07:09.633183",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [All schemas] [Database compaction] Can RocksDB compaction operations corrupt schema data by incorrectly merging/deleting entries, leading to loss of votes or certified nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f81aae5e-8bbe-4cc0-b5ee-064d1ca076b6?mode=deep",
+    "timestamp": "2026-01-21 02:07:23.191204",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [All schemas] [Backup consistency] During backup operations, can schemas be captured in inconsistent states where nodes exist without votes or certified nodes reference missing nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_040b2c0d-7335-4fbc-a6e0-38bd5475cbfd?mode=deep",
+    "timestamp": "2026-01-21 02:07:37.757905",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Schema: DagVoteSchema with NodeId key] [Epoch confusion] Can votes from epoch N be replayed in epoch N+1 by reusing NodeId keys, since the schema doesn't enforce epoch-based partitioning? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ccd6e40-65eb-46ed-85bf-81102c6e7866?mode=deep",
+    "timestamp": "2026-01-21 02:07:53.459516",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Schema: CertifiedNodeSchema] [Epoch transition] During epoch changes, can stale CertifiedNodes from previous epochs be incorrectly accepted as valid, breaking reconfiguration safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0627adc-3f18-4e22-9538-b17242e92546?mode=deep",
+    "timestamp": "2026-01-21 02:08:10.752896",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [All schemas] [State pruning] Can improper pruning of old epoch data cause dangling references where CertifiedNodes point to deleted parent nodes, corrupting the DAG structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f263a30-ee87-46d7-8af4-40deaede5d1b?mode=deep",
+    "timestamp": "2026-01-21 02:08:29.300033",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Schema: NodeId encoding] [Epoch overflow] Can epoch counter overflow in NodeId (line 51) after 2^64 epochs, causing key collisions between old and new epochs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8abc6aba-bc9e-4413-8bcd-e7e5ced21554?mode=deep",
+    "timestamp": "2026-01-21 02:08:45.463453",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [All schemas] [Validator set change] When validator set changes across epochs, can old votes from removed validators remain in DagVoteSchema and incorrectly contribute to quorum? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6002d628-386b-452f-8f5a-0303ed21382f?mode=deep",
+    "timestamp": "2026-01-21 02:09:03.735878",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Schema: DagVoteSchema] [Vote replacement] Can a Byzantine validator overwrite their own vote by issuing a new vote for the same NodeId, changing their vote after seeing network state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98f8a698-cf53-4d5d-a062-c6e041e15124?mode=deep",
+    "timestamp": "2026-01-21 02:09:25.387820",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Schema: CertifiedNodeSchema] [Forged certification] Can Byzantine nodes store self-certified nodes (with fabricated signatures) in CertifiedNodeSchema without proper verification at storage time? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20aa89df-c683-40b4-91e0-151cc30a124b?mode=deep",
+    "timestamp": "2026-01-21 02:09:49.021135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Function: Node::encode_value()] [Payload manipulation] Can Byzantine validators store malicious payloads in Node objects that exploit vulnerabilities in downstream payload processing code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27208d23-1ec5-4e12-95ba-0ae8e446e9a1?mode=deep",
+    "timestamp": "2026-01-21 02:10:13.232928",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Schema: NodeSchema] [Timestamp manipulation] Can Byzantine validators store nodes with arbitrary timestamps that bypass time-based consensus rules when later read from storage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_588d2801-b9c9-46f0-adb3-6f1307c70a6d?mode=deep",
+    "timestamp": "2026-01-21 02:10:38.851738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Schema: DagVoteSchema] [Vote flooding] Can Byzantine validators flood DagVoteSchema with votes for non-existent NodeIds, exhausting storage and causing DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dad5bf33-8f59-4c43-8f26-63e3b2a91dee?mode=deep",
+    "timestamp": "2026-01-21 02:11:05.274642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Function: Node::decode_value()] [Parent validation] Does Node deserialization validate that parent references (NodeCertificates) are well-formed and cryptographically valid? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9218ddc-f85e-4e90-850d-86730f896e49?mode=deep",
+    "timestamp": "2026-01-21 02:11:32.465974",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Function: CertifiedNode::decode_value()] [Signature validation] Does CertifiedNode deserialization verify aggregated signatures match the embedded node's digest, or can mismatched signatures be stored? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c0d444c-4c88-4e3c-a031-36fc895df760?mode=deep",
+    "timestamp": "2026-01-21 02:11:59.580932",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Function: Vote::decode_value()] [Metadata consistency] Does Vote deserialization check that the embedded NodeMetadata is consistent with the NodeId key under which it's stored? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_adbbc0df-cde7-498c-b231-e588f5f9e5ae?mode=deep",
+    "timestamp": "2026-01-21 02:12:27.068434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [All decode functions] [Version compatibility] Can schema changes across software upgrades cause old serialized data to be misinterpreted, corrupting consensus state during rolling upgrades? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6faf1be-e09a-4667-84e9-721367fb2b30?mode=deep",
+    "timestamp": "2026-01-21 02:12:54.728973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [All schemas] [Checksum absence] Do schemas include checksums or integrity tags in serialized data to detect corruption, or is silent data corruption possible? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c336da74-a238-4114-8e3c-72134d8ccab2?mode=deep",
+    "timestamp": "2026-01-21 02:13:23.642922",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Function: HashValue::encode_key()] [Memory allocation] Does HashValue::to_vec() at line 80 allocate exactly 32 bytes, or can it over-allocate causing memory waste during large-scale storage operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc5840f5-1187-4bf0-8504-0fb184e031ee?mode=deep",
+    "timestamp": "2026-01-21 02:13:53.103198",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Function: HashValue::decode_key()] [Buffer overflow] Can HashValue::from_slice accept slices larger than 32 bytes, potentially reading beyond allocated buffers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8494cac-06cb-4b21-a9c0-c81cf55f5c5c?mode=deep",
+    "timestamp": "2026-01-21 02:14:24.896976",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [All encode_key functions] [Allocation failure] Do key encoding functions handle allocation failures gracefully, or can OOM during encoding cause panics and node crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80fea72a-8183-44a3-bc6f-07d43a300aa4?mode=deep",
+    "timestamp": "2026-01-21 02:14:56.985838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [All decode functions] [Unbounded allocation] Can malicious BCS-encoded data specify arbitrarily large collection sizes, causing unbounded memory allocation during deserialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a73ed291-2b4c-4c96-8f91-78782ad916a4?mode=deep",
+    "timestamp": "2026-01-21 02:15:22.366087",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensusdb/schema/dag/mod.rs] [Schema: NodeSchema] [Storage limits] Is there a size limit on Node values to prevent storage of multi-gigabyte consensus objects that could exhaust disk space? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb0cf363-ae0e-4046-97b2-8ec0bb67ae30?mode=deep",
+    "timestamp": "2026-01-21 02:15:53.903742",
+    "report_generated": false
+  }
+]
