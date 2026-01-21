@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: new()] [Database inconsistency] Can a malicious validator exploit the database loading in new() where get_all_aug_data() returns old epoch data that wasn't properly cleaned, allowing them to inject stale augmented data that corrupts the randomness generation process? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_847d4a4f-d86a-4057-a234-ed1a356f1cf5?mode=deep",
+    "timestamp": "2026-01-21 02:15:32.773885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: new()] [Error handling bypass] In new(), when db.remove_aug_data() or db.remove_certified_aug_data() fails, only an error is logged but execution continues - can an attacker fill the database with invalid epoch data causing memory exhaustion and consensus halts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a1832a2-3400-4238-b3e9-039b8d2b07a1?mode=deep",
+    "timestamp": "2026-01-21 02:15:45.752765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: new()] [State corruption] Does the constructor properly handle the case where the database contains conflicting augmented data from the same author across multiple epochs, potentially causing inconsistent state initialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08a8440e-9627-40f1-9a1d-838c113e5907?mode=deep",
+    "timestamp": "2026-01-21 02:15:58.707019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: new()] [Race condition] Can concurrent calls to new() for the same epoch result in race conditions where multiple AugDataStore instances read overlapping data before cleanup, causing duplicate augmentation operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce882a11-71a0-4401-a1ec-c0bfc982a6fb?mode=deep",
+    "timestamp": "2026-01-21 02:16:12.356875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: new()] [Cryptographic bypass] During initialization, augment() is called on certified_data without proper verification - can a Byzantine validator inject malicious certified data into the database that bypasses signature verification on restart? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb8bafdc-c010-41c7-9c65-c3ffc382285d?mode=deep",
+    "timestamp": "2026-01-21 02:16:27.063016",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: filter_by_epoch()] [Epoch boundary attack] Can an attacker craft augmented data with epoch values near overflow boundaries (u64::MAX) to bypass epoch filtering and inject data from invalid epochs into the store? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f158b0b4-49b9-4e2b-8d7d-a49595d91688?mode=deep",
+    "timestamp": "2026-01-21 02:16:42.485983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: filter_by_epoch()] [Logic error] Does filter_by_epoch() correctly handle the edge case where epoch is 0, potentially allowing epoch wraparound attacks that keep stale data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74abcf89-2940-4360-a255-05de276cb98a?mode=deep",
+    "timestamp": "2026-01-21 02:16:58.742930",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: filter_by_epoch()] [Memory exhaustion] If an attacker populates the database with millions of entries from different epochs, does filter_by_epoch() consume excessive memory processing all_data iterator before filtering? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca4f988f-c478-4ba7-96b9-d1f39446051c?mode=deep",
+    "timestamp": "2026-01-21 02:17:17.354837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_aug_data()] [Equivocation bypass] In add_aug_data(), the equivocation check compares existing_data == &data - can a Byzantine validator craft semantically equivalent but binary-different AugData that passes equality but contains malicious deltas? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cb5a24b-63f1-46d0-ba93-e8e08e7216c8?mode=deep",
+    "timestamp": "2026-01-21 02:17:36.835803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_aug_data()] [TOCTOU vulnerability] Between checking if data exists in self.data.get() and inserting with self.data.insert(), can another thread modify the HashMap allowing equivocating data to be added? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b22cf45-6fbe-4ebf-b38d-465d56114d19?mode=deep",
+    "timestamp": "2026-01-21 02:17:57.685878",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_aug_data()] [Database bypass] The equivocation check only compares in-memory data but saves to db.save_aug_data() before the check completes - can a crash between save and insert leave inconsistent database state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebf488ec-e7bc-488a-ad13-8ecd03c0a737?mode=deep",
+    "timestamp": "2026-01-21 02:18:19.850267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_aug_data()] [Signature forging] Does AugDataSignature::new() properly validate that the signer matches the expected validator, or can a Byzantine validator sign augmented data on behalf of honest validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_084f9aaf-97b5-4f4e-9099-11e5d6ddb5fe?mode=deep",
+    "timestamp": "2026-01-21 02:18:42.948900",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_aug_data()] [Epoch confusion] Can an attacker submit AugData with epoch field different from self.epoch but still get a signature with self.epoch, causing epoch mismatch attacks in signature verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cddd0323-0077-42eb-899f-82524b2aa250?mode=deep",
+    "timestamp": "2026-01-21 02:19:07.085413",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_aug_data()] [Author manipulation] The function inserts data using *data.author() as key - can an attacker craft AugData where the author field doesn't match the actual sender, allowing them to overwrite another validator's data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_beaa3b60-7c39-4cb1-9729-485ac12eb3de?mode=deep",
+    "timestamp": "2026-01-21 02:19:31.968472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_aug_data()] [Return value exploitation] After returning Ok(sig), the caller receives a signature but if the HashMap insert fails or panics, can this create signed but untracked augmented data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1c9ebfc-3918-4e6c-9c27-5e2cae177b83?mode=deep",
+    "timestamp": "2026-01-21 02:19:58.502273",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_aug_data()] [Database poisoning] If db.save_aug_data() succeeds but a later validation fails, the data remains in the database - can repeated failed additions exhaust storage with invalid data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cafa31da-5123-4efe-8074-11cdf898f555?mode=deep",
+    "timestamp": "2026-01-21 02:20:26.772812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_certified_aug_data()] [Duplicate handling bypass] The function returns early if certified_data already exists, but never verifies the existing data matches - can a Byzantine validator prevent updates to corrupted certified data by submitting it first? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1ce24d7-2e24-4760-80c5-7bdcb070f197?mode=deep",
+    "timestamp": "2026-01-21 02:20:55.492931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_certified_aug_data()] [Augment ordering attack] The augment() call happens after database save - if augment() modifies shared RandConfig state, can a crash between save and augment leave the database and config inconsistent? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cab7e1c7-d54b-49c6-8fe1-2ab5932ba9ff?mode=deep",
+    "timestamp": "2026-01-21 02:21:25.418951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_certified_aug_data()] [State pollution] Does augment() properly validate deltas before adding them to config, or can malicious certified data inject invalid cryptographic material that breaks randomness generation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6682729b-a125-4049-a43d-f80cc4262802?mode=deep",
+    "timestamp": "2026-01-21 02:21:55.684835",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_certified_aug_data()] [Fast path confusion] If fast_config exists, does augment() atomically update both configs, or can a failure in fast path leave the main config updated but fast config stale? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3bde8ca5-ae3d-4e76-b855-8f0d5b1e3770?mode=deep",
+    "timestamp": "2026-01-21 02:22:25.739907",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_certified_aug_data()] [Author verification missing] Unlike add_aug_data(), there's no check that certified_data.author() matches any expected validator - can invalid authors be inserted into the store? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f7f65a0-7ad0-4781-a898-68b43be4274d?mode=deep",
+    "timestamp": "2026-01-21 02:22:55.796917",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_certified_aug_data()] [Signature verification bypass] The function never calls verify() on certified_data before saving - can an attacker add CertifiedAugData with invalid aggregate signatures that corrupt the randomness system? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0663c3dc-3e3e-4130-acac-1cd901fc610d?mode=deep",
+    "timestamp": "2026-01-21 02:23:25.057026",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_certified_aug_data()] [Epoch mismatch] Does the function verify certified_data.epoch() matches self.epoch before adding, or can data from future/past epochs be inserted causing epoch confusion attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1943252-b6cc-49cc-84fe-da186e28e511?mode=deep",
+    "timestamp": "2026-01-21 02:23:54.054155",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: add_certified_aug_data()] [Database transaction failure] If db.save_certified_aug_data() fails but augment() was already called in a previous attempt, can this cause the in-memory config state to diverge from persistent storage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97f3253f-b069-45dc-b4db-1fdf254e7f76?mode=deep",
+    "timestamp": "2026-01-21 02:24:23.211836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/rand/rand_gen/aug_data_store.rs] [Function: get_my_aug_data()] [Author confusion] Does get_my_aug_data() use config.author() which might differ from signer.author() - can misconfiguration allow validators to retrieve wrong augmented data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa4bcd41-88f6-427d-a899-41df09ce99a9?mode=deep",
+    "timestamp": "2026-01-21 02:24:53.249025",
+    "report_generated": false
+  }
+]
