@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Index arithmetic] At line 403, txn_idx + 1 is computed for epilogue - can integer overflow occur if txn_idx is TxnIndex::MAX, causing epilogue_txn_idx to wrap to 0 and overwrite the first transaction's state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8311cc3c-103b-4ca2-97fd-f1ed19804c33?mode=deep",
+    "timestamp": "2026-01-21 05:45:56.246909",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: fetch_exchanged_data()] [Key bounds] At line 271, inputs[txn_idx as usize] is accessed - can txn_idx values from different transaction types (u32 vs u64) cause truncation during cast to usize, accessing wrong transaction's data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75e18db0-e07d-4bc7-adc7-49f33d4e8a7c?mode=deep",
+    "timestamp": "2026-01-21 05:46:09.011373",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Struct: TxnLastInputOutput] [Vector growth] At lines 213-219, three parallel vectors are maintained - if these vectors grow out of sync due to race conditions, can indexing operations access mismatched data between inputs, outputs, and speculative_failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2559a5dc-f2a4-4ac4-9d46-9665f26c3358?mode=deep",
+    "timestamp": "2026-01-21 05:46:22.418222",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Abort handling] At lines 331-338, OutputStatusKind::Abort returns FatalVMError immediately - can this early return leave the block_limit_processor, scheduler, or epilogue_txn_idx in inconsistent state, causing subsequent transactions to commit incorrectly? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e779fc7-60a5-48ec-ab5a-3e14d02d0bfc?mode=deep",
+    "timestamp": "2026-01-21 05:46:35.811998",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: take_output()] [Double take prevention] At lines 187-193, take_output() removes output from wrapper - can multiple concurrent calls to take_output() cause the second call to receive code_invariant_error, but with the error occurring during critical commit phase rather than early validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2226e2e-7829-46f3-b7e9-9266e54062f1?mode=deep",
+    "timestamp": "2026-01-21 05:46:50.101347",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Macro: with_success_or_skip_rest] [Unreachable branches] At lines 67-77 and 91-101, unreachable!() is used for inconsistent state combinations - can these supposedly unreachable cases actually occur due to race conditions, unsafe code elsewhere, or memory corruption, causing validator panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a93ca711-4381-43e7-bc71-83caadad48c1?mode=deep",
+    "timestamp": "2026-01-21 05:47:05.353828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: from_execution_status()] [PanicError propagation] At line 138, from_execution_status returns Result<Self, PanicError> - if PanicError occurs during output wrapper creation, is it properly caught and converted to execution abort, or can it propagate and crash the validator node? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14fca04f-9d6e-4e3f-a4d2-3de946d85a50?mode=deep",
+    "timestamp": "2026-01-21 05:47:21.728557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: notify_listener()] [Invariant error timing] At lines 432-436, invariant errors are returned for unexpected status kinds - can these errors occur during the narrow window between commit and materialization, causing committed transactions to not be properly finalized? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1da1ce1b-d01d-4e2a-8f86-124e018cf5ce?mode=deep",
+    "timestamp": "2026-01-21 05:47:39.752168",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: record()] [Input-output mismatch] At lines 242-260, input is recorded after output_wrapper is created - if from_execution_status() fails at line 251 but input is stored at line 257, can subsequent read_set() return input without corresponding output, confusing validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39006738-2cf3-45a6-af2d-cde56489453c?mode=deep",
+    "timestamp": "2026-01-21 05:47:59.218370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: from_execution_status()] [ReadWriteSummary mismatch] At lines 155-161, ReadWriteSummary combines input's read_summary with output's write_summary - if these summaries use inconsistent key representations or include different transaction versions, can validation incorrectly detect or miss conflicts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3bda39ab-5058-449e-b310-568e058c6fbc?mode=deep",
+    "timestamp": "2026-01-21 05:48:20.330348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: resource_write_set()] [Write set access] At lines 657-665, resource_write_set is accessed through with_success_or_skip_rest - can SkipRest transactions have incomplete write sets that are still returned, causing materialization to apply partial updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6745ed61-8160-4402-8ac0-6811ed6b4e99?mode=deep",
+    "timestamp": "2026-01-21 05:48:41.203251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Post-commit race] At line 376, txn_idx is added to post-commit queue - can the transaction be materialized and output taken before the scheduler processes the post-commit task, causing the materialization task to find missing output and panic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5cd6488-52b9-497a-a102-46b3f888561d?mode=deep",
+    "timestamp": "2026-01-21 05:49:04.057061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Halt timing] At line 387, scheduler.halt() is called when block ends - can concurrent transactions that haven't reached commit yet continue executing after halt, writing outputs that will never be committed, wasting resources and potentially causing state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1e0e0ca-3eea-4ed2-a575-fa8c2dfaf775?mode=deep",
+    "timestamp": "2026-01-21 05:49:28.176132",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Failpoint vulnerability] At lines 395-399, a failpoint can trigger error after halt - in production, can similar error paths after halt cause the block to be partially committed with some transactions finalized and others not, requiring complex rollback logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6dcd86f3-d6e6-497a-9276-45fbd95f57c5?mode=deep",
+    "timestamp": "2026-01-21 05:49:52.921361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: publish_module_write_set()] [Validation requirements race] At line 575, validation requirements are recorded after module publishing - can concurrent transactions start validating against new modules before requirements are recorded, missing module dependencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb319313-0b2c-42a2-b9f3-86ca5fa7421e?mode=deep",
+    "timestamp": "2026-01-21 05:50:17.905397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Fee statement timing] At line 353, fee_statement is extracted from output_before_guard - can the fee statement be stale if output was re-executed between being recorded and commit, causing incorrect fee accumulation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_352e685b-3847-4c65-b826-79823995ede0?mode=deep",
+    "timestamp": "2026-01-21 05:50:45.163359",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Double fee accumulation] At lines 355-360, accumulate_fee_statement is called for committed transaction - if transaction status changes from Success to SkipRest at line 369, can fees be accumulated twice for the same transaction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d7dca80-681c-4767-80c6-b7793fbf9c40?mode=deep",
+    "timestamp": "2026-01-21 05:51:12.954349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: from_execution_status()] [Size calculation overflow] At lines 147-152, output size is calculated by adding output_approx_size + user_txn_bytes_len - can this addition overflow u64, wrapping to small value and bypassing block output limit checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba0f6f28-7ebe-4679-9cda-fd81e9afd12a?mode=deep",
+    "timestamp": "2026-01-21 05:51:41.988709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Penalty window bypass] At line 156, ReadWriteSummary is only created if conflict_penalty_window is set - can validators disable penalty windows to avoid tracking conflicts, allowing more aggressive parallel execution that causes state divergence? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf0c6260-1648-42d9-af7f-669553faa307?mode=deep",
+    "timestamp": "2026-01-21 05:52:11.730588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: events()] [Event iterator lifetime] At lines 640-655, events are returned as Box<dyn Iterator> - can the iterator hold references to output that is taken by concurrent take_output(), causing use-after-free when iterating events? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce2cfdc2-6793-4f2e-9bac-ced4276e9802?mode=deep",
+    "timestamp": "2026-01-21 05:52:42.923280",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Epoch event detection] At lines 345, 350, 367, has_new_epoch_event() determines critical control flow - can malicious Move modules emit events that are incorrectly classified as epoch events, manipulating block finalization logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_532af515-5bdd-49ab-b7f7-9fbd00393c78?mode=deep",
+    "timestamp": "2026-01-21 05:53:14.146318",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: record_materialized_txn_output()] [Patched events] At line 675, patched_events are incorporated - can event indices become inconsistent between original and patched events, causing events to be duplicated or lost during materialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4fec586d-ebc6-4ba7-a02e-6b56fa281af7?mode=deep",
+    "timestamp": "2026-01-21 05:53:44.159712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: commit()] [Lock ordering] At line 321, output_wrapper is locked before calling block_limit_processor operations - if block_limit_processor internally locks on global state, and another thread locks in opposite order, can this cause deadlock halting all execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00c7abfc-d7ea-46b5-92c8-96bee73627d1?mode=deep",
+    "timestamp": "2026-01-21 05:54:13.782643",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Function: publish_module_write_set()] [Multi-lock deadlock] At line 552, output_wrapper is locked, then global_module_cache and versioned_cache are accessed - if module cache operations internally lock and another thread acquires cache locks first then tries to lock output_wrapper, can deadlock occur? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53685ef9-7691-4f1c-ae53-bfd502f4ff8c?mode=deep",
+    "timestamp": "2026-01-21 05:54:43.495424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/txn_last_input_output.rs] [Macro: with_success_or_skip_rest] [Lock duration] At lines 58 and 82, wrapper is locked for entire macro body execution - can expensive operations like before_materialization() at line 52 hold the lock for extended duration, blocking other threads and reducing parallelism? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd21ed98-8c60-46e0-b9bf-59282ed578e9?mode=deep",
+    "timestamp": "2026-01-21 05:55:13.075473",
+    "report_generated": false
+  }
+]
