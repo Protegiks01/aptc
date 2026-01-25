@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: contains_hot_state_value()] [Return Value Inconsistency] If speculative has the key but it's not hot, the function still checks self.hot - can this cause inconsistent behavior where the same key returns different hot/cold status based on read timing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f25b134f-1807-4101-86c7-550dd9efd87f?mode=deep",
+    "timestamp": "2026-01-25 21:39:00.410841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: num_free_hot_slots()] [Delegation Bug] This delegates directly to speculative.num_free_hot_slots() without considering hot state or memorized cache - can this return incorrect free slot counts if hot state has additional capacity, causing hot state underutilization? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ace221e-4194-4a9d-a1d9-2b0131624912?mode=deep",
+    "timestamp": "2026-01-25 21:39:13.804879",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_next_old_key()] [Assertion Panic] The function asserts that state_key.get_shard_id() equals shard_id - can a malicious transaction provide mismatched shard_id and state_key to trigger this panic and crash validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a928e0d-8137-42e1-af31-193cab6c11c2?mode=deep",
+    "timestamp": "2026-01-25 21:39:27.325624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_next_old_key()] [Logic Error] When key is None, it returns speculative.oldest_hot_key but when key is Some, it checks both speculative and hot - is this asymmetry intentional or can it cause hot state eviction to skip keys? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4476aeab-5ce9-425e-a056-b70165a33bdf?mode=deep",
+    "timestamp": "2026-01-25 21:39:43.065038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_next_old_key()] [Assertion Panic] Line 346 asserts slot.is_hot() when fetching from self.hot - can corrupted hot state contain non-hot slots, causing validator nodes to panic during eviction operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7e0de6f-67ee-4532-ab6a-86c4fb847c46?mode=deep",
+    "timestamp": "2026-01-25 21:39:58.579658",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: CachedDbStateView::get_state_slot()] [Lock Granularity] The function uses RwLock with separate read and write phases - can this create a race window where multiple threads simultaneously determine cache is empty, all fetch from DB, and compete to write, causing wasted DB reads? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ae8f1bf-d7cd-42ac-a980-4c63d7aac00e?mode=deep",
+    "timestamp": "2026-01-25 21:40:14.960118",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: CachedDbStateView::get_state_slot()] [Memory Leak] The state_cache HashMap uses or_insert_with to populate entries but never removes them - can an attacker query billions of unique keys to cause unbounded memory growth and validator OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a063d8c-2e79-405e-9fc4-b6bb49b8d063?mode=deep",
+    "timestamp": "2026-01-25 21:40:32.002045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: CachedDbStateView::get_state_slot()] [Stale Cache] Once a value is cached, it's never invalidated or refreshed - if the underlying DB state changes, will cached reads return stale data causing consensus divergence between validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b55721d0-9964-4c0d-bcca-f92506c60995?mode=deep",
+    "timestamp": "2026-01-25 21:40:50.032133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: CachedDbStateView::get_state_slot()] [Write Lock Contention] Every cache miss requires acquiring a write lock - can an attacker deliberately query uncached keys in parallel to create write lock contention and slow down all state reads? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_641b45d6-af90-4dc8-981b-16ee0025d68c?mode=deep",
+    "timestamp": "2026-01-25 21:41:08.350880",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: next_version()] [Delegation Ambiguity] CachedStateView has two next_version methods - one delegates to speculative, one is inherited from TStateView - can this cause confusion where different code paths use different version values? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19dd9c36-f440-460c-bcbf-08517a906a3b?mode=deep",
+    "timestamp": "2026-01-25 21:41:28.599075",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: base_version()] [Option Handling] The base_version delegates to speculative and may return None - are all callers properly handling the None case, or can unwrapping cause panics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c14bb787-3866-49b0-90bb-acc21c6738ec?mode=deep",
+    "timestamp": "2026-01-25 21:41:49.358139",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Struct: ShardedStateCache] [Concurrent Modification] DashMap allows concurrent reads and writes across shards - can shard-crossing operations like iteration during prime_cache see inconsistent state if some shards are being modified? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98f44cfb-a1cb-48a2-8392-55d96069de5a?mode=deep",
+    "timestamp": "2026-01-25 21:42:11.402265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Struct: CachedStateView] [Arc Cloning] The hot and cold fields are Arc pointers that get cloned - if the underlying HotStateView or DbReader are mutated through another Arc reference, can cached views see inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_036cd604-0eef-4690-9eb6-1c1469a774d6?mode=deep",
+    "timestamp": "2026-01-25 21:42:34.946735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: into_memorized_reads()] [Ownership Transfer] This consumes self and returns memorized cache - if this is called while concurrent operations are still accessing the cache through other references, can it cause use-after-free or data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23a201d4-9d2a-45e8-874a-671867290276?mode=deep",
+    "timestamp": "2026-01-25 21:42:59.689730",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Struct: CachedStateView] [Multi-Layer Consistency] The view combines speculative, hot, and cold layers - if a state update commits to cold but hasn't updated hot/speculative, can reads return stale values from higher layers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61e1db9d-1c99-4a5a-bf5c-79ef88388681?mode=deep",
+    "timestamp": "2026-01-25 21:43:26.062282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_usage()] [Usage Calculation] This only returns speculative.current.usage() without considering hot or cold - can this underreport actual state usage if most state is in hot/cold layers, allowing attackers to bypass storage limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbbeedaa-ca5d-4d08-b7cb-266b744df5dc?mode=deep",
+    "timestamp": "2026-01-25 21:43:54.388625",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: current_state()] [Reference Lifetime] Returns reference to speculative.current - if speculative is modified elsewhere while this reference is held, can it violate Rust's borrowing rules or cause data races? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d55dbbb-e9a0-4bd0-a8ac-dec77e878ac4?mode=deep",
+    "timestamp": "2026-01-25 21:44:23.104874",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_state_slot()] [Metrics Accuracy] The function increments multiple COUNTER metrics but doesn't use atomic operations - can concurrent increments cause incorrect metric values that hide attack patterns? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67a688a1-3394-483e-8ffb-f21740de7a7f?mode=deep",
+    "timestamp": "2026-01-25 21:44:52.399773",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_unmemorized()] [Performance Metrics] Metrics like sv_hit_speculative are incremented in each branch - can an attacker use these metrics to infer cache contents or state patterns for side-channel attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07707090-ee68-4f76-a23c-31caf88ba7d9?mode=deep",
+    "timestamp": "2026-01-25 21:45:24.270860",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: ShardedStateCache::try_insert()] [Double-Insert Race] If two threads call try_insert concurrently with different StateSlot values for the same key, both see Entry::Vacant initially - can both insert, causing last-writer-wins behavior that leads to cache inconsistency across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82ad6c72-ad0a-43aa-93a9-a06a60a7de38?mode=deep",
+    "timestamp": "2026-01-25 21:45:56.534485",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Struct: ShardedStateCache] [Shard Distribution] State is distributed across NUM_STATE_SHARDS shards based on get_shard_id() - if shard distribution is uneven, can an attacker deliberately access keys in one shard to create hotspot contention while other shards are idle? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09f47e9c-b671-4ec1-aa48-920c47aaf37c?mode=deep",
+    "timestamp": "2026-01-25 21:46:29.250747",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: prime_cache()] [Batch Processing Order] The function processes for_last_checkpoint_batched before for_latest_batched - can the ordering affect cache coherency if updates from latest should override checkpoint data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15872e3f-3554-4337-b333-0d8afa5c82cd?mode=deep",
+    "timestamp": "2026-01-25 21:46:58.940740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_state_slot() in TStateView] [Cache Bypass] The memorized cache is checked first, but there's no validation that cached values are still valid for the current version - can a long-lived CachedStateView serve stale cached values for keys that have been updated in DB? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8eb66ebc-aa47-4536-aa39-fc9d64e49219?mode=deep",
+    "timestamp": "2026-01-25 21:47:26.937210",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Struct: CachedStateView] [Speculative State Isolation] The speculative field represents uncommitted state - if multiple transactions share the same CachedStateView, can they see each other's speculative changes before consensus confirms them? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cabab561-f1cd-4eba-9982-cfb642013a6b?mode=deep",
+    "timestamp": "2026-01-25 21:47:57.498451",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: new_with_config()] [Initialization Race] The function creates StateDelta and ShardedStateCache separately - can a race condition during initialization cause version mismatches between these components? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a95c3791-5e93-4bb5-8bf9-8bad27289d84?mode=deep",
+    "timestamp": "2026-01-25 21:48:27.561983",
+    "report_generated": false
+  }
+]
