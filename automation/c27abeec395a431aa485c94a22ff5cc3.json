@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: Entry::is_estimate()] [Race condition] Can concurrent threads race between is_estimate() check (line 100-102) and actual value read, where one thread marks estimate while another reads, leading to stale data being used in parallel execution causing state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1f0f76e-de05-4c8a-9b0e-7346c0cdbbba?mode=deep",
+    "timestamp": "2026-01-25 12:42:49.471589",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: Entry::mark_estimate()] [Memory ordering] Does Ordering::Relaxed (line 105) provide sufficient synchronization guarantees, or can reordering cause a thread to read stale estimate flags after mark_estimate() returns, leading to incorrect dependency detection in Block-STM? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d691f732-6672-4cc4-8c49-7334cd7e189f?mode=deep",
+    "timestamp": "2026-01-25 12:43:02.258012",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Struct: Entry] [Integer overflow] Can the flag field be corrupted through bit manipulation or memory corruption, causing FLAG_ESTIMATE and FLAG_DONE to be indistinguishable and breaking dependency tracking in parallel execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bdfafd62-6c30-4c41-9788-5baf66abe2cd?mode=deep",
+    "timestamp": "2026-01-25 12:43:15.810695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: Entry::new()] [Initialization vulnerability] Does Entry::new() initialize flag to FLAG_DONE (line 96), but can concurrent mark_estimate() calls during construction race with initialization, leaving entries in undefined states? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e4e125d-bba5-48ff-bb15-3b70628f853f?mode=deep",
+    "timestamp": "2026-01-25 12:43:29.145036",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: Entry::record_delta_shortcut()] [Delta corruption] In record_delta_shortcut() (line 113-125), can an attacker trigger concurrent calls with different shortcut values to bypass the equality assertion (line 119), storing inconsistent aggregator base values that lead to incorrect delta resolution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edea865c-d296-423a-9ca5-a345b48c467e?mode=deep",
+    "timestamp": "2026-01-25 12:43:43.641331",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Enum: EntryCell::Delta] [Type confusion] Can EntryCell::Delta variant be misused where code expects ResourceWrite, causing unreachable!() panics (line 123) to be triggered in production, halting transaction execution and causing liveness issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0935ae45-a4ba-4164-a652-ce241a0739ef?mode=deep",
+    "timestamp": "2026-01-25 12:43:58.861168",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Enum: EntryCell::ResourceWrite] [Mutex poisoning] If dependencies Mutex (line 55) is poisoned due to panic in another thread, can subsequent lock() calls fail indefinitely, causing deadlock in read/write operations and total loss of parallel execution capability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d8c2798-df53-4fad-9a5e-e2cabd3c4e83?mode=deep",
+    "timestamp": "2026-01-25 12:44:16.071648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: record_delta_shortcut()] [Assertion bypass] Can record_delta_shortcut() assertion (line 119) be bypassed by exploiting floating-point comparison or integer wrap-around, allowing inconsistent shortcuts to be stored and causing incorrect aggregator value resolution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29e1ac33-add6-479b-b527-e114174e083a?mode=deep",
+    "timestamp": "2026-01-25 12:44:34.671942",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: split_off_affected_read_dependencies()] [Validation bypass] In split_off_affected_read_dependencies() (line 146-190), if ONLY_COMPARE_METADATA is true, can an attacker modify the actual value while keeping metadata identical to bypass validation (line 396), causing dependent transactions to use stale data and break deterministic execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a540ce8-9213-4717-af4c-e6524e964e88?mode=deep",
+    "timestamp": "2026-01-25 12:44:54.525964",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: split_off_affected_read_dependencies()] [Race condition] Can split_off() call (line 172) race with concurrent read() operations that are inserting new dependencies, leading to incomplete dependency extraction and missed invalidations when values change? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8822d9e1-b173-4906-933f-89a7dcfa5adf?mode=deep",
+    "timestamp": "2026-01-25 12:45:15.522983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: split_off_affected_read_dependencies()] [Range boundary] Does range(..=ShiftedTxnIndex::new(txn_idx)) (line 160-162) correctly handle boundary cases where txn_idx equals max TxnIndex, potentially causing integer overflow or incorrect dependency extraction? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64873fbe-4dfc-46ed-93d1-b9984147c580?mode=deep",
+    "timestamp": "2026-01-25 12:45:37.013352",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: split_off_affected_read_dependencies()] [Dependency leak] Can affected dependencies be partially extracted if an error occurs mid-operation, causing some dependencies to remain in the old entry while others are moved, leading to duplicate or lost dependency tracking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_596964e8-9d9e-4532-937b-2b0d746344ed?mode=deep",
+    "timestamp": "2026-01-25 12:46:00.125939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: split_off_affected_read_dependencies()] [Layout validation] Does layout comparison (line 399-400) pessimistically fail validation even when layouts are semantically equivalent, causing unnecessary transaction aborts and performance degradation in parallel execution? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_335ab345-6c8a-4658-a970-c41a499df22c?mode=deep",
+    "timestamp": "2026-01-25 12:46:23.931910",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: split_off_affected_read_dependencies()] [Memory leak] If ValueWithLayout::Exchanged matching fails (line 175-176), are dependencies properly cleaned up, or can memory leaks accumulate over many transactions causing resource exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdc7d375-1ece-4d39-99f8-a595a77a84b5?mode=deep",
+    "timestamp": "2026-01-25 12:46:49.068527",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: handle_removed_dependencies()] [Panic vulnerability] Does assert_ne! (line 211-214) properly prevent calling handle_removed_dependencies() when entry still exists, or can TOCTOU race allow entry removal between check and assert causing panic in production? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5c06bf6-0574-4fe7-92b9-55fa88dc93e1?mode=deep",
+    "timestamp": "2026-01-25 12:47:15.376960",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: handle_removed_dependencies()] [Dependency transfer] In handle_removed_dependencies() (line 198-240), can extend_with_higher_dependencies() (line 234) fail to properly validate dependency indices, allowing lower-indexed dependencies to corrupt the dependency tree structure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65e81c43-6998-4cfe-95a0-00adf069e349?mode=deep",
+    "timestamp": "2026-01-25 12:47:42.620285",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: handle_removed_dependencies()] [Validation bypass] Can an attacker exploit compare_values_and_layouts() (line 224-229) by providing RawFromStorage entries that always fail validation, causing all dependencies to be invalidated even when values haven't changed, leading to excessive re-execution and DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d565964e-9ce8-4e77-b518-d4c373b163ed?mode=deep",
+    "timestamp": "2026-01-25 12:48:11.312042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: handle_removed_dependencies()] [PanicError handling] If extend_with_higher_dependencies() returns PanicError (line 234), are dependencies properly restored or rolled back, or can they be lost causing incorrect parallel execution state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc6323d8-1412-4bb5-a767-d9ef93bc8ef2?mode=deep",
+    "timestamp": "2026-01-25 12:48:40.242515",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: handle_removed_dependencies()] [Empty range] When range(..=ShiftedTxnIndex::new(txn_idx)) (line 207-209) returns no entries, are returned dependencies properly handled by caller, or can they be leaked causing memory issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55b518cf-2961-4391-9c17-551d955b1eaa?mode=deep",
+    "timestamp": "2026-01-25 12:49:10.186185",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: read()] [Estimate detection] In read() function (line 243-377), can is_estimate() check (line 260) race with concurrent mark_estimate() calls, causing reads to miss dependencies and proceed with stale data leading to non-deterministic execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5eaa44ea-052a-4986-971f-aa627beea126?mode=deep",
+    "timestamp": "2026-01-25 12:49:40.042448",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: read()] [Dependency insertion] Can dependencies.lock().insert() (line 283-285) fail silently or panic, causing reads to succeed without proper dependency tracking and breaking Block-STM validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56d4fc9b-c336-47b8-b7d8-efe7950eeecd?mode=deep",
+    "timestamp": "2026-01-25 12:50:10.798909",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: read()] [Delta accumulation] During delta traversal (line 258-366), can accumulator merge_with_previous_delta() (line 350) silently fail (recorded as Err(())), allowing reads to return incorrect values while continuing execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cda4a5c9-d3a5-4cca-9151-eceba8378ca9?mode=deep",
+    "timestamp": "2026-01-25 12:50:42.612065",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: read()] [Shortcut exploitation] Can delta shortcuts (line 334-342, 358-359) be poisoned with incorrect base values through race conditions in record_delta_shortcut(), causing all subsequent reads to resolve to wrong aggregator values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0aa7a574-489d-4033-9e52-79500747fd96?mode=deep",
+    "timestamp": "2026-01-25 12:51:13.962784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: read()] [Deserialization vulnerability] Does as_u128() call (line 308-309) properly validate aggregator value format, or can malformed WriteOps cause panics or incorrect None returns leading to data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4cc99873-6fd0-4fc7-9ee9-ac65f24c305d?mode=deep",
+    "timestamp": "2026-01-25 12:51:45.621023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_data.rs] [Function: read()] [Unresolved delta] When returning Err(Unresolved(accumulator)) (line 373), can the accumulator contain malicious delta operations that cause apply_to() to fail in unexpected ways when later materialized? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1351faaf-d43d-4401-b1b8-06ddd0b04f92?mode=deep",
+    "timestamp": "2026-01-25 12:52:17.430048",
+    "report_generated": false
+  }
+]
