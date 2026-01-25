@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: setup()] [Unimplemented functionality] The production setup() function is completely unimplemented and returns unimplemented!() - can this cause a total system failure or panic if accidentally called in production, potentially halting all batch encryption operations and causing loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89c6db08-6957-441b-9339-584ffa807596?mode=deep",
+    "timestamp": "2026-01-25 17:49:40.182993",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: setup()] [Missing implementation] Since setup() is unimplemented for PVSS-based key generation, are there alternative codepaths that could bypass proper key establishment, allowing attackers to use improperly initialized keys for encryption leading to cryptographic failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea5352a0-ae18-43f3-8908-996c84e819da?mode=deep",
+    "timestamp": "2026-01-25 17:49:53.127946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: setup_for_testing()] [Weak randomness] The function uses StdRng::seed_from_u64(seed) for deterministic key generation - can an attacker who discovers or predicts the seed value reconstruct all master secret keys and decrypt all encrypted data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a422616a-cfdb-4a73-a3a8-df2a02b96e25?mode=deep",
+    "timestamp": "2026-01-25 17:50:06.299867",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: setup_for_testing()] [Cryptographic key derivation] The master secret key msk is generated with Fr::rand(&mut rng) - is there any validation that msk is not zero or a known weak value that could compromise the entire encryption scheme? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b32c717-2c0f-4b60-b909-8afd4295e62e?mode=deep",
+    "timestamp": "2026-01-25 17:50:21.536286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: setup_for_testing()] [Key relationship validation] The encryption key is constructed with tau_mpk_g2 = digest_key.tau_g2 * msk - if msk or tau_g2 are compromised or malformed, can this produce a weak encryption key that enables decryption without proper authorization? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0dfe1080-5ae9-40dd-910e-4177999fbda2?mode=deep",
+    "timestamp": "2026-01-25 17:50:36.257352",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: setup_for_testing()] [Digest key creation failure] DigestKey::new() can return None on failure and uses ok_or() to convert to error - can an attacker trigger conditions (invalid batch_size or number_of_rounds) that cause repeated failures, potentially causing DoS by preventing proper system setup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87061b05-eaae-491a-a25f-a42ef4357269?mode=deep",
+    "timestamp": "2026-01-25 17:50:52.008078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: setup_for_testing()] [Integer overflow in parameters] No validation is performed on max_batch_size or number_of_rounds before passing to DigestKey::new() - can extremely large values cause integer overflows in downstream computations, potentially corrupting the cryptographic setup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_887076a6-a831-4767-bd06-b0370a45ebd3?mode=deep",
+    "timestamp": "2026-01-25 17:51:09.721590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: setup_for_testing()] [Threshold configuration validation] The threshold config tc is passed without validation - can an attacker supply a malicious threshold configuration (e.g., t > n or t = 0) that breaks the security guarantees of the threshold scheme? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bf48ad1-b574-4de9-9bc1-a0376de2bf3e?mode=deep",
+    "timestamp": "2026-01-25 17:51:28.275576",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: setup_for_testing()] [Share distribution vulnerability] The function gen_msk_shares distributes shares according to tc - if the threshold is set incorrectly (t = 1), can a single malicious validator decrypt all transactions, violating the threshold security assumption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cb355f9-060f-49ee-b4b3-5bb1351edf56?mode=deep",
+    "timestamp": "2026-01-25 17:51:47.445727",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: encrypt()] [Delegation without validation] The function directly delegates to ek.encrypt() without any validation of the encryption key, message, or associated data - can an attacker pass malformed inputs that cause encryption to succeed but produce invalid ciphertexts that later fail decryption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85fbd69b-9b3d-4704-a908-e8560f6293b6?mode=deep",
+    "timestamp": "2026-01-25 17:52:08.091485",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: encrypt()] [Missing bounds checking] There is no validation that the message size is within acceptable bounds before encryption - can an attacker encrypt arbitrarily large messages causing memory exhaustion or integer overflows in downstream processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0a1ea71-52f7-4d9e-8fb6-fecf24a73170?mode=deep",
+    "timestamp": "2026-01-25 17:52:28.881610",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: encrypt()] [Associated data binding] The associated_data is bound to the ciphertext but not validated - can an attacker provide malicious associated data that later causes verification failures or enables malleable ciphertexts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9e69e76-7af9-4c43-b93b-605987cab1e4?mode=deep",
+    "timestamp": "2026-01-25 17:52:51.603462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: encrypt()] [RNG state manipulation] The RNG is passed by mutable reference - if multiple encryptions share the same RNG state, can patterns in the random values leak information about plaintexts or enable attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc013678-405a-4671-aea9-c80d3194c6ce?mode=deep",
+    "timestamp": "2026-01-25 17:53:14.347647",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: digest()] [Round number validation] The round parameter is passed as u64 but only checked later by digest_key.digest() - can an attacker provide an extremely large round number that causes integer overflow when cast to usize or exceeds the setup capacity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_146e64f5-0e11-4e62-928b-46faff130f30?mode=deep",
+    "timestamp": "2026-01-25 17:53:38.463648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: digest()] [Empty ciphertext list] The function creates an IdSet from cts but doesn't explicitly check if cts is empty - can passing an empty array cause the digest computation to produce a trivial or predictable digest value? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ee7130c-f59d-4c3b-924f-7ff05ba48837?mode=deep",
+    "timestamp": "2026-01-25 17:54:02.699576",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: digest()] [ID collision handling] The IdSet is created from ct.id() values - if multiple ciphertexts have the same ID, does IdSet::from_slice() handle collisions properly, or can duplicate IDs cause incorrect digest computation enabling forgery attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2059f7bd-21c1-4f62-bb17-d429eb14b7ef?mode=deep",
+    "timestamp": "2026-01-25 17:54:28.337147",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: digest()] [Generic error message] The function uses ok_or(anyhow!(\\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39ed74ff-7b38-4ffc-8a56-1ea53886e607?mode=deep",
+    "timestamp": "2026-01-25 17:54:54.495640",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: digest()] [Batch size mismatch] No validation that the length of cts matches the max_batch_size from setup - can providing more ciphertexts than the setup capacity cause buffer overflows or incorrect digest computation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce2e9684-1f52-4d12-9725-fd20b6840e0e?mode=deep",
+    "timestamp": "2026-01-25 17:55:20.521705",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: digest()] [Round reuse attack] There is no mechanism preventing the same round number from being used multiple times - can an attacker force digest recomputation with the same round to enable replay attacks or key reuse vulnerabilities? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b65bcc1c-30e3-47db-8802-b34cf56e4933?mode=deep",
+    "timestamp": "2026-01-25 17:55:45.117936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: digest()] [Mutable ID set manipulation] The IdSet is passed as &mut to digest_key.digest() - can this lead to the original ids variable being modified in unexpected ways that affect subsequent operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3cdc8a5-7bb4-4608-961e-3bba11735aeb?mode=deep",
+    "timestamp": "2026-01-25 17:56:09.821608",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: verify_ct()] [Delegation without pre-validation] The function delegates directly to ct.verify() without any wrapper validation - can malformed ciphertexts cause panics or undefined behavior in the verification logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_815fd034-fc96-4194-81f3-befa2ea08c71?mode=deep",
+    "timestamp": "2026-01-25 17:56:35.893583",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: verify_ct()] [Time-of-check-to-time-of-use] After verification succeeds, the ciphertext could be modified before use - is there protection against TOCTOU attacks where a verified ciphertext is swapped with an invalid one? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f9bdde7-2836-4c04-9a03-048c2024f6c5?mode=deep",
+    "timestamp": "2026-01-25 17:57:03.120600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: verify_ct()] [Associated data mismatch] If verify_ct() is called with different associated_data than was used during encryption, it should fail - but can an attacker bypass this check by manipulating the associated data to match a different ciphertext? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_298788ca-2b94-4c88-956d-cf8e5a11a407?mode=deep",
+    "timestamp": "2026-01-25 17:57:29.616623",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: ct_id()] [ID uniqueness assumption] The function returns ct.id() assuming IDs are unique - if the underlying ciphertext implementation allows duplicate IDs, can this cause digest computation errors or enable collision attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bcdf95e1-a56b-40bf-a69a-f3d2ecdadb41?mode=deep",
+    "timestamp": "2026-01-25 17:57:56.647078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/schemes/fptx_succinct.rs] [Function: ct_id()] [ID predictability] If ciphertext IDs are predictable or sequential, can an attacker precompute future IDs and prepare malicious ciphertexts in advance for inclusion in specific batches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e12e127-ab50-4528-97f9-aa33bb6b56e3?mode=deep",
+    "timestamp": "2026-01-25 17:58:23.321577",
+    "report_generated": false
+  }
+]
