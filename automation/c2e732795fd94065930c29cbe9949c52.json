@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Type: Key] [Key Uniqueness] Does the Key type (Version, Position) tuple guarantee uniqueness, or can different Merkle tree positions within the same version produce colliding keys that overwrite event hashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fe584d3-eee1-41d4-9ff8-6643bf1d5765?mode=deep",
+    "timestamp": "2026-01-25 13:01:36.035061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Schema: EventAccumulatorSchema] [Concurrent Access] Can concurrent reads and writes to EventAccumulatorSchema from multiple threads cause race conditions where partial/stale event hashes are read during Merkle proof construction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8577bf59-7b67-4ece-b054-bf299cbe3b62?mode=deep",
+    "timestamp": "2026-01-25 13:01:48.829802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Schema: EventAccumulatorSchema] [Atomicity] Are writes to EventAccumulatorSchema atomic with respect to transaction commits, or can partial event accumulator state be persisted if a validator crashes during event processing? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_532d3bbe-a48f-4348-b7d6-7e4931c46caa?mode=deep",
+    "timestamp": "2026-01-25 13:02:01.756356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Type: Position in Key] [Invariant Violation] Can Position values that violate the invariant (>= u64::MAX - 1) be stored in the database through encode_key(), later causing panics in Position methods like parent() or sibling() when read? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b96ff266-20ee-49ec-9a30-bab6293df1e5?mode=deep",
+    "timestamp": "2026-01-25 13:02:15.360819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Type: Position in Key] [Inorder Index Overflow] If position.to_inorder_index() returns u64::MAX during encoding, can this create a key that collides with the maximum possible key, causing database overwrites and Merkle tree corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a05d923-574d-423f-99a4-44320f32d538?mode=deep",
+    "timestamp": "2026-01-25 13:02:29.624580",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Type: Position in Key] [Level Calculation] Can incorrect inorder index values in the database cause Position::from_inorder_index() to create Position objects with invalid level() calculations, breaking Merkle tree navigation during proof construction? (High)",
+    "url": "https://deepwiki.com/search/not-found",
+    "timestamp": "2026-01-25 13:02:45.453095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Type: Position in Key] [Tree Structure] If Position inorder indices don't correspond to valid binary tree positions, can this cause EventHashReader to retrieve incorrect parent/sibling hashes and construct invalid Merkle proofs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0302c7d-ea4e-4565-ad76-1f1e194aa7e5?mode=deep",
+    "timestamp": "2026-01-25 13:03:00.911785",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Usage: EventHashReader::get()] [Missing Hash] When EventHashReader::get() queries EventAccumulatorSchema for a position hash, can missing entries return None instead of an error, allowing silent failures in Merkle proof construction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58274ba3-f51f-4ac7-bdf2-534d78facea2?mode=deep",
+    "timestamp": "2026-01-25 13:03:18.477577",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Usage: prune_event_accumulator()] [Pruning Race] Can concurrent pruning operations in prune_event_accumulator() delete event accumulator entries while they're being read for proof construction, causing proof verification failures or validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_784fe6b7-f732-4549-95f2-66227b6b2de7?mode=deep",
+    "timestamp": "2026-01-25 13:03:36.338321",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Usage: prune_event_accumulator()] [Range Bug] If prune_event_accumulator() incorrectly calculates the [begin, end) range, can it delete event accumulator hashes for non-pruned versions, causing permanent loss of proof capability and state verification failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8177c3ae-35bb-459c-b107-3e209c4ad60e?mode=deep",
+    "timestamp": "2026-01-25 13:03:55.483965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Usage: prune_event_accumulator()] [Iterator Corruption] Can iterator seeking in prune_event_accumulator() skip entries or read stale data, causing incomplete pruning that wastes storage or over-pruning that deletes required hashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7c010af-4ce7-4ec8-b1cb-08c721010ad8?mode=deep",
+    "timestamp": "2026-01-25 13:04:16.360135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Merkle Root] [Root Calculation] Can incorrect event accumulator hashes stored via EventAccumulatorSchema cause validators to compute different Merkle roots for the same transaction version, breaking consensus and causing chain forks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ca83d50-2858-49dc-a3f4-09bff793193b?mode=deep",
+    "timestamp": "2026-01-25 13:04:38.915502",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Merkle Root] [Hash Collision] If two different event sets produce the same accumulator hash due to storage bugs in EventAccumulatorSchema, can attackers submit fraudulent events that pass proof verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_066fd2c0-b4b2-490b-9a8c-d72562cbe21d?mode=deep",
+    "timestamp": "2026-01-25 13:05:01.152409",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Merkle Proof] [Proof Forgery] Can an attacker manipulate event accumulator hashes in the database to construct valid-looking Merkle proofs for non-existent events, enabling fake event emission and potential fund theft? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3095194e-f9d8-4a92-8477-9a8b6794270b?mode=deep",
+    "timestamp": "2026-01-25 13:05:25.343890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Merkle Proof] [Incomplete Tree] If not all positions in the event accumulator tree have hashes stored in EventAccumulatorSchema, can proof construction fail or use default/zero hashes that make all proofs invalid? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7951fa7d-c637-4fc9-9a67-d700902d7a7a?mode=deep",
+    "timestamp": "2026-01-25 13:05:49.608772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Key: Version] [Version Ordering] Does BigEndian encoding of Version in encode_key() maintain lexicographic ordering in the database, or can incorrect ordering cause events to be read in wrong sequence during range scans? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76d19a65-be5f-4677-b058-a91303724abb?mode=deep",
+    "timestamp": "2026-01-25 13:06:15.901754",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Key: Version] [Version Collision] Can the same Version appear in the database with different event accumulator states (different Position-Hash mappings), causing validators to have inconsistent views of event history? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b500039d-d10c-4201-bd6b-2b24556f23ca?mode=deep",
+    "timestamp": "2026-01-25 13:06:43.213558",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Key: Version] [Version Gap] If there are gaps in Version numbers stored in EventAccumulatorSchema, can proof construction algorithms fail or hang when trying to build paths through missing accumulator levels? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82d5995e-5f61-4556-bef0-9f7dfb27bb33?mode=deep",
+    "timestamp": "2026-01-25 13:07:12.227061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Database: Write Batch] [Partial Writes] If a SchemaBatch containing EventAccumulatorSchema writes is only partially committed due to crash/error, can the database end up with inconsistent event accumulator state that breaks Merkle verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5745572-d8f5-4bba-861d-ccf54d4ca02f?mode=deep",
+    "timestamp": "2026-01-25 13:07:40.953437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Database: Write Batch] [Write Ordering] Are EventAccumulatorSchema writes ordered correctly with respect to transaction commits, or can event hashes be written before the transaction is finalized, allowing rollback attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f297567b-6515-4031-9853-4bb04610fd8e?mode=deep",
+    "timestamp": "2026-01-25 13:08:10.913949",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Database: Isolation] [Read Isolation] Can concurrent reads of EventAccumulatorSchema see partially-written event accumulators from in-progress transactions, causing non-deterministic Merkle root calculations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ada7d038-9c93-40d4-b714-d56354473b3e?mode=deep",
+    "timestamp": "2026-01-25 13:08:41.159957",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Error: Encode Errors] [Silent Failures] Can encoding errors in encode_key() or encode_value() be silently ignored, leading to incomplete database writes that corrupt the event accumulator without triggering validator alerts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c318374-7163-49fc-bf45-5fcf23e6f807?mode=deep",
+    "timestamp": "2026-01-25 13:09:11.590799",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Error: Decode Errors] [Recovery Attack] If decode_key() or decode_value() errors are not properly propagated, can an attacker inject corrupted data that causes validators to use default values instead of failing safely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d54bd33d-28e4-4b40-bca1-bd46cf7e8125?mode=deep",
+    "timestamp": "2026-01-25 13:09:41.561539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Error: ensure_slice_len_eq()] [Error Bypass] Can custom error types or error conversion bugs in ensure_slice_len_eq() allow incorrectly-sized data to pass validation and corrupt the database? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53ed179d-e7c3-4279-94d9-c2298ea5fad3?mode=deep",
+    "timestamp": "2026-01-25 13:10:13.929583",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/event_accumulator/mod.rs] [Crypto: HashValue] [Hash Algorithm] Does EventAccumulatorSchema enforce that all HashValue objects use the correct EventAccumulatorHasher algorithm, or can mixed hash algorithms cause proof verification failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc25bc6e-6386-4eec-bdda-95d016ef464b?mode=deep",
+    "timestamp": "2026-01-25 13:10:45.211032",
+    "report_generated": false
+  }
+]
