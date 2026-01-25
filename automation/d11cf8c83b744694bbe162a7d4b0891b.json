@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: restore.rs] [Function: LoadedChunk::load()] [Signature validation] Line 154 calls epoch_history.verify_ledger_info(&ledger_info) - can an attacker restore from a backup created during a different epoch and bypass validator signature checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b547f5f3-129a-409e-8c57-cfd79b84b003?mode=deep",
+    "timestamp": "2026-01-25 21:05:54.039726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: LoadedChunk::load()] [Transaction proof reuse] Lines 158-168 construct TransactionListWithProof for verification - can an attacker reuse a valid proof from one version range with transactions from a different range? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae65057d-d5f2-4a9f-8d61-a786fbdd18be?mode=deep",
+    "timestamp": "2026-01-25 21:06:07.237824",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: LoadedChunk::load()] [Proof chain validation] At line 168, verify() is called with ledger_info and first_version, but does this validate the accumulator proof connects to the ledger info correctly, or can fake intermediates be inserted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e58480d-1872-474d-890f-cc1bb953507d?mode=deep",
+    "timestamp": "2026-01-25 21:06:20.553058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: TransactionRestoreBatchController::new()] [KV replay validation] Lines 220-230 require kv_only_replay to be specified if replay_from_version is set, but can an attacker bypass this by setting replay_from_version to None and later enabling KV replay? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3878e49-a03b-4006-bd19-44aadc3ee8c4?mode=deep",
+    "timestamp": "2026-01-25 21:06:34.417973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: loaded_chunk_stream()] [Version range overlap] Lines 361-363 filter chunks by target_version and first_version, but can overlapping chunks from different backups be restored, causing duplicate transaction processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf5a61fa-b310-42b9-8e64-63aaf6ef717a?mode=deep",
+    "timestamp": "2026-01-25 21:06:49.353554",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: loaded_chunk_stream()] [Chunk gap detection] Lines 364-383 scan() validates chunk continuity, but if a chunk is missing in the middle, does the check at lines 367-374 reliably detect this, or can attackers craft skip attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb421a4d-7574-40b6-b217-7a28dab71790?mode=deep",
+    "timestamp": "2026-01-25 21:07:05.389231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: loaded_chunk_stream()] [Integer overflow in scan] Line 368 checks if chunk.first_version != *last_chunk_last_version + 1, but if last_chunk_last_version is u64::MAX, does this addition overflow and miss gaps? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_918c559a-5785-43eb-bdbc-d4863914e082?mode=deep",
+    "timestamp": "2026-01-25 21:07:23.368706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: confirm_or_save_frozen_subtrees()] [Frozen subtree manipulation] Lines 416-419 call restore_handler.confirm_or_save_frozen_subtrees() with range_proof.left_siblings() - can an attacker provide malicious left_siblings to corrupt the accumulator's frozen subtrees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e58a7042-3ea4-4813-a4da-2999d6d5dad8?mode=deep",
+    "timestamp": "2026-01-25 21:07:43.970167",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: confirm_or_save_frozen_subtrees()] [Empty stream check] Lines 408-413 get the first chunk from the stream, but if the stream is empty, the error message is generic - could this hide malicious empty backup attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81b7133e-f7c2-4642-bd34-52c423403ace?mode=deep",
+    "timestamp": "2026-01-25 21:08:05.165488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: save_before_replay_version()] [Replay version bypass] Lines 454-458 calculate first_to_replay as max(replay_from_version, next_expected_version), but can an attacker set replay_from_version < next_expected_version to force re-replay of already executed transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d029032-3c00-459c-bd4a-5df0db53bb23?mode=deep",
+    "timestamp": "2026-01-25 21:08:27.425728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: save_before_replay_version()] [Transaction trimming] Lines 476-484 trim transactions exceeding target_version, but if target_version < chunk.last_version, are the TransactionInfo entries also properly trimmed to match? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e2d2188-1a0a-4c98-9093-8c90c4a5b299?mode=deep",
+    "timestamp": "2026-01-25 21:08:51.136535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: save_before_replay_version()] [Drain operation safety] Lines 478-483 use .drain() to remove transactions, but do all five vectors (txns, persisted_aux_info, txn_infos, event_vecs, write_sets) stay synchronized if one drain fails? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d350cad-833b-4dba-9a21-edcaf0913c3e?mode=deep",
+    "timestamp": "2026-01-25 21:09:16.531390",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: save_before_replay_version()] [Integer underflow] Line 489 calculates num_to_remove = (global_first_version - first_version) as usize - if global_first_version < first_version, does this underflow cause incorrect draining? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e2cca6f-c352-40a5-8243-95a5e5e4ebb9?mode=deep",
+    "timestamp": "2026-01-25 21:09:42.648455",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: save_before_replay_version()] [Atomic save failure] Lines 508-518 spawn_blocking for save_transactions(), but if this task panics or is cancelled, are partially saved transactions left in inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dcd07bfd-a6ec-437d-b628-64936849ce15?mode=deep",
+    "timestamp": "2026-01-25 21:10:09.904144",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: save_before_replay_version()] [Version tracking race] Line 520 sets TRANSACTION_SAVE_VERSION metric, but if multiple restore operations run concurrently, can race conditions cause this metric to report incorrect progress? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92b3b040-fceb-4c6a-beab-090d96532d6f?mode=deep",
+    "timestamp": "2026-01-25 21:10:37.998477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_kv()] [State version manipulation] Line 569 calls force_state_version_for_kv_restore(first_version - 1), but can first_version be 0 (genesis), causing underflow and setting state to u64::MAX? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab5183f7-4ec3-43ab-bf9c-6d79cdefa1dc?mode=deep",
+    "timestamp": "2026-01-25 21:11:07.865231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_kv()] [KV-only bypass] Lines 576-610 directly save transactions and replay KV without involving chunk_executor - can this bypass important validation in ChunkExecutor that would catch state inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97656f5b-fa46-428a-861a-91300b759fc9?mode=deep",
+    "timestamp": "2026-01-25 21:11:37.287334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_kv()] [Concurrent chunk processing] Lines 576-610 use buffered_x for concurrent processing, but if chunks are processed out-of-order, can this cause state corruption where later transactions are applied before earlier ones? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fdc6418-24c9-4a9f-a81e-0d78c01ee4c2?mode=deep",
+    "timestamp": "2026-01-25 21:12:06.466786",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_kv()] [Offset calculation race] Lines 588-589 update base_version and offset, but these are mutable variables accessed in async context - can race conditions cause incorrect version calculations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffd1aa9a-6dfb-43db-b027-97daa4dfc3eb?mode=deep",
+    "timestamp": "2026-01-25 21:12:33.567955",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_transactions()] [State reset race] Line 655 calls restore_handler.reset_state_store(), but if another restore operation is running concurrently, can this reset corrupt the other operation's state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3b30f0a-5c3e-4267-8d7f-16fe7bb92aad?mode=deep",
+    "timestamp": "2026-01-25 21:13:01.328772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_transactions()] [ChunkExecutor reuse] Lines 657-658 create a single ChunkExecutor instance reused for all chunks - can state accumulation in the executor cause incorrect execution of later chunks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_889b98b6-9fd4-4ed2-b678-b48c449f7910?mode=deep",
+    "timestamp": "2026-01-25 21:13:29.730702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_transactions()] [Batch size manipulation] Line 63 defines BATCH_SIZE as 10000 (or 2 in tests) - can an attacker modify this at runtime to force tiny batches causing performance DoS, or huge batches causing memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9150859-a1cb-4aeb-911d-29be07f51c9b?mode=deep",
+    "timestamp": "2026-01-25 21:13:56.804959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_transactions()] [Enqueue failure handling] Lines 676-688 spawn_blocking for enqueue_chunks(), but if enqueue fails for one chunk, does the stream continue processing later chunks, causing version gaps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b7a51e2-2448-44fc-90d3-f01d29b6f393?mode=deep",
+    "timestamp": "2026-01-25 21:14:24.186215",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_transactions()] [Update ledger race] Lines 696-707 call update_ledger() in parallel with enqueue_chunks() - can race conditions cause ledger updates to be applied before chunks are fully enqueued? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9cf02c47-97ad-4b6c-864a-0d63445da970?mode=deep",
+    "timestamp": "2026-01-25 21:14:51.369680",
+    "report_generated": false
+  },
+  {
+    "question": "[File: restore.rs] [Function: replay_transactions()] [Commit ordering] Lines 709-734 commit chunks after update_ledger(), but if commits happen out-of-order due to buffering, can this cause non-sequential version commits breaking atomicity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fde785a2-d269-4942-b840-2696050e45aa?mode=deep",
+    "timestamp": "2026-01-25 21:15:17.333706",
+    "report_generated": false
+  }
+]
