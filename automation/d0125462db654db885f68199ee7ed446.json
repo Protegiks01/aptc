@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: pop_from_key_queue()] [Mutable Borrow] The function takes &mut self and borrows per_key_queue mutably. Can this prevent concurrent pops from different keys, creating a single-threaded bottleneck that degrades consensus message throughput? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5815ab68-7e6b-4468-8184-b3bf55c7eda3?mode=deep",
+    "timestamp": "2026-01-25 20:37:18.729135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: remove_empty_queues()] [GC Completeness] The retain() call only removes empty queues from per_key_queue. Can this leave orphaned keys in round_robin_queue that point to non-existent per_key_queue entries, causing pop() to repeatedly return None? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66b25021-e091-4e11-96d1-89ddc152e03e?mode=deep",
+    "timestamp": "2026-01-25 20:37:30.923979",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: remove_empty_queues()] [GC Performance] HashMap.retain() iterates over all entries. For validators with thousands of transient peer connections, can this O(n) operation cause periodic latency spikes every 50 pops, disrupting consensus timing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e0f116d-17ab-458b-9bdf-a3daba4c2d14?mode=deep",
+    "timestamp": "2026-01-25 20:37:43.648796",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: remove_empty_queues()] [GC Race Condition] If messages are being pushed concurrently during remove_empty_queues(), can a queue that was empty be removed while a push() is adding a new message, causing the message to be added to a removed queue? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71cedc02-ef20-44f4-9e1b-cafe9ddf106c?mode=deep",
+    "timestamp": "2026-01-25 20:37:57.272861",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: remove_empty_queues()] [Memory Fragmentation] Even after removing empty queues, HashMap capacity is not shrunk. Can repeated key churn cause HashMap to grow to huge capacity that's never reclaimed, leading to memory bloat? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00f6cd14-27bf-4616-acfd-33d77f935ad9?mode=deep",
+    "timestamp": "2026-01-25 20:38:10.829607",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: clear()] [Message Loss] The clear() function drops all pending messages without returning them or incrementing 'dropped' counters. Can this cause silent loss of critical consensus messages during validator reconfiguration or restart? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9f78842-4757-4987-a3b9-c98e4013ec98?mode=deep",
+    "timestamp": "2026-01-25 20:38:25.728223",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: clear()] [Metrics Inconsistency] After clear(), enqueued and dequeued counters are not reset. Can this cause cumulative metrics to become meaningless after multiple clear() calls during node lifecycle? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b601417-7213-4fb0-828a-9053ff9ef8a0?mode=deep",
+    "timestamp": "2026-01-25 20:38:42.403598",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: clear()] [Race Condition] If clear() is called while concurrent push()/pop() operations are happening, can this cause partial clearing where some data structures are cleared but others retain stale state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3cdeb30-d510-4c9b-b368-378791efb5b2?mode=deep",
+    "timestamp": "2026-01-25 20:38:59.362832",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: clear()] [num_popped_since_gc] The clear() function doesn't reset num_popped_since_gc. Can this cause immediate GC to run after clear() if counter was close to POPS_PER_GC, wasting CPU on an already-empty queue? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_008590de-1111-430b-9886-0fdc4c1d835f?mode=deep",
+    "timestamp": "2026-01-25 20:39:16.812641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: new()] [NonZeroUsize] The max_queue_size_per_key is NonZeroUsize, ensuring it cannot be zero. But can passing NonZeroUsize::new(1).unwrap() create a queue that can only hold 1 message per key, causing excessive message dropping? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b757a1d9-6169-4ca9-99df-a3f9e8f89b12?mode=deep",
+    "timestamp": "2026-01-25 20:39:35.629671",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Function: new()] [Counter Lifetime] Counters use 'static lifetime. Can this prevent proper cleanup when PerKeyQueue is dropped, causing counter memory leaks or stale metrics in long-running validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae4ca8ed-37be-4d1b-b65d-aa0d9ecbc16f?mode=deep",
+    "timestamp": "2026-01-25 20:39:54.865744",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Enum: QueueStyle] [Default Policy] The default QueueStyle is FIFO. Can validators using default configuration be more vulnerable to certain attacks compared to LIFO/KLAST configurations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67c0e5c2-17bf-45b3-ac15-53afbf979fc9?mode=deep",
+    "timestamp": "2026-01-25 20:40:15.521631",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Enum: QueueStyle] [FIFO Vulnerability] In FIFO mode, newest messages are dropped when full. Can an attacker pre-fill a validator's queue with low-priority messages, ensuring that subsequent critical consensus messages are immediately dropped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7f7b4d0-f592-4991-b5a8-c4ad67d4d34c?mode=deep",
+    "timestamp": "2026-01-25 20:40:36.495807",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Enum: QueueStyle] [LIFO Vulnerability] In LIFO mode, messages are retrieved from the back. Can this cause head-of-line blocking where old messages at the front are never processed, causing consensus to operate on stale information? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce4c7f63-145d-44a8-85c5-7eb8401e6ed9?mode=deep",
+    "timestamp": "2026-01-25 20:40:58.627368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Enum: QueueStyle] [KLAST Behavior] KLAST mode drops oldest but retrieves in FIFO order. Is the implementation of KLAST in push() (lines 143-147) correct, or can it create unexpected message reordering that violates consensus message causality? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2348b88a-4621-4a77-b055-27e75ec0b80f?mode=deep",
+    "timestamp": "2026-01-25 20:41:21.485786",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Struct: PerKeyQueue] [Invariant Violation] Can the invariant 'every key in round_robin_queue must exist in per_key_queue with non-empty queue' be violated through race conditions or incorrect state management? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_199433ba-c8a8-4e04-bdc0-cec216e18f48?mode=deep",
+    "timestamp": "2026-01-25 20:41:43.498676",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Struct: PerKeyQueue] [Invariant Violation] Can per_key_queue contain non-empty queues for keys that are not in round_robin_queue, causing those messages to never be delivered via pop()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b486c439-e9ec-4691-97d1-d6f304299bfc?mode=deep",
+    "timestamp": "2026-01-25 20:42:07.083544",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Struct: PerKeyQueue] [HashMap/VecDeque Mismatch] Can the sizes of per_key_queue and round_robin_queue become permanently inconsistent due to bugs, causing memory leaks or processing starvation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78a61344-9b28-46d9-93ac-cccaeaf5d476?mode=deep",
+    "timestamp": "2026-01-25 20:42:31.126098",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Struct: PerKeyQueue] [Generic Type Constraints] The struct uses K: Eq + Hash + Clone. Can malicious implementations of Hash or Clone traits for custom key types exploit the queue internals to cause undefined behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_903491fc-63d3-4352-b9c9-88fe38a75fe3?mode=deep",
+    "timestamp": "2026-01-25 20:42:54.006240",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Struct: PerKeyQueue] [VecDeque<T>] The message type T has no trait bounds. Can extremely large T types cause memory exhaustion even with bounded queues, as max_queue_size limits count but not total byte size? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ccb3381-a1d1-45b7-8612-a4d7eda5f3ca?mode=deep",
+    "timestamp": "2026-01-25 20:43:18.093639",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Concurrency] [Mutable Access] PerKeyQueue has no synchronization primitives (no Mutex/RwLock). If used in multi-threaded context, can concurrent access cause data races and undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_650cb01b-36ce-477e-91fb-091896193496?mode=deep",
+    "timestamp": "2026-01-25 20:43:42.024639",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Concurrency] [Send/Sync Bounds] If PerKeyQueue<K, T> is wrapped in Arc and shared between threads, can the lack of Send/Sync bounds on K and T cause thread-safety violations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1339f91-5d8f-48c8-a286-352a41387428?mode=deep",
+    "timestamp": "2026-01-25 20:44:05.700657",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Concurrency] [Interior Mutability] The struct contains no interior mutability (Cell/RefCell). Can this prevent safe concurrent access patterns even with external synchronization? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3b7ee6f-0a94-457f-8267-e060d6292662?mode=deep",
+    "timestamp": "2026-01-25 20:44:29.855448",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Memory Safety] [Unbounded Growth] While per-key queues are bounded, the number of keys is unbounded. Can an attacker create millions of single-message keys to exhaust memory despite per-key limits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09788a19-bc3f-4777-9e54-c93b049b6eed?mode=deep",
+    "timestamp": "2026-01-25 20:44:52.656188",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/message_queues.rs] [Memory Safety] [Drop Behavior] When PerKeyQueue is dropped, are all messages properly dropped, or can custom Drop implementations for T cause panics or resource leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dad039a8-94a8-4f5a-b1a9-5e25916e34cd?mode=deep",
+    "timestamp": "2026-01-25 20:45:16.867671",
+    "report_generated": false
+  }
+]
