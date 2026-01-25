@@ -1,0 +1,68 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: to_weighted_encryption_keys()] [Clone exhaustion] Line 61 clones ek.clone() in a loop. If EncryptPubKey has expensive Clone implementation (e.g., deep copying large structures), can this be exploited for DoS by forcing validators to spend excessive CPU on cloning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d83ba0b-9210-4625-a764-ef3b067b52bd?mode=deep",
+    "timestamp": "2026-01-25 10:43:24.332973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: deal()] [Transcript size explosion] Line 112 creates transcript T::deal() with duplicated_eks. If total weight is high, the resulting transcript size could be gigabytes. Can this be exploited to exhaust network bandwidth or storage when broadcasting/storing transcripts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43a8f8ab-5af1-4e8f-8764-511ff3187415?mode=deep",
+    "timestamp": "2026-01-25 10:43:37.061723",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: dst()] [Domain separation collision] Lines 87-91 create domain separation tag by prepending 'WEIGHTED_' to T::dst(). Can different PVSS schemes T1 and T2 have dst() values such that 'WEIGHTED_' + T1::dst() equals T2::dst(), enabling cross-protocol attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_589f178f-a064-434f-8f17-5ea683e486df?mode=deep",
+    "timestamp": "2026-01-25 10:43:50.174038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: scheme_name()] [Scheme identification confusion] Line 94 generates scheme name by prepending 'generic_weighted_'. Can this cause confusion in systems that parse scheme names to determine security properties, leading to weighted transcripts being treated as unweighted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0beabaa-723b-4483-a39c-353280aa0371?mode=deep",
+    "timestamp": "2026-01-25 10:44:04.720715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Trait: CryptoHasher/BCSCryptoHash] [Hash collision] Line 24 derives CryptoHasher and BCSCryptoHash. If the underlying T has weak hash properties, can an attacker create two different GenericWeighting<T> instances that hash to the same value, enabling transcript substitution attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e636e6c3-6142-454d-9922-b6160518bdc2?mode=deep",
+    "timestamp": "2026-01-25 10:44:19.354365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: to_bytes()] [Serialization ambiguity] Line 36 serializes only self.trx without including weight metadata. Can an attacker deserialize this into different weighted configurations, causing the same serialized bytes to be interpreted with different player weights across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9bde5b6-04d7-4412-a679-6b1a76e0f8c7?mode=deep",
+    "timestamp": "2026-01-25 10:44:34.457769",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: deal()] [Threshold calculation error] Line 113 uses sc.get_threshold_config() which returns unweighted threshold. Is there proper conversion from weighted threshold to unweighted threshold, or can rounding errors cause the effective threshold to be lower than intended? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff48403c-5b2f-43b7-8869-d4fc4f5f5a21?mode=deep",
+    "timestamp": "2026-01-25 10:44:52.547802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: decrypt_own_share()] [Share counting inconsistency] Lines 188-199 decrypt weight number of shares. During reconstruction, are these shares counted correctly according to weights, or can a player with weight=W only contribute 1 share instead of W shares, lowering effective threshold? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_076dd7fd-1606-4f1b-a289-1ad29ce6fd8d?mode=deep",
+    "timestamp": "2026-01-25 10:45:10.876238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Type: DealtSecretKeyShare] [Share vector interpretation] Line 77 defines DealtSecretKeyShare as Vec<T::DealtSecretKeyShare>. Can reconstruction algorithms misinterpret this structure, treating the Vec as a single share instead of multiple weighted shares, breaking threshold arithmetic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5780a462-a351-4c61-b491-efb94a4bfe30?mode=deep",
+    "timestamp": "2026-01-25 10:45:30.247146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: get_public_key_share()] [Weight verification during reconstruction] When reconstructing from public key shares, does the system verify that each player contributes the correct number of shares according to their weight, or can players selectively withhold shares to manipulate reconstruction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_409ac892-c59a-41b4-b745-e058d6b971e7?mode=deep",
+    "timestamp": "2026-01-25 10:45:51.145760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: aggregate_with()] [Threshold after aggregation] After aggregating multiple weighted transcripts, is the final threshold correctly computed as the combination of individual thresholds weighted by their contributions, or can this be manipulated to lower\n\n### Citations\n\n**File:** crates/aptos-dkg/src/pvss/weighted/mod.rs (L1-7)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\npub mod generic_weighting;\n\npub use aptos_crypto::weighted_config::WeightedConfigBlstrs;\npub use generic_weighting::GenericWeighting;\n```\n\n**File:** crates/aptos-dkg/src/pvss/weighted/generic_weighting.rs (L1-240)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\n/// A generic transformation from an unweighted PVSS to a weighted PVSS.\n///\n/// WARNING: This will **NOT** necessarily be secure for any PVSS scheme, since it will reuse encryption\n/// keys, which might not be safe depending on the PVSS scheme.\nuse crate::pvss::{\n    traits::{\n        transcript::{AggregatableTranscript, MalleableTranscript},\n        Transcript,\n    },\n    Player, ThresholdConfigBlstrs, WeightedConfigBlstrs,\n};\nuse crate::traits::transcript::Aggregatable;\nuse aptos_crypto::{\n    traits::SecretSharingConfig as _, weighted_config::WeightedConfig, CryptoMaterialError,\n    ValidCryptoMaterial,\n};\nuse aptos_crypto_derive::{BCSCryptoHash, CryptoHasher};\nuse rand_core::{CryptoRng, RngCore};\nuse serde::{Deserialize, Serialize};\n\n#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, CryptoHasher, BCSCryptoHash)]\n/// A weighting wrapper around a `Transcript` type `T`. Given an implementation of an [unweighted\n/// PVSS] `Transcript` for `T`, this wrapper can be used to easily obtain a *weighted* PVSS abiding\n/// by the same `Transcript` trait.\npub struct GenericWeighting<T> {\n    trx: T,\n}\n\nimpl<T: Transcript> ValidCryptoMaterial for GenericWeighting<T> {\n    const AIP_80_PREFIX: &'static str =",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5892b8c8-85af-4473-bba0-9b7f6c18515f?mode=deep",
+    "timestamp": "2026-01-25 10:46:12.562416",
+    "report_generated": false
+  }
+]
