@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Concurrency] [Tokio Scope Safety] The code uses tokio_scoped::scope (line 136) which has different lifetime guarantees than tokio::spawn - are task lifetimes properly managed, or can tasks outlive the FileStoreUploader instance and access freed memory? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8e9e2bb-cafc-4b70-ad94-351b2d59ae70?mode=deep",
+    "timestamp": "2026-01-25 10:22:59.691116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Concurrency] [Channel Sender Clone] The tx.clone() call at line 168 creates a new sender for each transaction - can excessive cloning cause memory leaks or resource exhaustion if transactions arrive faster than they're uploaded? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2a99ec5-af01-406f-aac1-90e369b13afa?mode=deep",
+    "timestamp": "2026-01-25 10:23:12.695193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Concurrency] [FileStoreOperatorV2 Thread Safety] The file_store_operator is moved into the main loop task (line 147) but buffer_and_maybe_dump_transactions_to_file is called in a loop - is this struct Send + Sync safe, or can internal state corruption occur? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22995c48-4abc-414c-8c8a-4b807f8a466e?mode=deep",
+    "timestamp": "2026-01-25 10:23:25.898111",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Data Integrity] [Transaction Version Gaps] The code calls data_manager.get_transactions_from_cache with next_version (lines 157-163), but doesn't validate that returned transactions are consecutive - can gaps in version numbers cause files to have missing transactions without detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84d6e238-8b47-41de-8cb0-a9e36890898e?mode=deep",
+    "timestamp": "2026-01-25 10:23:40.596233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Data Integrity] [First/Last Version Mismatch] In do_upload(), first_version and last_version are extracted from transactions (lines 191-192), but there's no validation they match the batch_metadata's expected range - can mismatches cause incorrect file naming or metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7cf8edeb-6251-4698-8ac1-84adeb74765c?mode=deep",
+    "timestamp": "2026-01-25 10:23:55.164459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Data Integrity] [Batch Metadata Files Vector] The code assumes batch_metadata.files.last().unwrap() always exists (lines 99, 140) - but what if a corrupted or maliciously crafted BatchMetadata has an empty files vector, causing panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de8a40a0-f4cc-4871-88e9-51acf7c07238?mode=deep",
+    "timestamp": "2026-01-25 10:24:11.202975",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Data Integrity] [Version Modulo Boundary] The recovery logic checks if version % NUM_TXNS_PER_FOLDER != 0 (line 101) to detect unfinished batches - but can off-by-one errors or version manipulation cause this check to fail and miss incomplete batches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c22abde-c9bc-4153-aeb3-8335c7f7b5ef?mode=deep",
+    "timestamp": "2026-01-25 10:24:26.386639",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Data Integrity] [Compression Data Loss] FileEntry::from_transactions uses Lz4CompressedProto format (line 197) - can decompression failures or corrupted compressed data cause permanent transaction data loss without detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2e3994a-e2c9-41d8-a8fa-e0d63a32f61a?mode=deep",
+    "timestamp": "2026-01-25 10:24:45.677507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Error Handling] [Expect on Latest Version] The recover() function calls get_latest_version().await.expect() at lines 90-94, which panics if no version exists - can an attacker delete the metadata file to cause all recovery attempts to panic and DoS the indexer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd3ccaaa-e8bb-4a37-971b-4a1b50400528?mode=deep",
+    "timestamp": "2026-01-25 10:25:06.298952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Error Handling] [Unwrap on Vector Operations] Multiple calls to .first().unwrap(), .last().unwrap() (lines 99, 140, 191-192) assume non-empty vectors - if empty vectors are possible due to bugs or corruption, will these cause cascading panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef99da55-37d4-419e-962c-720cfffcf27c?mode=deep",
+    "timestamp": "2026-01-25 10:25:26.893022",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Error Handling] [Unwrap on File Operations] Both buffer_and_maybe_dump_transactions_to_file (line 170) and do_upload (line 143) are called with .unwrap() - do failures in these operations cause the entire task to panic silently without proper error logging or recovery? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f0b09c2-c266-4b47-8e2d-e268aa296993?mode=deep",
+    "timestamp": "2026-01-25 10:25:49.526195",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Error Handling] [Panic on Storage Corruption] The panic at lines 107-109 assumes metadata corruption if folders exceed MAX_NUM_FOLDERS_TO_CHECK_FOR_RECOVERY - but can legitimate lag or slow storage cause false positives that unnecessarily crash the indexer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e0c6593-6a6d-497f-8d72-2849eb1e2b3b?mode=deep",
+    "timestamp": "2026-01-25 10:26:13.251642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Error Handling] [Result Propagation] Functions return Result types but many internal operations use unwrap/expect - are there code paths where errors are silently ignored or cause panics instead of proper error propagation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78f716bb-a79c-43a4-a108-e7fe6b79f5ef?mode=deep",
+    "timestamp": "2026-01-25 10:26:30.187515",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Storage Backend] [FileStore Interface Trust] The code trusts the IFileStore implementation (writer field, line 35) for all operations - can a compromised or malicious storage backend return incorrect data, corrupt files, or cause denial of service? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0ed3103-0534-417b-bd14-42ec1ae298dd?mode=deep",
+    "timestamp": "2026-01-25 10:26:55.809549",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Storage Backend] [is_initialized Check Bypass] The initialization check at line 47 calls is_initialized() - can the storage backend be manipulated to return false when it's actually initialized, causing metadata to be overwritten and data loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b909fe07-99bb-403a-8ea5-3a6bb17a47c9?mode=deep",
+    "timestamp": "2026-01-25 10:27:21.164601",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Storage Backend] [Max Update Frequency Manipulation] The max_update_frequency comes from self.writer.max_update_frequency() (line 213) - can a malicious backend return extreme values (very large or very small) to either prevent metadata updates or cause excessive update rate? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_846fc6ba-30de-45b5-9aeb-0a3e5ca3923e?mode=deep",
+    "timestamp": "2026-01-25 10:27:48.374513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Storage Backend] [FileStoreReader Consistency] The reader (FileStoreReader, line 33) is separate from writer but both access the same storage - can inconsistencies between read and write operations cause race conditions or stale data reads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3dd02a5-e110-4f2c-961d-d835add97ba5?mode=deep",
+    "timestamp": "2026-01-25 10:28:16.388557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Storage Backend] [Path Resolution Attack] Paths come from reader.get_path_for_version() and get_path_for_batch_metadata() (lines 199, 231) - if the reader is compromised, can it return paths that cause file overwriting, directory traversal, or other file system attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_451bf56a-a70f-4c90-ac8d-e6b2943a0f99?mode=deep",
+    "timestamp": "2026-01-25 10:28:46.353581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Resource Exhaustion] [Memory Exhaustion via Large Transactions] When calling data_manager.get_transactions_from_cache with MAX_SIZE_PER_FILE (50MB) at lines 157-163, can an attacker create transactions that individually exceed 50MB, causing all 50MB to be loaded into memory repeatedly and exhausting RAM? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_948210d6-1187-440f-854c-b72bd0d2df3b?mode=deep",
+    "timestamp": "2026-01-25 10:29:16.227253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Resource Exhaustion] [Channel Buffer Overflow] The channel has capacity 5 (line 137) - if the upload task is slower than transaction arrival rate, can the channel fill up and cause the main loop to block indefinitely, stopping all transaction processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00275630-7365-47b1-98cc-d28364dcb6ea?mode=deep",
+    "timestamp": "2026-01-25 10:29:46.332668",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Resource Exhaustion] [Unbounded Batch Metadata Growth] BatchMetadata contains a files vector that grows with each file in a batch - can extremely large batches cause unbounded memory growth in batch_metadata (line 186), eventually exhausting memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad458255-de48-4e65-b20b-0c891c91f4e6?mode=deep",
+    "timestamp": "2026-01-25 10:30:15.595137",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Resource Exhaustion] [Timer Accumulation] Multiple TIMER instances are created throughout the code (lines 88, 149, 154, 189, 194, 204, 233, 251) - can these accumulate and cause memory leaks if not properly cleaned up? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cb3ff43-ce5f-4ccb-8164-a000b8187377?mode=deep",
+    "timestamp": "2026-01-25 10:30:45.617274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Resource Exhaustion] [Compression CPU Attack] The FileEntry::from_transactions compression (line 197) can be CPU-intensive for large transaction sets - can an attacker spam large transactions to cause CPU exhaustion and slow down the entire indexer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6880ee2-c93b-4217-b927-f13796b14e9b?mode=deep",
+    "timestamp": "2026-01-25 10:31:11.883041",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Timing] [Instant vs SystemTime] The code uses tokio::time::Instant (line 22) for timing comparisons - can Instant arithmetic overflow or behave unexpectedly during system suspend/resume, causing incorrect timing decisions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53e842fd-3354-436d-a3fa-8c405e001849?mode=deep",
+    "timestamp": "2026-01-25 10:31:36.759226",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-manager/src/file_store_uploader.rs] [Timing] [Sleep Drift Accumulation] When no transactions are available, the code sleeps for 200ms (line 174) - can this sleep drift accumulate over time and cause the indexer to fall behind, especially under high transaction rates? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98bf234a-7390-48ea-be26-39d28c706461?mode=deep",
+    "timestamp": "2026-01-25 10:32:00.121686",
+    "report_generated": false
+  }
+]
