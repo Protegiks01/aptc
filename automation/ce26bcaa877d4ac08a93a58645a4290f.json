@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: record_response_failure()] [DoS via failure accumulation] Can a malicious peer deliberately fail all requests to increment num_consecutive_request_failures unboundedly at line 103, and if this counter is used to calculate exponential backoff elsewhere, could overflow cause the backoff to reset and trigger request storms? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_534f60a3-821e-46e6-97a1-87f7cab46580?mode=deep",
+    "timestamp": "2026-01-25 19:28:07.965345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [DoS via timing] Can an attacker who knows the request_interval_usec value at line 17 send responses just before the interval expires, repeatedly resetting the timer and preventing legitimate monitoring requests from being sent? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74084864-378c-4ba7-88a8-f7ed942a4592?mode=deep",
+    "timestamp": "2026-01-25 19:28:21.342798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: request_started()] [DoS via state manipulation] Can rapid alternating calls to request_started() and request_completed() without actual network requests cause the time_service.now() calls at line 66 to be invoked excessively, potentially overloading the time service? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd43bc90-504b-4206-a03d-d7281460df04?mode=deep",
+    "timestamp": "2026-01-25 19:28:34.654326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Struct: RequestTracker] [Memory leak] Since RequestTracker is Clone at line 11, can extensive cloning of trackers with Option<Instant> fields lead to memory accumulation if clones are never properly dropped, especially in long-running peer monitoring services? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65e24cb2-ca61-4e17-8581-aaffb2c3fff7?mode=deep",
+    "timestamp": "2026-01-25 19:28:49.685655",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: request_started()] [Resource leak] If request_started() is called repeatedly without corresponding request_completed() calls, does the accumulation of pending states (even though in_flight_request is just a bool) indicate resource leaks elsewhere in the calling code that should be detected? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3e2638e-a5ad-4f2f-ad88-71632fdd12d0?mode=deep",
+    "timestamp": "2026-01-25 19:29:04.783602",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [TOCTOU] Between checking in_flight_request() at line 78 and checking last_request_time at line 83, can another thread call request_started() and change the state, causing both threads to believe they should send a new request? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56c49422-5f18-422c-b220-6315e8070e37?mode=deep",
+    "timestamp": "2026-01-25 19:29:20.941860",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [TOCTOU] Can the time_service.now() value at line 85 become stale between when it's retrieved and when it's compared at line 85-86, especially in multi-threaded scenarios where time might be mocked or manipulated? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ca16484-48a2-4819-a16c-9ff9eb361618?mode=deep",
+    "timestamp": "2026-01-25 19:29:38.475846",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: in_flight_request()] [TOCTOU] Since in_flight_request() at line 56 simply returns the boolean without any synchronization, can callers experience TOCTOU issues where they check the value, make a decision, but the value changes before they act on it? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e97c75b4-d1a7-4aac-8ebd-b1b859504ee9?mode=deep",
+    "timestamp": "2026-01-25 19:29:58.394916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Boundary condition] At the exact moment when time_service.now() equals last_request_time + interval (line 85-86), does the > comparison correctly return false, or should it be >= to ensure requests are sent exactly at interval boundaries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea6c5085-3a77-442e-89ab-4ec9c7cc2acf?mode=deep",
+    "timestamp": "2026-01-25 19:30:18.721079",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Edge case] If last_request_time is set to Instant::now() at line 66, and immediately after new_request_required() is called, can floating-point precision or clock resolution issues cause the comparison at line 85-86 to incorrectly evaluate? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f9d5485-431d-4f36-b287-0a0d6764ed16?mode=deep",
+    "timestamp": "2026-01-25 19:30:41.989873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: record_response_success()] [Logic inconsistency] Does record_response_success() at line 93 update last_response_time before or after resetting num_consecutive_request_failures at line 98, and can the ordering create race conditions if another thread reads these values? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe813d3c-2a1a-4f53-b2e6-2842ee8a6419?mode=deep",
+    "timestamp": "2026-01-25 19:31:04.168325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new_request_required()] [Logic error] If multiple threads call new_request_required() simultaneously when it returns true, can they all proceed to send requests before any of them calls request_started(), causing multiple simultaneous requests despite the in_flight_request guard? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_678b43fd-e700-4be7-ab1c-259c839f2388?mode=deep",
+    "timestamp": "2026-01-25 19:31:26.479962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [State machine] [Sequence violation] Can the sequence request_started() -> record_response_success() -> request_completed() (wrong order) be called, leaving in_flight_request as true while failure count is reset, creating inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28851281-a4ed-4264-af8e-e20b851fb650?mode=deep",
+    "timestamp": "2026-01-25 19:31:51.176953",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [State machine] [Sequence violation] Can record_response_failure() be called multiple times before request_completed(), causing num_consecutive_request_failures to be incremented excessively for a single failed request? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a520eaa8-c69b-4302-a477-d37fb5190f59?mode=deep",
+    "timestamp": "2026-01-25 19:32:17.179935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [State machine] [Sequence violation] If request_completed() is never called after request_started(), does this create a permanent state where new_request_required() always returns false, effectively deadlocking peer monitoring? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff25b758-6a32-4e8a-8541-93195fcc02d0?mode=deep",
+    "timestamp": "2026-01-25 19:32:41.464873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [State machine] [Missing transition] Does the RequestTracker lack any mechanism to detect and recover from stuck requests (where request_started() was called but request_completed() is never called), potentially requiring manual intervention? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_901a70e4-3149-4d44-b2fc-4963fbcdce92?mode=deep",
+    "timestamp": "2026-01-25 19:33:05.763882",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [API misuse] [Incorrect usage] Can callers mistakenly call record_response_success() or record_response_failure() without first calling request_completed(), creating inconsistent state where responses are recorded for in-flight requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2163208e-7b1e-40d7-a704-a5f67ad18724?mode=deep",
+    "timestamp": "2026-01-25 19:33:30.249727",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [API misuse] [Missing documentation] Does the lack of documentation on the required call sequence (request_started() -> request_completed() -> record_response_*()) allow developers to misuse the API and create undefined behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57bfad86-5550-47db-9457-5dd3ce9ca0c8?mode=deep",
+    "timestamp": "2026-01-25 19:33:55.919876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: get_num_consecutive_failures()] [Semantic inconsistency] Does get_num_consecutive_failures() at line 51 return failure count even when last_response_time is None, potentially misleading callers about whether any responses have ever been received? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_962a61f1-f36e-4a8e-b067-066ba778682e?mode=deep",
+    "timestamp": "2026-01-25 19:34:20.899385",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Struct: RequestTracker] [Clone semantics] Since RequestTracker derives Clone at line 11, can cloning create divergent tracker states where one clone records a success while another records a failure for the same logical request, leading to inconsistent peer reputation tracking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30dc965e-f4ca-4c06-a912-d54c13d876ea?mode=deep",
+    "timestamp": "2026-01-25 19:34:47.323989",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Struct: RequestTracker] [Clone semantics] When a RequestTracker is cloned, does the cloned TimeService behave identically, or can mocked time services diverge causing clones to have different views of time and make inconsistent decisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1dc22c9f-9f0e-4ff8-888c-a98c489c45e2?mode=deep",
+    "timestamp": "2026-01-25 19:35:13.741875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Struct: RequestTracker] [Shallow clone] Are the Instant values in last_request_time and last_response_time properly cloned, or could shallow copying lead to shared references that cause unexpected behavior when modified? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a1ff9e5-f648-4942-b10e-8d6b75c5b1db?mode=deep",
+    "timestamp": "2026-01-25 19:35:42.077365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: new()] [Dependency injection] Can an attacker provide a malicious TimeService implementation to new() at line 23 that returns manipulated time values to bypass rate limiting or cause denial of service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c7f9a72-1f64-4f7b-874f-175acbd5119b?mode=deep",
+    "timestamp": "2026-01-25 19:36:07.337574",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: request_started()] [Time service failure] What happens if time_service.now() at line 66 panics or returns an error? Does this leave in_flight_request set to true while last_request_time remains None, creating stuck state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed31e910-6215-4168-912a-654087519af3?mode=deep",
+    "timestamp": "2026-01-25 19:36:34.396086",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/peer-monitoring-service/client/src/peer_states/request_tracker.rs] [Function: record_response_success()] [Time service failure] If time_service.now() at line 95 fails or panics, does this prevent num_consecutive_request_failures from being reset at line 98, causing permanent failure tracking even after successful responses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a820dc9c-f142-4588-9468-dc89f637173c?mode=deep",
+    "timestamp": "2026-01-25 19:37:00.819478",
+    "report_generated": false
+  }
+]
