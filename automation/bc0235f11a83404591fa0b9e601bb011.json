@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Error message leakage] Does the panic message from .expect('Failed to open AptosDB') on line 37 leak sensitive information about database paths, validator node configuration, or RocksDB internal errors that could aid further attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcb4cb32-f9ed-4f18-8d04-327292aa1840?mode=deep",
+    "timestamp": "2026-01-25 08:33:35.057247",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Unwinding safety] When the panic on line 37 unwinds the stack, are RocksDB locks and file handles properly released, or can panics leave the database in a locked state requiring manual recovery and validator downtime? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d72b558-2530-4ef4-840e-129aa8726c48?mode=deep",
+    "timestamp": "2026-01-25 08:33:47.522095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Partial initialization] If AptosDB::open() fails after partially initializing some column families (ledger_db, state_kv_db, state_merkle_db), can the expect() panic leave incomplete database metadata causing corruption on subsequent open attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a2061fa-29d6-418f-a119-2cf057db93bf?mode=deep",
+    "timestamp": "2026-01-25 08:34:00.421890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Signal handling] The infinite loop on lines 41-43 prints 'Kill to exit' on line 39 but provides no graceful shutdown mechanism—can SIGTERM or SIGINT signals during database operations cause uncommitted RocksDB transactions to be lost, corrupting validator state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6dc71c2d-b5f6-40b8-b531-3d57f0bc7046?mode=deep",
+    "timestamp": "2026-01-25 08:34:14.007591",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Unsafe termination] When the process is killed with SIGKILL (kill -9), are RocksDB write-ahead logs (WAL) properly flushed, or can this cause state rollback to previous versions, breaking consensus with other validators who committed later state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_707f0e09-639d-4cfa-81d0-a24b2019bbc3?mode=deep",
+    "timestamp": "2026-01-25 08:34:28.238096",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Cleanup failure] The database handle _db on line 27 is underscore-prefixed (unused)—when the process exits, is Drop implemented to flush pending writes and release locks, or are cleanup operations skipped causing database corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7dcf6099-9615-4f12-821d-ce311edf7242?mode=deep",
+    "timestamp": "2026-01-25 08:34:43.477778",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Orphaned processes] If the parent process spawning this debugging tool crashes, can the orphaned child process hold database locks indefinitely, preventing validator nodes from accessing their databases and causing permanent liveness loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_417bbcd0-c540-47c1-84a3-343cbd009c01?mode=deep",
+    "timestamp": "2026-01-25 08:35:00.003397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [State corruption] Opening a database with readonly=false on line 29 while the validator is actively committing blocks—can concurrent writes cause Jellyfish Merkle tree node corruption, making state proofs unverifiable and breaking light client functionality? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e78535f9-0fc5-4429-9061-955b2c6a198a?mode=deep",
+    "timestamp": "2026-01-25 08:35:17.806015",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Write amplification] Does keeping the database open in write mode on line 29 trigger continuous RocksDB compaction operations that interfere with validator block commitment, causing missed proposal deadlines and validator slashing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_333beb4a-936f-4b8c-b1d4-b4ce6fb306e1?mode=deep",
+    "timestamp": "2026-01-25 08:35:36.244753",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Snapshot invalidation] If the debugging tool is running while validators take state snapshots for fast sync, can the open database handle with readonly=false invalidate snapshots or cause checksum mismatches that break new validator onboarding? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb9368b8-012c-44b1-b25e-54e78e60a963?mode=deep",
+    "timestamp": "2026-01-25 08:35:56.072495",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Pruning interference] With storage_pruner_config from config on line 30, can this tool opening the database trigger aggressive pruning of ledger history while archival nodes are still serving historical state queries, causing API failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e10294d-dfef-4c68-9b2e-0ee9f3fe50f9?mode=deep",
+    "timestamp": "2026-01-25 08:36:17.458222",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Sharding mismatch] If enable_storage_sharding on line 24-25 doesn't match the sharding configuration used when the database was originally created, can opening the database with mismatched sharding cause state key collisions, data corruption, or incorrect state root calculations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae454dd8-1255-4251-a40d-3f24e40f0b17?mode=deep",
+    "timestamp": "2026-01-25 08:36:39.033648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Schema version mismatch] Does AptosDB::open() validate database schema versions, or can opening an old database version with new code (or vice versa) cause deserialization errors, panics, or silent state corruption during Merkle tree traversal? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96f85748-5e39-45da-bf58-7b219a8a8105?mode=deep",
+    "timestamp": "2026-01-25 08:37:01.704229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Config drift] The default StorageConfig on line 22 may have different pruner settings than production validators—can config drift between debugging and production opens cause inconsistent pruning decisions that lead to state divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20b0a5ff-0129-4bc7-9e96-f343af40a9e9?mode=deep",
+    "timestamp": "2026-01-25 08:37:25.764758",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Struct: Cmd] [Filesystem race] Between clap parsing db_dir on line 14 and actual database open on line 27, can an attacker with filesystem access replace the database directory with a malicious database containing crafted state that exploits RocksDB parsing vulnerabilities? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_212a0650-e365-4dd8-8289-2c091befeede?mode=deep",
+    "timestamp": "2026-01-25 08:37:49.930733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Filesystem exhaustion] If db_dir points to a filesystem with limited inode space, can opening the database create enough files to exhaust inodes, preventing validators from creating new state snapshots or committing transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64bae9c0-bb4f-4fdf-95e8-115cfcc08e57?mode=deep",
+    "timestamp": "2026-01-25 08:38:16.143805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Quota bypass] On systems with disk quotas, can this debugging tool running as a different user bypass quota limits and fill the filesystem, causing validator database writes to fail and consensus participation to halt? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17235edd-70d9-4e60-a51e-4a24ab1aa757?mode=deep",
+    "timestamp": "2026-01-25 08:38:43.046724",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Information leakage] The println on line 39 outputs to stdout—can attackers with access to process stdout capture database opening details, timing information, or error messages that reveal validator node configuration or database structure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_281c4a70-8d09-4177-892a-7624900f8ebb?mode=deep",
+    "timestamp": "2026-01-25 08:39:10.373706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Side-channel timing] Can the time taken for AptosDB::open() on line 27 reveal information about database size, number of state items, or Merkle tree depth through timing side-channels that help attackers profile validator capabilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b99d662-08f7-4265-93e5-740a8561117d?mode=deep",
+    "timestamp": "2026-01-25 08:39:37.562222",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Memory disclosure] If the process crashes during the infinite loop on lines 41-43, can core dumps contain sensitive database contents, cached state Merkle tree nodes, or unencrypted transaction data accessible to local attackers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92d52420-5b65-41ef-bafe-534ae7b6e4cf?mode=deep",
+    "timestamp": "2026-01-25 08:40:06.116830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Module: use statements] [Supply chain] The file imports clap on line 7—can a compromised clap dependency inject malicious code during argument parsing that exfiltrates the db_dir path or validator database paths to remote attackers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88d290ca-8a21-43a1-8a2a-38eb8023ba1c?mode=deep",
+    "timestamp": "2026-01-25 08:40:34.886799",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Dependency confusion] Does AptosDB::open() properly validate all imported types from aptos_storage_interface, or can namespace confusion attacks inject malicious implementations that corrupt state during database initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_314f291c-403b-46a6-8cf7-78e0f3292db5?mode=deep",
+    "timestamp": "2026-01-25 08:41:01.350045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Use-after-free] The _db variable on line 27 is kept alive during the infinite loop—if the database handle is shared across threads in AptosDB internals, can concurrent modifications cause use-after-free vulnerabilities when the tool exits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4646ed2-205c-44d8-a6a1-d778ba1bfc6f?mode=deep",
+    "timestamp": "2026-01-25 08:41:27.728582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Memory leak] The infinite loop on lines 41-43 with 1-second sleeps—can background RocksDB operations continuously allocate memory without bounds, causing gradual memory exhaustion that kills validator nodes after hours of operation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b604ea3-8bd3-4d2a-8caf-a553092e5b08?mode=deep",
+    "timestamp": "2026-01-25 08:41:53.563937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db_debugger/watch/opened.rs] [Function: run()] [Cache poisoning] Can max_num_nodes_per_lru_cache_shard on line 34 be set to 0 or extreme values to disable LRU caching, causing every state access to hit disk and degrading validator performance below consensus thresholds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_516503c2-461d-4a40-a149-067e4acbe0e4?mode=deep",
+    "timestamp": "2026-01-25 08:42:19.666953",
+    "report_generated": false
+  }
+]
