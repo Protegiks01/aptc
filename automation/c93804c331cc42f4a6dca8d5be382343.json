@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Infinite recursion] In the visiting stack at lines 127-132, can an attacker craft mutually recursive Move functions (A calls B, B calls A) that create an infinite loop in the DFS traversal, causing stack overflow and crashing the validator node during contract deployment or verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4380c190-9003-4340-8404-98b28ec99bb3?mode=deep",
+    "timestamp": "2026-01-25 16:33:33.845438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_function()] [Cycle detection bypass] At line 163, the checker inserts 'true' into the pureness map before checking the function body - can an attacker exploit this optimistic assumption by creating a function that recursively calls itself and gets incorrectly marked as pure, bypassing verification and allowing impure operations in supposedly pure contexts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da4162ab-766b-478a-a7f6-2bee1481d15a?mode=deep",
+    "timestamp": "2026-01-25 16:33:46.803682",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Stack manipulation] The visiting stack push/pop operations at lines 127 and 131 - can race conditions or panic during traversal leave the stack in an inconsistent state, causing subsequent checks to use wrong call chains and report false positives/negatives for function pureness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ba48a67-be88-4ed7-8a36-5a44081f69ba?mode=deep",
+    "timestamp": "2026-01-25 16:33:58.893404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Depth limit bypass] The DFS traversal at lines 82-147 has no explicit recursion depth limit - can an attacker create a deeply nested call chain (1000+ levels) that exhausts stack space before the checker detects impurity, causing denial of service during contract verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7953b98e-b19b-45ec-9903-0c2d2a7bdb68?mode=deep",
+    "timestamp": "2026-01-25 16:34:13.838194",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_function()] [Cycle breaking logic] At lines 126-133, the checker uses contains_key to break cycles - can an attacker exploit the timing between the check and insertion to cause the same function to be analyzed multiple times concurrently, leading to inconsistent pureness results in the cache? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7edd7cc4-44b0-4d23-aa40-d0bef054c6e0?mode=deep",
+    "timestamp": "2026-01-25 16:34:28.669745",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Visiting stack overflow] The visiting Vec at line 50 has unbounded growth during recursive calls - can an attacker craft a contract with extremely long call chains that fills available memory with visiting stack entries, causing OOM crashes during pureness analysis? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_052ec4db-03f2-4816-9852-492685078f4e?mode=deep",
+    "timestamp": "2026-01-25 16:34:44.543989",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_function()] [Premature cache insertion] Line 163 inserts pureness=true before actual checking - if check_exp panics or the function has no definition, can this leave incorrect 'pure' entries in the cache that persist and affect subsequent checks, allowing impure functions to pass verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32485e05-60ff-4264-ad95-6198188756cc?mode=deep",
+    "timestamp": "2026-01-25 16:35:01.917560",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Recursive call race] At lines 127-132, if multiple threads check the same function simultaneously (before contains_key protection), can they both enter the recursive check, causing duplicate stack entries and incorrect is_impure flag restoration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d54c58e1-06ab-4d1d-af95-8b5597d230eb?mode=deep",
+    "timestamp": "2026-01-25 16:35:21.183918",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [State restoration bug] The mem::take and restoration pattern at lines 128-132 - if a panic occurs between taking old_impure and restoring it, can the is_impure flag become permanently corrupted, causing all subsequent function checks to produce incorrect results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2aeace0-c1ce-4359-9c31-3d5a6c0fba6f?mode=deep",
+    "timestamp": "2026-01-25 16:35:41.518507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Flag logic error] Line 132 uses '|=' to combine is_impure with old_impure - can this logic fail to properly propagate impurity in nested call chains, allowing a deeply impure function to be marked as pure if an outer function resets the flag? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3ab6d5b-19ec-4dd1-896a-ade177c92a84?mode=deep",
+    "timestamp": "2026-01-25 16:36:02.329922",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Initialization bug] Line 81 resets is_impure to false before traversal - if check_exp is called recursively without going through this reset, can stale impurity state from previous checks leak into new checks, causing false positives? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9038b339-042f-4b60-92e9-2707a1280557?mode=deep",
+    "timestamp": "2026-01-25 16:36:25.006040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Early termination issue] Line 146 returns !self.is_impure to stop traversal early - can this cause the checker to miss impure operations deeper in the expression tree if an earlier check incorrectly set is_impure=false? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a28834b-4530-4553-9130-ebff671a85c7?mode=deep",
+    "timestamp": "2026-01-25 16:36:48.617669",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Multiple return paths] The function returns !self.is_impure at line 148 - are there code paths where is_impure could be left in an inconsistent state between line 81's reset and the final return, causing wrong results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a516f30e-3f0b-4f37-9ab6-78148f78c5d1?mode=deep",
+    "timestamp": "2026-01-25 16:37:12.676977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: new()] [Initial state] Lines 62-70 initialize is_impure to false - if the checker instance is reused across multiple check operations without proper reset, can impurity state leak between unrelated checks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_970cf263-a350-45af-8db4-7f27e491c659?mode=deep",
+    "timestamp": "2026-01-25 16:37:39.829164",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_function()] [Native function state] Lines 168-177 set is_impure based on native function parameters - does this properly interact with the state restoration at line 132, or can native function impurity get lost when returning from recursive calls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd0dc0cc-9db9-49b0-91df-9414d2a99259?mode=deep",
+    "timestamp": "2026-01-25 16:38:06.606298",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Callback side effects] Lines 87, 91, 95, 104, 111, 116, 135 invoke impure_action callback - if this callback modifies checker state or throws exceptions, can it corrupt is_impure flag or leave visiting stack in inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ca21e79-9104-48cc-814e-429ee7056215?mode=deep",
+    "timestamp": "2026-01-25 16:38:34.828927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Cache poisoning] At line 130, pureness.insert is called with !is_impure after checking - if an attacker can trigger a panic or early return before this insertion, can they leave the cache empty while visiting stack still contains the function, causing infinite loops on retry? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb4d225b-9b3f-433b-aaeb-de805ac91dc3?mode=deep",
+    "timestamp": "2026-01-25 16:39:02.082635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_function()] [Optimistic caching] Line 163 inserts 'true' optimistically - if the actual check at line 165 determines the function is impure but the insertion at line 130 fails to execute (panic/early return), can this leave a 'pure' entry for an impure function? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d20e39d-cc18-4a32-9ea1-8c34ba75478d?mode=deep",
+    "timestamp": "2026-01-25 16:39:28.393379",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Cache inconsistency] Lines 126-134 check and insert into pureness map - in a concurrent context, can two threads racing to check the same function create inconsistent cache entries where one sees 'pure' and another sees 'impure'? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f35a8894-aafd-4d26-8f3b-2fb094398c9f?mode=deep",
+    "timestamp": "2026-01-25 16:39:56.249946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: into_map()] [Cache extraction] Line 75 consumes the checker and returns the pureness map - if this map contains incorrect entries from failed checks, can downstream code rely on these false results to make wrong security decisions about function pureness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_435c9d63-20ba-4491-b646-5c155bfb3857?mode=deep",
+    "timestamp": "2026-01-25 16:40:24.521989",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Missing invalidation] The pureness BTreeMap at line 48 is never cleared or invalidated - if GlobalEnv changes or functions are redefined, can stale cache entries cause the checker to use outdated pureness information? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd15d393-a441-49a1-8a2c-a4754e0f20c9?mode=deep",
+    "timestamp": "2026-01-25 16:40:52.226975",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Lookup timing] Line 134 uses unwrap() on pureness.get() - can this panic if the entry was removed between lines 130 and 134 (concurrent modification), causing crashes during verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e01610a-d862-4ecd-9fd6-d6a1a71db12c?mode=deep",
+    "timestamp": "2026-01-25 16:41:20.834278",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_function()] [Dual insertion] Both lines 130 and 163 insert into pureness map - can race conditions cause these insertions to happen in wrong order, overwriting a correct 'impure' determination with the optimistic 'true' value? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59d41fbf-8a4b-442c-85eb-42e125844e86?mode=deep",
+    "timestamp": "2026-01-25 16:41:50.058115",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [BTreeMap ordering] The pureness map uses BTreeMap at line 48 - can an attacker exploit the ordering behavior to cause different validation results depending on the order in which functions are checked? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_318cc446-f740-43b4-a9c7-93d249857495?mode=deep",
+    "timestamp": "2026-01-25 16:42:19.305974",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-model/src/pureness_checker.rs] [Function: check_exp()] [Missing patterns] The match expression at lines 85-144 handles specific ExpData variants - are there other expression types (Load, Temporary, Lambda, etc.) that could contain impure operations but are not checked in the default case at line 143? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0555158e-cc8c-4438-895d-63b956496b26?mode=deep",
+    "timestamp": "2026-01-25 16:42:48.406510",
+    "report_generated": false
+  }
+]
