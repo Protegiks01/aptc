@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexSchema] [Pruner progress rollback] If shard configuration changes from sharded to unsharded (line 21-24), can the pruner incorrectly read progress from StateMerklePrunerProgress instead of StateMerkleShardPrunerProgress, causing it to re-prune nodes from earlier versions and corrupt state rollback mechanisms? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54849566-b633-4ee7-87f5-320cef4532ba?mode=deep",
+    "timestamp": "2026-01-25 18:52:53.531417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Trait: StaleNodeIndexSchemaTrait] [Unauthorized schema implementation] Can external crates or malicious code implement StaleNodeIndexSchemaTrait for custom schema types (bypassing the pub(in crate::pruner) visibility at line 4) and register unauthorized pruners that delete arbitrary Merkle nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7434fa1b-692f-4fdb-82e8-0b17d1b6952b?mode=deep",
+    "timestamp": "2026-01-25 18:53:06.944519",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key()] [Metadata key hijacking] Can an attacker with database write access directly modify the DbMetadataKey values returned by progress_metadata_key() (lines 22, 24, 36, 38) to point to wrong metadata locations, causing pruners to use incorrect progress values and delete live state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79b55e76-da5b-4208-88b2-ed621d117dc1?mode=deep",
+    "timestamp": "2026-01-25 18:53:20.909071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexSchema] [Missing shard_id bounds check] In line 21, there is no validation that shard_id, when Some(), is within the valid range [0, num_shards), allowing out-of-bounds shard IDs to create invalid metadata keys and cause undefined behavior in shard indexing logic downstream? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_749fb7b3-c8ff-41ec-982e-0e260f8b7021?mode=deep",
+    "timestamp": "2026-01-25 18:53:35.269704",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexCrossEpochSchema] [Epoch shard_id validation missing] In line 35, can providing a shard_id that exceeds the epoch snapshot shard count cause the epoch pruner to operate on non-existent shards, creating phantom progress metadata that prevents proper cleanup of epoch data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_261ff819-541f-4dc6-9a97-877c25960102?mode=deep",
+    "timestamp": "2026-01-25 18:53:50.948789",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key()] [Option<usize> misuse] Can calling progress_metadata_key(Some(0)) vs progress_metadata_key(None) with 0 shards configured cause semantic differences in metadata key selection, leading to pruners using inconsistent progress tracking depending on how the function is called? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1669e3d8-4aa4-4567-8930-7caf2920f9c5?mode=deep",
+    "timestamp": "2026-01-25 18:54:07.796370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Impl: StaleNodeIndexSchema] [Stale node index misclassification] Can malformed StaleNodeIndex entries with manipulated stale_since_version values bypass the schema's KeyCodec validation and cause the regular pruner (lines 19-31) to incorrectly prune nodes that are still part of recent state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebbda525-c630-4348-9966-7ea5f5153123?mode=deep",
+    "timestamp": "2026-01-25 18:54:26.238601",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Impl: StaleNodeIndexCrossEpochSchema] [Epoch stale node leakage] Can cross-epoch stale nodes be incorrectly classified as regular stale nodes, causing the regular pruner (StaleNodeIndexSchema) to delete them instead of the epoch-ending pruner, breaking epoch snapshot guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10302195-a362-438c-acd0-7fd54c71adef?mode=deep",
+    "timestamp": "2026-01-25 18:54:47.588808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: name() StaleNodeIndexSchema] [Pruner name collision] In line 28-30, the name 'state_merkle_pruner' is used for logging/metrics, but can multiple pruner instances with the same name cause metric aggregation to hide individual pruner failures, making it impossible to detect if one shard's pruner has stalled or is corrupting data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5358e700-2ecd-45d0-ad60-616841a57bb5?mode=deep",
+    "timestamp": "2026-01-25 18:55:06.075408",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Trait: StaleNodeIndexSchemaTrait] [Schema migration vulnerability] If the Schema trait definition changes (e.g., Key type changes from StaleNodeIndex to a new type), can old database entries cause KeyCodec deserialization failures that crash the pruner and prevent recovery until a database migration is performed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9d49c28-63b0-43b3-8180-f0d83a9730cb?mode=deep",
+    "timestamp": "2026-01-25 18:55:30.730106",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key()] [DbMetadataKey enum extension] If new variants are added to DbMetadataKey enum, can old code using progress_metadata_key() write to deprecated metadata keys while new code reads from new keys, causing progress tracking to become desynchronized across nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72338aa5-a214-4a00-99b2-3d75433d007c?mode=deep",
+    "timestamp": "2026-01-25 18:55:55.027205",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexSchema] [Memory exhaustion via shard_id] In line 22, can providing a massive shard_id value (e.g., billions) cause downstream code to allocate excessive memory for shard-specific data structures, leading to OOM crashes and denial of service on validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1107406f-e683-4142-860f-c22abc0aa92f?mode=deep",
+    "timestamp": "2026-01-25 18:56:22.103019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Trait: StaleNodeIndexSchemaTrait] [String allocation DoS] Can the name() function (lines 28-30, 42-44) be called in a tight loop during metrics collection, causing repeated allocations of the static string and memory pressure, degrading pruner performance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94310595-b34f-4ccc-882d-ff757cebfbf3?mode=deep",
+    "timestamp": "2026-01-25 18:56:49.653448",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexSchema] [Non-deterministic shard selection] If line 21's if-else logic produces different DbMetadataKey values on different validators due to configuration drift, can pruning progress diverge across nodes, causing Merkle root mismatches and consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dab07bde-93da-4765-8104-1b0b67df424d?mode=deep",
+    "timestamp": "2026-01-25 18:57:19.141200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Impl: Both schemas] [Implementation divergence] Can subtle differences in how StaleNodeIndexSchema (line 19-31) and StaleNodeIndexCrossEpochSchema (line 33-45) handle shard_id cause validators using different schema implementations to prune different nodes, breaking state root agreement? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_127c5844-5418-4210-94eb-e0c42452f863?mode=deep",
+    "timestamp": "2026-01-25 18:57:49.916556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: name()] [Log injection via pruner name] Can an attacker who controls trait implementation provide a malicious name() return value (lines 28-30, 42-44) containing newlines or escape sequences to inject fake log entries, hiding pruning failures or creating false alerts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2aa1a365-ab35-4ab4-9814-127dd7243d6e?mode=deep",
+    "timestamp": "2026-01-25 18:58:19.315936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: name() StaleNodeIndexCrossEpochSchema] [Metrics namespace pollution] In line 42-44, the name 'epoch_snapshot_pruner' is used in metrics, but can collisions with other component names cause metrics to be incorrectly attributed, hiding that the epoch pruner is failing to make progress? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_316043cc-aecb-44a1-966c-2dac8833e1e2?mode=deep",
+    "timestamp": "2026-01-25 18:58:49.157731",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Trait: StaleNodeIndexSchemaTrait line 11-13] [KeyCodec constraint bypass] Can an implementation of StaleNodeIndexSchemaTrait violate the 'where StaleNodeIndex: KeyCodec<Self>' constraint through unsafe code, allowing non-serializable or malformed StaleNodeIndex values to be used as database keys and corrupting the stale node index? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd4de7f3-1526-4820-bbce-25bb0e6e7354?mode=deep",
+    "timestamp": "2026-01-25 18:59:19.531696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Trait: StaleNodeIndexSchemaTrait line 11] [Schema::Key type mismatch] Can the Schema trait's associated Key type be mismatched with StaleNodeIndex through type system exploits, causing database reads/writes to interpret binary data as the wrong type and corrupt Merkle tree node references? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2929cdd3-66fe-4df7-b636-43a599e2d91c?mode=deep",
+    "timestamp": "2026-01-25 18:59:50.297458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexSchema] [Shard hot-add race condition] During live addition of new shards, can calling progress_metadata_key() with newly added shard_id values (line 21-22) before shard initialization completes cause the pruner to write progress to uninitialized metadata, losing pruning history? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_caf48be9-2d06-4841-bc3c-cf8de63902a2?mode=deep",
+    "timestamp": "2026-01-25 19:00:20.118026",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexCrossEpochSchema] [Epoch shard removal] If epoch shards are removed during reconfiguration, can line 36 generate metadata keys for deleted shards, causing the epoch pruner to fail to clean up stale nodes in remaining shards and leading to storage leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1fc18424-3dfe-45ee-aa55-01d0afd9716c?mode=deep",
+    "timestamp": "2026-01-25 19:00:50.572467",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key()] [Shard ID reuse vulnerability] If shard IDs are reused after shard deletion and recreation, can stale metadata from the old shard (line 22 or 36) be interpreted as progress for the new shard, causing incorrect pruning decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd5d2f83-3407-46bd-aed5-ad6f8956c0c4?mode=deep",
+    "timestamp": "2026-01-25 19:01:20.629750",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Trait: StaleNodeIndexSchemaTrait] [Type parameter confusion] Can generic code monomorphize StaleNodeIndexSchemaTrait for unexpected types beyond StaleNodeIndexSchema and StaleNodeIndexCrossEpochSchema, bypassing pruner safety invariants and allowing arbitrary node deletion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_046cfafb-97ac-4bff-b607-2cebcdaf0309?mode=deep",
+    "timestamp": "2026-01-25 19:01:52.526404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Impl: StaleNodeIndexSchema and StaleNodeIndexCrossEpochSchema] [Trait object safety violation] If StaleNodeIndexSchemaTrait is used as a trait object (dyn StaleNodeIndexSchemaTrait), can dynamic dispatch allow runtime type confusion between regular and epoch-ending schemas, causing pruners to delete wrong node categories? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f2940ce-a6fe-4041-b3cb-1c9dec584222?mode=deep",
+    "timestamp": "2026-01-25 19:02:24.687483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexSchema] [Progress metadata poisoning] Can an attacker directly write to DbMetadataKey::StateMerkleShardPrunerProgress (line 22) with future version numbers, causing the pruner to skip pruning critical versions and accumulate unbounded stale nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddff3dd2-b046-4e45-87ce-6d9c96e22a4b?mode=deep",
+    "timestamp": "2026-01-25 19:02:55.079655",
+    "report_generated": false
+  }
+]
