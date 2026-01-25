@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::cleanup_stack()] [Incorrect pop logic] At lines 196-203, the function pops nodes until finding one that's not rightmost - can an attacker craft a tree where all nodes are marked rightmost, causing the entire stack to be cleared prematurely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ccf4379-5cfd-4900-9feb-8cdf1a6c2d84?mode=deep",
+    "timestamp": "2026-01-25 16:43:00.197498",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::cleanup_stack()] [State inconsistency] If is_rightmost() returns incorrect results due to corrupted bitmaps, can cleanup_stack() leave the parent_stack in an inconsistent state that causes the iterator to skip entries or revisit entries? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0dd6d79d-9996-40cb-b17c-2866ae796c5f?mode=deep",
+    "timestamp": "2026-01-25 16:43:12.596310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::cleanup_stack()] [Race condition] If cleanup_stack() is called concurrently (if iterator is shared), can the last_mut() at line 196 and subsequent mutations cause data races leading to corrupted stack state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc70706b-d4dc-4a24-84b0-b8970ed59921?mode=deep",
+    "timestamp": "2026-01-25 16:43:25.334546",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::cleanup_stack()] [Advance panic] At line 200, info.advance() is called which has an assertion - can cleanup_stack() call advance() on a node that's actually at rightmost, causing a panic and crashing validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48109436-2d81-43c0-9cd7-58768200cde1?mode=deep",
+    "timestamp": "2026-01-25 16:43:39.396870",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::new_by_index()] [Integer overflow] At line 213, the comparison 'start_idx >= current_node.leaf_count()' could overflow if leaf_count() returns usize::MAX - can an attacker trigger this to bypass the early return and cause incorrect iteration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7490f2c-2a14-4b49-afc8-6f6b51804339?mode=deep",
+    "timestamp": "2026-01-25 16:43:54.237582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::new_by_index()] [Loop bound violation] At line 224, the loop runs for 'ROOT_NIBBLE_HEIGHT + 1' iterations - can an attacker create a tree deeper than this causing the loop to exit prematurely and reach the 'infinite loop' error at line 255? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_615723ee-a1cd-45b6-8c0c-02e115b2d66b?mode=deep",
+    "timestamp": "2026-01-25 16:44:08.729133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::new_by_index()] [Assertion failure] At lines 227-230, there's an ensure!() that leaves_skipped == start_idx - can an attacker manipulate leaf counts in internal nodes to cause this assertion to fail at an unexpected point, causing validator crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8163713d-ab3d-4dbb-b01d-2c1389f2a025?mode=deep",
+    "timestamp": "2026-01-25 16:44:24.581166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::new_by_index()] [Unreachable code] At line 250, there's unreachable!() for Null node - can storage corruption or race conditions cause this to actually be reached, crashing validator nodes during state queries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d36e0b47-6e7e-436b-8885-f9c82739d6ea?mode=deep",
+    "timestamp": "2026-01-25 16:44:41.284640",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::new_by_index()] [Infinite loop detection] At line 255, the function returns an error for 'potential infinite loop' - but is this check sufficient, or can an attacker craft a tree structure that bypasses the loop counter and causes actual infinite looping before this check? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e73e8b92-442b-49aa-b3ad-e75825b207ad?mode=deep",
+    "timestamp": "2026-01-25 16:44:58.072283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::new_by_index()] [Skip leaves error] The skip_leaves() call at line 241 can return an error - can an attacker cause this by manipulating internal node structure, and does proper error handling prevent state inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f3ac18a-85ab-46db-a78d-fb47ce6301e8?mode=deep",
+    "timestamp": "2026-01-25 16:45:15.618569",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::skip_leaves()] [Integer overflow] At line 266, the addition '*leaves_skipped + child_leaf_count' could overflow if child_leaf_count is maliciously large - can this cause wrapping and incorrect leaf counting leading to reading wrong state entries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7732e61-9e61-4085-b17e-f096237ce539?mode=deep",
+    "timestamp": "2026-01-25 16:45:34.246260",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::skip_leaves()] [Off-by-one error] The comment at line 265 states 'to reach leaf at N, N previous ones need to be skipped' - can an off-by-one error in this logic at line 266 cause the iterator to skip the target leaf or return the wrong leaf? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96dc81d8-cca4-4498-9005-5327dac7a763?mode=deep",
+    "timestamp": "2026-01-25 16:45:53.982889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::skip_leaves()] [Leaf count manipulation] At line 264, child.leaf_count() is called - can an attacker manipulate the leaf_count metadata in child nodes to cause incorrect skipping and access wrong state values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_804b80c7-d484-44de-90ce-2b407ceba15f?mode=deep",
+    "timestamp": "2026-01-25 16:46:14.366694",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::skip_leaves()] [Error condition] At line 273, an error is returned if no suitable child is found - can an attacker craft an internal node where the sum of all children's leaf counts is less than the node's own leaf count, triggering this error during state reads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b251c16-07b6-4c39-a715-73d28582b779?mode=deep",
+    "timestamp": "2026-01-25 16:46:35.317820",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: JellyfishMerkleIterator::skip_leaves()] [Iterator ordering] The function uses children_sorted() at line 263 - can an attacker exploit differences in sort ordering between validators to cause different validators to select different children, leading to state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2aab23e-587d-4684-a465-7e0f3fe26eeb?mode=deep",
+    "timestamp": "2026-01-25 16:46:57.011704",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: Iterator::next()] [Done flag manipulation] At lines 285-286, the function returns None if done is true - can an attacker cause the done flag to be set prematurely through race conditions, causing incomplete state reads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dde9ed0d-53e0-47af-a3df-7c20a21c62fa?mode=deep",
+    "timestamp": "2026-01-25 16:47:18.528894",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: Iterator::next()] [Single leaf tree handling] At lines 292-301, special handling for single-leaf trees sets done=true and returns - can an attacker exploit this code path to cause the iterator to terminate after one entry even when there are more entries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89ddeeb8-221c-4736-a729-c21f8f14941f?mode=deep",
+    "timestamp": "2026-01-25 16:47:40.789093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: Iterator::next()] [Unreachable panic] At line 309, there's an unreachable!() for empty tree - can storage corruption or concurrent modifications cause an empty tree to not have done=true, reaching this panic and crashing validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47892e74-2918-497b-83b8-49e74ec13f0f?mode=deep",
+    "timestamp": "2026-01-25 16:48:03.019830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: Iterator::next()] [Infinite loop] The loop at line 315 has no explicit termination condition beyond parent_stack becoming empty - can an attacker create circular tree references that cause this loop to run indefinitely, hanging validator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30421184-9bf1-4dea-886a-745c82dd8cc9?mode=deep",
+    "timestamp": "2026-01-25 16:48:26.075924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: Iterator::next()] [Expect panic] At line 319, .expect() is used which panics on None - can the parent_stack be empty at this point due to race conditions, causing validator crash during state reads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2f99a38-965c-449f-8512-808a411a7467?mode=deep",
+    "timestamp": "2026-01-25 16:48:50.253890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: Iterator::next()] [Nibble conversion] At lines 320-321, trailing_zeros() result is converted to u8 for Nibble - can this conversion fail or produce invalid nibble values if next_child_to_visit is corrupted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e2e9b47-5320-45df-a2f9-0b72d4175ba0?mode=deep",
+    "timestamp": "2026-01-25 16:49:14.220731",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: Iterator::next()] [Child expect panic] At line 326, .expect('Child should exist.') panics if child is None - can bitmap corruption cause a child bit to be set but the actual child to be missing, crashing validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff70170a-b5d7-47a2-80c3-fe5d40e0c796?mode=deep",
+    "timestamp": "2026-01-25 16:49:38.084751",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: Iterator::next()] [Reader error handling] At line 330, get_node() errors are propagated - can an attacker cause repeated storage errors to leave the iterator in a partially-advanced state without cleaning up parent_stack properly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74614a92-2e3e-4450-808f-c690bee51619?mode=deep",
+    "timestamp": "2026-01-25 16:50:01.638371",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Function: Iterator::next()] [Cleanup timing] At line 337, cleanup_stack() is called after reading a leaf - if cleanup_stack() panics or errors, can this cause the iterator to return the same leaf multiple times on subsequent next() calls? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1dc51f4-03a0-41c9-b44c-395537d94b48?mode=deep",
+    "timestamp": "2026-01-25 16:50:26.619787",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/iterator/mod.rs] [Struct: NodeVisitInfo] [Bitmap invariant violation] Can the invariants between children_bitmap and next_child_to_visit be violated through any sequence of operations, causing the iterator to visit children in the wrong order or skip children? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68e39e89-1209-4356-a5f7-809355567279?mode=deep",
+    "timestamp": "2026-01-25 16:50:52.461307",
+    "report_generated": false
+  }
+]
