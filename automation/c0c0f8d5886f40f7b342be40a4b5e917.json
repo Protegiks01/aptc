@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: CommitHistoryResource] [Deserialization attack] Can a malicious validator craft on-chain state with max_capacity=0 that passes deserialization but causes division-by-zero when consensus calls get_latest_k_committed_events() with modulo operation (idx % max_capacity), leading to validator crashes and loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d58bda78-4c45-4e40-8c60-7c134df98828?mode=deep",
+    "timestamp": "2026-01-25 11:39:53.819423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: CommitHistoryResource] [Type confusion] Can max_capacity (u32) and next_idx (u32) be manipulated to have values exceeding u32::MAX during deserialization, causing silent truncation and incorrect circular buffer indexing that corrupts consensus recovery by pointing to wrong block events? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70ce461c-571f-4811-b632-41952d4491cf?mode=deep",
+    "timestamp": "2026-01-25 11:40:06.174143",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: TableWithLength] [Type mismatch exploit] Can an attacker exploit the type mismatch where table.length is u64 but max_capacity/next_idx are u32, allowing length to be set to values > u32::MAX, causing consensus to attempt reading more events than the circular buffer capacity and retrieving stale/invalid events? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_385c412e-a9f5-49e6-82c7-3ed20271c77e?mode=deep",
+    "timestamp": "2026-01-25 11:40:18.914174",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: CommitHistoryResource] [Integer overflow] Does the deserialization process validate that next_idx < max_capacity, or can next_idx be set to values >= max_capacity, breaking the circular buffer invariant and causing out-of-bounds table access during consensus recovery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c8b0a38-ab32-49b1-9a3c-203d9214f2ca?mode=deep",
+    "timestamp": "2026-01-25 11:40:32.400644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: TableWithLength] [Malformed state] Can table.length be deserialized with a value that doesn't match the actual number of entries in the table, causing consensus to either miss critical commit events or read non-existent table entries that fail with 'Table item doesn't exist' errors halting block production? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_056cdf1a-d055-40bc-8a16-15d5c0dd5efb?mode=deep",
+    "timestamp": "2026-01-25 11:40:46.767271",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Derive: Deserialize] [Arbitrary state injection] Does the Serde Deserialize implementation validate the relationship between max_capacity, next_idx, and table.length, or can Byzantine validators propose governance upgrades that inject CommitHistoryResource with mathematically inconsistent fields causing deterministic execution divergence across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2974824e-acb4-4ca5-9e0e-2165a7667863?mode=deep",
+    "timestamp": "2026-01-25 11:41:01.789187",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: TableWithLength] [Handle forgery] Can the TableHandle be deserialized with an arbitrary value pointing to a different on-chain table (e.g., staking table, governance table), allowing consensus to read sensitive data as NewBlockEvents and leak private validator information or corrupt consensus state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd078d64-fe91-428d-9e44-9e96e8ed0323?mode=deep",
+    "timestamp": "2026-01-25 11:41:18.736725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: CommitHistoryResource] [Missing validation] Are there any runtime checks that max_capacity matches the hardcoded value (2000) from the Move initialization, or can a malicious governance proposal change max_capacity while old events remain in the table, causing index calculation mismatches and reading wrong historical events? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b2f6408-df92-4bcb-ac68-01466b477015?mode=deep",
+    "timestamp": "2026-01-25 11:41:35.853863",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Method: length()] [U64 overflow] Does length() return table.length as u64 directly without bounds checking, allowing it to contain attacker-controlled values up to u64::MAX that cause integer overflow when consensus calculates std::cmp::min(k, resource.length()) for fetching k recent events? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c2618de-14f8-4dfa-8bbb-250f28b5ccc2?mode=deep",
+    "timestamp": "2026-01-25 11:41:54.086358",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [OnChainConfig trait] [Wrong resource type] Can MODULE_IDENTIFIER or TYPE_IDENTIFIER be spoofed during state queries, causing get_state_value_by_version to return data from a different on-chain resource (e.g., 'block::BlockResource' instead of 'block::CommitHistory'), leading to deserialization of incompatible data structures and consensus corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74573e8a-d194-4993-bdb2-feac46171564?mode=deep",
+    "timestamp": "2026-01-25 11:42:12.270811",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Method: next_idx()] [Wraparound exploit] When next_idx reaches u32::MAX, can the Move-side increment '(idx + 1) % max_capacity' cause wraparound while the Rust side expects sequential increments, creating a mismatch where consensus reads events in wrong order during recovery after chain halt? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_725b3908-4c48-473c-a9af-3a8dd4bdd626?mode=deep",
+    "timestamp": "2026-01-25 11:42:32.106743",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Method: max_capacity()] [Division by zero] If max_capacity is set to 0 through a malicious deserialization or governance attack, will the modulo operation in consensus's '(resource.next_idx() + resource.max_capacity() - i as u32) % resource.max_capacity()' cause panic and crash all validators attempting recovery? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a032d1d8-2229-41d5-b6b3-d80a6f6d17a3?mode=deep",
+    "timestamp": "2026-01-25 11:42:52.223337",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: CommitHistoryResource] [Underflow attack] In the consensus calculation 'resource.next_idx() + resource.max_capacity() - i as u32', can next_idx be 0 and i be manipulated to cause integer underflow before the modulo, resulting in accessing arbitrary table indices and reading unrelated blockchain state as commit events? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a14237c-96f0-4f94-a4e9-0f60df6c70aa?mode=deep",
+    "timestamp": "2026-01-25 11:43:13.466946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Method: next_idx()] [Type casting vulnerability] When consensus casts 'i' (from 1..=k loop) to u32 with 'i as u32', can a large k value (up to u64::MAX from length()) cause truncation where 'i as u32' wraps around, making consensus repeatedly read the same small set of events instead of k distinct events? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9143626c-d0b7-4ad9-bcb6-3c1ec662f3b0?mode=deep",
+    "timestamp": "2026-01-25 11:43:35.535790",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: CommitHistoryResource] [Modulo bias] Does the circular buffer indexing '(idx + 1) % max_capacity' create exploitable patterns where certain table slots are accessed more frequently than others, allowing Byzantine validators to selectively corrupt specific indices to maximize impact on consensus recovery? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc1a3937-55a9-499a-9f78-d9f403679f4f?mode=deep",
+    "timestamp": "2026-01-25 11:43:58.510311",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Method: max_capacity()] [Capacity mismatch] If a governance proposal changes max_capacity from 2000 to a smaller value while the table still contains 2000 entries, will next_idx wrap around incorrectly, causing consensus to skip over unread recent events and use stale events for recovery leading to chain fork? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d1aa525-07f4-426b-b714-568fa517781b?mode=deep",
+    "timestamp": "2026-01-25 11:44:21.814789",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: TableWithLength] [Length inconsistency] Can table.length be larger than max_capacity, violating the circular buffer invariant and causing consensus to attempt reading beyond the buffer bounds when iterating 'for i in 1..=std::cmp::min(k, resource.length())'? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56f998fd-98af-471e-85ab-4151939f0370?mode=deep",
+    "timestamp": "2026-01-25 11:44:45.626519",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Method: next_idx()] [Off-by-one error] Does the next_idx calculation handle the boundary case where next_idx == max_capacity - 1 correctly, or can the next write operation overflow to max_capacity causing table_with_length::add() to write at an invalid index? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06d72c79-4da3-4bf8-9c5f-ffe957a9cc86?mode=deep",
+    "timestamp": "2026-01-25 11:45:10.965891",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: CommitHistoryResource] [Inconsistent state] Can next_idx and table.length be out of sync where next_idx indicates fewer writes than table.length suggests, causing consensus to read duplicate events or miss events during recovery from the circular buffer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2fc2bb86-9aa0-4a69-a957-fbce056f2a45?mode=deep",
+    "timestamp": "2026-01-25 11:45:34.919328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: TableWithLength] [Stale handle] If the TableHandle persists across epochs but points to a table that was cleared/reset during epoch change, can consensus read empty slots or corrupted data when calling get_latest_k_committed_events(), causing recovery to fail with 'Table item doesn't exist' errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07428db9-05f7-44a0-b8fb-1bc01bdb6cf8?mode=deep",
+    "timestamp": "2026-01-25 11:45:58.875495",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Method: length()] [Length manipulation] Can the table.length field be incremented without actually adding entries to the table (e.g., through direct state manipulation), causing consensus to expect more events than exist and fail during recovery when get_state_value_by_version returns None? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b53c9a60-b8df-4b09-bf44-7dafe4021cfb?mode=deep",
+    "timestamp": "2026-01-25 11:46:23.219196",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: CommitHistoryResource] [Circular buffer overflow] When the buffer wraps around (next_idx resets to 0), is there a race condition where old events are removed before new events are written, creating temporary gaps that cause consensus recovery to fail if it reads during this window? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fe074b5-b7cd-4bdd-8c62-7b486952a41b?mode=deep",
+    "timestamp": "2026-01-25 11:46:49.085679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Method: table_handle()] [Handle immutability] Can the TableHandle be modified after CommitHistory initialization, causing consensus to read from a different table than expected and retrieve fraudulent commit events that break consensus safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d144112b-7d7e-4752-955d-629807956feb?mode=deep",
+    "timestamp": "2026-01-25 11:47:15.482071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: TableWithLength] [Length underflow] If table.length is decremented through malicious state updates while max_capacity remains constant, can this create negative offset calculations in consensus index arithmetic leading to arbitrary memory access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d147d9d-a2b4-4584-a462-9bf7a88f7f17?mode=deep",
+    "timestamp": "2026-01-25 11:47:42.131829",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/commit_history.rs] [Struct: CommitHistoryResource] [Partial updates] Can partial/failed transactions leave CommitHistoryResource in an intermediate state where only some fields (e.g., next_idx) are updated but table entries are not, causing permanent desynchronization between metadata and actual data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64680786-75fe-4c0e-a311-e0220ca6b964?mode=deep",
+    "timestamp": "2026-01-25 11:48:07.984886",
+    "report_generated": false
+  }
+]
