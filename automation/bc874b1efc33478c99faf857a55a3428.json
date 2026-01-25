@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Integer Overflow] Can an attacker provide a weights vector where the sum of all weights exceeds usize::MAX, causing integer overflow at line 70 when calculating W = weights.iter().sum(), leading to incorrect threshold configuration and potential secret reconstruction bypass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_823d6d2f-693d-4d58-8c99-19bcc64f2425?mode=deep",
+    "timestamp": "2026-01-25 08:48:08.250950",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Threshold Bypass] Can an attacker set threshold_weight to usize::MAX and craft weights such that the TC::new(threshold_weight, W) call at line 85 succeeds but creates an impossible-to-meet threshold, causing permanent secret locking and loss of liveness in distributed key generation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c8c70df-f23d-41c0-a5db-04f7609049bd?mode=deep",
+    "timestamp": "2026-01-25 08:48:21.056732",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Validation Bypass] Does the zero-check at line 57 properly prevent threshold_weight = 0, or can an attacker pass threshold_weight = 1 with all weights set to 0, bypassing secret sharing security entirely and allowing single-player secret reconstruction? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_595b7c4e-fd50-435f-95bf-d9fe1ce0445d?mode=deep",
+    "timestamp": "2026-01-25 08:48:34.851191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Edge Case] What happens if weights vector contains all zeros except one non-zero value? Can this create a centralized secret sharing scenario where only one player can participate in reconstruction, violating Byzantine fault tolerance assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba227353-939f-400e-92b4-bd667f82a71f?mode=deep",
+    "timestamp": "2026-01-25 08:48:48.464926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Integer Overflow] In the starting_index calculation loop at lines 81-83, can an attacker craft weights such that starting_index.last().unwrap() + w overflows usize, causing incorrect share index mapping and potential secret corruption during reconstruction? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b3d8fdd-429e-47a5-8fac-ea0175a757fe?mode=deep",
+    "timestamp": "2026-01-25 08:49:03.011982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Resource Exhaustion] Can an attacker provide an extremely large weights vector (e.g., millions of elements) to exhaust memory in Vec::with_capacity(weights.len()) at line 78, causing validator nodes to crash during PVSS setup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e378c7bf-66d6-485f-b008-5cbcb9cf6223?mode=deep",
+    "timestamp": "2026-01-25 08:49:18.926282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Logic Error] If threshold_weight equals the total weight W exactly, does this create a degenerate case where all players must participate for reconstruction, potentially enabling censorship attacks by any single Byzantine player refusing to contribute shares? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8f06e04-510f-44b1-818f-6bef25cecab4?mode=deep",
+    "timestamp": "2026-01-25 08:49:35.677683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Validation Gap] Can threshold_weight be set greater than total weight W? If TC::new() doesn't validate this constraint, could this create an impossible reconstruction scenario causing permanent secret locking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5961591-f16e-4e3b-9863-3343eac78a07?mode=deep",
+    "timestamp": "2026-01-25 08:49:54.989407",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Byzantine Attack] Can a malicious coordinator provide different weights vectors to different validators during PVSS setup, causing them to compute different starting_index arrays and fail to reconstruct secrets, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_765c6d51-334d-4b86-9a6f-ab1ee622ab6b?mode=deep",
+    "timestamp": "2026-01-25 08:50:14.866723",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: new()] [Arithmetic Edge Case] What happens if max_weight or min_weight calculated at lines 66-67 are equal (all weights identical)? Does this affect weighted reconstruction logic or create unexpected behavior in virtual player mapping? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5af0b1e4-dc82-4449-9efb-bff7888e9f88?mode=deep",
+    "timestamp": "2026-01-25 08:50:35.903639",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_player_weight()] [Out-of-Bounds Access] Can an attacker craft a Player object with id >= num_players, causing out-of-bounds array access at line 153 (self.weights[player.id]), leading to panic and validator crash during PVSS operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce1e334e-6193-4767-9b14-d8dd55d108df?mode=deep",
+    "timestamp": "2026-01-25 08:50:57.664645",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_player_starting_index()] [Out-of-Bounds Access] Similar to get_player_weight(), can invalid player.id values cause panic at line 158 (self.starting_index[player.id]), crashing validator nodes during share distribution or reconstruction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2899398-d8fd-4037-be40-595a0f3a3d19?mode=deep",
+    "timestamp": "2026-01-25 08:51:21.315938",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_min_weight_player()] [Panic Condition] While the panic at line 112 should never trigger if weights is non-empty, could concurrent modification or unsafe code elsewhere corrupt the weights vector, causing this panic during active PVSS operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c64f0b7-4335-423a-923e-cfb3d9e82d76?mode=deep",
+    "timestamp": "2026-01-25 08:51:45.619920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_max_weight_player()] [Panic Condition] Similarly at line 127, could the weights vector become empty through memory corruption or unsafe operations, triggering this panic and halting PVSS protocol execution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71f79ba8-df1b-4f32-9dd9-f751ebdfb726?mode=deep",
+    "timestamp": "2026-01-25 08:52:11.292415",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_min_weight_player()] [Determinism Issue] If multiple players have the minimum weight, does enumerate().min_by_key() at lines 103-107 always return the same player across all validators? Non-deterministic selection could cause reconstruction failures and consensus divergence. (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8028f69-1b65-48d5-828c-676fb6860ea8?mode=deep",
+    "timestamp": "2026-01-25 08:52:38.111692",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_max_weight_player()] [Determinism Issue] Similarly for max_by_key() at lines 118-122, could non-deterministic player selection when multiple players share max weight cause different validators to use different players for reconstruction, breaking consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14f05a51-e89c-48cc-b9a5-8b3e4c6cb3bc?mode=deep",
+    "timestamp": "2026-01-25 08:53:06.552471",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_threshold_weight()] [Threshold Manipulation] Does this function at line 142 properly validate that the underlying tc.get_threshold() hasn't been corrupted? Could memory corruption attacks modify the threshold after initialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66f07a89-d346-45f1-9131-87f63f69f54e?mode=deep",
+    "timestamp": "2026-01-25 08:53:35.356887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_total_weight()] [Integer Consistency] Does get_total_num_shares() at line 148 always match the original sum of weights computed at initialization? Could state corruption cause mismatches leading to reconstruction failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13a96b10-080e-46a0-9243-eae6c9f1623c?mode=deep",
+    "timestamp": "2026-01-25 08:54:03.754262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_virtual_player()] [Assertion Bypass] Can an attacker bypass the assert_lt!(j, self.weights[player.id]) check at line 168 by exploiting race conditions in concurrent access, causing incorrect virtual player mapping and secret reconstruction failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e038243-1ebd-498f-ac39-1692ec87d9a7?mode=deep",
+    "timestamp": "2026-01-25 08:54:33.995721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_virtual_player()] [Out-of-Bounds] If get_share_index() returns None at line 170 due to invalid j, but unwrap() is called, does this cause panic? Can attackers trigger this during reconstruction to halt PVSS operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f5aa009-d081-4553-aaee-4ab29859348e?mode=deep",
+    "timestamp": "2026-01-25 08:55:04.334775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_virtual_player()] [Integer Overflow] Could the share index calculation in get_share_index() overflow when converting between player IDs and virtual player IDs, causing incorrect share-to-player mapping during reconstruction? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17c9fd40-ad8f-44fe-a48b-f1de91094496?mode=deep",
+    "timestamp": "2026-01-25 08:55:36.217552",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_all_virtual_players()] [Resource Exhaustion] If a Byzantine player is assigned extremely high weight (e.g., usize::MAX - 1), can the collect() operation at line 181 exhaust memory allocating millions/billions of Player objects, causing validator crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76374cfe-7f47-473b-a4e8-9ab4ab6abf50?mode=deep",
+    "timestamp": "2026-01-25 08:56:08.024264",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_all_virtual_players()] [Performance DoS] Even if memory doesn't exhaust, could creating billions of virtual players in the iterator at lines 179-181 cause extreme computational delays, timing out PVSS operations and preventing consensus progress? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4142d2dc-63e4-4ad8-a5e0-7e7ddced8b6a?mode=deep",
+    "timestamp": "2026-01-25 08:56:39.775862",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_share_index()] [Boundary Condition] At line 189, if j == self.weights[i], the function returns None. But what if weights[i] = 0? Does j < 0 (impossible for usize) or does this create edge cases where valid shares are rejected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb51f43e-892f-4b2d-9d77-b63c259435af?mode=deep",
+    "timestamp": "2026-01-25 08:57:09.421007",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/weighted_config.rs] [Function: get_share_index()] [Index Collision] Can two different (player, j) pairs map to the same share index due to starting_index calculation errors, causing share overwrites and secret corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_652f98bb-af8a-4e61-8c47-7118a8c313c1?mode=deep",
+    "timestamp": "2026-01-25 08:57:39.847762",
+    "report_generated": false
+  }
+]
