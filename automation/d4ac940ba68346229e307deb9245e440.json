@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Signature Replay Attack] Can an attacker capture the rotation_proof_signed_by_current_private_key and rotation_proof_signed_by_new_private_key signatures from lines 211-245 and replay them in a different transaction context to perform unauthorized key rotation, potentially gaining control of the account? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd028095-b2f1-406e-a404-0fa727e431bb?mode=deep",
+    "timestamp": "2026-01-25 23:25:28.001389",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Sequence Number Race Condition] At line 191, the sequence number is fetched asynchronously via sequence_number(current_address).await - can an attacker exploit a race condition by submitting multiple concurrent rotation transactions with the same sequence number before it increments, causing state corruption or bypassing rotation limits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67aa1534-7093-4418-90a2-6237e4a51dff?mode=deep",
+    "timestamp": "2026-01-25 23:25:40.427888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Authentication Key Tampering] Between lines 192 and 199, the auth_key is fetched and converted to AccountAddress - can an attacker manipulate the on-chain authentication key during this window to cause the RotationProofChallenge to be constructed with incorrect current_auth_key, potentially allowing rotation to an attacker-controlled address? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53251b2c-3acf-4934-971b-7e0158226698?mode=deep",
+    "timestamp": "2026-01-25 23:25:53.276097",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [BCS Serialization Vulnerability] At line 204, the rotation_proof is serialized using bcs::to_bytes() - can an attacker craft a malicious RotationProofChallenge struct with non-canonical BCS encoding that passes signature verification but produces different authentication keys when deserialized on-chain, enabling authentication bypass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6b8b805-666e-42f5-af67-bb4fa5545b8a?mode=deep",
+    "timestamp": "2026-01-25 23:26:07.173909",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [CORE_CODE_ADDRESS Constant Attack] Line 194 hardcodes account_address: CORE_CODE_ADDRESS in the RotationProofChallenge - can this constant be exploited if CORE_CODE_ADDRESS is compromised or differs across chain forks, allowing cross-chain replay attacks of rotation proofs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa2f978e-7789-44ee-9004-625d3e964a57?mode=deep",
+    "timestamp": "2026-01-25 23:26:21.278969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Module/Struct Name Injection] Lines 195-196 set module_name: 'account' and struct_name: 'RotationProofChallenge' as strings - can an attacker exploit inconsistencies between these strings and the actual on-chain module to bypass signature validation or cause type confusion attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b8808b1-c385-43c9-9208-96f74e07a053?mode=deep",
+    "timestamp": "2026-01-25 23:26:36.443201",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [New Public Key Bytes Manipulation] At line 201, new_public_key is set to new_public_key.to_bytes().to_vec() - can an attacker provide malformed public key bytes that serialize successfully here but fail validation on-chain after signatures are already collected, causing permanent loss of account access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ca818fa-21d1-4f88-88cc-9a97d4270c8a?mode=deep",
+    "timestamp": "2026-01-25 23:26:52.907400",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Transaction Submission TOCTOU] Between signature collection (lines 211-245) and transaction submission (lines 251-264), can an attacker exploit a time-of-check-time-of-use race condition by front-running with their own rotation transaction, causing the legitimate rotation to fail but with signatures already exposed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c768e511-c5e2-40ff-a3b9-6dbc539625ae?mode=deep",
+    "timestamp": "2026-01-25 23:27:10.065472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Hardcoded Scheme Values] Line 254 passes hardcoded '0' values for from_scheme and to_scheme to account_rotate_authentication_key - can this hardcoding be exploited to bypass multi-ed25519 or other signature scheme validations, allowing attackers to rotate keys using weaker schemes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c0d986a-b4b8-4f87-add0-161b106cf3b2?mode=deep",
+    "timestamp": "2026-01-25 23:27:27.866748",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Transaction Success Validation Bypass] Lines 270-280 check txn_summary.success but at line 271 uses if let Some(txn_success) which could be None - can an attacker cause the transaction to return None for success field, bypassing the validation and allowing profile corruption with failed on-chain rotation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_430e6eef-9961-4ce8-bb74-3f90e660de9e?mode=deep",
+    "timestamp": "2026-01-25 23:27:47.141385",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Profile Name Timing Attack] Lines 119-138 validate profile name before rotation but line 292 unwraps it unsafely assuming validation passed - can an attacker exploit async timing between validation and usage to inject a malicious profile name through concurrent modification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73e2d57f-aa45-46b2-b69b-b0277ef9825e?mode=deep",
+    "timestamp": "2026-01-25 23:28:06.446845",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Config File Race Condition] Lines 296-299 load, modify, and save config without atomic file operations - can multiple concurrent rotation operations corrupt the config file through interleaved writes, causing complete loss of all profile data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb8a9eb5-4400-440e-8be2-5a693b41dd49?mode=deep",
+    "timestamp": "2026-01-25 23:28:27.105292",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Profile Inheritance Vulnerability] Line 307 uses ..self.txn_options.profile_options.profile()? to inherit old profile settings - can this inheritance propagate compromised settings (like malicious REST URLs) from the old profile to new profile, enabling persistent man-in-the-middle attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c2af691-38f0-4ab0-a4df-f4190f7bd95f?mode=deep",
+    "timestamp": "2026-01-25 23:28:48.527454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [REST URL Override Attack] Lines 310-312 allow overriding rest_url in new profile - can an attacker who compromises transaction options inject a malicious REST endpoint that intercepts all future transactions from the rotated account? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87f5d560-8b72-410a-a120-f9cf7066844d?mode=deep",
+    "timestamp": "2026-01-25 23:29:11.644779",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Unwrap Panic on Profile Save] Line 319 calls config.save()? which can fail with filesystem errors - if save fails after successful on-chain rotation, the account becomes inaccessible because the new private key is lost, causing permanent fund lockup? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c538a6ed-e521-4462-a86c-8664a7fea847?mode=deep",
+    "timestamp": "2026-01-25 23:29:34.534714",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Public Key Equality Bypass] Line 184 checks new_public_key == current_public_key using PartialEq - can an attacker craft two public keys that are functionally identical (same authentication key) but have different binary representations, bypassing this check and rotating to effectively the same key? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1661b558-d99b-4d66-befe-31a3ca39d8fa?mode=deep",
+    "timestamp": "2026-01-25 23:29:58.798632",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Derived Public Key Mismatch] Lines 146-161 derive current_public_key differently based on hardware wallet vs software key - can inconsistencies in key derivation between these paths allow an attacker to rotate from one key type to another in ways that break authentication? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c32cc926-3e0e-4076-bdf8-146eafc2793a?mode=deep",
+    "timestamp": "2026-01-25 23:30:23.684660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Hardware Wallet Public Key Spoofing] Line 172 calls aptos_ledger::get_public_key() without verifying device authenticity - can an attacker spoof Ledger device responses to provide a public key they control while the victim believes they're rotating to their hardware wallet? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8c69665-768a-42f3-87e3-0aa27d2f5b5a?mode=deep",
+    "timestamp": "2026-01-25 23:30:48.974408",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Private Key to Public Key Mismatch] Line 180 derives public key as new_private_key.public_key() - can the SigningKey trait implementation be exploited to return a public key that doesn't match the private key, enabling signature forgery after rotation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7e0bc62-7ace-4328-a0a0-be9bfd0f3feb?mode=deep",
+    "timestamp": "2026-01-25 23:31:13.615259",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Ledger Sign Message Manipulation] Lines 214-217 call aptos_ledger::sign_message() with rotation_msg - can an attacker perform a MITM attack on the USB connection to modify rotation_msg before signing, causing the user to sign a rotation to an attacker-controlled key while displaying the legitimate key on screen? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_073e377b-61b5-4057-be20-50dd7da04dc7?mode=deep",
+    "timestamp": "2026-01-25 23:31:38.311032",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Ledger Firmware Downgrade Attack] The hardware wallet integration assumes secure Ledger firmware - can an attacker downgrade Ledger firmware to a vulnerable version that allows signature extraction or key material leakage during rotation_msg signing at lines 214-217 and 231-234? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04d962ce-d756-45bf-b99b-62bd02c39986?mode=deep",
+    "timestamp": "2026-01-25 23:32:03.626372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Derivation Path Validation Bypass] Lines 141-145 and 168 extract derivation paths without validating BIP44 compliance - can an attacker provide a malicious derivation path (e.g., m/44'/637'/2147483647'/0'/0') that causes integer overflow in the Ledger app or derives keys from an unexpected address space? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30d69728-7c15-4983-8cf3-b36e5432c72b?mode=deep",
+    "timestamp": "2026-01-25 23:32:25.456735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Hardware Wallet UI Confusion] Lines 213, 220, 230, 237 provide different eprintln messages for hardware wallet signing - can this inconsistent user feedback be exploited in social engineering attacks where users sign malicious rotations thinking they're signing legitimate challenges? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d80eab92-a5e0-4f11-9247-cf65b976508c?mode=deep",
+    "timestamp": "2026-01-25 23:32:48.186117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Double Hardware Wallet Signature Timing] When both current and new keys are hardware wallets (lines 207-245), signatures are collected sequentially - can an attacker exploit the time window between first and second signature to perform attacks like device swapping or firmware modification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7db0dafe-c714-4aac-9427-6bd92bd3039d?mode=deep",
+    "timestamp": "2026-01-25 23:33:11.848330",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Ledger Transaction Approval Bypass] Line 249 prints 'Approve transaction on your Ledger device' only when current key is hardware wallet - if transaction submission happens when only new key is hardware wallet, can this bypass user approval and submit unauthorized transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d56c215-e54a-47c2-877b-d46d4a3cb3f8?mode=deep",
+    "timestamp": "2026-01-25 23:33:35.687494",
+    "report_generated": false
+  }
+]
