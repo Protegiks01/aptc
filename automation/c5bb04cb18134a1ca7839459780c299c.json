@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: StorageGasSchedule] [Selective DoS] Can a governance proposal set per_item_create to u64::MAX while leaving per_item_read at reasonable costs, effectively disabling all new resource creation while allowing reads, permanently freezing the network's ability to process state-changing transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71d7abf0-0493-40e8-a0b7-ffa8cba374b0?mode=deep",
+    "timestamp": "2026-01-25 14:36:19.705316",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasSchedule] [Empty entries attack] If GasSchedule.entries is an empty Vec<(String, u64)>, the into_btree_map() returns an empty BTreeMap - would this cause the VM to use default gas values, zero gas, or panic when looking up operation costs during transaction execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bee6be30-64e5-47a7-ae77-a5e41bf586e9?mode=deep",
+    "timestamp": "2026-01-25 14:36:32.443105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasScheduleV2] [Empty schedule DoS] Can an attacker submit a governance proposal with GasScheduleV2 containing an empty entries vector, causing all validators to have undefined gas costs and resulting in consensus divergence as some default to free transactions while others reject all transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb79b91f-95dc-4c2a-8752-9eea438e33ba?mode=deep",
+    "timestamp": "2026-01-25 14:36:45.907260",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasSchedule::into_btree_map()] [Missing key attack] If the entries Vec is missing critical gas parameters like 'txn.max_transaction_size_in_bytes' or 'storage.per_byte_write', does the VM gracefully handle missing keys with safe defaults, or will it panic/crash when attempting to calculate gas for operations needing those parameters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c02065b8-c959-496a-a81f-4aaa7328b3fb?mode=deep",
+    "timestamp": "2026-01-25 14:36:59.583403",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasSchedule] [Malformed key attack] The String keys in entries have no validation - can an attacker insert entries with empty strings, Unicode control characters, extremely long strings (>1MB), or null bytes, causing parsing errors or buffer overflows in downstream gas calculation code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af197587-3764-4a82-9df3-4a7f24a88c27?mode=deep",
+    "timestamp": "2026-01-25 14:37:14.477536",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasScheduleV2] [Partial schedule attack] If GasScheduleV2 contains only 10 entries when the VM expects 100+ gas parameters, how does the system behave - does it use cached old values for missing parameters, default to zero, or fail validation causing consensus to halt? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18e55a61-9800-43b2-a274-d32c924662e7?mode=deep",
+    "timestamp": "2026-01-25 14:37:30.120226",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::to_btree_map_borrowed()] [Reference lifetime attack] The borrowed BTreeMap uses &str references to the original String keys - if the GasScheduleV2 is moved or dropped while the borrowed BTreeMap is still in use elsewhere, could this cause use-after-free or dangling pointer issues in unsafe code sections? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfa5c225-3a4a-4f67-8172-ea01f941ca92?mode=deep",
+    "timestamp": "2026-01-25 14:37:46.539026",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasSchedule] [Deserialization bomb] Can an attacker craft a serialized GasSchedule with millions of entries that consumes excessive memory or CPU during deserialization, causing validator nodes to OOM crash or timeout during OnChainConfig processing, temporarily halting consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d82f9114-667a-441d-9687-69b0abbe9508?mode=deep",
+    "timestamp": "2026-01-25 14:38:04.735637",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: StorageGasSchedule] [Struct size mismatch] If the serialized StorageGasSchedule is missing fields (e.g., only has 4 of the 6 u64 fields), does Serde's Deserialize fail gracefully with a clear error, or does it partially deserialize creating an invalid StorageGasSchedule with uninitialized memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1829796-bd93-4f46-aa9e-94f7935507dd?mode=deep",
+    "timestamp": "2026-01-25 14:38:22.760753",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Logic error in diff] The diff function mutates the old BTreeMap by calling entry.remove_entry() - if this function is called multiple times concurrently or if the diff is computed incorrectly, could it report false Modify operations that don't reflect actual changes, misleading governance voters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_888aba88-23bd-4f51-a960-e5703f5e6a69?mode=deep",
+    "timestamp": "2026-01-25 14:38:44.114447",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Delete operation bug] After processing new entries, the remaining old entries are extended as Delete operations - if there's a bug in the BTreeMap iteration after mutation, could some Delete operations be missed, causing governance diffs to hide the removal of critical gas parameters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5df1d0c-f007-44e9-bef9-3060bef3ebf3?mode=deep",
+    "timestamp": "2026-01-25 14:39:04.620457",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Add vs Modify confusion] The diff logic treats an entry as Add if it's in new but not old, and Modify if in both - but if duplicate keys exist in old, could the entry.remove_entry() remove the wrong duplicate, causing a false Modify to be reported as Add or vice versa? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67f76c0b-833d-4fcc-b909-b58096f19b66?mode=deep",
+    "timestamp": "2026-01-25 14:39:26.776707",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Value comparison bypass] The diff only creates Modify if old_val != new_val - if u64 values are compared incorrectly (e.g., floating point comparison bug in earlier code), could identical values be shown as Modified or vice versa, confusing governance reviews? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_788e8b79-47a4-48c1-9a1e-f761e0610ed5?mode=deep",
+    "timestamp": "2026-01-25 14:39:49.050532",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [BTreeMap ordering] The diff extends remaining old entries after processing new ones - does BTreeMap iteration order guarantee consistent diff output across different Rust compiler versions or architectures, or could non-deterministic ordering cause different validators to see different diffs for the same proposal? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_511be6aa-077d-498f-8a98-61fe5e298fe4?mode=deep",
+    "timestamp": "2026-01-25 14:40:11.666856",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Empty diff attack] If old and new are identical, diff returns an empty BTreeMap - could governance UI code misinterpret empty diff as an error condition, blocking legitimate no-op proposals or causing validators to reject valid but unchanged gas schedules? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d542309-863d-4e8d-a4e2-f5774c4e3def?mode=deep",
+    "timestamp": "2026-01-25 14:40:35.514135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Feature version ignore] The diff function compares entries but ignores feature_version - can an attacker change feature_version from 5 to 1000 while keeping entries identical, causing the diff to show 'no changes' despite the version rollback being a critical security modification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca77eeac-65a6-48ca-9678-443a2f9a8942?mode=deep",
+    "timestamp": "2026-01-25 14:41:00.012778",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Memory exhaustion] If old and new each have 100,000 entries with many differences, does the diff function allocate excessive memory for the result BTreeMap, potentially causing OOM conditions during governance proposal validation on resource-constrained validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae893a21-35c6-4e8e-87f6-3a46bfa0b98b?mode=deep",
+    "timestamp": "2026-01-25 14:41:25.246690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Function: GasScheduleV2::diff()] [Reference lifetime in diff output] The diff returns BTreeMap<&'a str, DiffItem<u64>> with borrowed string references - if the returned diff outlives the input GasScheduleV2 structs, could this cause use-after-free when accessing the string keys in the diff result? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f05f75f5-3e16-4ab3-9d57-71b3438a7873?mode=deep",
+    "timestamp": "2026-01-25 14:41:52.230321",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasSchedule] [Multiplication overflow] If a gas entry value is set to u64::MAX / 2 and the VM multiplies it by 2 or more (e.g., for transaction size), does Rust's overflow checking in debug mode catch this, and in release mode does it wrap to a small value, allowing transactions to execute with near-zero gas payment? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97ad3283-49af-4a3e-8a60-1823ace49dac?mode=deep",
+    "timestamp": "2026-01-25 14:42:19.904112",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: StorageGasSchedule] [Addition overflow] If per_byte_create and per_byte_write are both set to u64::MAX - 100, and the VM adds them to calculate total storage cost, could the overflow wrap to a small value enabling free storage attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7150dae-8896-42c7-b569-fd019d979977?mode=deep",
+    "timestamp": "2026-01-25 14:42:48.301392",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: StorageGasSchedule] [Per-item vs per-byte calculation] When calculating total storage gas as (per_item_create + per_byte_create * size), if size is u64::MAX / per_byte_create + 1, could the multiplication overflow before the addition, resulting in incorrect gas calculation and DoS or economic exploitation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cdeb98a-c532-407b-9ca9-9dba758fde60?mode=deep",
+    "timestamp": "2026-01-25 14:43:17.544412",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasScheduleV2] [Feature version overflow] If feature_version is set to u64::MAX and code attempts to increment it (version++), does the overflow wrap to 0, potentially triggering ancient gas calculation code paths with known vulnerabilities? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c3590cf-8301-4abe-9176-582225a0e260?mode=deep",
+    "timestamp": "2026-01-25 14:43:46.740738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: GasSchedule] [Sum overflow] If governance proposes 1000 new gas entries each with value u64::MAX / 100, and the VM attempts to sum all entries to compute total gas, could the accumulated sum overflow causing incorrect global gas limits and enabling transaction flood attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6bfbd8c-4c26-4305-8dd0-94c0cc7c5b4a?mode=deep",
+    "timestamp": "2026-01-25 14:44:14.203866",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Struct: StorageGasSchedule] [Checked arithmetic absence] The StorageGasSchedule fields are plain u64 with no .checked_add() or .saturating_mul() methods - when downstream code performs arithmetic with these values, does it use checked operations, or could unchecked arithmetic silently overflow? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4478188-856c-4a05-ba09-a1a47d964009?mode=deep",
+    "timestamp": "2026-01-25 14:44:42.016812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/gas_schedule.rs] [Derive: Deserialize] [Deserialization bomb] The Serde Deserialize derive on GasSchedule and GasScheduleV2 has no size limits - can an attacker craft a serialized payload with deeply nested structures or extremely large Vec entries causing exponential memory allocation during deserialization, crashing validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4216150-0964-48f3-8583-e9e98af532d2?mode=deep",
+    "timestamp": "2026-01-25 14:45:08.196462",
+    "report_generated": false
+  }
+]
