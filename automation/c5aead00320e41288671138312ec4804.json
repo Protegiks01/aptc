@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start()] [Request reordering] Can concurrent calls to start() or channel operations cause requests to be processed out-of-order, violating consensus ordering guarantees where blocks must be executed/signed/persisted sequentially? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_895bc523-b463-4fd3-83d2-f4d80a1546ae?mode=deep",
+    "timestamp": "2026-01-25 14:31:52.778377",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start()] [Channel exhaustion] If the receiver at line 91 is flooded with requests faster than process() can handle them, can unbounded channel growth cause memory exhaustion and validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_031390f2-8484-4e2d-b71c-e56d8c30e266?mode=deep",
+    "timestamp": "2026-01-25 14:32:04.676588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start()] [Early termination] Can rx.next() return None prematurely due to sender being dropped during epoch transition, causing start() to exit at line 91-108 before completing in-flight requests? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8c333fc-051c-4684-a253-02b05af0b001?mode=deep",
+    "timestamp": "2026-01-25 14:32:18.736480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 92] [Guard drop timing] When _guard is bound but not used at line 92, can the guard be dropped before process() completes if there's a panic or early return, causing counter inconsistency? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34b9a900-154a-45d5-a9ae-00c4ce98be77?mode=deep",
+    "timestamp": "2026-01-25 14:32:31.304064",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 93-95] [TOCTOU race] Between checking reset_flag at line 93 and continuing at line 94, can the flag be toggled multiple times allowing some requests to slip through during reset windows? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6020a594-946c-433c-8da0-3b7ba35a9ca4?mode=deep",
+    "timestamp": "2026-01-25 14:32:46.499586",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 93] [Reset bypass] If reset_flag is set to true at line 93, requests are skipped via continue, but are they properly acknowledged or logged? Can an attacker force resets to cause silent data loss of valid consensus blocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab83a6f1-c81d-4b2b-aacc-8552fc10a9db?mode=deep",
+    "timestamp": "2026-01-25 14:33:02.099629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 93] [Memory ordering exploit] Does reset_flag.load(Ordering::SeqCst) guarantee that all previous writes are visible, or can compiler/CPU reordering allow stale requests to be processed even after a reset is triggered? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9e872b9-39ed-4647-a1b5-3128e5ed825f?mode=deep",
+    "timestamp": "2026-01-25 14:33:19.706042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 96-101] [Process() panic recovery] If processor.process(req).await panics at line 100, does the entire pipeline crash, or is the panic caught? Can an attacker craft malicious requests that deliberately cause panics to DoS the consensus pipeline? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07b2684a-27b0-44cc-acc3-567a2e0678fc?mode=deep",
+    "timestamp": "2026-01-25 14:33:38.698468",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 96-101] [Timer manipulation] Can the BUFFER_MANAGER_PHASE_PROCESS_SECONDS timer at lines 97-99 be manipulated or injected with incorrect phase names, causing monitoring metrics to reflect wrong performance data and hide attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c92a5b99-37cf-4eef-b7ac-8a12c9e2a664?mode=deep",
+    "timestamp": "2026-01-25 14:33:58.661384",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 100] [Await vulnerability] Can processor.process(req).await be cancelled or aborted mid-execution, leaving the consensus state (execution, signing, persisting) in a partially completed state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f28ac50-7075-4517-8ce6-1f2b9ee3a68d?mode=deep",
+    "timestamp": "2026-01-25 14:34:20.162873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 100] [Async reentrancy] Can process() be called concurrently on the same processor instance if multiple start() tasks are spawned, violating assumptions about exclusive access and causing state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6248602-93cd-4ec0-b7e0-25c05db5eaaa?mode=deep",
+    "timestamp": "2026-01-25 14:34:43.684613",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 100] [Request timeout] If process() takes too long (e.g., execution phase waiting for transaction results), is there a timeout mechanism, or can a single slow request block all subsequent requests in the pipeline? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39e8cbfd-f868-4f6f-b5e7-e2754d64e588?mode=deep",
+    "timestamp": "2026-01-25 14:35:06.898477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 100] [Determinism violation] Does process() guarantee deterministic behavior across all validators, or can non-deterministic operations (like timestamps, random numbers, or OS state) cause validators to produce different responses? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcdb2e78-3542-45dd-a003-f8f13f85f208?mode=deep",
+    "timestamp": "2026-01-25 14:35:31.868103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 102-107] [Channel send failure] When tx.send(response).await fails at line 103, the code logs and breaks - but are in-flight requests properly cleaned up, or does this leave orphaned execution results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5aace37-f6e6-4176-9bae-3be8f4b30959?mode=deep",
+    "timestamp": "2026-01-25 14:35:57.286004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 102-107] [None sender vulnerability] When maybe_tx is None, responses are silently dropped - can this be exploited in terminal phases (like persisting) where acknowledgments are critical for BufferManager state transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_778ec43a-cacb-4ea1-94c9-b5a72152b362?mode=deep",
+    "timestamp": "2026-01-25 14:36:23.802400",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 103] [Send error handling] If tx.send() fails because the receiver is dropped, does line 104-105 properly signal upstream phases to stop sending requests, or does the pipeline continue queuing work indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f69dc02-e4c2-4153-8179-e7352161b137?mode=deep",
+    "timestamp": "2026-01-25 14:36:51.279528",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 104] [Debug log exposure] The debug! log at line 104 mentions 'buffer manager probably dropped' - can attackers use timing of these logs to infer internal consensus state and timing for targeted attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5994f782-1a23-465b-8734-ceefb46a343e?mode=deep",
+    "timestamp": "2026-01-25 14:37:19.988412",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 105] [Early break consequences] When the loop breaks at line 105 due to send failure, are remaining queued requests in rx processed or dropped? Can this cause blocks to be executed but not persisted, leading to state divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9fc34926-f0ba-4d9f-bc22-016baf001780?mode=deep",
+    "timestamp": "2026-01-25 14:37:50.596424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Function: start(), Line: 108] [Loop exit conditions] When the while loop exits normally at line 108, what cleanup happens? Are channels properly closed, and are all tasks guaranteed to have decremented their guards? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d53d7350-b85d-4937-9c6c-0b66ea24077d?mode=deep",
+    "timestamp": "2026-01-25 14:38:20.376426",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Concurrency] [Multiple start() invocations] Can start() be called multiple times on the same PipelinePhase instance, creating concurrent processing loops that race on shared state like reset_flag or processor? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e62297eb-5f1d-49f0-8ed0-8e22d2db6f84?mode=deep",
+    "timestamp": "2026-01-25 14:38:50.945545",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Concurrency] [Channel race conditions] Can messages be lost or duplicated if the sender and receiver channels are accessed concurrently during epoch transitions or BufferManager resets? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08560d27-8588-443e-99e0-ea83fc44f86a?mode=deep",
+    "timestamp": "2026-01-25 14:39:19.841380",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Concurrency] [Reset flag race] If reset_flag is toggled rapidly (true->false->true), can requests slip through the check at line 93 due to instruction reordering or caching effects? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c774373-b2e4-4fd3-8c34-0bdc41078d3c?mode=deep",
+    "timestamp": "2026-01-25 14:39:50.076546",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Concurrency] [Counter visibility] Are AtomicU64 counter updates from TaskGuard immediately visible to all threads checking for ongoing_tasks, or can visibility delays cause premature pipeline cleanup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0442e94-c9d5-47d9-80c6-4d1c5ca22e3d?mode=deep",
+    "timestamp": "2026-01-25 14:40:20.243718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Concurrency] [Async task ordering] Can tokio task scheduling cause requests to be processed in a different order than they were sent, violating consensus block ordering requirements? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_965743df-e112-4c74-a83b-80dd41ef884b?mode=deep",
+    "timestamp": "2026-01-25 14:40:50.799180",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pipeline/pipeline_phase.rs] [Concurrency] [Sender clone exploitation] If Sender<T> is cloned and multiple senders push to rx, can messages be interleaved in ways that violate phase sequencing (e.g., signing before execution completes)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c9c04d4-9ca0-4e23-a4ab-89ff9c7e08f9?mode=deep",
+    "timestamp": "2026-01-25 14:41:21.647593",
+    "report_generated": false
+  }
+]
