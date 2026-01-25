@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_for_write()] [File Permission] Does OpenOptions::new().write(true).create_new(true) at lines 90-92 set secure file permissions (e.g., 0600), or can it create world-readable backup files exposing sensitive consensus state, transaction data, or validator information? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ae3ca48-d9cb-4ad5-8dab-8c165bd14d0b?mode=deep",
+    "timestamp": "2026-01-25 10:50:25.287945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: save_metadata_lines()] [Metadata Permission] Does the file creation at lines 163-167 set restrictive permissions on metadata files containing critical backup metadata, or can these files be read by unprivileged users on the validator node? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1846867c-f377-464d-9a7b-a7c435ab090b?mode=deep",
+    "timestamp": "2026-01-25 10:50:37.638781",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: backup_metadata_file()] [Permission Inheritance] When rename() moves files to the backup directory at line 145, are the original file permissions preserved, and if so, can this create inconsistent security postures where some backup files have weak permissions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e7fad4a-475d-46d4-9dcf-452c58249eb9?mode=deep",
+    "timestamp": "2026-01-25 10:50:50.451832",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_backup()] [Directory Permission Inheritance] If the parent directory has weak permissions, does create_dir_all() at line 75 inherit those permissions, potentially making all backup subdirectories accessible to unauthorized users? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76afdaf1-f91c-40e6-8c79-335df8c7c6da?mode=deep",
+    "timestamp": "2026-01-25 10:51:04.028069",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: LocalFs::new()] [Base Directory Validation] Does the constructor at lines 55-57 validate that the provided dir has secure permissions and is owned by the correct user, or can an attacker point to a directory with weak ACLs compromising backup security? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66e04c01-2869-421a-aab3-d3384e5553a0?mode=deep",
+    "timestamp": "2026-01-25 10:51:17.972286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: save_metadata_lines()] [Data Corruption] The lines.join() operation at lines 157-161 concatenates without validation - can an attacker inject malformed TextLine data that corrupts the metadata file format, causing restore operations to fail and preventing validator recovery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29190213-0d17-4f0b-9847-d0f98ae192f5?mode=deep",
+    "timestamp": "2026-01-25 10:51:32.884361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: save_metadata_lines()] [Partial Write Failure] If write_all() at line 170 partially succeeds but shutdown() at line 171 fails, does this leave corrupted metadata files that could cause validator crashes during backup restoration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ff1c1a5-41d0-434b-b36f-e5f4c29cc647?mode=deep",
+    "timestamp": "2026-01-25 10:51:48.544049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_for_write()] [Write Atomicity] Does the create_for_write() function at lines 81-97 ensure atomic file creation, or can power failures or crashes during write operations leave partial backup files that corrupt the backup state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_055770b2-2f64-490a-abde-87f79c93e18f?mode=deep",
+    "timestamp": "2026-01-25 10:52:06.001536",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: backup_metadata_file()] [Move Atomicity] Is the rename() operation at line 145 atomic across all filesystems, or can it fail on certain configurations (e.g., cross-device renames) leaving metadata files in inconsistent states? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_499ef332-8e35-4be7-8700-ea8cf154be2d?mode=deep",
+    "timestamp": "2026-01-25 10:52:24.025243",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: list_metadata_files()] [Entry Iteration Race] During the while loop at lines 119-121, can concurrent modifications to the directory cause the iterator to skip files, read deleted files, or enter inconsistent states affecting backup completeness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76ec1f16-361c-4a83-994a-fc5ace1d9cf8?mode=deep",
+    "timestamp": "2026-01-25 10:52:42.641790",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: save_metadata_lines()] [Content Validation] Does save_metadata_lines() validate that the TextLine content at lines 157-161 doesn't contain null bytes, control characters, or malformed UTF-8 that could cause filesystem or parsing issues during restore? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d0339a8-f245-4f54-92b0-445c87a20b91?mode=deep",
+    "timestamp": "2026-01-25 10:53:01.084504",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_for_write()] [Handle Leak] If an error occurs after opening the file at lines 90-95 but before returning, is the file handle properly closed, or can repeated failures cause file descriptor exhaustion affecting validator operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26a7cb71-2d1f-498f-b420-1ae3d47c99b5?mode=deep",
+    "timestamp": "2026-01-25 10:53:21.825672",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_backup()] [Disk Space Exhaustion] Does create_backup() at line 74-79 check available disk space before creating directories, or can an attacker trigger unlimited backup directory creation exhausting filesystem inodes and causing validator DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5c5a649-196f-4f23-a824-e532821b376a?mode=deep",
+    "timestamp": "2026-01-25 10:53:43.261221",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_for_write()] [File Size Limits] Does create_for_write() at lines 81-97 enforce maximum file size limits, or can an attacker write arbitrarily large backup files exhausting disk space and causing validator node crashes or consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_befc36d9-f8e8-4b80-b27c-078964a62b1d?mode=deep",
+    "timestamp": "2026-01-25 10:54:05.353777",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: save_metadata_lines()] [Metadata Size DoS] Does save_metadata_lines() at lines 150-182 validate the size of the concatenated lines content at line 161, or can an attacker provide massive TextLine arrays causing memory exhaustion and validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87d000b3-7ab6-4216-a67d-22a6d9978035?mode=deep",
+    "timestamp": "2026-01-25 10:54:27.152742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: list_metadata_files()] [Directory Enumeration DoS] Can an attacker create millions of metadata files causing list_metadata_files() at lines 112-124 to consume excessive memory or CPU during iteration, degrading validator performance during backup operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9a9d693-6082-4724-a834-5e1fad23d20e?mode=deep",
+    "timestamp": "2026-01-25 10:54:50.933841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: backup_metadata_file()] [Recursive Directory DoS] If metadata files contain deeply nested directory structures in their names, can this cause rename() at line 145 or create_dir_all() at line 133 to exhaust stack space or filesystem limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be77779a-d233-4760-b772-f2bea0b7cf0f?mode=deep",
+    "timestamp": "2026-01-25 10:55:15.552769",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_backup()] [Name Length Attack] Does create_backup() validate the length of the ShellSafeName parameter at line 74, or can extremely long backup names cause filesystem path length limits to be exceeded causing operations to fail? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1379edc5-ae1f-47a0-a452-5a201ca0a097?mode=deep",
+    "timestamp": "2026-01-25 10:55:40.842241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_for_write()] [Path Disclosure] Do the err_notes() calls at lines 77, 95, and 108 leak sensitive filesystem paths in error messages that could help attackers map the validator's directory structure for targeted attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c8f826b-f5bb-469f-89f9-c9e5a6d20a37?mode=deep",
+    "timestamp": "2026-01-25 10:56:05.986828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: open_for_read()] [File Existence Oracle] Does open_for_read() at lines 99-110 differentiate between 'file not found' and 'permission denied' errors, allowing attackers to enumerate which backup files exist without authorization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76ede63a-d934-48e7-9cd3-25bc20364578?mode=deep",
+    "timestamp": "2026-01-25 10:56:31.273951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: save_metadata_lines()] [Error Information Leak] Do the error handling paths at lines 170-177 expose detailed filesystem error information that could reveal backup system internals to attackers monitoring logs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f48d3ce0-4282-4f78-9fe7-860c69b2dcb5?mode=deep",
+    "timestamp": "2026-01-25 10:56:55.148810",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: list_metadata_files()] [Directory Structure Leak] Does list_metadata_files() at lines 112-124 expose the full file paths in the returned FileHandle Vec, allowing unauthorized callers to learn about backup organization and naming schemes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_303d9746-504a-4d45-ac4c-87e57ea11a0c?mode=deep",
+    "timestamp": "2026-01-25 10:57:18.748940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: backup_metadata_file()] [Filename Extraction Error] The format_err at line 140 exposes the raw file_handle in error messages - can this leak sensitive information about backup metadata structure to attackers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b5ac652-8d4b-4dd1-ae23-15d44d7c26f7?mode=deep",
+    "timestamp": "2026-01-25 10:57:40.510992",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_backup()] [ShellSafeName Trust] Does create_backup() at line 74 blindly trust that ShellSafeName is properly validated, or should it perform additional checks to prevent shell injection or path traversal even if ShellSafeName validation is bypassed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f1708b6-105c-4c09-9ba8-a5d60fbf8aee?mode=deep",
+    "timestamp": "2026-01-25 10:58:03.962810",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/local_fs/mod.rs] [Function: create_for_write()] [BackupHandleRef Validation] Does create_for_write() validate that backup_handle at line 83 is a legitimate backup created by create_backup(), or can attackers provide arbitrary strings to write files in unintended locations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d03a9407-92ea-450a-9707-2246809b1d02?mode=deep",
+    "timestamp": "2026-01-25 10:58:26.938342",
+    "report_generated": false
+  }
+]
