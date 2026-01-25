@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: select_transaction_backups()] [Memory exhaustion] If the range [start_version, target_version] spans millions of transaction backups, can pushing all matching backups into res at line 154 cause out-of-memory errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_566ce539-e457-4e1e-abc0-29be04950f33?mode=deep",
+    "timestamp": "2026-01-25 14:45:47.842934",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: select_transaction_backups()] [Next_ver initialization] At line 140, next_ver starts at 0 - can this cause incorrect continuity validation if the first transaction backup doesn't start at version 0, rejecting valid backup sets? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef9fe293-123a-47fb-be2a-353b281f2c0a?mode=deep",
+    "timestamp": "2026-01-25 14:46:00.794464",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: select_transaction_backups()] [Clone overhead] At line 154, backup.clone() is called for every selected backup - can this cause performance degradation when selecting large transaction ranges, potentially timing out restore operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_714ee80b-f8d7-4e4b-bdf0-5fb1203b5772?mode=deep",
+    "timestamp": "2026-01-25 14:46:14.802589",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: max_transaction_version()] [Empty handling] At lines 164-169, when transaction_backups is empty, this returns Ok(None) - can callers correctly distinguish between 'no backups' and 'backups exist but have no max', leading to logic errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c08c107-7c63-465d-815b-79f089289b15?mode=deep",
+    "timestamp": "2026-01-25 14:46:28.583325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: max_transaction_version()] [Sort consistency] At line 167, sorted() is called - does this match the sort_unstable() used in new(), or can sort instability cause this function to return different max versions across different nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c2759dc-48e0-4726-883e-0ef875fad2e6?mode=deep",
+    "timestamp": "2026-01-25 14:46:43.398180",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: max_transaction_version()] [Last_version validity] If transaction backups have been deduplicated incorrectly, can the backup returned by next_back() have a last_version that doesn't represent the true maximum across all backups? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3d77b19-32d3-46a8-88d0-7558b157ecee?mode=deep",
+    "timestamp": "2026-01-25 14:46:59.728217",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: select_epoch_ending_backups()] [Continuity enforcement] At lines 185-190, continuity check ensures backup.first_epoch == next_epoch - can an attacker bypass this by creating metadata where epochs appear continuous but skip critical epoch boundaries, causing consensus failures during restoration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9caef5b2-4fd0-4405-b997-beb83a4133e3?mode=deep",
+    "timestamp": "2026-01-25 14:47:16.126598",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: select_epoch_ending_backups()] [Integer overflow] At line 193, next_epoch = backup.last_epoch + 1 - if backup.last_epoch is u64::MAX, this overflows to 0, causing continuity check to fail for the next valid backup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15c2303d-9566-42e4-b22c-73b4ed04e95b?mode=deep",
+    "timestamp": "2026-01-25 14:47:35.245708",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: select_epoch_ending_backups()] [Version filtering] At line 181, if backup.first_version > target_version breaks - but what if an epoch ending occurs exactly at target_version? Does this incorrectly exclude critical epoch ending information? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddd383f9-c3bc-4204-ad11-00520f8fe7a6?mode=deep",
+    "timestamp": "2026-01-25 14:47:55.334142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: select_epoch_ending_backups()] [Next_epoch initialization] At line 178, next_epoch starts at 0 - can this reject valid backup sets where the first epoch ending isn't for epoch 0, especially during partial restoration scenarios? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23950731-2e22-4c86-8c6f-1bbf7b6b92ee?mode=deep",
+    "timestamp": "2026-01-25 14:48:17.603074",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: select_epoch_ending_backups()] [Clone overhead] At line 191, backup.clone() is called for each epoch ending - can selecting many epochs cause memory pressure or performance issues during critical restore operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f7d0e56-d965-4632-ac8d-cc7753d76602?mode=deep",
+    "timestamp": "2026-01-25 14:48:40.918870",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: select_epoch_ending_backups()] [Empty result handling] When no epoch endings match target_version, an empty Vec is returned - can this cause restore operations to proceed without epoch ending information, breaking validator set transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43f1b68a-0be4-40e4-8bd7-5dd145548210?mode=deep",
+    "timestamp": "2026-01-25 14:49:04.678919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_backups()] [Zero compaction_cnt] At line 206, what happens if compaction_cnt is 0? Does chunks(0) panic or create an infinite loop, causing denial of service during metadata compaction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_148ba2ec-dcdc-4fbb-8373-95396ec443ae?mode=deep",
+    "timestamp": "2026-01-25 14:49:29.011356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_backups()] [Usize overflow] If backups.len() is very large and compaction_cnt is 1, can the resulting output_vec with millions of chunks cause memory exhaustion when stored? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1af2713-495b-4df4-a652-0980ff29b2c0?mode=deep",
+    "timestamp": "2026-01-25 14:49:54.693026",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_backups()] [Chunk boundary alignment] At line 206, chunks() may create final chunk smaller than compaction_cnt - can this cause issues when compacted metadata files are later read back, expecting uniform chunk sizes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_014393ae-3a1b-4914-8969-324abcd13862?mode=deep",
+    "timestamp": "2026-01-25 14:50:20.271486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_backups()] [Reference lifetime] The function returns Vec<&[T]> with slice references - can these references become invalid if the underlying backups vector is modified, causing use-after-free or data corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fece12ea-5872-4520-92d1-87708270b4fb?mode=deep",
+    "timestamp": "2026-01-25 14:50:46.438477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_epoch_ending_backups()] [Mutable reference abuse] At line 217, &mut self is taken but epoch_ending_backups is not mutated - can concurrent calls to compact functions cause race conditions if this becomes truly mutable in future? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f537fbe-1804-41a0-b532-e782217ddc04?mode=deep",
+    "timestamp": "2026-01-25 14:51:12.297940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_epoch_ending_backups()] [Empty backup vector] If epoch_ending_backups is empty, does compact_backups handle this correctly, or will it create empty compacted metadata files that break restoration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8fbcb53-dccf-4893-ac80-355e664601c2?mode=deep",
+    "timestamp": "2026-01-25 14:51:39.173966",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_transaction_backups()] [Metric manipulation] At lines 227-231, COMPACTED_TXN_VERSION.set() is called with last().map_or(0, |e| e.first_version) - can this metric be manipulated by providing transaction_backups in adversarial order, reporting incorrect compaction progress? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6255a0ff-0304-4234-a76e-9d87fa7a713a?mode=deep",
+    "timestamp": "2026-01-25 14:52:05.626784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_transaction_backups()] [Cast truncation] At line 230, first_version is cast to i64 - can large Version values (> i64::MAX) be truncated, causing negative metrics that break monitoring systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82505413-058e-4ea5-b241-2edabc0e9e0a?mode=deep",
+    "timestamp": "2026-01-25 14:52:31.439935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_transaction_backups()] [Last() availability] If transaction_backups is empty after sorting, last() returns None and map_or defaults to 0 - can this cause metrics to incorrectly show compaction at version 0, hiding actual compaction failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be25fd76-a156-44bc-9ff3-d0ba0fc01aec?mode=deep",
+    "timestamp": "2026-01-25 14:52:58.381365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: compact_state_backups()] [State snapshot ordering] Does compacting state snapshots preserve version ordering, or can chunks be returned out of order, causing restoration to apply state snapshots in wrong sequence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2bed6cbb-53c3-499b-927e-09266cc3e7f9?mode=deep",
+    "timestamp": "2026-01-25 14:53:26.359079",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: get_file_handles()] [Empty compaction timestamps] At lines 243-246, if select_latest_compaction_timestamps() returns None, unwrap_or_default() returns empty Vec - can this cause cleanup operations to skip deleting old metadata files, leading to storage exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4a51aef-9a36-4eed-890f-e2d0be155293?mode=deep",
+    "timestamp": "2026-01-25 14:53:53.525130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: get_file_handles()] [HashMap key ordering] At line 245, keys().cloned().collect() doesn't guarantee deterministic ordering - can this cause different nodes to process file handles in different orders, leading to inconsistent compaction behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7050ee1e-f35a-4dfa-8ecc-396841207c4d?mode=deep",
+    "timestamp": "2026-01-25 14:54:17.521048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/view.rs] [Function: get_file_handles()] [Clone overhead] Calling cloned() on potentially thousands of FileHandle keys - can this cause memory pressure when invoked frequently during compaction operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22df7ac9-178b-4fd5-878d-92507a9ab939?mode=deep",
+    "timestamp": "2026-01-25 14:54:43.067186",
+    "report_generated": false
+  }
+]
