@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: finish()] [Error suppression] The finish() method ignores the Result from flush_buffer() - could this hide critical errors that should be propagated, causing silent backup corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7874762-9913-426f-9806-c70488de1053?mode=deep",
+    "timestamp": "2026-01-25 16:53:38.898919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: abort()] [Error suppression] At line 81, send_res() result is not checked - if sending the error fails, is the original error lost, making debugging impossible? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58f83c5d-d4a6-4e91-ac6b-1e064c1965a9?mode=deep",
+    "timestamp": "2026-01-25 16:53:51.017249",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_res()] [Error mapping] When channel send fails, the error is wrapped with format!() at line 87 - does this preserve the original error details needed for debugging channel closure issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a42a91c-6fb8-4aba-a235-3acb998d7a8b?mode=deep",
+    "timestamp": "2026-01-25 16:54:03.479292",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Partial flush] If flush_buffer() returns an error at line 49, the data was already extended to the buffer at line 46 - is this inconsistent state acceptable or could it cause duplicate data on retry? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_856ecaed-5a5f-46d7-a367-189373a8973c?mode=deep",
+    "timestamp": "2026-01-25 16:54:17.282963",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Split semantics] The buffer.split() at line 70 clears the buffer - if send_res() fails immediately after, the data is lost forever with no recovery mechanism - is this acceptable? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d926e929-30df-4eed-81c1-f435482d299b?mode=deep",
+    "timestamp": "2026-01-25 16:54:30.901621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Framing corruption] If size_bytes (4 bytes) and record_bytes are sent in separate channel messages due to batching, can the receiver incorrectly parse the size prefix if messages are interleaved? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e61bdef-f68c-45f2-acbb-d459b6bfd841?mode=deep",
+    "timestamp": "2026-01-25 16:54:44.937451",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Partial send] If the channel receiver processes only part of the bytes before disconnecting, can this leave the backup in a partially-written inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22ba1407-b3eb-4fce-b7e2-6aea9d027f73?mode=deep",
+    "timestamp": "2026-01-25 16:54:59.650374",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Ordering guarantee] Are bytes sent through the channel guaranteed to maintain order, or can reordering cause backup data to be corrupted when reconstructing state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df4a1f81-58c9-4a13-b472-48c26fe196c4?mode=deep",
+    "timestamp": "2026-01-25 16:55:15.626967",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Atomic write] The size prefix and record data are combined in a single buffer before sending - but if send_bytes() triggers a flush mid-record, can this split the record across batches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02ca9cd8-657f-489d-a056-44d943ea3523?mode=deep",
+    "timestamp": "2026-01-25 16:55:32.611094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Empty batch] Can flush_buffer() be called when buffer is empty (e.g., after split()), sending zero-byte messages that confuse the receiver protocol? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6e0d0ba-6c51-4d4b-bf2c-7f7060c4e2cb?mode=deep",
+    "timestamp": "2026-01-25 16:55:50.842594",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Constant: MAX_BATCHES] [Queue exhaustion] With MAX_BATCHES=100 and potentially large batches, can an attacker fill the channel queue with 100 batches of ~10KB each (1MB total) times multiple concurrent requests, exhausting memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0306715a-e61b-4bd8-bb2e-939ab5dcc4e1?mode=deep",
+    "timestamp": "2026-01-25 16:56:07.858313",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: new()] [Instance proliferation] Each new() call creates a new channel with capacity 100 - can an attacker trigger thousands of concurrent backup requests creating thousands of channels, exhausting file descriptors/memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a785a04e-71f7-48cc-9d1c-495eab1a4e29?mode=deep",
+    "timestamp": "2026-01-25 16:56:26.666888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Allocation attack] Line 62 allocates BytesMut with exact capacity - can repeated allocations for large records cause memory fragmentation and allocator slowdown? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b9ed84b-34b0-46b8-91aa-45b11290d2a4?mode=deep",
+    "timestamp": "2026-01-25 16:56:46.372779",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [CPU exhaustion] The extend() operation at line 46 can be O(n) for large bytes - can an attacker send many large payloads causing CPU exhaustion in the backup thread? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c30e51d-2eb6-4332-995b-17d851b74105?mode=deep",
+    "timestamp": "2026-01-25 16:57:06.968480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Constant: TARGET_BATCH_SIZE] [Batch size bypass] The TARGET_BATCH_SIZE is 10KB - can an attacker send exactly 10239 bytes repeatedly to maximize buffer usage while staying just under the threshold? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2df35f3-9020-4ed4-a148-583d89f25e06?mode=deep",
+    "timestamp": "2026-01-25 16:57:27.178809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Zero-length bytes] What happens if send_bytes() is called with an empty Bytes object - does it still trigger flush checks unnecessarily? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9ea7f97-ea3a-46de-a03d-caf10ce7ae39?mode=deep",
+    "timestamp": "2026-01-25 16:57:48.091320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Empty record] If bcs::to_bytes() returns an empty vec (0 bytes) for a valid but empty record, will the u32 size prefix be 0, potentially confusing stream parsers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_363f2cf4-7099-4989-ae09-e383a413d165?mode=deep",
+    "timestamp": "2026-01-25 16:58:09.723656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Double flush] Can flush_buffer() be called twice in succession, and if the buffer is already empty from split(), does it send an empty Bytes object unnecessarily? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_366dafbc-9140-45b8-8809-1195428186cc?mode=deep",
+    "timestamp": "2026-01-25 16:58:31.906388",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: finish()] [Multiple finish] Although finish() consumes self, if called through unsafe code or reflection, could multiple finish() calls cause double-send of residual buffer data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63468654-f8f6-4551-8145-a248051818af?mode=deep",
+    "timestamp": "2026-01-25 16:58:54.236371",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: abort()] [Abort after finish] If abort() is called after finish() has already flushed and closed, does the error propagate correctly or get lost in the closed channel? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90f2f6fb-44ca-4fd7-968e-81b37351fa3f?mode=deep",
+    "timestamp": "2026-01-25 16:59:16.354097",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Generic type safety] The generic Record: Serialize bound - can an attacker exploit type confusion by passing a type that serializes to attacker-controlled data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11988baa-09b7-4444-aa29-b2804517efde?mode=deep",
+    "timestamp": "2026-01-25 16:59:38.303454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Type: BoxError] [Error type erasure] BoxError at line 11 erases the concrete error type - does this prevent proper error handling in callers who need to distinguish error types? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_046aea50-e85c-4255-986f-47496eea75d3?mode=deep",
+    "timestamp": "2026-01-25 17:00:02.393429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: abort()] [Error bound] The generic E: std::error::Error + Send + Sync + 'static - can an attacker pass an error type that implements these traits but has malicious Display/Debug implementations causing issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ce93153-75c6-422d-a021-e05c1f734ccc?mode=deep",
+    "timestamp": "2026-01-25 17:00:24.501205",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Struct: BytesSender] [Lifetime safety] The endpoint field is &'static str - is this guaranteed safe, or could dangling references occur if the static string is in a dynamic library that gets unloaded? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_abe25eb2-0675-43da-a3d6-afb98c8fe108?mode=deep",
+    "timestamp": "2026-01-25 17:00:47.898655",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_res()] [Result conversion] Converting SendError to AptosDbError::Other at line 87 - does this preserve all necessary error context for debugging channel failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_198c51d6-db0b-4804-ac80-809e6f880b3a?mode=deep",
+    "timestamp": "2026-01-25 17:01:09.480312",
+    "report_generated": false
+  }
+]
