@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Resource Exhaustion] Can a malicious validator or API caller send an unbounded stream that spawns unlimited futures before the executor's semaphore enforces limits, causing memory exhaustion and node crash leading to validator slowdown? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8802b66e-6f8f-4de9-a3df-21ea85cb75c9?mode=deep",
+    "timestamp": "2026-01-25 12:13:02.424142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Panic Propagation] In the nested flat_map_unordered chain (lines 22-33), if the mapper function panics, does the panic propagate correctly through the executor spawn, or can it cause the entire stream to hang with pending transactions never completing, leading to loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d82e2dc1-be0c-44e3-b8ac-4bd32364681b?mode=deep",
+    "timestamp": "2026-01-25 12:13:15.363132",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Error Handling] The .expect('result') call on line 32 will panic if the JoinHandle returns an error - can a Byzantine validator craft inputs that cause spawned tasks to be cancelled/aborted, triggering panics that crash validator nodes and cause network-wide liveness issues? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c8b0c82-ba13-464f-a4ac-e070cac3e10c?mode=deep",
+    "timestamp": "2026-01-25 12:13:29.309429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Race Condition] The executor.clone() on line 24 creates a new reference to the same underlying semaphore - can concurrent cloning and task spawning create race conditions where the semaphore count becomes inconsistent, allowing more tasks than the capacity limit to execute simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0697aea-f703-48ce-9e7f-42e195d6c943?mode=deep",
+    "timestamp": "2026-01-25 12:13:43.123329",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Ordering Violation] The flat_map_unordered(None, ...) calls with unbounded concurrency (None parameter on lines 22 & 31) mean results can complete in any order - can this cause consensus-critical operations like block execution or transaction ordering to become non-deterministic across validators, leading to state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_173ee9ce-3d87-447f-976a-b07f600e8bfa?mode=deep",
+    "timestamp": "2026-01-25 12:13:57.906166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Memory Leak] If futures spawned in the first flat_map_unordered (line 22-29) never complete but keep accumulating JoinHandles, can this create unbounded memory growth as the second flat_map_unordered (line 31-33) builds up an infinite queue, causing validator nodes to run out of memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d40fb296-a5fb-4ace-a61b-5e5b40cedf24?mode=deep",
+    "timestamp": "2026-01-25 12:14:14.113858",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Deadlock] Can circular dependencies in the mapper function combined with the bounded executor's semaphore cause deadlocks where all permits are held by tasks waiting for other tasks to complete, permanently hanging transaction processing and causing total loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a6cf4b7-5202-434e-bfda-74d4200041f6?mode=deep",
+    "timestamp": "2026-01-25 12:14:31.559589",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Task Cancellation] If the returned stream is dropped before all items are processed, are spawned tasks properly cancelled and their executor permits released, or can dropped streams leak permits eventually exhausting the bounded executor and blocking all future operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3615f10-de64-4a28-8956-2d8a1320e313?mode=deep",
+    "timestamp": "2026-01-25 12:14:51.224472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Backpressure Bypass] The nested flat_map_unordered structure spawns futures immediately in the outer layer (line 22-29) before the inner layer (line 31-33) awaits them - can this bypass the bounded executor's backpressure mechanism, allowing thousands of pending futures to accumulate in memory before capacity limits are enforced? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30d3a32a-5c0f-46d7-8e68-21208cece379?mode=deep",
+    "timestamp": "2026-01-25 12:15:11.943136",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Send/Sync Safety] The function requires Fut: Future + Send + 'static and F: FnMut + Send - can incorrect Send/Sync bounds on captured variables in the mapper closure lead to data races when the closure is called concurrently across multiple threads in the executor? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e15d1abd-eb92-4fdc-8c27-2e5e31e6a4d5?mode=deep",
+    "timestamp": "2026-01-25 12:15:34.132130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Async Cancellation] When using #[allow(clippy::async_yields_async)] on line 26-27, the boxed future yielding another future could create cancellation issues - can cancelling the outer future fail to cancel the inner spawned task, causing ghost tasks to continue executing and consuming resources indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b99a37f8-08f0-419b-b000-49eccd0ae974?mode=deep",
+    "timestamp": "2026-01-25 12:15:57.752484",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Type System Bypass] The complex nested async/await structure with .boxed() calls obscures the actual type - can type system limitations allow unsound coercions where the Output type doesn't actually match the declared Fut::Output, leading to memory corruption or undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32431b16-1880-40aa-afcd-b0153134e3e0?mode=deep",
+    "timestamp": "2026-01-25 12:16:22.222015",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Executor Starvation] If the mapper function spawns additional work on the same executor recursively, can this create starvation where all semaphore permits are consumed by recursive spawns, preventing any top-level stream items from being processed and causing transaction processing to halt? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34193baa-e73e-4108-ae42-8fd1332f420f?mode=deep",
+    "timestamp": "2026-01-25 12:16:49.489938",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Stream Fusion] The .fuse() call on line 34 ensures the stream terminates properly after yielding None - but can malicious inputs cause the stream to never yield None, keeping the stream alive indefinitely and preventing resource cleanup, leading to memory exhaustion over time? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ea73db3-5520-49a0-99cb-24f3a4317077?mode=deep",
+    "timestamp": "2026-01-25 12:17:16.654134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Clone Overhead] The executor.clone() on line 24 happens for every stream item inside the flat_map - if processing millions of transactions, can the Arc clone overhead cause significant performance degradation or memory pressure that slows down validator block processing below consensus requirements? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a91166aa-a005-48ec-ab63-f0dc20ecc5dd?mode=deep",
+    "timestamp": "2026-01-25 12:17:43.557133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Permit Leak on Panic] If the mapper function panics after the executor.spawn() acquires a permit but before the future completes, is the permit properly released via the OwnedSemaphorePermit drop, or can panics leak permits until the executor becomes permanently blocked? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60621663-370e-42cb-b98d-e1980a6a8eb5?mode=deep",
+    "timestamp": "2026-01-25 12:18:11.493980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Unordered Completion] With flat_map_unordered, items complete out of order - if this is used for processing transactions where later transactions depend on earlier ones, can out-of-order completion cause later transactions to execute before their dependencies, leading to failed transactions or incorrect state transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0d34fb4-17c7-435c-9449-f7cc69a0f672?mode=deep",
+    "timestamp": "2026-01-25 12:18:39.653811",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Future Boxing Cost] Every future is boxed twice (line 28 and 29) - can this double boxing cause excessive heap allocations when processing high-throughput transaction streams, leading to memory fragmentation and garbage collection pauses that impact consensus timing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6a9675f-9a4b-446e-9e1b-3c624a72b9a2?mode=deep",
+    "timestamp": "2026-01-25 12:19:09.075326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Tokio Runtime Mismatch] The executor.spawn() requires the spawned future to be Send + 'static - if the mapper accidentally captures non-Send types through closure captures, can this compile but cause undefined behavior or crashes when the future is moved across threads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1210adda-91dc-4c6f-b02b-19c0fb1cc52d?mode=deep",
+    "timestamp": "2026-01-25 12:19:40.128457",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Function: concurrent_map()] [Stream Completion Race] When the stream ends and .fuse() triggers, can there be a race condition where some spawned tasks are still running but the stream appears complete to the caller, leading them to assume all work is done when active tasks could still fail or produce side effects? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e37ce623-522f-41a3-87b2-b5d279645a9c?mode=deep",
+    "timestamp": "2026-01-25 12:20:11.612132",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Trait: ConcurrentStream] [Blanket Implementation] The blanket trait implementation on line 56 applies to all Stream types - can this cause conflicts with other trait implementations or allow unintended types (like consensus-critical streams) to use concurrent processing when they require ordered processing for safety? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_072e0e3f-5cdd-4c5e-af9e-85fe90d8e50f?mode=deep",
+    "timestamp": "2026-01-25 12:20:42.650465",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Trait: ConcurrentStream] [Rustversion Conditional] The trait is only available with rustversion::since(1.75) - can nodes running different Rust compiler versions have different behavior in stream processing, causing validators to produce non-deterministic results and diverge on state roots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9104ed55-8835-4aa0-b3b2-ff099256c5c3?mode=deep",
+    "timestamp": "2026-01-25 12:21:12.155180",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Trait: ConcurrentStream] [Dead Code Annotation] The trait is marked #[allow(dead_code)] on line 38 - does this mean the trait is unused in production code, and if called unexpectedly, could untested code paths lead to crashes or security vulnerabilities in validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da8cab50-398b-4a83-aa8f-569273c6e25a?mode=deep",
+    "timestamp": "2026-01-25 12:21:42.980310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Trait: ConcurrentStream::concurrent_map()] [Self-Consumption] The method consumes self (line 41) which takes ownership of the stream - can this lead to use-after-move bugs where code tries to reuse a stream after calling concurrent_map, causing compilation errors that might be worked around unsafely? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8ec1745-f8b9-48e3-973d-f38ee78516e6?mode=deep",
+    "timestamp": "2026-01-25 12:22:13.513146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/bounded-executor/src/concurrent_stream.rs] [Trait: ConcurrentStream] [Return Type Opacity] The method returns 'impl FusedStream' which hides the concrete type - can this opacity prevent callers from implementing necessary error handling or cancellation logic, leading to unhandled edge cases in consensus-critical paths? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e3c704a-a60f-43fa-9ba1-b38e6bdcef3e?mode=deep",
+    "timestamp": "2026-01-25 12:22:46.178506",
+    "report_generated": false
+  }
+]
