@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: links()] [Overwrite Semantics] The links() method completely replaces the existing links Vec - can this cause bugs where partial link updates are expected but the entire vector gets overwritten, losing previously added links? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af023692-3f9f-42d3-9993-73cef4f2ea9e?mode=deep",
+    "timestamp": "2026-01-25 11:12:11.889785",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Derive: Clone] [Resource Duplication] Both structs derive Clone which performs deep copies of potentially large Vecs and Strings - can excessive cloning cause memory exhaustion if health check results are duplicated many times in aggregation pipelines? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1236544b-9557-4334-977f-084831652b1c?mode=deep",
+    "timestamp": "2026-01-25 11:12:24.451821",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Derive: Clone] [Data Consistency] If CheckResult/CheckSummary are cloned and then mutated, can this lead to stale or inconsistent health data being used in different parts of the system, potentially causing validators to make decisions based on outdated health information? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_570128bc-cb20-4c7a-9d9b-bb9ffe106a0b?mode=deep",
+    "timestamp": "2026-01-25 11:12:37.400356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckResult] [Thread Safety] While CheckResult is Clone, there's no synchronization mechanism - if multiple threads clone and modify CheckResults, can race conditions occur where health check results become inconsistent across concurrent evaluations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4e0faeb-ad2e-49ff-adc3-c2f5dbe725da?mode=deep",
+    "timestamp": "2026-01-25 11:12:50.834227",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckSummary] [Aggregation Race] If multiple threads are simultaneously converting Vec<CheckResult> to CheckSummary, can the lack of atomic aggregation cause summary_score to be calculated based on partially-modified check_results vectors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0f229d2-6251-474a-81dc-1980152cfbc2?mode=deep",
+    "timestamp": "2026-01-25 11:13:05.148612",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Derive: Object] [API Attack Surface] Both structs derive poem_openapi::Object making them directly exposed via REST API - can attackers send malicious payloads exploiting the lack of input validation to attack API servers or cause unexpected behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b8e344d-1186-4d36-b437-2a21fb2536f1?mode=deep",
+    "timestamp": "2026-01-25 11:13:20.563435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Derive: Object] [Schema Validation] The OpenAPI schema generated from these types may not include the 0-100 constraint on score - can API clients send invalid scores that pass OpenAPI validation but violate semantic constraints? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2c42896-7511-4ea8-8692-ad55436efa0b?mode=deep",
+    "timestamp": "2026-01-25 11:13:37.023798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: from()] [Single Result Edge Case] If check_results contains exactly 1 result, summary_score = score/1 = score - but does this bypass any validation that multiple checks should be required for a reliable assessment? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b2f7e39-d568-4dec-be04-e05b5a494364?mode=deep",
+    "timestamp": "2026-01-25 11:13:55.092450",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: from()] [Maximum Length Attack] What happens if check_results contains u32::MAX elements? The sum calculation would overflow and the division might produce unexpected results - can this be exploited to manipulate scores? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c94cf59f-fdbf-4baa-af2e-40b7f34a2ff4?mode=deep",
+    "timestamp": "2026-01-25 11:14:14.280625",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: from()] [All-Zero Scores] If all CheckResults have score=0, summary_score becomes 0 and displays 'Improvement necessary' - but is there logic elsewhere that should treat this as a critical failure requiring immediate action rather than just 'improvement'? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9395173-3c43-4538-bffb-7429b8fd952a?mode=deep",
+    "timestamp": "2026-01-25 11:14:34.890423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: from()] [Mixed Valid/Invalid Scores] If some CheckResults have valid scores (0-100) and others have invalid scores (101-255), the average calculation treats them equally - can this produce misleading summary scores that hide the presence of invalid data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b962206-7d35-490b-b905-21b57a8a97af?mode=deep",
+    "timestamp": "2026-01-25 11:14:54.997805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckResult] [Immutability] After creation via new(), only links can be modified via builder - but checker_name, headline, score, and explanation are immutable - can this lead to stale health data if checks need to be updated but the struct can't be modified? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2697b407-a06c-462e-959e-314abbab2b2d?mode=deep",
+    "timestamp": "2026-01-25 11:15:16.275435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckSummary] [Computed Fields] summary_score and summary_explanation are computed from check_results but stored as fields - if check_results is later modified, can the summary fields become inconsistent with the actual results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0e750b9-0d5d-4ec2-b8ee-3b8f92131a26?mode=deep",
+    "timestamp": "2026-01-25 11:15:37.442459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: from()] [Non-Idempotent] Converting Vec<CheckResult> to CheckSummary consumes the Vec - if the same results need to be summarized multiple times, they must be cloned first - can this lead to performance issues or memory exhaustion in monitoring loops? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ab58ff6-e9f4-4e0a-b8a1-c0f3b2f07c9d?mode=deep",
+    "timestamp": "2026-01-25 11:15:59.784282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: from()] [No Error Path] The From implementation cannot fail - it will always produce a CheckSummary even with invalid input - should there be validation that returns Result<CheckSummary, Error> instead to signal data quality issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e657b1b-b5e2-4797-8602-b757188023a7?mode=deep",
+    "timestamp": "2026-01-25 11:16:22.729472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: new()] [No Validation] CheckResult::new() has no validation logic and cannot fail - should it return Result to validate score range, non-empty strings, and other invariants? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a016441c-dbab-4eb9-9d6e-00355aebc265?mode=deep",
+    "timestamp": "2026-01-25 11:16:44.225398",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckResult] [Checker Identity] Using String for checker_name instead of a typed enum or ID could allow duplicate or spoofed checker names - can an attacker register a malicious checker with the same name as a legitimate one to override its results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1e8c1ab-301b-4537-a7d9-2857fbdc73aa?mode=deep",
+    "timestamp": "2026-01-25 11:17:06.349786",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckSummary] [Aggregate Interpretation] There's no indication of which checks passed vs failed, only an average score - can this hide critical failures where one essential check failed (score 0) but is averaged out by many passing optional checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ded8e56a-00cf-4ea0-9506-11b75e54800e?mode=deep",
+    "timestamp": "2026-01-25 11:17:29.075969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: from()] [Loss of Detail] Converting Vec<CheckResult> to CheckSummary with only average score loses information about variance - can a node with inconsistent checks (some 100, some 0) have the same score as a consistently mediocre node (all 50)? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2873ad6f-1e98-4f9e-8e4a-489837a5dea7?mode=deep",
+    "timestamp": "2026-01-25 11:17:50.128862",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckResult] [String Allocation] Multiple String fields (checker_name, headline, explanation) and Vec<String> for links could cause fragmented heap allocations - can this be exploited for heap spraying attacks in memory-constrained environments? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cbacf2d-bd8e-4b68-b140-3f54a593f368?mode=deep",
+    "timestamp": "2026-01-25 11:18:12.220302",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckSummary] [Vec Capacity] The check_results Vec's capacity is not pre-allocated - if CheckResults are added one-by-one, can repeated reallocations cause performance degradation or memory fragmentation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8fec50f5-928c-42e8-8baa-0dab947ad825?mode=deep",
+    "timestamp": "2026-01-25 11:18:34.387739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckResult] [Field Semantics] The score field represents health but there's no specification of what 0 vs 100 means - can different checkers interpret the scale differently (e.g., 0=best vs 0=worst) causing aggregation to mix incompatible metrics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e4b7bfc-328b-4998-be2a-6f074625878a?mode=deep",
+    "timestamp": "2026-01-25 11:18:58.651632",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Struct: CheckSummary] [Comment Typo] 'aggeregated' is misspelled in line 47 - while minor, does this indicate lack of code review that might have caught more serious issues in the aggregation logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddeaf397-6afa-4771-8215-b78f8429398b?mode=deep",
+    "timestamp": "2026-01-25 11:19:20.758320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Function: from()] [Computational DoS] Iterating over check_results to calculate sum is O(n) - can an attacker cause DoS by forcing repeated CheckSummary creation from massive Vec<CheckResult> in a tight loop? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bae5dd10-3f7c-4707-bcf8-52150552ae79?mode=deep",
+    "timestamp": "2026-01-25 11:19:43.085163",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/types.rs] [Derive: Serialize] [Serialization DoS] Serializing CheckSummary with massive check_results Vec could consume excessive CPU/memory - can this be exploited to DoS the API when health results are queried? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e3ad884-d12b-44cb-b282-e2c9c0446540?mode=deep",
+    "timestamp": "2026-01-25 11:20:06.853675",
+    "report_generated": false
+  }
+]
