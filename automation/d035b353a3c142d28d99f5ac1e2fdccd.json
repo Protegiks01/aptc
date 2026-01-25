@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_v1_from_write_table_item()] [Error Context Propagation] Lines 211-214 add context to errors but still fall through to next fallback - can this error context leak sensitive information about database state or indexer internals in logs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdbdd7c1-c807-43ec-a978-f8be34d00ce2?mode=deep",
+    "timestamp": "2026-01-25 20:43:20.346483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_v1_from_write_table_item()] [CollectionData Parsing] Lines 195-202 call TokenWriteSet::from_table_item_type() which could fail - if parsing succeeds but returns non-CollectionData variant, does Ok(None) at line 276 hide parsing errors that should be investigated? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b75319b-0abb-482d-a464-6d50da70f70c?mode=deep",
+    "timestamp": "2026-01-25 20:43:33.212729",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_v1_from_write_table_item()] [Duplicate Field Assignment] Lines 245 and 260 both use collection_id_struct.creator - can this lead to inconsistencies if creator_address standardization at line 233 produces different results than expected? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_434b7366-d134-4010-bcb8-f2dad8d990c8?mode=deep",
+    "timestamp": "2026-01-25 20:43:47.025533",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_v1_from_write_table_item()] [Transaction Version Trust] txn_version parameter is used throughout without validation - can negative or future version numbers cause indexer state corruption or ordering issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d03bd34-144f-4328-9d8c-01e313006248?mode=deep",
+    "timestamp": "2026-01-25 20:44:00.859105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_v1_from_write_table_item()] [Timestamp Consistency] txn_timestamp is used for both transaction_timestamp and last_transaction_timestamp at lines 256 and 272 - can clock skew or timestamp manipulation cause indexer inconsistencies? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ec8d5d8-cd4b-4c3f-863e-349c96c43a77?mode=deep",
+    "timestamp": "2026-01-25 20:44:15.700659",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_collection_creator_for_v1()] [Race Condition Window] Lines 288-295 implement retry logic with sleep delays - can an attacker exploit the timing window between retries to inject fake creator data during concurrent transaction processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87b681d2-448b-4eef-b5fd-8efec41bd38d?mode=deep",
+    "timestamp": "2026-01-25 20:44:31.689715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_collection_creator_for_v1()] [Retry Exhaustion] The function retries QUERY_RETRIES times with QUERY_RETRY_DELAY_MS delays - can an attacker cause legitimate lookups to fail by timing their attacks to exhaust all retry attempts, causing collections to not be indexed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c1424c7-a3fc-41a9-9798-409357d0bd34?mode=deep",
+    "timestamp": "2026-01-25 20:44:50.109798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_collection_creator_for_v1()] [Thread Sleep Blocking] Line 293 uses std::thread::sleep() which blocks the entire thread - can this cause indexer throughput degradation when processing many transactions with missing creators, leading to indexer lag? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48f286f9-da44-4041-be1f-4c69f774a08b?mode=deep",
+    "timestamp": "2026-01-25 20:45:08.401762",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_collection_creator_for_v1()] [Generic Error Message] Line 297 returns a generic error message 'Failed to get collection creator' - can this obscure the root cause of failures (database issues vs. missing data), making it harder to detect attacks or bugs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d38a3e5-550b-45e5-ada9-cd6bf78f5471?mode=deep",
+    "timestamp": "2026-01-25 20:45:25.980116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_collection_creator_for_v1()] [Retry Counter Overflow] retried counter starts at 0 and increments - although unlikely with QUERY_RETRIES constant, can integer overflow in the retry loop cause infinite retries if QUERY_RETRIES is set to a malicious value? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30630775-e040-4365-b611-3e750fd78d91?mode=deep",
+    "timestamp": "2026-01-25 20:45:47.029286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_collection_creator_for_v1()] [Database Connection Reuse] The same conn is used across multiple retries - can connection state issues or transaction isolation levels cause different results across retries, leading to non-deterministic creator resolution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7331b204-5118-4fbf-b327-df39645ccd76?mode=deep",
+    "timestamp": "2026-01-25 20:46:06.990175",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_collection_creator_for_v1()] [Time-of-Check-Time-of-Use] The function checks get_by_table_handle() at line 290, sleeps, then checks again - can concurrent database updates between retries cause TOCTOU vulnerabilities where creator data changes mid-retry? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0301e2c2-612d-4018-9aaf-e0aa40647af6?mode=deep",
+    "timestamp": "2026-01-25 20:46:29.182055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_collection_creator_for_v1()] [Resource Exhaustion] If many transactions require retries simultaneously, can the cumulative sleep time cause thread pool exhaustion and indexer starvation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1faa3959-28b6-4dfc-9b16-22521ab3d572?mode=deep",
+    "timestamp": "2026-01-25 20:46:51.498712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_by_table_handle()] [SQL Injection] Lines 305-309 use sql_query with bind parameter for table_handle - while bind is used, can malicious table_handle values exploit any edge cases in diesel's parameter binding to inject SQL? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b04dae37-42c3-433b-8c88-eb84b7bdb050?mode=deep",
+    "timestamp": "2026-01-25 20:47:15.416497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_by_table_handle()] [Index Absence] Line 306 queries current_collections_v2 WHERE table_handle_v1 = $1 - if no index exists on table_handle_v1, can this cause table scan performance issues allowing attackers to DoS the indexer with many lookups? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7db12531-be75-4bcf-b796-ed2debfcedcf?mode=deep",
+    "timestamp": "2026-01-25 20:47:39.377760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_by_table_handle()] [Multiple Results Handling] Lines 305-309 use get_results() which returns Vec, but line 310 only pops one result - can multiple matching rows cause incorrect creator_address to be returned, allowing collection impersonation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_087bcf23-9611-4c6a-ace7-b3465274098f?mode=deep",
+    "timestamp": "2026-01-25 20:48:04.558294",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_by_table_handle()] [Null Result Handling] Lines 311-314 handle empty and null results with context() - can these error messages expose database schema information that aids attackers in crafting exploits? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_539ca208-a18b-4ad4-81f4-21a0a14ebf0f?mode=deep",
+    "timestamp": "2026-01-25 20:48:28.338982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_by_table_handle()] [Option<T> Unwrapping] The code pops from Vec<Option<CreatorFromCollectionTableV1>> and unwraps twice - can database NULL values in creator_address column cause panics despite using context()? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0dd298a0-64bd-4164-929f-514339239d25?mode=deep",
+    "timestamp": "2026-01-25 20:48:51.677043",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_by_table_handle()] [Raw SQL Query] Line 305 uses raw SQL query instead of diesel query builder - can this bypass diesel's type safety and query validation, potentially introducing subtle bugs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e374c8db-3f7e-4a4b-8e6e-ac28e6cb80af?mode=deep",
+    "timestamp": "2026-01-25 20:49:15.823991",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_by_table_handle()] [Database Transaction Isolation] The query doesn't specify transaction isolation level - can concurrent writes to current_collections_v2 cause phantom reads or non-repeatable reads during creator lookup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_154edd71-7c77-4980-bef7-49aba1833f40?mode=deep",
+    "timestamp": "2026-01-25 20:49:39.938463",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_by_table_handle()] [TODO Comment Security] Line 300 has TODO to change to KV store - can the current SQL implementation have performance or security issues that would be resolved by KV store but remain exploitable until then? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33829c6e-f020-4f57-a02e-e73111b9ecbb?mode=deep",
+    "timestamp": "2026-01-25 20:50:02.996572",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Function: get_by_table_handle()] [QueryableByName Safety] CreatorFromCollectionTableV1 uses QueryableByName at line 71 - can mismatched SQL column types or names cause deserialization failures or type confusion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ecfa09c-844a-4c9c-b790-cc0066656c99?mode=deep",
+    "timestamp": "2026-01-25 20:50:27.176833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Struct: CollectionV2] [Primary Key Collision] Lines 31 define composite primary key (transaction_version, write_set_change_index) - can two different collections have identical version and index values, causing database constraint violations or data loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32865963-eca1-4b0b-bb50-c75a6921ab81?mode=deep",
+    "timestamp": "2026-01-25 20:50:51.088273",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Struct: CollectionV2] [Missing Constraints] Fields like current_supply, max_supply at lines 41-42 allow BigDecimal without bounds - can extremely large or negative values cause database overflow or corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3c7e5e3-99eb-48d2-bf19-2b72435b03fc?mode=deep",
+    "timestamp": "2026-01-25 20:51:15.744909",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/v2_collections.rs] [Struct: CollectionV2] [Optional Field Semantics] Fields like mutable_description, mutable_uri at lines 44-45 are Option<bool> - does None mean false, unknown, or not applicable? Can this ambiguity cause security issues in downstream consumers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a72cdf1a-1139-4573-a135-7e66c7dc0a1f?mode=deep",
+    "timestamp": "2026-01-25 20:51:40.587283",
+    "report_generated": false
+  }
+]
