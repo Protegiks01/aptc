@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [SQL Injection] Although using Diesel ORM, can an attacker craft malicious idempotency_key or application_id strings containing SQL metacharacters that could bypass ORM protections and inject SQL commands when the filter is constructed at line 47-51? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c17b93f-59bd-486d-9043-7a805cb14e3f?mode=deep",
+    "timestamp": "2026-01-25 10:39:56.913968",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Database DoS] Can an attacker provide idempotency_key values that match thousands or millions of database rows, causing the .load(conn) at line 55 to consume excessive memory and crash the service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f295076-9a41-4ff3-8952-51df38ca66b7?mode=deep",
+    "timestamp": "2026-01-25 10:40:09.814250",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Query Performance] Can an attacker provide idempotency_key patterns that prevent PostgreSQL index usage, forcing full table scans on the asset_uploader_request_statuses table and degrading API performance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89de771e-bad9-4cc7-a72c-a11b534da962?mode=deep",
+    "timestamp": "2026-01-25 10:40:23.814016",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Connection Pool Exhaustion] Can an attacker make rapid concurrent requests to get_status(), causing pool.get() at line 21 to exhaust the database connection pool and prevent legitimate requests from being processed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72910867-a717-4b3c-9365-13ae32e27f60?mode=deep",
+    "timestamp": "2026-01-25 10:40:37.498153",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Connection Leak] If query_status() returns an error after pool.get() succeeds at line 21, is the PooledConnection properly released back to the pool, or could repeated errors leak connections? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6503028-e62c-452a-b8f2-a99226be2882?mode=deep",
+    "timestamp": "2026-01-25 10:40:52.085091",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Integer Truncation] At line 32, status_code is cast from i64 to u16 with 'as u16'. Can an attacker store negative status_code values in the database that get converted to unexpected u16 values (e.g., -1 becomes 65535), breaking client parsing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_726e54c0-ff4a-4e91-8807-ece6aacf8795?mode=deep",
+    "timestamp": "2026-01-25 10:41:07.714212",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Status Code Overflow] Can status_code values larger than 65535 (u16::MAX) be stored in the database as i64, then get truncated to incorrect values when cast at line 32, causing clients to misinterpret error states as success? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1936b72-e4ca-4026-b424-b5a5f34a40e1?mode=deep",
+    "timestamp": "2026-01-25 10:41:24.895949",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Status Code Comparison] At line 25, StatusCode::OK.as_u16() is compared with row.status_code (i64). Can this comparison fail for valid HTTP 200 responses if row.status_code contains unexpected values like 200_000 or negative numbers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1c77f0d-cbfb-4b92-bb5d-9f3f624d7149?mode=deep",
+    "timestamp": "2026-01-25 10:41:44.279676",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Error Message Leakage] At line 33, error_messages from the database are directly exposed to API clients. Can these messages contain sensitive internal information like database connection strings, file paths, or stack traces that aid attackers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42f84799-0a4c-4084-9bb0-cbdaf37f7146?mode=deep",
+    "timestamp": "2026-01-25 10:42:05.288182",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Debug Query Exposure] At line 53-54, the full SQL query is logged with debug!(). In production deployments with debug logging enabled, could this expose sensitive idempotency_key or application_id values in log files? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ed6e05f-f303-4692-8e78-da6f0f312312?mode=deep",
+    "timestamp": "2026-01-25 10:42:27.106239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [CDN URI Disclosure] At line 28, cdn_image_uri is returned with unwrap_or_default(). If cdn_image_uri is None in the database but status is 200, clients receive an empty string. Could this leak information about backend CDN failures or misconfigurations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e12124c5-fe12-4274-85ca-1ddb23c6f46b?mode=deep",
+    "timestamp": "2026-01-25 10:42:49.837560",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Cross-Application Data Leak] Can an attacker iterate through different application_id values to discover and access upload status data belonging to other applications' idempotency_keys, bypassing intended access controls? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_953f4051-4fb3-4a1c-a763-d2caafe54512?mode=deep",
+    "timestamp": "2026-01-25 10:43:13.352679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Missing Authentication] The function takes idempotency_tuple without any authentication context. Can unauthorized clients query any upload status by guessing or enumerating idempotency_key and application_id combinations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35dbc961-1769-4222-91fa-e1f159a444ab?mode=deep",
+    "timestamp": "2026-01-25 10:43:36.163993",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Idempotency Key Enumeration] At line 47-50, the query filters only by idempotency_key and application_id. Can an attacker systematically enumerate these values to discover all upload requests in the system? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f06d00b0-2a46-46d5-af91-84e9f95dca84?mode=deep",
+    "timestamp": "2026-01-25 10:43:57.468590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [No Rate Limiting] There are no rate limiting checks in get_status(). Can an attacker make unlimited status queries to enumerate valid idempotency_key/application_id pairs or overwhelm the database? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f687228-0fd4-475c-a3c4-1e5574ce596a?mode=deep",
+    "timestamp": "2026-01-25 10:44:19.871418",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Unbounded Input Length] The idempotency_key and application_id strings in IdempotencyTuple have no length validation. Can an attacker provide extremely long strings (e.g., 100MB) that consume excessive memory when building the query or response at line 22-36? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_044e5ec6-9dce-4dc8-82bf-45d4ac2f1a48?mode=deep",
+    "timestamp": "2026-01-25 10:44:42.573187",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Special Character Handling] Are idempotency_key and application_id properly escaped for PostgreSQL? Can strings containing null bytes, Unicode special characters, or ANSI escape sequences cause query errors or injection vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_288953a5-3845-4a4d-87c3-263165cf246f?mode=deep",
+    "timestamp": "2026-01-25 10:45:03.324746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Empty String Handling] What happens if idempotency_key or application_id are empty strings? Does the query return all rows in the table, potentially leaking all upload status data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3f9955a-e39b-4942-8da5-81c4f0fc5fe6?mode=deep",
+    "timestamp": "2026-01-25 10:45:25.230372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Database Error Propagation] At line 23 and 38, errors are propagated with '?'. Do these anyhow::Error responses leak sensitive database error details to API clients, revealing internal database structure or credentials? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3cffdac5-09cd-4abb-91be-80299514d393?mode=deep",
+    "timestamp": "2026-01-25 10:45:48.084274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: query_status()] [Query Load Error] At line 55, query.load(conn)? can fail for many reasons (timeout, connection loss, constraint violations). Are all error types handled safely, or could specific errors cause panics or resource leaks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80663100-0f9f-40fc-b8c2-aec6eb49057e?mode=deep",
+    "timestamp": "2026-01-25 10:46:07.956449",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Pool Get Timeout] If pool.get() at line 21 blocks waiting for available connections, can this cause the API handler to hang indefinitely, creating a cascading failure that blocks all incoming requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95bec64e-8bf4-4fe0-8f1c-b874a1d06e4f?mode=deep",
+    "timestamp": "2026-01-25 10:46:27.459173",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Concurrent Query Race] If multiple threads call get_status() simultaneously with the same idempotency_tuple, can concurrent database queries cause race conditions in the connection pool or result in inconsistent status_response data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef96d52d-2f68-4f27-a41c-b7368994ae6c?mode=deep",
+    "timestamp": "2026-01-25 10:46:48.401363",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [TOCTOU Vulnerability] Between query_status() returning at line 23 and the response being built at line 24-36, can the database state change (e.g., another process updates status_code), resulting in clients receiving stale or inconsistent status information? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb1b3bf4-b001-474d-b0f1-1b9d9c49a6e9?mode=deep",
+    "timestamp": "2026-01-25 10:47:09.670813",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Duplicate Asset URIs] If the database contains multiple rows with identical asset_uri for the same idempotency_tuple, the HashMap insert at line 26 and 31 will silently overwrite earlier entries. Can this cause clients to miss error states or success confirmations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5cf22345-b6ae-47b0-8666-7eef407b5327?mode=deep",
+    "timestamp": "2026-01-25 10:47:32.814044",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/asset_uploader/api/get_status.rs] [Function: get_status()] [Missing Asset URIs] If asset_uploader_request_statuses table has no matching rows, query_status returns an empty Vec. Does returning an empty AHashMap at line 38 properly distinguish 'no uploads found' from 'uploads in progress' or 'database error'? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8233ac8c-c2ed-4825-9adf-a5457f6c2481?mode=deep",
+    "timestamp": "2026-01-25 10:47:55.185377",
+    "report_generated": false
+  }
+]
