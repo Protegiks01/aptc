@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Module: GenericWeighting] [Cryptographic vulnerability] The code contains an explicit WARNING (lines 6-7, 108) about reusing encryption keys being insecure in some PVSS schemes. Can an attacker exploit the key reuse in to_weighted_encryption_keys() by submitting multiple weighted transcripts with the same encryption keys, enabling them to decrypt other players' shares and compromise the entire DKG ceremony, leading to validator private key theft? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d25a45f-54d2-4c12-9b4d-a59b3130c48c?mode=deep",
+    "timestamp": "2026-01-25 18:36:22.262233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: to_weighted_encryption_keys()] [Key reuse attack] The function duplicates encryption keys multiple times based on player weights without any freshness guarantee. Can a malicious dealer exploit this by analyzing the pattern of duplicated keys across multiple DKG rounds to derive relationships between shares and reconstruct the master secret key, breaking the threshold security assumption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90c496d9-ec07-4d7d-a603-65dc2e7853ae?mode=deep",
+    "timestamp": "2026-01-25 18:36:34.819237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: deal()] [Encryption scheme vulnerability] When dealing shares, duplicated_eks are passed to the underlying T::deal() function. If the underlying PVSS scheme assumes unique encryption keys per share, can this duplication cause related-key attacks where an attacker can derive mathematical relationships between encrypted shares to recover the secret without reaching the threshold? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58a68ff4-f833-4757-936d-e57c0fc5e354?mode=deep",
+    "timestamp": "2026-01-25 18:36:48.334095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: decrypt_own_share()] [Share isolation breach] The same DecryptPrivKey dk is reused to decrypt multiple virtual player shares in a loop. Can a malicious dealer craft specially correlated encrypted shares such that decrypting them with the same key leaks information about the private key itself through timing side-channels or mathematical relationships? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95b1c50d-60ea-41e7-8546-429273d932cb?mode=deep",
+    "timestamp": "2026-01-25 18:37:01.494954",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Struct: GenericWeighting] [Chosen-ciphertext attack] Since encryption keys are duplicated for weighted players, can an attacker submit maliciously crafted ciphertexts that exploit the lack of key separation to mount a chosen-ciphertext attack, decrypting arbitrary shares by correlating responses from the same encryption key used multiple times? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4cae1634-e6fe-4af3-a675-b460db3566dc?mode=deep",
+    "timestamp": "2026-01-25 18:37:15.664254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: to_weighted_encryption_keys()] [Integer overflow] Line 55 allocates Vec::with_capacity(sc.get_total_weight()). Can a malicious validator provide a WeightedConfigBlstrs with extremely large total weight (near usize::MAX) causing integer overflow in memory allocation, leading to buffer overflows and potential remote code execution on validator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63a94bd4-bb49-46bc-93f6-dd7d894a34ea?mode=deep",
+    "timestamp": "2026-01-25 18:37:30.759881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: to_weighted_encryption_keys()] [DoS via memory exhaustion] Line 59 gets num_shares = sc.get_player_weight(&player) and loops pushing cloned keys. Can an attacker register as a validator with weight = u64::MAX, causing the function to attempt allocating petabytes of memory and crashing all validator nodes attempting DKG, resulting in total loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fed2164f-769c-4525-a37b-17f7f9f56145?mode=deep",
+    "timestamp": "2026-01-25 18:37:46.758040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: get_public_key_share()] [Weight bounds violation] Line 155 gets weight = sc.get_player_weight(player) without validation. Can a Byzantine validator manipulate the WeightedConfigBlstrs during DKG to assign themselves weight = 0 or weight > threshold, bypassing threshold requirements and either avoiding contribution or gaining excessive voting power? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4ffb5f9-90af-4a1a-b79b-187fda5c3d4f?mode=deep",
+    "timestamp": "2026-01-25 18:38:05.579822",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: decrypt_own_share()] [Loop bound manipulation] Lines 183-189 loop from 0..weight without checking if weight is reasonable. Can an attacker with maliciously inflated weight cause the decrypt loop to run billions of times, creating a DoS condition where DKG never completes and preventing epoch transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d3f448e-1d5b-4871-a1e0-2d916e68f74b?mode=deep",
+    "timestamp": "2026-01-25 18:38:23.870000",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: to_weighted_encryption_keys()] [Total weight consistency] The function assumes sc.get_total_weight() matches the sum of individual player weights. Can a malicious configuration provide inconsistent weights where total != sum(individual_weights), causing array index out-of-bounds when accessing duplicated_eks[virtual_player_index]? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95904575-eb31-4865-aee2-814e45379652?mode=deep",
+    "timestamp": "2026-01-25 18:38:44.056687",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: get_public_key_share()] [Virtual player collision] Line 161 calls sc.get_virtual_player(player, i) to map real players to virtual players. Can an attacker craft a WeightedConfigBlstrs where two different (player, i) pairs map to the same virtual player ID, causing share collisions where multiple players receive identical shares and breaking threshold security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd65b9f6-6931-4a10-a4b3-4e378769bcf6?mode=deep",
+    "timestamp": "2026-01-25 18:39:04.927935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: decrypt_own_share()] [Virtual player index manipulation] Line 190 computes virtual_player = sc.get_virtual_player(player, i) where i ranges from 0..weight. Can a malicious player exploit the virtual player mapping algorithm to predict or control which virtual player indices they receive, allowing them to selectively choose advantageous shares? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5e5ab8d-d4a7-4cd8-a20a-60167bafbda0?mode=deep",
+    "timestamp": "2026-01-25 18:39:26.431732",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: to_weighted_encryption_keys()] [Player enumeration attack] Line 57 enumerates players by player_id index into eks vector. Can the ordering of players in eks mismatch the ordering expected by WeightedConfigBlstrs, causing encryption keys to be assigned to wrong virtual players and breaking the correspondence between encrypted shares and decryption keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1908d64f-0642-458c-adfe-0b2e084b8712?mode=deep",
+    "timestamp": "2026-01-25 18:39:49.333493",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: get_public_key_share()] [Virtual player bounds] The code retrieves public key shares for virtual players without checking if virtual_player.id is within valid bounds. Can an attacker provide a malicious virtual_player that points outside the valid share array, causing out-of-bounds memory access and potential information disclosure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a34cdebd-f5b1-40b2-b8b7-4a788fadc131?mode=deep",
+    "timestamp": "2026-01-25 18:40:12.594658",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: decrypt_own_share()] [Virtual player uniqueness] The function assumes all virtual players for a given player are unique. Can a Byzantine configuration map multiple indices i to the same virtual_player, causing the same share to be decrypted and stored multiple times, artificially inflating a player's weight in reconstruction? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a462c3d0-0c6a-4a25-9511-e9f08655558b?mode=deep",
+    "timestamp": "2026-01-25 18:40:37.105401",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: deal()] [Threshold mismatch] Line 113 calls sc.get_threshold_config() to extract the unweighted threshold. Can an attacker provide a WeightedConfigBlstrs where the threshold in the underlying ThresholdConfigBlstrs is inconsistent with the weighted threshold, allowing reconstruction with fewer than the required weighted shares? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6b01506-5270-445f-82d5-a9284c1c2359?mode=deep",
+    "timestamp": "2026-01-25 18:41:03.283404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: verify()] [Configuration tampering] Line 138 extracts sc.get_threshold_config() for verification. Can a malicious validator provide different WeightedConfigBlstrs instances to deal() vs verify(), causing the transcript to be created with one threshold but verified with another, bypassing security checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb587f90-9974-435d-b905-0623ef1b8b85?mode=deep",
+    "timestamp": "2026-01-25 18:41:30.274817",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: aggregate_with()] [Threshold inconsistency during aggregation] Line 224 aggregates transcripts using only sc.get_threshold_config(), ignoring weight information. Can an attacker aggregate transcripts with incompatible weighted configurations, creating a final transcript where some players have incorrect aggregated weights, breaking threshold requirements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_434a102e-7e9e-428d-9609-fbbb05d6891d?mode=deep",
+    "timestamp": "2026-01-25 18:41:58.267326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: deal()] [Player count validation] The deal function accepts eks vector of encryption keys. Can an attacker provide eks.len() != number of players in WeightedConfigBlstrs, causing index out-of-bounds when to_weighted_encryption_keys() tries to access eks[player_id] for a player_id >= eks.len()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_231d9442-6a2e-4a4d-8e8c-af41ff2e1abc?mode=deep",
+    "timestamp": "2026-01-25 18:42:26.602879",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: verify()] [Encryption key count mismatch] Line 134 calls to_weighted_encryption_keys() with eks vector. If eks.len() doesn't match the expected player count, can this cause silent verification failures where invalid transcripts pass verification because key mismatches aren't detected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_155b73ec-4442-4a32-a376-38946a23b3c5?mode=deep",
+    "timestamp": "2026-01-25 18:42:51.540646",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Trait: ValidCryptoMaterial] [Serialization bypass] Lines 35-37 implement to_bytes() by delegating to self.trx.to_bytes(). Can an attacker craft a malicious transcript T that serializes differently through ValidCryptoMaterial vs direct serialization, allowing them to pass verification but deserialize into a different transcript state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab4829a7-bdc1-42b1-9406-a3f2cb8939e6?mode=deep",
+    "timestamp": "2026-01-25 18:43:17.667522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Trait: TryFrom<&[u8]>] [Deserialization validation gap] Lines 40-45 deserialize by calling T::try_from(bytes) and wrapping in GenericWeighting. Does this properly validate that the deserialized transcript is compatible with weighted PVSS constraints, or can an attacker deserialize an unweighted transcript and bypass weight checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9af3a6ff-5e5e-4a72-84f5-9ed25004466b?mode=deep",
+    "timestamp": "2026-01-25 18:43:44.944166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Trait: ValidCryptoMaterial] [AIP_80_PREFIX empty string] Line 33 defines AIP_80_PREFIX as empty string. Does this create collision potential where weighted and unweighted transcripts have identical serialization prefixes, allowing replay attacks by substituting unweighted transcripts in place of weighted ones? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26bf012b-a619-43e8-9670-b66f189d3336?mode=deep",
+    "timestamp": "2026-01-25 18:44:11.490155",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Function: dst()] [Domain separation weakness] Lines 87-91 construct domain separation tag by prepending b\\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ce4c049-c9bd-4be0-921f-554a4dd88589?mode=deep",
+    "timestamp": "2026-01-25 18:44:38.820363",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/weighted/mod.rs] [Trait: TryFrom] [Error propagation] Line 44 propagates CryptoMaterialError from T::try_from. Can an attacker trigger specific error conditions that cause inconsistent states where some validators successfully deserialize a transcript while others fail, leading to consensus divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acfb66fa-8452-41f4-adc9-21b207d67f3d?mode=deep",
+    "timestamp": "2026-01-25 18:45:06.654737",
+    "report_generated": false
+  }
+]
