@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Signature verification bypass] At line 87-89, can an attacker craft malformed signatures that pass the epoch_state.verifier.verify() check but are invalid when aggregated later, causing the final multi-signature to be invalid despite quorum being reached? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa559c43-2928-4288-8257-dba57915db9b?mode=deep",
+    "timestamp": "2026-01-25 21:14:52.918962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Signature verification order] Signature verification occurs at line 87-89 AFTER the local_view comparison at line 82 - can an attacker exploit this ordering to force expensive signature verification operations on observations with mismatched views, causing computational DoS? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3f3cbae-103d-4a36-8097-8e17ec451ba6?mode=deep",
+    "timestamp": "2026-01-25 21:15:05.062104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Weak signature validation] Does the verifier.verify() call at line 88 validate the signature against the correct message (peer_view), or can an attacker sign a different message and replay a valid signature from another context to pass verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b450e726-6612-413e-b8b1-9515a07ed537?mode=deep",
+    "timestamp": "2026-01-25 21:15:17.476206",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Signature malleability] Are BLS signatures in Aptos canonicalized to prevent malleability attacks where multiple valid signatures exist for the same message/signer pair, allowing an attacker to submit the same vote twice with different signature representations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eab99245-4b3e-46c8-808b-ed18f0066b91?mode=deep",
+    "timestamp": "2026-01-25 21:15:30.537146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Batch verification bypass] If verifier.verify() uses batch verification internally for performance, can an attacker craft a malicious signature that passes batch verification but fails individual verification, causing incorrect signature aggregation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05ba38bb-24b2-4e3b-9a07-c85c7bf6dc05?mode=deep",
+    "timestamp": "2026-01-25 21:15:44.796443",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Signature injection after verification] Between signature verification at line 87-89 and adding to partial_sigs at line 92, can an attacker inject or modify signatures in the inner_state Mutex, causing unverified signatures to be aggregated? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e96bd96-799c-4cfd-bf61-aedce828c3d4?mode=deep",
+    "timestamp": "2026-01-25 21:15:59.512578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [PartialSignatures state corruption] At line 92, does add_signature() properly validate that the signature being added matches the sender parameter, or can an attacker add signatures for different validators to the PartialSignatures map? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13ee321a-ab47-48ef-89da-3b0a392d3e1a?mode=deep",
+    "timestamp": "2026-01-25 21:16:15.803737",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Signature aggregation race] Can multiple concurrent add() calls modify the same partial_sigs PartialSignatures object simultaneously, causing signature additions or voter set updates to be lost due to race conditions in the BTreeMap operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80e5e317-8f1f-40d0-9178-d7863641cce7?mode=deep",
+    "timestamp": "2026-01-25 21:16:32.098046",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Voters set inconsistency] At line 93, voters are collected from partial_sigs.signatures().keys() - can this set become inconsistent with the actual voting power calculation if validators are added/removed from the epoch state during aggregation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03ba0a35-fbfa-4a64-bdb4-c1640f362ccb?mode=deep",
+    "timestamp": "2026-01-25 21:16:49.029113",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [BTreeMap ordering attack] Does the BTreeMap ordering of signatures in PartialSignatures affect the aggregation outcome, and can an attacker exploit insertion order to cause non-deterministic aggregation results across validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79255ed4-db4a-40f5-aa2e-59c35fcdf29e?mode=deep",
+    "timestamp": "2026-01-25 21:17:06.286520",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Quorum threshold bypass] At line 94-97, can the check_voting_power() call be manipulated to incorrectly report quorum has been reached when it hasn't, allowing Byzantine validators to forge QuorumCertifiedUpdates with insufficient voting power? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49bf0769-a575-4100-8959-2913c4b09938?mode=deep",
+    "timestamp": "2026-01-25 21:17:24.355788",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Quorum calculation race] Between collecting voters at line 93 and checking voting power at line 94-97, can epoch state changes or validator set updates cause the quorum calculation to use stale or inconsistent validator weights? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf5b4d65-7344-450b-ba0a-9d849a22c760?mode=deep",
+    "timestamp": "2026-01-25 21:17:43.255770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [VerifyError interpretation] At line 98-102, the code extracts voting_power from TooLittleVotingPower errors - can this be exploited to leak information about the current voting power distribution, or can error manipulation cause incorrect power calculations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da311b14-6b2e-4cf6-9fdc-47921c1f58aa?mode=deep",
+    "timestamp": "2026-01-25 21:18:02.646034",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Power check result manipulation] At line 115, power_check_result.is_err() determines whether to return aggregated signatures - can an attacker cause check_voting_power() to return Ok() prematurely by exploiting integer overflow in the voting power accumulation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fea5f803-d525-4fb3-b21f-7dc647b1e0f7?mode=deep",
+    "timestamp": "2026-01-25 21:18:23.132322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Threshold calculation error] Does quorum_voting_power() at line 110 correctly calculate 2f+1 threshold, or can rounding errors, integer division issues, or validator set size edge cases cause incorrect thresholds that break Byzantine fault tolerance? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a64e82a-8d5b-48d6-bcaa-08ee39c8fa02?mode=deep",
+    "timestamp": "2026-01-25 21:18:43.695038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [New total power accuracy] At line 98-102, new_total_power extraction has a None fallback case - can certain VerifyError variants cause voting power to not be counted properly, leading to incorrect quorum determination? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3441556-7c4f-4e5b-9268-3797a2a900de?mode=deep",
+    "timestamp": "2026-01-25 21:19:05.677949",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Logging information leak] At line 104-113, detailed voting power information is logged including peer_power and threshold - can this information leakage be exploited by adversaries to time their attacks or manipulate the consensus process? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55c4b4ca-6e5c-4ac6-9ea5-8ad77da7f8c9?mode=deep",
+    "timestamp": "2026-01-25 21:19:26.486036",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Aggregate signature forgery] At line 118, can aggregate_signatures() be exploited with a carefully crafted set of partial signatures to produce an invalid AggregateSignature that appears valid but doesn't verify against the actual signers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74f3d493-b55a-418e-b356-a1d2fb0fd1e1?mode=deep",
+    "timestamp": "2026-01-25 21:19:48.207077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Signature aggregation failure handling] If aggregate_signatures() at line 118 fails with an error, the function returns an error - can an attacker cause aggregation to fail for legitimate quorums by injecting specific signature values that trigger edge cases in BLS aggregation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_861486cf-d0e8-4414-bf56-70fd90fc277e?mode=deep",
+    "timestamp": "2026-01-25 21:20:10.661662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Signatures iterator consistency] Does signatures_iter() at line 118 iterate over signatures in a deterministic order, or can non-deterministic iteration cause different validators to produce different aggregated signatures for the same set of partial signatures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da7f1d8f-0480-406d-b52d-9b0967f6c1c6?mode=deep",
+    "timestamp": "2026-01-25 21:20:33.184808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Partial to aggregate conversion] The error message at line 118 mentions 'partial-to-aggregated conversion error' - what specific errors can occur during this conversion, and can attackers trigger them to prevent legitimate quorum formation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ceab2eef-dfb3-4538-8c5d-b85d4d32ed6f?mode=deep",
+    "timestamp": "2026-01-25 21:20:56.109733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Multi-sig verification bypass] After creating the AggregateSignature at line 118, is it immediately verified before being returned in QuorumCertifiedUpdate, or can an invalid aggregated signature be returned that will fail verification later? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5563eac-15f6-4fa4-9898-577d0fb56461?mode=deep",
+    "timestamp": "2026-01-25 21:21:18.686505",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Update field confusion] At line 120-123, QuorumCertifiedUpdate uses peer_view for the update field - can an attacker exploit the fact that all validators must have identical views to cause the network to certify malicious JWK updates? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc03be97-3be3-4434-90de-4f423b3eeaf3?mode=deep",
+    "timestamp": "2026-01-25 21:21:41.445825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Multi-sig association] Does the QuorumCertifiedUpdate properly bind the multi_sig to the specific update, or can an attacker replay multi-signatures from one update onto a different update to forge certifications? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_416b2e75-5698-4f5e-b291-59faea282e56?mode=deep",
+    "timestamp": "2026-01-25 21:22:04.061370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Return value confusion] At line 120, Some(QuorumCertifiedUpdate) is returned after quorum - can multiple concurrent add() calls all return Some(), causing the same update to be certified multiple times with different signature sets? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5303084c-25e1-4da4-bd2f-28a134899905?mode=deep",
+    "timestamp": "2026-01-25 21:22:26.818915",
+    "report_generated": false
+  }
+]
