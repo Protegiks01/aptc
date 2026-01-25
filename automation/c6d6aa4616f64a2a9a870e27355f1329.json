@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: InboundStreamBuffer] [Concurrent Access] InboundStreamBuffer is not marked Send or Sync explicitly - if used in concurrent contexts, could multiple threads access self.stream simultaneously causing data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66cb41b3-d8dd-4820-9224-d16dcb00016d?mode=deep",
+    "timestamp": "2026-01-25 15:14:21.631837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: OutboundStream] [ID Generator Safety] U32IdGenerator at line 172 - is this thread-safe? If multiple async tasks call stream_message() concurrently, could request IDs collide or be generated out of order? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3eab9bb8-f7a5-4c1d-b5b9-cbd4707e0b06?mode=deep",
+    "timestamp": "2026-01-25 15:14:34.074402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: OutboundStream] [Channel Sender] stream_tx is a Sender<MultiplexMessage> (line 154) - are concurrent sends safe? Could fragments from different messages interleave if multiple stream_message() calls execute simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ef85401-4c87-4af3-b7cf-3f6bb0ae3c6d?mode=deep",
+    "timestamp": "2026-01-25 15:14:46.459023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::stream_message()] [Mutable Self] Takes &mut self (line 183) - this prevents concurrent stream_message() calls, but does it prevent concurrent reads of max_frame_size/max_message_size during streaming? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d8469c3-7506-4c12-93c6-7f1112702460?mode=deep",
+    "timestamp": "2026-01-25 15:14:59.789599",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStreamBuffer::append_fragment()] [Partial Error Recovery] If append_fragment() fails at line 93, the InboundStreamBuffer retains the partially assembled stream - should it be cleared to prevent inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eecfc045-8130-4107-9a60-ee45b308128a?mode=deep",
+    "timestamp": "2026-01-25 15:15:13.596593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStream::append_fragment()] [Error Context] Errors at lines 129, 133 use ensure!() with descriptive messages - but are these error messages safe to expose to peers? Could they leak internal state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7185094-d7c6-4797-8602-a6a4c3955b12?mode=deep",
+    "timestamp": "2026-01-25 15:15:28.618537",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::stream_message()] [Send Failure Handling] If stream_tx.send() fails at lines 221 or 230, the error propagates but fragments might be partially sent - how does the receiver handle incomplete streams? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ef68999-1b90-4b72-8cbd-12206650f521?mode=deep",
+    "timestamp": "2026-01-25 15:15:44.755473",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStream::new()] [Validation Error Side Effects] If validation fails at lines 111-118, the error propagates but the header was already processed - could repeated validation failures cause resource exhaustion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0fe0748-bb8d-4a58-aa6c-65d3a19cf157?mode=deep",
+    "timestamp": "2026-01-25 15:16:02.200608",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStream::append_fragment()] [Unbounded Growth] Each append operation (lines 142-145) grows the message buffer - is there a check preventing total message size from exceeding max_message_size during reassembly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4abdc8c7-7702-4521-b04d-ddd7dcfe91c4?mode=deep",
+    "timestamp": "2026-01-25 15:16:20.203239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::stream_message()] [Memory Allocation] Vec::from(chunk) at line 228 allocates new memory for each fragment - for large messages with many fragments, could this cause memory spikes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63e739cb-5561-42aa-99c6-33064cf2f949?mode=deep",
+    "timestamp": "2026-01-25 15:16:39.876986",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: InboundStreamBuffer] [Stream Replacement Memory] When new_stream() replaces an existing stream (line 77), the old stream is dropped - but does this immediately free all fragment buffers or could they be delayed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d9079cf-f582-4378-b31e-95dcc20aac0f?mode=deep",
+    "timestamp": "2026-01-25 15:16:59.999496",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::stream_message()] [Vec Split Efficiency] split_off() at lines 202-209 might allocate - if called frequently, could this cause memory fragmentation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d26ce17-6877-4597-a627-facd308a217c?mode=deep",
+    "timestamp": "2026-01-25 15:17:20.339518",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStream::append_fragment()] [Fragment ID Arithmetic] Line 138 performs self.current_fragment_id += 1 - should this use checked_add() to detect overflow at u8::MAX? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a7e96fc-b9b5-4c69-840f-f9b979cd5e47?mode=deep",
+    "timestamp": "2026-01-25 15:17:41.599369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStream::append_fragment()] [Comparison Edge Case] Line 133 checks current_fragment_id + 1 == fragment_id - if current_fragment_id is 255, the addition overflows to 0 in wrapping arithmetic. Is this intended? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f745bd5-0f74-4e02-856d-fed8b16148b4?mode=deep",
+    "timestamp": "2026-01-25 15:18:04.180564",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::stream_message()] [Chunk Count Cast] Line 218 casts chunks.len() to u8 - if chunks.len() > 255 (which should be caught earlier), this would truncate. Is the prior check at line 212 comprehensive? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0d990c6-e2a1-44ff-a0c0-feefad99d1f5?mode=deep",
+    "timestamp": "2026-01-25 15:18:25.703260",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: OutboundStream::stream_message()] [Index Enumeration] Line 227 casts index to u8 + 1 - since enumerate() returns usize, could this overflow if index >= 255? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6465c2b-939d-4d0b-8ed8-1c2cab892160?mode=deep",
+    "timestamp": "2026-01-25 15:18:49.632142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStream::new()] [Size Type Mismatch] Line 116 compares header.num_fragments (u8) as usize with max_fragments (usize) - on 32-bit systems, could this comparison be unsafe? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30e007ea-862e-4d1b-8c7e-cef5fdb2aa73?mode=deep",
+    "timestamp": "2026-01-25 15:19:11.802151",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [State Machine] [Header-Fragment Ordering] Can fragments arrive before their header due to network reordering? The code expects header first (line 90 error) - is there buffering for out-of-order messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc2cf178-31fc-4d15-8454-e8d86f688209?mode=deep",
+    "timestamp": "2026-01-25 15:19:35.000550",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [State Machine] [Multiple Headers] If an attacker sends multiple headers with the same request_id, does new_stream() properly reject them or replace the stream each time causing message loss? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc847da3-772f-4655-af79-6acd39d0c5d7?mode=deep",
+    "timestamp": "2026-01-25 15:19:59.326026",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [State Machine] [Premature Completion] If the check at line 146 returns true early (e.g., due to arithmetic error), could an incomplete message be returned? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43a57a3e-e93e-4636-8c97-8f334441b073?mode=deep",
+    "timestamp": "2026-01-25 15:20:23.835261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [State Machine] [Stale Streams] If fragments stop arriving mid-stream, does InboundStreamBuffer have a timeout mechanism to clear stale streams? Or do they persist indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a0d6a5b-632c-4a55-8ea1-1bffdefa2f6b?mode=deep",
+    "timestamp": "2026-01-25 15:20:47.245523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [State Machine] [Stream Lifecycle] After a stream completes (line 95), the stream is taken - but what prevents processing fragments that arrive late for the same request_id? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c5ed77e-da12-46a8-aa3d-6c940342713a?mode=deep",
+    "timestamp": "2026-01-25 15:21:09.847617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Struct: OutboundStream] [ID Generator Collision] U32IdGenerator (line 172) wraps after 2^32 IDs - in high-throughput scenarios, could request_id collision occur within the lifetime of a stream? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da71ee81-64e9-4192-9edb-ecc326ee2105?mode=deep",
+    "timestamp": "2026-01-25 15:21:33.026548",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStream::append_fragment()] [Cross-Stream Pollution] If two streams with the same request_id exist in different InboundStreamBuffers, could fragments be mixed? Is there per-connection isolation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2c02333-ac1d-4313-bd11-af78ce366716?mode=deep",
+    "timestamp": "2026-01-25 15:21:55.881508",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/stream/mod.rs] [Function: InboundStreamBuffer::new_stream()] [Request ID Reuse Timing] If a stream completes and a new stream starts with the same request_id immediately, could late-arriving fragments from the old stream corrupt the new one? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25a07c5f-75fa-44ea-85ca-834e4739c829?mode=deep",
+    "timestamp": "2026-01-25 15:22:18.803557",
+    "report_generated": false
+  }
+]
