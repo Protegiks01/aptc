@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: BatchEvaluationDomain::new()] [Vec Capacity] N_inverses is allocated with capacity log_N at line 135 but the loop at line 137 runs log_N + 1 times (0..=log_N is inclusive), could this cause a reallocation or in the worst case a buffer issue if Vec behavior changes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd70fa57-b05c-49de-a196-ceaa35ca2fa9?mode=deep",
+    "timestamp": "2026-01-25 20:51:15.763479",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: BatchEvaluationDomain::new()] [Debug Assert] Lines 143-146 contain a debug_assert checking N_inverses.last(), but this only runs in debug builds, could the invariant be violated in release builds due to the integer overflow at line 140, causing silent corruption of N_inverse values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52aa40a8-00b1-48d3-b082-1b2695f0fa33?mode=deep",
+    "timestamp": "2026-01-25 20:51:28.177218",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Panic via assert] At line 164, assert_le!(k, self.omegas.len()) will panic if k > N, but since this is a public function called on deserialized BatchEvaluationDomain objects, can an attacker cause validator crashes by calling get_subdomain() with out-of-bounds k values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e88f4db0-7fc3-48f1-bccf-e731961baa80?mode=deep",
+    "timestamp": "2026-01-25 20:51:41.921648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Panic via assert] At line 165, assert_ne!(k, 0) will panic for k=0, but is there a valid use case where k=0 should return an empty domain or 1-element domain instead of crashing? Could this be triggered via API to DoS validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd1b5d55-ea63-4006-88d0-778374cbff84?mode=deep",
+    "timestamp": "2026-01-25 20:51:55.301316",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Array Index] At line 181, self.omegas[idx % N] is accessed, the modulo operation suggests idx might exceed N, but idx = 2^(self.log_N - log_K) and should always be < N if log_K <= self.log_N, could edge cases cause idx >= N leading to incorrect root of unity selection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5eb738c-23aa-4180-ada2-be9b6c559b9e?mode=deep",
+    "timestamp": "2026-01-25 20:52:09.766257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Array Index] At line 184, self.omegas[(N - idx) % N] is accessed to get omega_inverse, if idx = N, this becomes omegas[0] which is Scalar::ONE, not the inverse of omega, could this happen and break inverse FFT operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ff7d2f4-d583-4257-ae66-7d8b79026547?mode=deep",
+    "timestamp": "2026-01-25 20:52:25.013534",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Loop Overflow] The loop at line 174 calculates idx by doubling it (self.log_N - log_K) times, starting from idx=1, for large domains where self.log_N is close to 64, could idx overflow during the idx *= 2 operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35d6bc33-17b2-4bc2-9a40-5ed2ce6e36d3?mode=deep",
+    "timestamp": "2026-01-25 20:52:41.929651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Debug Assert] At line 182, debug_assert checks is_order(&omega, K), but this is only in debug builds, could an incorrect omega be selected in release builds due to bugs in index calculation, silently corrupting subdomain roots used in cryptographic operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_369d9247-ff44-4081-b715-cebda835421f?mode=deep",
+    "timestamp": "2026-01-25 20:52:59.875463",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Debug Assert] At line 185, debug_assert verifies omega_inverse is the inverse of omega, but in release builds this check is skipped, could the modulo arithmetic at line 184 select wrong omega_inverse values for certain k values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b7d924b-a559-42c8-8aab-7774e4970a24?mode=deep",
+    "timestamp": "2026-01-25 20:53:18.694508",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Panic via unwrap()] At line 171, K_inverse.invert().unwrap() is called in a debug_assert, if K_inverse is zero or has no inverse, this would panic even though it's validation code, could this be triggered? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce78714f-0203-412b-9bcc-4b5f110271a8?mode=deep",
+    "timestamp": "2026-01-25 20:53:38.468694",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Bounds Check] At line 168, assert_gt!(K, 0) ensures K > 0, but K comes from smallest_power_of_2_greater_than_or_eq(k) which returns at least 1, so is this assert redundant or does it protect against a subtle bug in that function? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bade62b4-983d-444e-b4be-6699acba53c6?mode=deep",
+    "timestamp": "2026-01-25 20:53:58.596537",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_subdomain()] [Array Access] N_inverses[log_K] is accessed at line 170 without bounds checking, if log_K > self.log_N due to k > N (though checked at line 164), or if N_inverses.len() != log_N + 1 due to construction bugs, could this cause out-of-bounds access? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f673ee8-164c-436a-be4f-ed5bb6bff89c?mode=deep",
+    "timestamp": "2026-01-25 20:54:19.652566",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_root_of_unity()] [Array Access] At line 199, self.omegas[i] is accessed without bounds checking, if i >= self.omegas.len(), this will panic, can external callers trigger this by passing large i values, causing validator DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_266eaf87-685c-4632-adbc-d7f403e4b08e?mode=deep",
+    "timestamp": "2026-01-25 20:54:41.739947",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: get_root_of_unity()] [Return Value] This function returns omega^i for i in [0, N), but there's no documentation on what happens for i >= N, should it return omega^(i mod N) to wrap around the cyclic group, or is out-of-bounds access intentional to fail fast? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f3e0731-8ee3-451a-9f84-edbed6d3b686?mode=deep",
+    "timestamp": "2026-01-25 20:55:03.827562",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: is_order()] [Performance] The loop at line 214 computes omega^1, omega^2, ..., omega^(K-1) by repeated multiplication, for large K (e.g., 2^30), this is extremely slow and could be a DoS vector if called frequently, should this use fast exponentiation instead? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c09b558-204f-46fe-a0b0-945de876b279?mode=deep",
+    "timestamp": "2026-01-25 20:55:27.066361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: is_order()] [Loop Bounds] The loop runs from 1 to K-1 inclusive (line 214), then checks acc == Scalar::ONE at line 224, but if K = 1, the loop doesn't execute and acc = omega, so omega != 1 would return false, is this correct behavior for the trivial group of order 1? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39b73c45-23c3-4bc4-8814-044d8acf798a?mode=deep",
+    "timestamp": "2026-01-25 20:55:50.981682",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: is_order()] [Early Return] At lines 216-218, if any omega^i equals Scalar::ONE for i < K, the function returns false, but could there be off-by-one errors where i = K-1 should be allowed to equal 1 in some mathematical contexts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a220a69-c5c5-4b66-a7cf-9aaee726bfbf?mode=deep",
+    "timestamp": "2026-01-25 20:56:16.470568",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Function: is_order()] [Assertion] At line 210, assert_gt!(K, 0) panics for K=0, but should a primitive root of unity of order 0 be mathematically valid (the trivial group), or is panic appropriate for invalid input? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb1a3c41-6c57-4fee-b2cc-1a31f8bdfef1?mode=deep",
+    "timestamp": "2026-01-25 20:56:41.890666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: EvaluationDomain] [Serialization] The struct derives Serialize/Deserialize at line 16, if a malicious actor serializes an EvaluationDomain with omega = 0, then deserializes it on a validator, could subsequent operations like omega.invert() fail or produce incorrect results in cryptographic operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_666192ed-b598-4d0f-9caf-899391688615?mode=deep",
+    "timestamp": "2026-01-25 20:57:07.177058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: BatchEvaluationDomain] [Deserialization] BatchEvaluationDomain derives Deserialize at line 38, can an attacker deserialize a batch domain with omegas.len() != 2^log_N, causing get_subdomain() to compute wrong indices and return corrupted subdomains used in proofs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b2891fc-e4c9-444a-90fc-a5f3ef16af7c?mode=deep",
+    "timestamp": "2026-01-25 20:57:32.589958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: BatchEvaluationDomain] [Deserialization] If N_inverses vector is deserialized with fewer than log_N + 1 elements, the array access at line 170 in get_subdomain() would panic or return wrong values, can this be exploited to crash validators or corrupt cryptographic computations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a80819db-28b5-47e1-b895-992bf24df6e5?mode=deep",
+    "timestamp": "2026-01-25 20:57:59.145937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: BatchEvaluationDomain] [Deserialization] Can an attacker deserialize a BatchEvaluationDomain with omegas vector containing non-roots-of-unity (arbitrary Scalar values), bypassing the construction validation in new() and causing FFT operations to produce garbage outputs used in consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d18206d-e372-47ae-80be-29a0430211ac?mode=deep",
+    "timestamp": "2026-01-25 20:58:25.114678",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: EvaluationDomain] [Deserialization] If an EvaluationDomain is deserialized with log_N >= Scalar::S (which new() rejects), could this cause undefined behavior in get_Nth_root_of_unity() where the loop range becomes invalid? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6401d86b-6527-453d-8c9e-33413289f76d?mode=deep",
+    "timestamp": "2026-01-25 20:58:51.024556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: EvaluationDomain] [Thread Safety] EvaluationDomain fields are pub(crate), if multiple threads read/write these fields concurrently without synchronization, could race conditions corrupt omega or N values mid-FFT operation, producing non-deterministic cryptographic outputs across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61316fac-3d50-436b-8cfc-512958f1a3c3?mode=deep",
+    "timestamp": "2026-01-25 20:59:16.215092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/blstrs/evaluation_domain.rs] [Struct: BatchEvaluationDomain] [Thread Safety] The omegas Vec at line 43 is accessed by multiple functions, if get_root_of_unity() and get_subdomain() run concurrently on a shared BatchEvaluationDomain, could this cause data races reading the same Vec indices, potentially violating Rust safety if interior mutability is introduced later? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f83fbfd-39b1-41d5-b94f-893c356069c9?mode=deep",
+    "timestamp": "2026-01-25 20:59:42.152836",
+    "report_generated": false
+  }
+]
