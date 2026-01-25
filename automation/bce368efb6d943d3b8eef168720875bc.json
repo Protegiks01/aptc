@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: Drop] [Unwind safety] If Drop is called during panic unwinding (e.g., another component panicked), and stop_pruning() or join() also panic, this causes a double panic and process abort - could this be exploited to force validator crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8007be39-503e-4bbb-b80c-9a62e215d965?mode=deep",
+    "timestamp": "2026-01-25 09:08:16.481197",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [CPU starvation] The work loop at lines 53-69 has minimal sleep time (1ms) - under high pruning load, could this cause the worker thread to consume excessive CPU, starving consensus or execution threads and degrading validator performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cbea490e-700a-47ef-80a5-da8babf232ce?mode=deep",
+    "timestamp": "2026-01-25 09:08:29.552448",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [I/O amplification] If batch_size is set very small, the work() loop will make many small prune() calls at line 55 - could this cause excessive I/O amplification that saturates disk bandwidth, degrading overall node performance during critical consensus operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d00d01c6-c127-49fd-a3e9-8b104c2c9cc1?mode=deep",
+    "timestamp": "2026-01-25 09:08:43.380252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: set_target_db_version()] [Version spam] Can set_target_db_version() be called rapidly from external API threads, and could this cause excessive atomic operations at line 95, creating cache coherency traffic that degrades overall node performance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e4595d9-cf57-4495-a4f0-973990f4e683?mode=deep",
+    "timestamp": "2026-01-25 09:08:57.365772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Lock contention] If the DBPruner implementation uses heavy locks, and work() calls prune() rapidly at line 55, could this create lock contention with database read operations, causing query timeouts or consensus delays? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_682206c6-ce26-48a0-95a7-4fdb92d4b541?mode=deep",
+    "timestamp": "2026-01-25 09:09:12.202800",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Memory pressure] If pruner.prune() loads large amounts of data into memory for each batch, and the sleep interval at line 66 is very short, could this create sustained memory pressure that triggers OOM killer on resource-constrained validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bdbbce6-1fe5-4e5d-93ff-4588f86c762b?mode=deep",
+    "timestamp": "2026-01-25 09:09:28.154290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: set_target_db_version()] [Version manipulation] Can a malicious validator or compromised API repeatedly call set_target_db_version() with strategically chosen values to manipulate pruning behavior, either preventing necessary pruning (causing disk exhaustion) or triggering excessive pruning (causing data loss)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0047ff0-0810-4671-9eb2-a76f9eac7e05?mode=deep",
+    "timestamp": "2026-01-25 09:09:45.417279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Error injection] Could a Byzantine validator inject database errors that cause pruner.prune() to fail repeatedly at line 56, and use the error sampling rate limit at lines 57-61 to mask a sustained attack that prevents pruning and causes disk exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b96507ea-5013-4790-981d-dbab4ed2af3b?mode=deep",
+    "timestamp": "2026-01-25 09:10:05.523126",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: Drop] [Shutdown attack] Can an attacker trigger PrunerWorker Drop during a critical consensus operation (e.g., epoch change), and exploit the blocking join() at line 111 to delay validator participation, potentially violating liveness guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08051d8e-bc77-4136-ba31-2d20c52b1b0e?mode=deep",
+    "timestamp": "2026-01-25 09:10:26.863019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Pruning race] If two validator nodes have pruner workers with different target versions due to network partition, could they prune different data ranges, and upon network recovery, have incompatible database states that prevent reaching consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20ecaffb-c747-4d98-ac93-92522f6f6c3b?mode=deep",
+    "timestamp": "2026-01-25 09:10:49.293137",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: set_target_db_version()] [Replay attack] If set_target_db_version() calls are logged or replayed, could an attacker replay old version updates to reset pruning targets backward, causing already-pruned data ranges to be marked as needing pruning again, corrupting version tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_851fa192-bb62-442a-90e4-441be4af9552?mode=deep",
+    "timestamp": "2026-01-25 09:11:12.536935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: set_target_db_version()] [Version zero] What happens if target_db_version is set to 0 at line 94? Could this cause the pruner to attempt pruning from the genesis block, potentially deleting critical bootstrap data and making the chain unrecoverable? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0443547b-c000-43f0-be98-eee8c184d427?mode=deep",
+    "timestamp": "2026-01-25 09:11:38.128708",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Immediate quit] If quit_worker is set to true immediately after thread spawn but before the first iteration of the while loop at line 54, does the worker exit gracefully without attempting any pruning, potentially leaving initialization incomplete? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edd5cf9a-e640-455c-affc-ea4bef06aebd?mode=deep",
+    "timestamp": "2026-01-25 09:12:04.355880",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: new()] [Empty name] If the name parameter at line 77 is an empty string, the thread name at line 82 becomes \\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad86f62e-4a66-4cf2-ab6d-65869fa96e27?mode=deep",
+    "timestamp": "2026-01-25 09:12:32.300173",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Error on first iteration] If pruner.prune() fails on the very first iteration at line 55 before any progress is made, does this leave the pruner in a valid initial state, or could it violate initialization invariants expected by other components? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28057260-2166-43b0-b286-d060cbbc59b3?mode=deep",
+    "timestamp": "2026-01-25 09:13:01.103887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: is_pruning_pending()] [Always pending] If the underlying pruner's is_pruning_pending() always returns true due to a bug, the sleep at line 66 is never reached - could this cause infinite busy-looping that prevents graceful shutdown when quit_worker is set? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eafd0f88-b611-4955-967c-32a8b6e30184?mode=deep",
+    "timestamp": "2026-01-25 09:13:30.152294",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Error alternation] If pruner.prune() alternates between success and failure on each call, could this cause the pruner to make slow progress while rapidly alternating between the sleep at line 62 and normal execution, creating unpredictable performance characteristics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd7399e5-4e98-4d9a-84dc-226efdf9fe32?mode=deep",
+    "timestamp": "2026-01-25 09:13:58.490983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: set_target_db_version()] [Version synchronization] If multiple components (consensus, API, admin tools) call set_target_db_version() concurrently with different values, could this create version thrashing where the target constantly changes, preventing stable pruning progress? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea38cb6a-13d7-427e-9d49-36a86f419c87?mode=deep",
+    "timestamp": "2026-01-25 09:14:25.446963",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Database backup interaction] If a database backup operation is running while work() prunes data at line 55, could this create an inconsistent backup that contains references to pruned data, making restoration impossible? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67169269-c9fa-4d38-a504-314e2ab11ef0?mode=deep",
+    "timestamp": "2026-01-25 09:14:54.510989",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [State sync interaction] During state synchronization, if the pruner deletes data at line 55 that state sync is currently downloading or verifying, could this cause state sync to fail or produce an inconsistent state snapshot? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09ba290d-d3e2-4fcb-aacf-106a2799b650?mode=deep",
+    "timestamp": "2026-01-25 09:15:22.953689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: set_target_db_version()] [Consensus interaction] If set_target_db_version() is called with a version that hasn't been finalized by consensus yet, could the pruner wait indefinitely for pruning to complete, or could it prune data needed for pending consensus operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a65959d7-3478-4377-a1a7-20ffea3ea8d8?mode=deep",
+    "timestamp": "2026-01-25 09:15:50.322652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Query service interaction] While pruner.prune() deletes historical data at line 55, can REST API queries access this data mid-deletion, potentially returning partial results or causing database errors that crash API workers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8b0751c-16b1-4680-8246-e53ad25898cc?mode=deep",
+    "timestamp": "2026-01-25 09:16:17.594885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: Drop] [Node restart] If a node restarts while Drop is executing (e.g., SIGKILL during join() at line 111), could this leave database locks held, temporary files uncleaned, or pruning progress unrecorded, causing startup failures on next boot? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26bb7f6f-0d50-4240-9c5f-5e2a8b5ebff6?mode=deep",
+    "timestamp": "2026-01-25 09:16:43.438019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: PrunerWorkerInner::new()] [cfg(test) leak] The cfg!(test) check at line 45 determines sleep intervals - could test code accidentally run in production environments if configuration is incorrect, causing production pruners to use test timing parameters? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_907a06f7-7d1f-4017-af3b-faf69b501f67?mode=deep",
+    "timestamp": "2026-01-25 09:17:09.068935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: new()] [Pruner initialization] The pruner parameter at line 77 is passed as Arc<dyn DBPruner> - if the pruner hasn't been fully initialized (e.g., database connection not established), could calling prune() at line 55 cause panics or database corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_932a6864-c9e3-4a1b-bdf0-f1e78cbe88d9?mode=deep",
+    "timestamp": "2026-01-25 09:17:33.398042",
+    "report_generated": false
+  }
+]
