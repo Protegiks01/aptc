@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_chunk()] [Async race condition] Between create_for_write() at line 159-162 and write_all() at line 163, can another process modify the backup_handle causing file descriptor confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff8934d9-641d-49cf-a9e5-913f8226802f?mode=deep",
+    "timestamp": "2026-01-25 10:48:45.471948",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_chunk()] [Incomplete write] If write_all() at line 163 partially succeeds before shutdown() at line 164, are partial chunk files cleaned up or left in corrupted state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d74d34e8-31c2-463a-89e7-a4bc54498efd?mode=deep",
+    "timestamp": "2026-01-25 10:48:58.102230",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_chunk()] [Shutdown failure] If shutdown() at line 164 fails, does this leave file handles open causing resource leaks across multiple backup operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d47e927-3302-42f0-b7ce-cffbd446e205?mode=deep",
+    "timestamp": "2026-01-25 10:49:11.163776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_chunk()] [Epoch range validation] Lines 156-157 specify first_epoch and last_epoch in EpochEndingChunk - if first_epoch > last_epoch due to logic errors, will restore operations detect this or proceed with corrupted data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_618e3873-df54-48f1-8b4a-2004bef8146e?mode=deep",
+    "timestamp": "2026-01-25 10:49:25.392436",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_chunk()] [File handle reuse] If chunk_handle at line 168 is reused across multiple chunks, can this cause one chunk to reference another's data creating backup corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ede6457-f242-48ac-a733-04a14cd845e2?mode=deep",
+    "timestamp": "2026-01-25 10:49:39.561106",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_manifest()] [Integer underflow] Line 179 computes last_epoch = self.end_epoch - 1 - can this underflow if end_epoch == 0, creating an invalid manifest with last_epoch = u64::MAX? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f03e1ad-82de-40ec-beec-0a9fd9d087e3?mode=deep",
+    "timestamp": "2026-01-25 10:49:55.026219",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_manifest()] [Empty waypoints] Lines 199-200 call expect('No waypoints.') on first()/last() - can an empty waypoints vector cause panic instead of graceful error handling? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_efe49397-db61-4849-9316-794b6fe147df?mode=deep",
+    "timestamp": "2026-01-25 10:50:11.664245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_manifest()] [JSON serialization] At line 192, serde_json::to_vec() serializes the manifest - can extremely large chunks or waypoints vectors cause memory exhaustion during serialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_427d475e-9f0a-4a6c-a696-1962613656ea?mode=deep",
+    "timestamp": "2026-01-25 10:50:29.558666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_manifest()] [Manifest corruption] If manifest_file.write_all() at lines 191-193 partially succeeds before shutdown() at line 194, can this create corrupted manifests that pass verification but fail during restore? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ceaf6b2d-bde6-4205-ada0-6d1f2347b3d1?mode=deep",
+    "timestamp": "2026-01-25 10:50:48.905392",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_manifest()] [Metadata inconsistency] Lines 196-202 create Metadata with first/last epochs and versions - if these don't match the actual chunk data, can this cause silent corruption during verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1fffd93d-3c74-4514-9882-5ba0dcf9d388?mode=deep",
+    "timestamp": "2026-01-25 10:51:10.084916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_manifest()] [Version mismatch] At lines 199-200, waypoints.first().version() and waypoints.last().version() are used for metadata - can mismatched versions between waypoints and actual ledger infos cause validation bypass? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a551f3e-6e38-4dc8-b4e0-e2ec07ea75fd?mode=deep",
+    "timestamp": "2026-01-25 10:51:32.163573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_manifest()] [Clone overhead] Line 201 clones manifest_handle - if this is a heavy object, can repeated cloning cause performance degradation or memory issues in large backups? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e23dd07-472f-4b2e-927a-9392752c9d47?mode=deep",
+    "timestamp": "2026-01-25 10:51:54.995838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_manifest()] [Metadata race condition] Between save_metadata_line() at lines 204-206 and returning the manifest_handle at line 207, can concurrent reads observe partial metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b151364-4795-4d53-810c-c79056a7d50c?mode=deep",
+    "timestamp": "2026-01-25 10:52:18.749981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Function: write_manifest()] [Text line corruption] At line 205, metadata.to_text_line()? could fail - is error handling sufficient to prevent partial metadata writes that corrupt the backup catalog? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b23d01ff-bcf2-4281-890b-136af7c8a83b?mode=deep",
+    "timestamp": "2026-01-25 10:52:44.061692",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Cross-function] [State machine violation] Can an attacker call write_chunk() or write_manifest() directly without going through run_impl(), bypassing initialization and validation logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0bd1e428-7150-431a-bcdd-7753a9441462?mode=deep",
+    "timestamp": "2026-01-25 10:53:09.579805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Cross-function] [Async ordering] In run_impl(), multiple async operations (get_epoch_ending_ledger_infos, write_chunk, write_manifest) occur - can reordering due to async scheduling cause data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e26ed7e0-4d88-4947-93e3-bbebfe2ce7d5?mode=deep",
+    "timestamp": "2026-01-25 10:53:34.938977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Cross-function] [Error propagation] If get_waypoint() returns an error for one epoch, does run_impl() properly propagate this or continue with partial waypoint data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5e52ee6-7f32-4ce8-9bf1-5ab36a1482a0?mode=deep",
+    "timestamp": "2026-01-25 10:54:00.467107",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Storage backend] [TOCTOU] Between create_backup_with_random_suffix() at line 75-78 and subsequent create_for_write() calls, can another process delete or modify the backup handle? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3887ee34-1bfd-4779-b12b-69ff78f1ac2f?mode=deep",
+    "timestamp": "2026-01-25 10:54:25.803896",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Storage backend] [Quota exhaustion] If the storage backend has quota limits, can write operations fail mid-backup leaving partial data without cleanup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6acd461c-6999-4153-a34f-2beb22ab6c11?mode=deep",
+    "timestamp": "2026-01-25 10:54:49.543310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Storage backend] [Retry logic] If storage operations fail transiently, is there retry logic or do errors immediately abort the entire backup operation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8540f8ef-c3b5-4998-b741-e8ea843fdc85?mode=deep",
+    "timestamp": "2026-01-25 10:55:13.927343",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Client interaction] [Stream hijacking] At lines 85-87, get_epoch_ending_ledger_infos() returns an async stream - can a malicious backup service inject crafted records mid-stream to corrupt the backup? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1a50165-8e71-427a-9a5c-ca8d17ae800a?mode=deep",
+    "timestamp": "2026-01-25 10:55:37.402845",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Client interaction] [Timeout attack] Can a malicious backup service stall the stream returned by get_epoch_ending_ledger_infos() to cause the backup process to hang indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b243bce-dc4c-4111-8e4c-19906bfecc58?mode=deep",
+    "timestamp": "2026-01-25 10:56:02.394839",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Client interaction] [Premature EOF] If get_epoch_ending_ledger_infos() closes the stream before end_epoch, will the assertion at line 113 catch this or proceed with incomplete data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_168d8087-30dd-48c9-8a02-60d4226e9a82?mode=deep",
+    "timestamp": "2026-01-25 10:56:28.012306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Memory safety] [Vector reallocation] At line 108, chunk_bytes.extend() can trigger multiple reallocations - can this be exploited to cause memory fragmentation or OOM in long-running backup operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3db7f749-fe07-44d9-b050-85e148483b20?mode=deep",
+    "timestamp": "2026-01-25 10:56:53.693935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/epoch_ending/backup.rs] [Memory safety] [Reference lifetime] The backup_handle reference passed to write_chunk() and write_manifest() - can it be invalidated if run_impl() is called from a Drop implementation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3a89030-1a05-4bfa-b53e-9408f06204df?mode=deep",
+    "timestamp": "2026-01-25 10:57:21.593938",
+    "report_generated": false
+  }
+]
