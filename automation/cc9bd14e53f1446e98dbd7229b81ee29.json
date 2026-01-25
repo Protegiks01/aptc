@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Function: try_send()] [Error details] At line 87, into_send_error() converts TrySendError to SendError, losing information about whether the failure was due to full queue or disconnected receiver - can this cause incorrect retry logic in consensus? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9820a279-bd31-4b19-a962-f499b811249b?mode=deep",
+    "timestamp": "2026-01-25 18:39:59.880438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Trait: Sink] [Error recovery] When start_send() or poll_flush() return SendError, is there any mechanism to recover the message that failed to send, or is it lost forever, potentially causing consensus to lose critical votes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a005b2ad-4375-42f4-ba41-e5dbe544081f?mode=deep",
+    "timestamp": "2026-01-25 18:40:12.676612",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Message ordering] Does this channel guarantee FIFO ordering for messages sent from a single Sender, and if multiple cloned Senders send concurrently, can message interleaving violate consensus ordering requirements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d162199-2a07-45dc-a056-e1af3cbf423b?mode=deep",
+    "timestamp": "2026-01-25 18:40:26.089459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Cross-sender ordering] If validator A sends message M1, then validator B sends M2, can the receiver observe M2 before M1 due to scheduling, and does this violate any consensus ordering assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f19396cd-f0f2-449c-8737-955709142c0b?mode=deep",
+    "timestamp": "2026-01-25 18:40:40.625827",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Circular channels] If component A sends to B via this channel and B sends to A via another instance, and both channels become full, can this create a deadlock where both components are blocked in poll_ready() waiting for the other? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2607d2d-8aad-429e-832f-5aae4d509d1b?mode=deep",
+    "timestamp": "2026-01-25 18:40:55.562868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Function: poll_close()] [Close deadlock] If poll_close() is called while another task is blocked in poll_ready(), can this create a situation where the closing task waits for the ready task, which waits for channel space, causing deadlock? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84ce6f2f-80db-491d-8481-113e79ce1d89?mode=deep",
+    "timestamp": "2026-01-25 18:41:11.391326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Function: new()] [Capacity mismatch] If the 'size' parameter at line 120 doesn't match the actual capacity limits expected by consensus (e.g., configured to allow more messages than Byzantine fault tolerance assumes), can this enable attacks that exceed safety thresholds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0508369c-80a7-4eff-8e15-f91ef512da3e?mode=deep",
+    "timestamp": "2026-01-25 18:41:28.595768",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Function: new()] [Dynamic resizing] Is there any way to change the channel capacity after creation, and if not, can static capacity limits cause validators to reject valid messages during traffic spikes, harming liveness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32d591d4-cd1e-4592-81fe-e04601fb691c?mode=deep",
+    "timestamp": "2026-01-25 18:41:46.803912",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Function: is_terminated()] [Termination semantics] At line 96, is_terminated() checks the inner channel - if the channel terminates while the gauge shows pending messages, can this cause select! loops to incorrectly believe the channel is still active and poll it forever? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_684c97db-6c73-4266-9a1a-6f57aba0d24c?mode=deep",
+    "timestamp": "2026-01-25 18:42:07.275957",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Trait: FusedStream] [Generic constraint] The FusedStream bound requires T: Debug at line 93 - can this constraint be violated through unsafe code, causing panics when terminated channels are debugged during incident response? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_428a39b0-bd38-42f9-b0d1-3c50ade211f6?mode=deep",
+    "timestamp": "2026-01-25 18:42:27.708262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Shutdown coordination] During validator shutdown, if the Sender is dropped before all Receivers finish processing, do pending messages get lost, and could this cause incomplete state transitions that corrupt validator state on restart? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a277195f-68d7-47eb-9335-63c821b83ed7?mode=deep",
+    "timestamp": "2026-01-25 18:42:50.561834",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Epoch transitions] If this channel is used during epoch transitions in consensus, can message queue state persist across epochs inappropriately, causing new-epoch validators to process old-epoch messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_095071fb-b3a1-4019-b339-cee4a7ef5655?mode=deep",
+    "timestamp": "2026-01-25 18:43:14.182507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Struct: UnboundedSender] [Gauge accuracy] For unbounded channels at lines 155-174, does the gauge accurately track potentially millions of messages, or can gauge update contention become a bottleneck that delays message sending? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60c0da64-c3f0-4cb4-9679-a89652af57de?mode=deep",
+    "timestamp": "2026-01-25 18:43:40.093295",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Function: new_unbounded()] [Memory accounting] Does new_unbounded() at line 140 perform any memory limit checks before creating the channel, or can an attacker exploit this to allocate unlimited memory by creating many unbounded channels? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0359d569-4195-4232-afe1-f9618b721733?mode=deep",
+    "timestamp": "2026-01-25 18:44:06.057065",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Struct: UnboundedReceiver] [Processing starvation] If an UnboundedSender fills the receiver queue with millions of low-priority messages, can this starve processing of high-priority consensus messages, causing timeouts and view changes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e750b31-2bac-483e-9571-754fe08eafc9?mode=deep",
+    "timestamp": "2026-01-25 18:44:32.474738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Function: clone()] [Clone-drop race] If a Sender is cloned and the clone immediately sends a message while the original is being dropped, can the gauge increment from the clone race with gauge operations from the drop, causing transient incorrect counts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c01b6565-da2b-4254-b274-2d9a218a5d7a?mode=deep",
+    "timestamp": "2026-01-25 18:45:00.296862",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Multi-receiver emulation] If multiple Receivers are emulated by cloning messages, does the gauge correctly track each copy, or can this cause gauge inflation by a factor of the number of receivers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53ff8b94-0730-4538-a9e4-6bf4005e1d04?mode=deep",
+    "timestamp": "2026-01-25 18:45:28.893775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Struct: Sender/Receiver] [Gauge failure handling] If the IntGauge operations fail (e.g., metrics backend unreachable), do gauge.inc() and gauge.dec() silently ignore errors, and could accumulated metric errors hide real capacity issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8066ab3-cf31-4693-b19b-a917a18fdc1e?mode=deep",
+    "timestamp": "2026-01-25 18:45:57.961753",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Function: new()] [Gauge creation] At line 121, gauge.set(0) is called - if this fails due to metric registry issues, does channel creation fail or proceed with broken metrics, potentially hiding DoS attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30afd754-e58d-4d65-b3fd-e2c9ccdce12d?mode=deep",
+    "timestamp": "2026-01-25 18:46:27.022552",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Stress testing] Under extreme load with thousands of messages per second from Byzantine validators, can gauge update contention cause message sending/receiving to slow down enough that consensus rounds time out? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f9bc144-e4ed-496f-8071-5c03de3b6203?mode=deep",
+    "timestamp": "2026-01-25 18:46:57.409794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Chaos testing] If random Sender/Receiver drops occur during consensus (simulating node crashes), do gauge inconsistencies accumulate that eventually cause healthy validators to malfunction? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8a1efb1-330a-4c9f-aafb-6bf181ea2eaf?mode=deep",
+    "timestamp": "2026-01-25 18:47:27.112120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Invariant documentation] Are the gauge increment/decrement invariants documented, and could developers using this channel violate assumptions (e.g., manually calling gauge operations) that break correctness? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45be97c4-7b63-4c6c-9f94-a042e8444be6?mode=deep",
+    "timestamp": "2026-01-25 18:47:55.238846",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [General] [Thread safety] Is the channel documented as Send+Sync safe, and are there any hidden requirements (e.g., must use same executor) that if violated could cause gauge corruption? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91008d31-8a1e-469e-82b7-77ffaf08f1cc?mode=deep",
+    "timestamp": "2026-01-25 18:48:20.203341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Function: try_send()] [Blocking behavior] try_send() at line 83 claims to be non-blocking, but does gauge.inc() perform any blocking operations (e.g., mutex locks in the metric backend) that could block consensus? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc07d8c2-4d7c-4905-924e-9a31f92ec4e0?mode=deep",
+    "timestamp": "2026-01-25 18:48:44.987951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/channel/src/lib.rs] [Struct: Sender] [Clone overhead] Each Sender clone at line 54 clones both inner sender and gauge - if thousands of clones are created, does this cause excessive reference counting overhead that impacts latency-sensitive consensus operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da427a6b-7890-4ace-912f-cb10166c477e?mode=deep",
+    "timestamp": "2026-01-25 18:49:10.256808",
+    "report_generated": false
+  }
+]
