@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: LevelFilter::from_str()] [Input validation] Can an attacker provide specially crafted strings with unicode characters, null bytes, or extremely long strings to cause panic or unexpected behavior when parsing log levels, potentially crashing validator nodes during initialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f89e5b8d-700e-4391-bd0f-376cf20b1d68?mode=deep",
+    "timestamp": "2026-01-25 15:41:54.084257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: LevelFilter::from_str()] [Case sensitivity bypass] Does the eq_ignore_ascii_case() check at line 34 properly handle all unicode case variations, or could attackers use non-ASCII 'OFF' equivalents to bypass the Off level filtering and enable unwanted logging of sensitive consensus data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bb12e58-29f8-47e5-ad8a-abcfd7ef8295?mode=deep",
+    "timestamp": "2026-01-25 15:42:06.562518",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: LevelFilter::from_str()] [Error handling] When parsing fails at line 37, does returning FilterParseError provide enough context, or could silent failures lead to validators running with unintended log levels exposing private key material or validator voting patterns? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49a93135-6ddb-4113-b7eb-ee631db8eacd?mode=deep",
+    "timestamp": "2026-01-25 15:42:19.519497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: LevelFilter::from_str()] [Type confusion] Can the fallback to Level::parse() at line 37 be exploited by providing ambiguous strings that parse as valid Levels but should be rejected, allowing attackers to enable debug logging in production validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2de1e479-a26a-413b-85b5-6adbd1a15e18?mode=deep",
+    "timestamp": "2026-01-25 15:42:33.494035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::with_env()] [Environment injection] Can an attacker who gains control over environment variables (e.g., through container escape or process spawning) inject malicious filter directives via env::var() at line 69 to enable trace-level logging of all consensus messages, exposing validator private operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f4c7a5e-9f5f-4f47-acb1-ee05ddfe5231?mode=deep",
+    "timestamp": "2026-01-25 15:42:47.495609",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::with_env()] [Unbounded parsing] Does with_env() have any length limits on the environment variable string at line 69, or could an attacker set a multi-GB environment variable causing memory exhaustion and validator node crash during startup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_169b99b5-c6cc-4dc0-b1e8-6053341ee447?mode=deep",
+    "timestamp": "2026-01-25 15:43:02.440624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::with_env()] [Silent failures] When env::var() returns an error at line 69, the method silently continues - could this mask critical security misconfigurations where validators believe logging is disabled but it's actually at maximum verbosity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d16777c6-18e2-4a7a-a93b-19791348c363?mode=deep",
+    "timestamp": "2026-01-25 15:43:19.926532",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::with_env()] [Race condition] Is there a TOCTOU vulnerability where the environment variable could be modified between the env::var() read at line 69 and the parse() call at line 70, allowing dynamic injection of malicious logging directives? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97fcc141-c372-4a6a-a54c-889a714f39d9?mode=deep",
+    "timestamp": "2026-01-25 15:43:37.813635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::parse()] [DoS via split] Can an attacker provide a filter string with millions of commas causing the split(',') at line 99 to create excessive iterators and consume validator memory, leading to OOM crashes during consensus-critical moments? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ee0afac-6e6d-4e28-a2c9-a53f64d1bf03?mode=deep",
+    "timestamp": "2026-01-25 15:43:56.033273",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::parse()] [Filter_map vulnerability] Does filter_map(Result::ok) at line 101 silently discard parsing errors, allowing an attacker to inject partially valid/invalid directives that result in unpredictable filtering behavior exposing sensitive validator state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46fbf3a2-316b-488c-b3cc-28729f4b4f6e?mode=deep",
+    "timestamp": "2026-01-25 15:44:15.678084",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::parse()] [Unbounded directive growth] Is there any limit on the number of directives added via extend() at line 97, or could an attacker provide millions of comma-separated directives causing unbounded memory growth and validator crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b954c396-c9a9-445c-bd23-dea759ec54d6?mode=deep",
+    "timestamp": "2026-01-25 15:44:36.915838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::parse()] [Directive collision] When parse() is called multiple times with overlapping module names, can conflicting directives cause undefined behavior in the filtering logic, potentially enabling logs that should be suppressed or vice versa? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cebf019a-baca-4890-b9c6-4827e5835248?mode=deep",
+    "timestamp": "2026-01-25 15:44:57.907819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::parse()] [Empty string handling] What happens when an empty string or string with only commas is passed to parse() - could this result in empty directives being added that match all modules unexpectedly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7aba589c-8cf2-4e69-a733-759ca1ab5afa?mode=deep",
+    "timestamp": "2026-01-25 15:45:20.287130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::build()] [Sorting determinism] Is the sort_by() operation at line 113 deterministic when directives have equal-length names, or could non-deterministic sorting cause different validators to apply filters in different orders, leading to consensus failures if log-based decisions exist? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ab3035f-11f4-41e3-a860-e4ed8b495a33?mode=deep",
+    "timestamp": "2026-01-25 15:45:43.560200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::build()] [Default filter injection] When directives are empty at line 107, a default Error filter is added at line 109 - can this be bypassed by adding an empty directive, causing validators to log nothing and hide critical security events? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c5e9798-687a-4b2f-afef-ea09f62ea91f?mode=deep",
+    "timestamp": "2026-01-25 15:46:08.392000",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::build()] [Sort complexity] Can an attacker provide directives with module names of exponentially increasing lengths causing the sort_by() at line 113 to consume excessive CPU time during validator startup or reconfiguration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90f89fac-ccc7-4c36-9184-b3552d7a27da?mode=deep",
+    "timestamp": "2026-01-25 15:46:33.328522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::build()] [Memory leak] Does std::mem::take() at line 121 properly move ownership, or could repeated build() calls without proper cleanup cause directive accumulation and memory leaks in long-running validator processes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a88d381-6e8b-4cde-ba7f-7b42d149690e?mode=deep",
+    "timestamp": "2026-01-25 15:46:58.698237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Builder::build()] [Mutable reference chaining] Can the mutable reference pattern (&mut self) be exploited in concurrent scenarios where multiple threads call build() simultaneously, causing race conditions in directive ordering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebb3d4e3-f269-4125-8341-c841da65f218?mode=deep",
+    "timestamp": "2026-01-25 15:47:24.731158",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Filter::enabled()] [Reverse iteration vulnerability] Does iterating directives in reverse at line 139 correctly implement longest-match semantics, or could attackers craft module paths that match shorter prefixes first, bypassing specific module restrictions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56857b7e-64ee-4ff2-98ce-3868c42629ba?mode=deep",
+    "timestamp": "2026-01-25 15:47:50.668809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Filter::enabled()] [starts_with bypass] Can the starts_with() check at line 141 be bypassed using unicode normalization, path traversal sequences (../, ./), or null bytes in module paths to enable logging of restricted consensus modules? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25e17aa2-603f-4a48-ad03-dfd94af50657?mode=deep",
+    "timestamp": "2026-01-25 15:48:16.206895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Filter::enabled()] [None directive handling] When directive.name is None at line 142, it matches all modules - can this be exploited by injecting a None directive with Off level to completely disable all logging, hiding security incidents? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a5d38ab-e542-4833-a677-6039ea68a8e5?mode=deep",
+    "timestamp": "2026-01-25 15:48:41.659166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Filter::enabled()] [Level comparison overflow] Does the LevelFilter comparison at line 142 handle all edge cases including Off/max levels correctly, or could integer overflow in level comparisons cause incorrect filtering decisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2df0236b-1287-4e1c-9b49-1828701114f6?mode=deep",
+    "timestamp": "2026-01-25 15:49:06.125511",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Filter::enabled()] [False return default] When no directives match at line 145, false is returned - is this the correct security default, or should validators log security-critical events even without explicit directives? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec3fbebd-d33c-40df-9f28-57c6466eea4e?mode=deep",
+    "timestamp": "2026-01-25 15:49:31.085222",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Filter::enabled()] [Metadata validation] Does enabled() validate that metadata.module_path() is well-formed, or could malformed module paths from compromised code cause panics during log filtering in consensus-critical paths? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_468dc661-3b46-4ca7-8758-c83abc17a7ea?mode=deep",
+    "timestamp": "2026-01-25 15:49:56.274641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/filter.rs] [Function: Filter::enabled()] [Performance DoS] Can an attacker cause Filter::enabled() to be called with extremely long module paths or with directives lists containing thousands of entries, causing O(n) iteration overhead that slows down validator consensus processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e730a7d6-e11b-493a-825d-5abd80c05f2d?mode=deep",
+    "timestamp": "2026-01-25 15:50:20.399930",
+    "report_generated": false
+  }
+]
