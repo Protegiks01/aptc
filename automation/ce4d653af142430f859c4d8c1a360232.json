@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Field: delay] [Sleep state corruption] Could the underlying Sleep future (RealSleep or MockSleep) enter an invalid state due to repeated reset() calls, causing subsequent intervals to trigger at wrong times or never? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f13a523-234a-401a-9d41-6dd9fa8baf7b?mode=deep",
+    "timestamp": "2026-01-25 19:35:07.285342",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Field: delay] [Type confusion attack] Since Sleep is an enum of RealSleep and MockSleep, could a test-mode validator accidentally or maliciously run with MockSleep in production, allowing them to fast-forward or freeze time arbitrarily? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1cc1bbb-d864-468f-b1af-22451d7a22bc?mode=deep",
+    "timestamp": "2026-01-25 19:35:20.353657",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Field: delay] [Waker corruption] If the Sleep future's waker is corrupted or points to freed memory, could calling reset() trigger use-after-free vulnerabilities when the timer expires? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_172b0519-30db-4f51-92e4-256e36f23a36?mode=deep",
+    "timestamp": "2026-01-25 19:35:33.676385",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Field: delay] [Tokio coupling] Since the implementation is based on tokio::time::Interval, could bugs in Tokio's timer wheel implementation (timer skipping, coalescing, etc.) propagate to consensus timing and cause safety violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e76579fa-2621-4299-ae44-451baf70e0af?mode=deep",
+    "timestamp": "2026-01-25 19:35:47.265651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Usage in consensus] [Round timeout manipulation] If Interval is used for AptosBFT round timeouts, could a Byzantine validator with < 1/3 stake exploit timing inconsistencies to propose blocks at strategically chosen times, disrupting leader rotation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03188d7f-49d5-4518-8e47-2da48acf3c0a?mode=deep",
+    "timestamp": "2026-01-25 19:36:02.010985",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Usage in consensus] [Epoch transition timing] If Interval timing affects epoch reconfiguration windows, could manipulated intervals cause validators to transition epochs at different times, creating temporary network partitions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65f87262-6544-4bed-a994-8ed4ce5d4a7d?mode=deep",
+    "timestamp": "2026-01-25 19:36:17.961094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Usage in consensus] [Liveness attack] Could a malicious validator deliberately construct Interval instances with extreme periods (very small or very large) to force other validators into timeout states, halting consensus progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fba0aa9d-9cd9-4f61-b183-cb5a00589705?mode=deep",
+    "timestamp": "2026-01-25 19:36:34.991907",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Usage in consensus] [Time drift exploitation] Over thousands of consensus rounds, could accumulated timing errors in Interval cause honest validators' clocks to drift significantly from protocol time, breaking timeout assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bce093d-ed26-4f46-8222-58c941b0943b?mode=deep",
+    "timestamp": "2026-01-25 19:36:53.870243",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Usage in consensus] [Validator synchronization] If different validators use Interval instances with slightly different periods due to floating-point errors or initialization race conditions, could this cause them to timeout at different rounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df4c82fc-f93f-4f7b-a774-6b608f0fab1e?mode=deep",
+    "timestamp": "2026-01-25 19:37:14.539023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Struct: Interval] [Memory leak] If Interval instances are created but never polled or dropped, could they accumulate in memory with registered wakers that never fire, causing validator memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bed620b-9a76-4854-bc42-c8c1ee6fc609?mode=deep",
+    "timestamp": "2026-01-25 19:37:36.636027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Struct: Interval] [Resource cleanup] When an Interval is dropped, does the underlying Sleep properly clean up timer registrations, or could leaked timer callbacks continue firing and waking phantom tasks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_896749c1-1f63-4098-86ae-7f98edade831?mode=deep",
+    "timestamp": "2026-01-25 19:37:59.222913",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Struct: Interval] [Clone behavior] Although Interval doesn't implement Clone, could unsafe code create multiple references to the same Interval, causing multiple consumers to race on the same timer? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44ba0eb6-567e-455f-9f16-dad7f6cd996b?mode=deep",
+    "timestamp": "2026-01-25 19:38:23.761543",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Struct: Interval] [Send/Sync safety] Is Interval properly Send + Sync for use across async task boundaries, or could sending it to another thread break Pin invariants and cause undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0a7dcaf-b4a7-402d-87a1-0d154832812b?mode=deep",
+    "timestamp": "2026-01-25 19:38:49.016158",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Function: Interval::new()] [Minimum period] While the code checks for > ZERO_DURATION, what happens with Duration::from_nanos(1)? Could such tiny periods cause the interval to fire continuously, overwhelming consensus with spurious timeouts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e720921-e7a2-42f4-863f-29a1a5506fff?mode=deep",
+    "timestamp": "2026-01-25 19:39:16.322990",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Function: Interval::new()] [Maximum period] If period is set to Duration::MAX or near it, could the reset operation overflow when computing deadline = now + period, causing immediate or never-firing timeouts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8fa2c9ec-72ae-4182-964f-063a40007b20?mode=deep",
+    "timestamp": "2026-01-25 19:39:43.189750",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Function: poll_next()] [First tick timing] The comment mentions first tick completes immediately (from lib.rs context), but does poll_next() handle the initial state correctly, or could the first interval be unexpectedly delayed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8e6c49e-a178-468e-844f-61e9633ee7ec?mode=deep",
+    "timestamp": "2026-01-25 19:40:11.462019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Function: poll_next()] [Spurious wakeups] If the Context waker is triggered spuriously before the delay actually expires, could this cause poll_next() to return Ready prematurely, advancing consensus before the proper timeout? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f36730de-3edd-4865-a50a-7d82b9214bc8?mode=deep",
+    "timestamp": "2026-01-25 19:40:38.191863",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Function: poll_next()] [System time changes] If the system administrator uses clock_settime() to jump system time forward or backward, could this cause the Interval to fire at incorrect times relative to protocol expectations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57d8a32a-b021-4ac2-b5da-65d8c49479a7?mode=deep",
+    "timestamp": "2026-01-25 19:41:05.291248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Function: poll_next()] [Executor fairness] Could a malicious async executor starve Interval polling, preventing timeouts from ever triggering and halting consensus progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04e55d2a-4135-40c7-ab63-ceeab112c74a?mode=deep",
+    "timestamp": "2026-01-25 19:41:31.716628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Function: poll_next()] [Task priority] In systems with priority scheduling, could low-priority Interval tasks be preempted indefinitely, causing validator timeouts to never fire? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5eb63ccb-27d9-4212-b8db-3aac23013b3d?mode=deep",
+    "timestamp": "2026-01-25 19:41:57.616018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Function: poll_next()] [Panic propagation] If the underlying delay.poll() panics, does this leave the Interval in a consistent state, or could subsequent polls on the same Interval after catching the panic cause undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d330c6f9-43c6-4c41-ae24-ac4063e3c61d?mode=deep",
+    "timestamp": "2026-01-25 19:42:24.092274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Function: poll_next()] [Yield point exploitation] The ready!() macro is a yield point - could a Byzantine validator manipulate task scheduling around this point to control when their interval fires relative to network messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1fb847c9-7239-4b86-8032-bae4057eba27?mode=deep",
+    "timestamp": "2026-01-25 19:42:48.899402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Struct: Interval] [Multi-threaded access] While Rust's type system should prevent this, could unsafe code allow concurrent poll_next() calls from multiple threads, causing data races on the delay field? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad36d2d6-7635-4d3e-a1e6-d9b44920b806?mode=deep",
+    "timestamp": "2026-01-25 19:43:14.875949",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Usage in consensus] [Timeout certificate forgery] If AptosBFT timeout certificates rely on Interval for timing, could manipulated intervals allow validators to create timeout certificates for rounds that haven't actually timed out? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b44b8279-2ed6-47dd-aa80-43a82e12715a?mode=deep",
+    "timestamp": "2026-01-25 19:43:42.574470",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-time-service/src/interval.rs] [Usage in consensus] [Double voting window] Could inconsistent Interval timing between validators create windows where a Byzantine validator can double-vote for conflicting blocks before other validators' timeouts expire? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f11810b3-75ef-48e1-8f93-73ac96766d30?mode=deep",
+    "timestamp": "2026-01-25 19:44:10.206142",
+    "report_generated": false
+  }
+]
