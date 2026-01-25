@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: get_valid_proposer()] [Proposer Delegation Attack] Since get_valid_proposer() simply delegates to the underlying proposer_election (line 25), can bugs in that implementation cause UnequivocalProposerElection to accept proposals from wrong validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfab335c-b951-4f3b-92f0-7be833039cdd?mode=deep",
+    "timestamp": "2026-01-25 22:13:38.364307",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Log Injection] The security event logging (lines 50-57, 71-78) includes user-controlled data (author, round, block IDs) - can an attacker inject malicious data that corrupts logs or exploits log parsing vulnerabilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b545cc8-8e59-4a6a-a637-f771ca41548d?mode=deep",
+    "timestamp": "2026-01-25 22:13:51.105259",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Missing Logging] When Ordering::Less is matched (line 84), no security event is logged - can this allow attackers to repeatedly submit old proposals without detection, potentially conducting a grinding attack to find vulnerabilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca4d1924-135f-4904-807a-fd4c9ed37b71?mode=deep",
+    "timestamp": "2026-01-25 22:14:04.446305",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Double Logging] If the same equivocation attempt is processed multiple times concurrently, can duplicate security events (line 71-78) flood logging systems and hide other attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a0628b9-c317-42cb-aed2-fd81c6b69d12?mode=deep",
+    "timestamp": "2026-01-25 22:14:18.245230",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Log Timing] Are the security event logs (SecurityEvent::InvalidConsensusProposal) generated synchronously before returning false - can an attacker exploit timing differences to determine if their equivocation was detected? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a08b9b6a-09f3-4fc7-b543-89ae0cf9e02c?mode=deep",
+    "timestamp": "2026-01-25 22:14:32.699287",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: new()] [Wrapper Trust] UnequivocalProposerElection wraps an arbitrary ProposerElection implementation - if the underlying implementation is malicious or buggy, can it cause UnequivocalProposerElection to make incorrect validation decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67705229-91b5-4662-9798-049e83a52568?mode=deep",
+    "timestamp": "2026-01-25 22:14:48.546548",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: get_valid_proposer()] [Inconsistent Proposer] If the underlying proposer_election.get_valid_proposer() returns different results for the same round when called multiple times, can this cause is_valid_proposal() to accept proposals from wrong validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13ed7cee-e03b-45c6-880e-caa166d1e12a?mode=deep",
+    "timestamp": "2026-01-25 22:15:05.617586",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: get_voting_power_participation_ratio()] [Ratio Manipulation] The voting power ratio is directly delegated (lines 28-31) - can manipulation of this value in the underlying implementation affect consensus safety or liveness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b8bf4bc-d835-40c3-8691-aca580cdde0e?mode=deep",
+    "timestamp": "2026-01-25 22:15:24.166694",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Struct: UnequivocalProposerElection] [Arc Sharing] The proposer_election is wrapped in Arc (line 19) - if multiple UnequivocalProposerElection instances share the same underlying election, can state corruption in one affect others? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f43092a6-0222-4ae9-84d0-ef362b29253e?mode=deep",
+    "timestamp": "2026-01-25 22:15:44.319336",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Proposer Election Panic] If the underlying proposer_election.get_valid_proposer() or is_valid_proposer() panics, can this poison the already_proposed mutex and halt all future proposal validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06549e90-4288-4fb8-8d5a-0890fcf7315c?mode=deep",
+    "timestamp": "2026-01-25 22:16:06.032989",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Epoch Transition Vulnerability] When epochs change, does UnequivocalProposerElection maintain already_proposed state from the old epoch - can this cause legitimate proposals in the new epoch to be rejected if they have lower round numbers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb93ce13-094f-4cf7-a396-ac63295b245a?mode=deep",
+    "timestamp": "2026-01-25 22:16:27.763999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Round Skip Attack] If consensus skips rounds (e.g., due to network partitions), can an attacker exploit the Ordering::Greater logic (line 64) to submit proposals for skipped rounds that should be rejected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_914e2f75-a4c6-4efb-8497-fc47dbe9c1d6?mode=deep",
+    "timestamp": "2026-01-25 22:16:51.487150",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Concurrent Round Processing] If multiple validator nodes process proposals for different rounds concurrently and share state, can the round comparison logic (line 63) lead to inconsistent already_proposed states across nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8bee1a3-6fe4-4544-94a3-dfc9814bf07c?mode=deep",
+    "timestamp": "2026-01-25 22:17:15.759992",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Backwards Round] If consensus needs to revert to a previous round (e.g., during recovery), will all proposals be rejected by the Ordering::Less check (line 84), causing total loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7062ec7d-09a5-49b9-9df1-b299c257131a?mode=deep",
+    "timestamp": "2026-01-25 22:17:40.536009",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Round Number Exhaustion] As round numbers increase towards u64::MAX over time, can validators run out of valid round numbers, and what happens when rounds need to wrap or reset? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c9e8603-ffd9-4ce4-bc9e-0dd854d667a6?mode=deep",
+    "timestamp": "2026-01-25 22:18:06.980723",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Struct: UnequivocalProposerElection] [Memory Leak] The already_proposed Mutex is never explicitly cleared - in long-running validators, can memory fragmentation or lock contention degrade performance over time? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c92501c6-7e2b-4fd1-9dc9-05e525fa3c66?mode=deep",
+    "timestamp": "2026-01-25 22:18:34.979981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Lock Contention] Under high proposal throughput, can repeated mutex lock acquisitions (line 61) become a bottleneck that slows down consensus and reduces network throughput? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_189b586d-2c9d-474b-9120-a8ab2e276455?mode=deep",
+    "timestamp": "2026-01-25 22:19:02.224633",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [CPU Exhaustion] Can an attacker flood the network with invalid proposals to trigger excessive is_valid_proposal() calls, causing CPU exhaustion through mutex operations and comparisons? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85d6b9a9-27b0-45bf-8a39-2f8b36b99afb?mode=deep",
+    "timestamp": "2026-01-25 22:19:30.255735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Struct: UnequivocalProposerElection] [Cache Pollution] The single-entry already_proposed state can be rapidly updated - can attackers exploit cache invalidation patterns to degrade validator performance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41ccf298-e5c1-460f-af63-57bbe8c8d553?mode=deep",
+    "timestamp": "2026-01-25 22:19:54.722684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Block ID Derivation] How is block.id() computed, and can an attacker find blocks with controlled IDs to match already_proposed.1, bypassing the inequality check (line 70)? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_224c5909-63fb-402a-b516-f3aef6f1a0e5?mode=deep",
+    "timestamp": "2026-01-25 22:20:18.289952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [HashValue::zero() Collision] The initialization uses HashValue::zero() (line 38) - can legitimate blocks ever have ID HashValue::zero(), and if so, how does this interact with the initial state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e43d3ee3-0a3d-41be-85c2-ad0c32a7cb96?mode=deep",
+    "timestamp": "2026-01-25 22:20:42.345962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Block ID Mutability] If block.id() returns different values when called multiple times (non-deterministic), can this bypass the equality check (line 80) and allow equivocation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_abb5b7cc-e5ff-4289-95b5-ad5abef5549d?mode=deep",
+    "timestamp": "2026-01-25 22:21:07.974606",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Hash Function Weakness] If the hash function used for block.id() has known weaknesses (e.g., SHA-1), can attackers exploit collision vulnerabilities to bypass equivocation detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_536fea5e-830d-43f8-af8e-f34c86264c5e?mode=deep",
+    "timestamp": "2026-01-25 22:21:33.152216",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [Preimage Attack] Can an attacker who observes already_proposed.1 compute a preimage to craft a different block with the same ID, passing the equality check (line 80)? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f43951e0-dfaa-451c-90d6-ae0a7ccc98c7?mode=deep",
+    "timestamp": "2026-01-25 22:21:59.216805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/liveness/unequivocal_proposer_election.rs] [Function: is_valid_proposal()] [None Author Edge Case] When block.author() returns None, is_some_and() short-circuits to false - can this hide other validation errors and prevent proper security event logging? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53c0816f-9366-4ccf-8669-65f74eb554ed?mode=deep",
+    "timestamp": "2026-01-25 22:22:25.879387",
+    "report_generated": false
+  }
+]
