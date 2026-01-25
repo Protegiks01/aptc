@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Cow handling] The function accepts Cow<str> but calls into_owned() at line 106 - can this cause unnecessary allocations when Borrowed strings are passed, wasting memory during compilation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_624a63dc-0b95-4e29-8ccb-82e16301fd76?mode=deep",
+    "timestamp": "2026-01-25 12:34:08.373346",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Entry reuse] When an existing entry is found at line 97, the function returns a pointer to it - can this cause issues if the caller expects ownership of a new Entry rather than a shared reference? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35132ce6-8aff-4546-aec7-da1c4efa5b34?mode=deep",
+    "timestamp": "2026-01-25 12:34:21.494642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [List ordering] New entries are inserted at the head (line 108 takes existing bucket) - can this affect the determinism of symbol resolution if insertion order matters for Move compilation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d62b4d8-12b6-4b4a-a730-9362a46479f1?mode=deep",
+    "timestamp": "2026-01-25 12:34:35.402737",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: hash()] [Hash determinism] DefaultHasher's hash output may vary across Rust versions or compilations - can this cause different validators to produce different symbol pools for the same Move code, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c6ffb8d-23ac-45a2-b354-9a29e9f74306?mode=deep",
+    "timestamp": "2026-01-25 12:34:49.176723",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Bucket take()] At line 108, self.0[bucket_index].take() transfers ownership - can this leave the bucket temporarily empty, causing race conditions if another thread accesses it before line 114 reassigns? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e0bd0e8-a7a2-40fe-af82-4eecf06a001c?mode=deep",
+    "timestamp": "2026-01-25 12:35:03.995663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Option unwrapping] Lines 88-101 use as_mut() and take() on Option<Box<Entry>> - can these operations panic if bucket state is corrupted, causing validator crashes during Move compilation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59ef7a7e-42b0-41b9-8504-75ed03f3cb3e?mode=deep",
+    "timestamp": "2026-01-25 12:35:19.782177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Struct: Entry] [Recursive structure] Entry has a 'next: Bucket' field forming a recursive type - can extremely deep linked lists cause stack overflow when traversing or dropping the structure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e31519d4-caed-47f6-b213-005db2ef2a1b?mode=deep",
+    "timestamp": "2026-01-25 12:35:36.665541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Entry drop] When buckets are replaced at line 114, old entries may be dropped - can this cause use-after-free if NonNull pointers to those entries are still held by callers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a98f886-08c7-4b07-8846-37b179751b4e?mode=deep",
+    "timestamp": "2026-01-25 12:35:55.769272",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Constant: INIT] [Initialization] Line 67 uses 'const INIT: Bucket = None' for array initialization - can this pattern fail to properly initialize all 4096 buckets, leaving some in undefined state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ec26081-384a-42f4-924a-f550ed230109?mode=deep",
+    "timestamp": "2026-01-25 12:36:15.553025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Struct: Entry] [Visibility] Entry fields (string, hash, next) are pub(crate) - can code in the same crate directly mutate these fields, bypassing pool consistency checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32724579-854a-492f-a1c1-954b0160b265?mode=deep",
+    "timestamp": "2026-01-25 12:36:37.690876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Return type] Returning NonNull<Entry> requires unsafe code to dereference - can this lead to unsafe usage patterns in calling code that violate memory safety? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe01ca65-e3a2-4e67-80d2-8888962e712e?mode=deep",
+    "timestamp": "2026-01-25 12:37:00.517548",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Struct: Pool] [No Drop impl] Pool has no explicit Drop implementation - can this cause memory leaks if the pool contains cyclic references or if Entry destructors are not properly called? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6a6f400-1d9a-4b6c-9efc-0bfe30176761?mode=deep",
+    "timestamp": "2026-01-25 12:37:24.628118",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Mutable reference] The function takes &mut self - can this prevent concurrent read-only symbol lookups, causing unnecessary serialization in multi-threaded Move compilation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d89c4ca-2a7a-4480-a597-f49bbfe1f4f1?mode=deep",
+    "timestamp": "2026-01-25 12:37:50.204521",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Module visibility] The entire module uses pub(crate) - can this allow other crates in the workspace to misuse the pool API in unsafe ways? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27e33298-0139-4fd1-8aaa-1711b04bd5fc?mode=deep",
+    "timestamp": "2026-01-25 12:38:15.235002",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Integration] [Symbol lifetime] If NonNull<Entry> pointers are stored in Move VM data structures that outlive the Pool, can this cause use-after-free when executing Move bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a185e85-b7e6-4b9c-bf1a-986f3cd240e6?mode=deep",
+    "timestamp": "2026-01-25 12:38:39.820307",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Integration] [Determinism] If different validator nodes encounter strings in different orders during Move compilation, can hash collision resolution produce different symbol addresses, breaking execution determinism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8265e265-ee51-40eb-bf0f-0888585888fd?mode=deep",
+    "timestamp": "2026-01-25 12:39:05.285736",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Integration] [Gas metering] Does Move gas metering account for the O(n) worst-case insertion time when hash collisions occur, or can attackers craft inputs to exceed gas limits unpredictably? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_921da6a6-2aa9-4edb-9567-3ee933666412?mode=deep",
+    "timestamp": "2026-01-25 12:39:31.938681",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Integration] [Bytecode generation] Can inconsistent symbol pool states across validators cause different Move bytecode to be generated for the same source, leading to consensus failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_628e6b40-645d-4bde-afa8-6f89d91c37c5?mode=deep",
+    "timestamp": "2026-01-25 12:39:58.623141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Integration] [Module verification] If the pool is used during Move module verification, can hash collisions cause different modules to be incorrectly treated as identical, bypassing security checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12fee1c5-5157-47bd-8577-7964cbcc925f?mode=deep",
+    "timestamp": "2026-01-25 12:40:24.517918",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Empty string] Can inserting an empty string",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c673fe32-4358-490f-987c-786d1f2e4c99?mode=deep",
+    "timestamp": "2026-01-25 12:40:50.392027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: hash()] [Unicode handling] Does the hash function properly handle all valid UTF-8 sequences including surrogate pairs, zero-width characters, and emoji, or can these cause hash collisions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f7448d4-6bd7-44aa-9e29-c76b7e52bab1?mode=deep",
+    "timestamp": "2026-01-25 12:41:16.537558",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Maximum string length] Can extremely long strings (megabytes) cause integer overflow in hash calculation or memory allocation failures during into_boxed_str()? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_577de70d-d40e-4430-93c0-2f3706e9100f?mode=deep",
+    "timestamp": "2026-01-25 12:41:43.018926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: insert()] [Null bytes] Can strings containing null bytes '\\0' be properly hashed and compared, or do they cause truncation or comparison errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_533d29f6-df8a-4d3b-b8f4-6a485f2da69d?mode=deep",
+    "timestamp": "2026-01-25 12:42:05.928031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Constant: NB_BUCKETS] [Power of two] BUCKET_MASK assumes NB_BUCKETS is a power of two - can changing NB_BUCKETS to a non-power-of-two value cause incorrect bucket indexing via bitwise AND? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_668db84a-1cba-40ac-8ceb-c20d5eda1b11?mode=deep",
+    "timestamp": "2026-01-25 12:42:29.988747",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-symbol-pool/src/pool.rs] [Function: hash()] [Hash seeding] DefaultHasher may use different seeds across program runs - can this cause non-deterministic symbol pools if validators restart during compilation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb9e98e8-bb0c-48ba-a891-dba3d19dadbf?mode=deep",
+    "timestamp": "2026-01-25 12:42:54.797055",
+    "report_generated": false
+  }
+]
