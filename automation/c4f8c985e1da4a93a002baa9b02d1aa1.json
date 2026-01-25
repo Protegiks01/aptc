@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Integer Overflow] Can the U32IdGenerator overflow after 2^32 requests, causing request_id collisions that allow an attacker to match responses to wrong requests, potentially leaking sensitive consensus data or causing state confusion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe4c3c20-0339-44a8-9184-0ca939e55c2a?mode=deep",
+    "timestamp": "2026-01-25 14:04:41.089954",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Request ID Collision] If request_id wraps around to 0 after u32::MAX requests, can an attacker exploit the collision with a pending request to receive responses meant for a different request, leading to Byzantine behavior or consensus manipulation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d32f96c-526c-408f-a506-c3839341c91b?mode=deep",
+    "timestamp": "2026-01-25 14:04:54.845536",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: OutboundRpcs::new()] [State Initialization] Does the U32IdGenerator start from a predictable value (likely 0), allowing an attacker who can observe early request IDs to predict future request IDs and craft malicious responses preemptively? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b52945d5-8a48-4b0b-912a-94847ca959fe?mode=deep",
+    "timestamp": "2026-01-25 14:05:08.995110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Race Condition] Can concurrent calls to request_id_gen.next() from multiple tasks cause race conditions leading to duplicate request IDs being generated, breaking the uniqueness assumption and allowing response mismatching? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09deb929-53bd-496e-aef6-50d5845c8d3c?mode=deep",
+    "timestamp": "2026-01-25 14:05:23.833726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_response()] [ID Reuse Attack] After a request times out and is removed from pending_outbound_rpcs, if the same request_id is reused for a new request before the old response arrives, can the delayed old response be matched to the new request causing incorrect data delivery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a178ab8c-d1d4-46db-a2e7-82ebcf658cf9?mode=deep",
+    "timestamp": "2026-01-25 14:05:40.143578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_request()] [Timeout Bypass] Can an attacker send requests with computationally expensive payloads that force the application layer to process beyond inbound_rpc_timeout, causing legitimate responses to be dropped while the validator continues wasting CPU resources? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_810d7fa6-41d3-44cf-a122-ebaca808d7a5?mode=deep",
+    "timestamp": "2026-01-25 14:05:57.356855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_request()] [Timeout Race] In the timeout future at line 259, if the response arrives exactly at the timeout deadline, is there a race condition where both the timeout and response paths execute, potentially causing double-counting of metrics or double-sending of responses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d28ade03-5b80-4a36-a5eb-da72b0bc2eaf?mode=deep",
+    "timestamp": "2026-01-25 14:06:17.187842",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Timeout Manipulation] Can a Byzantine peer deliberately delay responses to just before the timeout deadline repeatedly to maximize latency while avoiding timeout penalties, degrading consensus performance without detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5524730-9271-4e2a-a57c-85d4799b62e1?mode=deep",
+    "timestamp": "2026-01-25 14:06:39.595492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_request()] [Timer Drift] Does the TimeService guarantee that inbound_rpc_timeout is enforced consistently across all validators? Can time drift between validators cause some to timeout requests while others complete them, leading to state inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06b1d286-3772-4761-9db4-b3e1738ff53c?mode=deep",
+    "timestamp": "2026-01-25 14:07:03.689326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Timeout Stack Overflow] If an attacker sets extremely short timeout durations (approaching zero), can this cause rapid task creation and destruction that exhausts stack space or causes scheduler thrashing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a13d167-26c1-4e65-870d-ded840764e63?mode=deep",
+    "timestamp": "2026-01-25 14:07:29.467669",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Zero Timeout Attack] What happens if timeout duration is set to Duration::ZERO? Can this bypass the timeout mechanism entirely or cause immediate cancellation before the request is even sent over the wire? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd48f75b-1eb3-4ab9-b2ea-646538e20f2b?mode=deep",
+    "timestamp": "2026-01-25 14:07:56.598425",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_request()] [Limit Bypass] At line 214, the check uses '==' for max_concurrent_inbound_rpcs. Can an attacker exploit a race condition where multiple requests check the limit simultaneously before any increment, allowing exceeding the limit? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d41e4d7-7b7f-4689-acdf-76c33c989181?mode=deep",
+    "timestamp": "2026-01-25 14:08:25.943782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_request()] [DoS via Pending Requests] Can a Byzantine peer send exactly max_concurrent_inbound_rpcs requests and never send responses, permanently blocking all future inbound requests from that peer and disrupting consensus message delivery? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3f5eacb-8e38-4f44-8e83-70df34bbd06f?mode=deep",
+    "timestamp": "2026-01-25 14:08:56.813146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Outbound Limit DoS] At line 464, if the outbound queue reaches max_concurrent_outbound_rpcs, can a malicious or unresponsive peer permanently block the local validator from sending new RPC requests, halting consensus participation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_031b0c12-9af2-474c-8bf3-8450e15a6f52?mode=deep",
+    "timestamp": "2026-01-25 14:09:29.917876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_request()] [Integer Truncation] The check at line 214 casts inbound_rpc_tasks.len() as u32. If FuturesUnordered.len() returns usize > u32::MAX on 64-bit systems, can truncation cause the limit check to fail, allowing unbounded queue growth? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9197f93d-37c0-489a-88ff-e0d29d82e759?mode=deep",
+    "timestamp": "2026-01-25 14:10:02.844194",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Limit Comparison] At line 464, the comparison uses '==' instead of '>='. Can an attacker exploit off-by-one errors where the queue reaches exactly max_concurrent_outbound_rpcs + 1 before being checked? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_218c5bab-faf6-478c-8d50-fd8fe36a7ded?mode=deep",
+    "timestamp": "2026-01-25 14:10:36.285818",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: InboundRpcs::new()] [Configuration Attack] Can max_concurrent_inbound_rpcs or max_concurrent_outbound_rpcs be set to 0 or u32::MAX, either blocking all requests or removing the protection entirely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cd264c9-b351-45cb-93bf-b0a5bf19eee3?mode=deep",
+    "timestamp": "2026-01-25 14:11:07.992813",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_request()] [Queue Exhaustion] If a validator receives requests from multiple peers simultaneously, each peer can fill up to max_concurrent_inbound_rpcs. Can the total system-wide queue size cause memory exhaustion across all peer connections? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e40e46fa-a009-419d-ac58-8ccf68c59190?mode=deep",
+    "timestamp": "2026-01-25 14:11:40.441865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_request()] [Channel Race] At line 250, if peer_notifs_tx.push() fails after creating response_tx, the response channel is leaked and the inbound task waits indefinitely for a response that will never come, wasting resources until timeout? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c33e82bf-0604-4613-a0fd-abb88939eed2?mode=deep",
+    "timestamp": "2026-01-25 14:12:12.723696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Cancellation Check Bypass] At line 452, the check for application_response_tx.is_canceled() only happens at the start. Can the application cancel between this check and when the task starts, causing resources to be wasted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d328dec2-6336-4e47-9947-24d1b5515c4a?mode=deep",
+    "timestamp": "2026-01-25 14:12:45.149712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Double Send Attack] In the notify_application future (line 529-550), if both the response and cancellation branches complete simultaneously, can application_response_tx.send() be called multiple times or cause a panic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90dd6817-cebc-44df-ac4a-c7913e1de2ea?mode=deep",
+    "timestamp": "2026-01-25 14:13:17.678858",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_request()] [Oneshot Drop Race] If the application handler drops the res_tx sender (line 105) before sending a response, the receiver waits until timeout. Can an attacker trigger this repeatedly to waste validator CPU on timeout handling? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0fdb85d2-ce1b-4e57-9518-158bf120e807?mode=deep",
+    "timestamp": "2026-01-25 14:13:49.275439",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Channel Memory Leak] If response_tx (line 506) is inserted into pending_outbound_rpcs but never triggered or removed, does this cause a memory leak of oneshot channels that accumulates over time? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82ddd250-0e4f-4e3b-acaf-2d18d9184511?mode=deep",
+    "timestamp": "2026-01-25 14:14:22.728004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_outbound_request()] [Cancellation Notification] At line 545, if application_response_tx.send() fails due to cancellation but returns Ok, the task incorrectly records success metrics. Can this cause metric corruption masking actual failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_223ba789-8dba-40d0-aa40-aabb9903831c?mode=deep",
+    "timestamp": "2026-01-25 14:14:57.048087",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/protocols/rpc/mod.rs] [Function: handle_inbound_response()] [HashMap Race Condition] At lines 694-704, if two responses with the same request_id arrive simultaneously, can both threads call remove() on pending_outbound_rpcs, causing one to return None and increment EXPIRED_LABEL while the other sends the response, leading to incorrect metrics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70d9e91b-7c04-4e45-ae09-a63e830483a7?mode=deep",
+    "timestamp": "2026-01-25 14:15:30.125802",
+    "report_generated": false
+  }
+]
