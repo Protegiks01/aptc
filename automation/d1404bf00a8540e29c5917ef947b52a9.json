@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: drain_votes()] [Metric cleanup race] At lines 485-499, metrics are set to 0 during draining - can concurrent vote insertions cause metrics to be inconsistent if new votes are added while draining is in progress? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_388e90c4-9d3f-4647-85e9-207bd73987d7?mode=deep",
+    "timestamp": "2026-01-25 21:13:10.871360",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: drain_votes()] [Ownership transfer safety] At lines 501-507, li_digest_to_votes is drained and hash_index is discarded - can this cause issues if external code relies on hash_index values for tracking or debugging? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cf1d3d6-3213-4f23-b530-02bf4056e62a?mode=deep",
+    "timestamp": "2026-01-25 21:13:23.870994",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Struct: PendingVotes] [Unbounded growth] Lines 166-177 show three HashMaps with no size constraints - can an attacker cause exponential memory growth by submitting votes for many different LedgerInfos, multiple timeouts, and from many authors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9121ba0f-2bec-426a-9221-a5eaf1f08332?mode=deep",
+    "timestamp": "2026-01-25 21:13:37.238532",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Voting power type safety] At lines 332-342, voting power is returned as Option<u64> but accumulated as u128 in voting aggregation - can this type mismatch cause overflow when many validators with maximum u64 voting power submit votes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90164bb1-67c7-43a1-b7df-ba0007668d6d?mode=deep",
+    "timestamp": "2026-01-25 21:13:51.634414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Metric overflow] At lines 345-357, voting power is cast to f64 for metrics - can this cause precision loss or overflow for large voting power values exceeding f64's integer precision (2^53)? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_552cdaf4-f337-4630-b60d-3b36372ab613?mode=deep",
+    "timestamp": "2026-01-25 21:14:06.631191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [Total voting power consistency] At line 258, total_voting_power() and quorum_voting_power() are called separately - can validator set changes between these calls cause f_plus_one calculation to be incorrect? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13c4ef6e-0660-4ad2-a006-66faeb3b15e8?mode=deep",
+    "timestamp": "2026-01-25 21:14:22.665883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [Voting power accumulation] At lines 108 and 118, voting power is accumulated with unwrap_or_default() - if get_voting_power returns None, is 0 the correct default, or should this be an error indicating validator set corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df71ea7f-19ec-4234-8fe6-d7fc3cb41dd4?mode=deep",
+    "timestamp": "2026-01-25 21:14:40.239948",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Struct: PendingVotes] [Shared mutability] Lines 166-177 show PendingVotes uses standard HashMaps without interior mutability - if PendingVotes is accessed from multiple threads via Arc<Mutex<PendingVotes>>, can lock contention cause consensus delays or incorrect vote ordering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e308932f-7b66-4ab7-9245-61c0aacbb81e?mode=deep",
+    "timestamp": "2026-01-25 21:14:59.138400",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Read-modify-write race] At lines 288-317, the pattern of checking author_to_vote then inserting is not atomic - can concurrent insertions from the same author cause both to pass the equivocation check and be inserted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f865cf6-06ea-4a46-a3dc-e0845cf96dfe?mode=deep",
+    "timestamp": "2026-01-25 21:15:19.951732",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [VoteStatus transition race] At lines 360-392, VoteStatus can transition from NotEnoughVotes to EnoughVotes - can concurrent threads observe intermediate states where QC is partially formed, causing duplicate QC generation or vote counting errors? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ccef1ca-5e4d-47c5-a2b0-264884f410b2?mode=deep",
+    "timestamp": "2026-01-25 21:15:42.264361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [TC formation race] At lines 225-254, multiple threads might simultaneously call get_or_insert_with() and add signatures - can this cause signature aggregation to include duplicate signatures or miss signatures due to non-atomic operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05f3ee9f-eb22-4840-ae0d-efaea7bd1d43?mode=deep",
+    "timestamp": "2026-01-25 21:16:05.967750",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: drain_votes()] [Drain during insertion race] At lines 484-508, if drain_votes() is called while insert_vote() is executing, can this cause votes to be lost, metrics to be incorrect, or panics due to concurrent modification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6be6677d-aafa-49c0-8a39-fff804f55045?mode=deep",
+    "timestamp": "2026-01-25 21:16:30.805085",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Error propagation] At lines 408-414, errors are logged with MUST_FIX but processing continues - can repeated errors cause log flooding that obscures other security issues or causes disk exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31ccfd43-130f-4e42-b168-5b7049f2902d?mode=deep",
+    "timestamp": "2026-01-25 21:16:56.029575",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [Error handling inconsistency] At lines 247-253, similar errors are handled identically to insert_vote() - can consistent error patterns indicate a systematic validation bypass that affects both functions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_432b1f9f-1b5d-45cd-b445-8408770781d4?mode=deep",
+    "timestamp": "2026-01-25 21:17:22.859429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [VerifyError variants] At lines 397-401 and 405-414, different VerifyError variants are handled differently - can an attacker craft inputs that trigger specific error paths to bypass security checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92730534-665b-420e-88e7-ad727a0c8f81?mode=deep",
+    "timestamp": "2026-01-25 21:17:49.486691",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Partial success handling] If aggregate_and_verify() at line 384 succeeds but subsequent processing fails, are the aggregated signatures still in VoteStatus, potentially causing inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_068d959a-8117-462a-b445-fa6451c2dc1d?mode=deep",
+    "timestamp": "2026-01-25 21:18:17.269196",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [Empty timeout_reason HashMap] At lines 94-154, if timeout_reason is empty, will the function return Unknown or panic - can this be exploited to cause consensus confusion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c1a5f94-fb85-4e84-a2b7-665cbc44a634?mode=deep",
+    "timestamp": "2026-01-25 21:18:44.674491",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Metric injection] At lines 349-357, author.to_string() is used in metric labels - can an attacker with a malicious author string inject special characters to corrupt metrics or cause Prometheus scraping errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c75cbe34-20c9-4e0b-9c56-cda60395905c?mode=deep",
+    "timestamp": "2026-01-25 21:19:11.404185",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: hash_index_to_str()] [Index tracking accuracy] At lines 511-517, hash indices >2 are labeled as",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb49229e-f59c-4edb-8b30-3ac35d81d35a?mode=deep",
+    "timestamp": "2026-01-25 21:19:38.050052",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [Epoch/round metrics] At lines 218-223, epoch and round are cast to i64 - can negative values appear in metrics if epochs/rounds are extremely large, causing monitoring confusion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba027e70-cfa8-4e50-937e-fade0c753bd7?mode=deep",
+    "timestamp": "2026-01-25 21:20:04.891506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Metric timing attack] At lines 380-382, verification is timed with start_timer() - can an attacker observe timing variations in metrics to infer information about validator signatures or system load? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58bf33c1-2dd6-427d-ba01-ad922d55c058?mode=deep",
+    "timestamp": "2026-01-25 21:20:31.234385",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [LedgerInfo validation gap] At line 282, li_digest is computed but the LedgerInfo content is never validated in this function - can an attacker submit votes with malformed LedgerInfo that passes hash validation but causes issues in QC verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d6bfb98-5c8e-43f6-b004-cc4121c98152?mode=deep",
+    "timestamp": "2026-01-25 21:20:59.655947",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [VoteData consistency] At lines 343-344, vote.vote_data().proposed() is used for metrics - is there validation that vote_data matches ledger_info, or can a validator vote for one block but claim it's for another? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2eb15eba-794e-4b24-b2fe-cd391d719cf3?mode=deep",
+    "timestamp": "2026-01-25 21:21:26.004557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Clone vs reference usage] At line 317, vote.clone() is stored - can this cause memory issues if votes contain large data structures, and is the clone necessary or can a reference be used? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5cf70f5a-1b79-4841-a077-7699363a1436?mode=deep",
+    "timestamp": "2026-01-25 21:21:53.543771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Ledger info lifetime] At lines 325-329, ledger_info is cloned into SignatureAggregator - does this prevent the original LedgerInfo from being modified, or can concurrent modifications cause signature verification to fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03c6fade-f88d-4ffd-b271-76ed62f00e4f?mode=deep",
+    "timestamp": "2026-01-25 21:22:21.821125",
+    "report_generated": false
+  }
+]
