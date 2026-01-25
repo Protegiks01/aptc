@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Comment: line 89] [Security review TODO] The TODO comment mentions this was 'copied from das' and 'should review' - has this review been completed, or are there unaddressed security issues from the original DAS implementation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c80f546-bc0b-4d22-9079-14aac33a24a1?mode=deep",
+    "timestamp": "2026-01-25 18:38:10.956637",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Type: DealtSecretKey] [Type confusion] The DealtSecretKey is simply an alias for Scalar<E> (line 99) - can this lead to type confusion where arbitrary scalars are treated as secret keys without proper validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d99504d-0e74-42d1-8ecf-5dcec58dc3ee?mode=deep",
+    "timestamp": "2026-01-25 18:38:24.332265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Type: DealtSecretKeyShare] [No encapsulation] DealtSecretKeyShare is also just Scalar<E> (line 101) - does the lack of a proper type wrapper mean secret key shares lack proper zeroization, validation, or access control? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7446c3d1-f89e-44da-bc4a-60c64cee7660?mode=deep",
+    "timestamp": "2026-01-25 18:38:37.787635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Comment: line 97] [Design concern] The TODO 'maybe make these actual structs' suggests the current type aliases are temporary - are there security implications of using raw Scalar types instead of proper wrapper structs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cec57cf-07f3-435d-a6fd-1b9d0f6abc0d?mode=deep",
+    "timestamp": "2026-01-25 18:38:52.128817",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Type: DealtSecretKey] [Zero value attack] Can a DealtSecretKey be set to zero (since it's just a Scalar), creating a trivial secret that breaks the security of the DKG protocol? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ac8579d-7c9d-4ebe-b661-3585d9b5ef5f?mode=deep",
+    "timestamp": "2026-01-25 18:39:07.393851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Import: line 4] [Dependency on chunked_elgamal] Does the dependency on chunked_elgamal module create circular dependencies or expose internal details that could be exploited if that module has vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c44b83d4-7da5-4381-929a-3b8e0a2576ef?mode=deep",
+    "timestamp": "2026-01-25 18:39:24.093073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Import: line 5] [Crypto library trust] The code imports from aptos_crypto (lines 5-9) - are these cryptographic primitives formally verified, or could bugs in the underlying arkworks library compromise key security? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b03bd926-27d8-4c8c-92c9-76409b9792f5?mode=deep",
+    "timestamp": "2026-01-25 18:39:43.045248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Trait: ValidCryptoMaterial] [Protocol integration] The ValidCryptoMaterial trait (lines 24-32) integrates with the broader Aptos crypto system - can mismatches in serialization formats between different crypto material types cause protocol failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56fcde39-3ffa-4dc3-9f22-65b8ca4f4edf?mode=deep",
+    "timestamp": "2026-01-25 18:40:03.545812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Function: to()] [Parameter injection] The to() method (lines 67-71) takes a reference to PublicParameters - can a Byzantine validator provide a reference to malicious parameters they control, affecting other validators' key derivation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3e43a73-0a84-49ef-ba71-a2744b64114a?mode=deep",
+    "timestamp": "2026-01-25 18:40:24.932967",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Generic: E: Pairing] [Curve choice] The code is generic over any Pairing implementation - does this allow usage with weak or deprecated elliptic curve pairings (like supersingular curves) that have known attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a407ba5-f493-4d37-8cc1-41b82eba4676?mode=deep",
+    "timestamp": "2026-01-25 18:40:48.655461",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Struct: EncryptPubKey] [G1 vs G2 confusion] EncryptPubKey uses G1Affine (line 21) while DealtPubKey uses G2Affine (line 78) - can confusion between these groups lead to type errors that break pairing-based proofs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b67eb84b-3ebf-4807-add3-652d7bc257a0?mode=deep",
+    "timestamp": "2026-01-25 18:41:13.208540",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Field: ek] [Comment accuracy] The comment on line 19 says 'H^{dk^{-1}}' (dk inverse) but the to() method computes 'H * dk' (not inverse) - is this a cryptographic design flaw or just a documentation error? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46d8d88d-34c6-420b-ad14-2f517f86472d?mode=deep",
+    "timestamp": "2026-01-25 18:41:39.753833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Struct: EncryptPubKey] [Missing dk^{-1}] If the encryption key should be H^{dk^{-1}} as the comment suggests (line 19), but the code computes H^{dk} (line 69), does this break the decryption algorithm's mathematical correctness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b42e4f1-c918-43d9-b0f8-ab19409ea752?mode=deep",
+    "timestamp": "2026-01-25 18:42:07.554927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Trait: Pairing] [Pairing assumption] Does the security rely on the hardness of the decisional Diffie-Hellman assumption in pairing groups, and are there parameter choices that could weaken this assumption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28fc05ce-af97-45ec-8f0b-219f7bc25e1b?mode=deep",
+    "timestamp": "2026-01-25 18:42:37.478649",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Struct: EncryptPubKey] [Shared state] EncryptPubKey derives Clone (line 17) - can multiple threads clone and modify encryption keys concurrently, leading to race conditions in DKG ceremonies? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdbf7cb7-206b-49e3-9fa2-6c26ac22db2d?mode=deep",
+    "timestamp": "2026-01-25 18:43:07.709155",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Struct: DecryptPrivKey] [Thread safety] DecryptPrivKey does not implement Send or Sync - could this prevent proper usage in async validator code, forcing unsafe workarounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b059c03-cb88-4fe5-8286-507b0b05554d?mode=deep",
+    "timestamp": "2026-01-25 18:43:39.548121",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Function: generate()] [RNG state] If multiple threads call generate() with a shared RNG, could race conditions in the RNG state lead to correlated or predictable keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_869726dc-54c5-4a93-8622-1b7edc5ec163?mode=deep",
+    "timestamp": "2026-01-25 18:44:12.709862",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Function: to_bytes()] [Resource exhaustion] If an attacker creates an EncryptPubKey with a specially crafted point, could serialization on line 29 consume excessive CPU or memory during compression? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17a4f0d1-fcc7-4eb4-929e-4ec278f08261?mode=deep",
+    "timestamp": "2026-01-25 18:44:46.478709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Function: try_from()] [Decompression bomb] Can a malicious byte array cause deserialize_compressed() on line 38 to produce an extremely large internal representation, exhausting validator memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d52517f-5d42-4651-b1f1-59391b4f7625?mode=deep",
+    "timestamp": "2026-01-25 18:45:20.168733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Function: to()] [Scalar field mismatch] Does the scalar field of DecryptPrivKey.dk match the scalar field used in pubkey_base() multiplication on line 69, or can field mismatches cause incorrect results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1066f93-bdc0-478d-a494-7a2950677bc5?mode=deep",
+    "timestamp": "2026-01-25 18:45:51.769172",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Struct: EncryptPubKey] [Inverse operation missing] If decryption requires dk^{-1} but only dk is stored in DecryptPrivKey (line 49), is the inverse computed safely elsewhere, or can division-by-zero or non-invertible elements cause failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_344a193f-7ef3-45ca-b021-f0b48c250574?mode=deep",
+    "timestamp": "2026-01-25 18:46:24.265025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Function: to()] [Scalar reduction] Is the scalar dk automatically reduced modulo the field order during multiplication on line 69, or could overflow/wraparound occur with large dk values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11505e78-c3c2-4c83-ace0-2727c77f0788?mode=deep",
+    "timestamp": "2026-01-25 18:46:56.758492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Struct: DecryptPrivKey] [Public field access] The dk field is marked pub(crate) (line 49) - can code within the same crate accidentally expose or misuse the raw secret key? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_733f7e7d-a561-43c4-b92f-710aab3dd8b8?mode=deep",
+    "timestamp": "2026-01-25 18:47:25.606101",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Struct: EncryptPubKey] [Public field exposure] The ek field is marked pub(crate) (line 21) - can internal code directly modify the encryption key, bypassing validation in the conversion function? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edbf72c5-5a2a-4566-9222-a0b98697efe0?mode=deep",
+    "timestamp": "2026-01-25 18:47:52.720588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/chunky/keys.rs] [Function: new()] [Unchecked constructor] DealtPubKey.new() (line 83) accepts any G2Affine without validation - can callers create invalid public keys that break security assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d763fb5f-d8d6-4383-ac75-69bfe8e62bc3?mode=deep",
+    "timestamp": "2026-01-25 18:48:20.445597",
+    "report_generated": false
+  }
+]
