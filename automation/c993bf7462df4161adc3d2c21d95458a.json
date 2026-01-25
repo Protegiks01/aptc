@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetch_error_handling()] [Fixed retry delay] TRANSIENT_DATA_ERROR_RETRY_SLEEP_DURATION_MS is always 1000ms (line 56); can this cause thundering herd when many requests hit the same error simultaneously? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_978ca5ff-71e7-4152-aad4-6f7948473740?mode=deep",
+    "timestamp": "2026-01-25 16:50:57.485462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: ahead_of_cache_data_handling()] [No exponential backoff] The sleep is fixed at AHEAD_OF_CACHE_RETRY_SLEEP_DURATION_MS (50ms); per TODO line 830, can this cause CPU waste in tight polling loops when cache is consistently behind? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76be9dcc-4c4e-4f6a-9f69-f0ed802e76e2?mode=deep",
+    "timestamp": "2026-01-25 16:51:09.982499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetch_from_filestore()] [Timestamp validation] The code assumes transactions have timestamps (lines 799-800) with .unwrap(); can missing timestamps from corrupted file store data cause panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9cf9fa95-33f8-4173-af31-593b0c9305f4?mode=deep",
+    "timestamp": "2026-01-25 16:51:23.229815",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetch()] [Timestamp availability] Similarly, timestamps are unwrapped at lines 745-746; are genesis transactions or special system transactions guaranteed to have timestamps? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f5bdfb8-ce7c-47d2-8c01-23aae0660b17?mode=deep",
+    "timestamp": "2026-01-25 16:51:37.611096",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Metric manipulation] LATEST_PROCESSED_VERSION_PER_PROCESSOR is set to end_of_batch_version (line 556); can a malicious client request very high versions to poison this metric and cause alert fatigue? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72bcd4f4-7a3f-468d-9541-f9826343b184?mode=deep",
+    "timestamp": "2026-01-25 16:51:52.164012",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_transactions()] [Connection count inflation] CONNECTION_COUNT is incremented for every request (line 157); can an attacker rapidly connect and disconnect to inflate metrics without processing data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6aeb7ab4-93dd-49d3-b33d-80f4a5742541?mode=deep",
+    "timestamp": "2026-01-25 16:52:07.382551",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Short connection tracking] SHORT_CONNECTION_COUNT is incremented if connection < 10 seconds (lines 586-591); but connection_start_time is set to None when count = 0; can this cause underreporting of short connections? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36d4056d-6bc4-44e7-9cca-dfd528890d31?mode=deep",
+    "timestamp": "2026-01-25 16:52:23.811044",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: log_grpc_step()] [Log injection via metadata] User-controlled request_metadata fields are logged throughout; can an attacker inject newlines or ANSI escape codes in processor_name or request_identifier to corrupt logs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46aabf2b-5198-4424-81a2-17f0e56aa0af?mode=deep",
+    "timestamp": "2026-01-25 16:52:42.205117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetch_error_handling()] [Error information leakage] The full error is logged with {:?} (line 843); can this leak sensitive information about file store paths, Redis connection strings, or internal state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_715b1948-0c85-4465-b89e-37dd21a25921?mode=deep",
+    "timestamp": "2026-01-25 16:53:01.472192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Unbounded transaction accumulation] If transactions_count is None (live mode), the loop continues indefinitely (line 474); can this cause memory exhaustion by accumulating state in tps_calculator or other structures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d56da008-1eee-4e8e-9d7d-6225551647ba?mode=deep",
+    "timestamp": "2026-01-25 16:53:21.770452",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: ensure_sequential_transactions()] [Vector growth unbounded] The transactions vector grows via extend (line 670); for very large version ranges, can this cause OOM when batches are large? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91c72b38-31da-41f0-9786-38bd6660a1d2?mode=deep",
+    "timestamp": "2026-01-25 16:53:42.883853",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_transactions_responses_builder()] [Chunk size limits] chunk_transactions uses MESSAGE_SIZE_LIMIT; but if a single transaction exceeds this limit, what happens? Can it cause infinite loops or panics in chunking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba577bc0-4f0d-4c17-95bf-6928c2f34daf?mode=deep",
+    "timestamp": "2026-01-25 16:54:05.541631",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: channel_send_multiple_with_timeout()] [Response cloning] resp_item.clone() occurs in send_timeout (line 930); for large transaction batches, can this cause memory spikes from cloning gigabytes of data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c08d21f6-f33a-4bc1-80b9-70c4370cca97?mode=deep",
+    "timestamp": "2026-01-25 16:54:28.178527",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [MovingAverage memory] MovingAverage is created with MOVING_AVERAGE_WINDOW_SIZE = 10,000 (line 51); can this consume excessive memory for long-lived connections? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9da0733-57b0-44eb-a345-9e0fbefcd12a?mode=deep",
+    "timestamp": "2026-01-25 16:54:50.979869",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_data_with_tasks()] [In-memory cache bloat] in_memory_cache.get_transactions() can return large result sets (line 245); is there a size limit to prevent memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae106b19-03c3-4006-9bfb-d2742ff98c35?mode=deep",
+    "timestamp": "2026-01-25 16:55:14.361092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_transactions_responses_builder()] [Chain ID injection] chain_id is cast to u32 then back to u64 (line 691); can truncation occur if chain_id > u32::MAX, causing incorrect chain_id in responses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e44f1a7-c7b7-4058-bc21-c0ab17de3438?mode=deep",
+    "timestamp": "2026-01-25 16:55:38.822588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Truncation logic error] When count < transaction_data.len() (line 504), truncate is called; but if count is 0, does truncate(0) clear all data, and is this intentional? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_665d90b8-d3ca-4b1e-a009-5624af745e4f?mode=deep",
+    "timestamp": "2026-01-25 16:56:03.424442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Count underflow] transactions_count = Some(count - transaction_data.len() as u64) (line 509); can underflow occur if transaction_data.len() > count due to race conditions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91d9c2f8-bcec-4a50-baf8-2d6926472168?mode=deep",
+    "timestamp": "2026-01-25 16:56:29.518539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: ensure_sequential_transactions()] [Single batch shortcut] If batches.len() == 1, it returns immediately (lines 600-602); can this skip validation that would otherwise detect corrupted batch data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04353e33-2036-4fd7-bcbf-12639fc8d876?mode=deep",
+    "timestamp": "2026-01-25 16:56:54.179503",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetch()] [Size calculation overflow] size_in_bytes sums transaction lengths (lines 736-739); can this overflow usize on 32-bit systems or when handling massive transaction batches? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6da51c58-b778-4ccb-b010-27412b182573?mode=deep",
+    "timestamp": "2026-01-25 16:57:21.241396",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: channel_send_multiple_with_timeout()] [Timestamp unwrap] overall_start_txn_timestamp and overall_end_txn_timestamp are cloned then unwrapped (lines 905-906); can missing timestamps cause panics here? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee341641-4bf5-4d67-9a79-fbf36aac1051?mode=deep",
+    "timestamp": "2026-01-25 16:57:44.961089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: data_fetcher_task()] [Encoded length calculation] bytes_ready_to_transfer uses transaction.encoded_len() (lines 513-516); can malformed transactions report incorrect sizes, causing MESSAGE_SIZE_LIMIT bypass? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dcf4537-c503-4810-95ec-447f16539b27?mode=deep",
+    "timestamp": "2026-01-25 16:58:08.199278",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: get_transactions_responses_builder()] [Message size enforcement] chunk_transactions is called with MESSAGE_SIZE_LIMIT (line 687); but is this checked before or after stripping transactions, and can stripping change sizes enough to violate limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d5b9351-2850-43f1-a399-953283aece44?mode=deep",
+    "timestamp": "2026-01-25 16:58:31.280505",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: channel_send_multiple_with_timeout()] [Response size calculation] resp_item.encoded_len() is called for metrics (line 910); but can the actual encoded size differ from this estimate when serialized on wire? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c59b8728-5e06-46ad-a8ae-4d2723cb5aad?mode=deep",
+    "timestamp": "2026-01-25 16:58:56.362095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service/src/service.rs] [Function: deserialize_cached_transactions()] [Protobuf deserialization] CacheEntry::into_transaction() is called without try_into or validation (line 709); can malformed protobuf in cache cause panics or incorrect deserialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8ca4d59-a7ed-4d4c-a22c-ccb138df1b83?mode=deep",
+    "timestamp": "2026-01-25 16:59:21.624228",
+    "report_generated": false
+  }
+]
