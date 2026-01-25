@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Global: GLOBAL_SYSTEM] [Race condition] Can concurrent calls to collect_system_info() from multiple threads cause race conditions in the global GLOBAL_SYSTEM Mutex, leading to inconsistent telemetry data or lock contention that degrades validator performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c423bd70-c165-44cd-9fd8-0e1977871ddd?mode=deep",
+    "timestamp": "2026-01-25 14:38:57.673908",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Global: GLOBAL_SYSTEM] [Lock poisoning] If a thread panics while holding the GLOBAL_SYSTEM.lock() in collect_system_info(), does this poison the mutex and prevent all future telemetry collection, potentially hiding critical system issues from monitoring? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44e2c6f4-db02-4d7b-b9f6-bdf9f160fda3?mode=deep",
+    "timestamp": "2026-01-25 14:39:10.473586",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_system_info()] [Deadlock potential] Can the sequential lock acquisitions at lines 60-61 (refresh_system, refresh_disks) combined with locks in collect_cpu_info(), collect_disk_info(), collect_memory_info(), and collect_sys_info() create deadlock scenarios if other code paths acquire locks in different orders? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3dff99ed-2c7e-49e1-8429-7696aefa8258?mode=deep",
+    "timestamp": "2026-01-25 14:39:24.071884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_system_info()] [Performance degradation] Are the refresh_system() and refresh_disks() operations at lines 60-61 expensive enough to block other threads waiting on GLOBAL_SYSTEM.lock(), causing validator slowdowns during telemetry collection that affect consensus participation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_965cf055-a919-4f93-aace-57dfea1e8eb1?mode=deep",
+    "timestamp": "2026-01-25 14:39:37.443566",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_system_info()] [Resource exhaustion] Can an attacker trigger frequent calls to collect_system_info() to repeatedly lock and refresh the global system state, causing CPU exhaustion through excessive system information queries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_714b4811-cd4b-4ba3-a5ca-dfe353a483be?mode=deep",
+    "timestamp": "2026-01-25 14:39:51.824627",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_sys_info()] [Information disclosure] Does exposing SYSTEM_HOST_NAME at line 159 leak sensitive validator identity information that could be used to target specific validators for attacks or correlate validator nodes with their operators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2fa3bc2a-42fc-4816-804a-abaf4d377c40?mode=deep",
+    "timestamp": "2026-01-25 14:40:07.187262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_sys_info()] [System fingerprinting] Can the combination of SYSTEM_KERNEL_VERSION, SYSTEM_NAME, and SYSTEM_OS_VERSION at lines 163-171 create a unique fingerprint for validators, enabling attackers to identify vulnerable software versions and launch targeted exploits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45955edc-fdb7-4e7f-8907-4988003d47ec?mode=deep",
+    "timestamp": "2026-01-25 14:40:24.066319",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_cpu_info()] [Hardware fingerprinting] Does exposing CPU_BRAND, CPU_VENDOR_ID, CPU_FREQUENCY, and CPU_NAME at lines 89-92 leak hardware specifications that could be used to identify data center locations or correlate validator identities across networks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_883cb5fe-771d-4051-b717-9cb6275aec8c?mode=deep",
+    "timestamp": "2026-01-25 14:40:42.691889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_disk_info()] [Storage fingerprinting] Can the DISK_NAME, DISK_FILE_SYSTEM, and DISK_TYPE information at lines 131-134 reveal unique storage configurations that compromise validator anonymity or expose infrastructure patterns? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1fe725a8-b2dd-4d03-816c-cf3ef191f41b?mode=deep",
+    "timestamp": "2026-01-25 14:41:01.856749",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: get_system_information()] [Privacy violation] Is telemetry data sent over secure channels, or can network attackers intercept system_information BTreeMap contents at line 52 to gather intelligence on validator infrastructure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c48058fe-d2ca-47b6-a994-4f1027158aed?mode=deep",
+    "timestamp": "2026-01-25 14:41:22.066375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_disk_info()] [Out-of-bounds access] Can the array indexing at line 126 (disks[largest_disk_index]) cause a panic if the disk array is modified between lines 117-123 (iteration) and line 126 (access), leading to validator crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c03ee777-0508-4676-b9b2-ae2fa6fe7a21?mode=deep",
+    "timestamp": "2026-01-25 14:41:43.939341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_disk_info()] [Race condition] Between determining largest_disk_index at lines 115-123 and accessing disks[largest_disk_index] at line 126, can concurrent disk modifications cause the index to become invalid, resulting in a panic or incorrect data collection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f474748c-7e3b-4759-9396-378cdecc0fc8?mode=deep",
+    "timestamp": "2026-01-25 14:42:06.217711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_disk_info()] [Integer overflow] Can the disk_size comparison at line 119 overflow if total_space() returns u64::MAX, causing incorrect largest disk identification and potential panics during subsequent operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_919cbf91-1cdf-427f-b87c-a3237ce50e78?mode=deep",
+    "timestamp": "2026-01-25 14:42:29.710462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_cpu_info()] [Integer overflow] Can CPU_FREQUENCY value at line 90 overflow when converted to string if global_cpu.frequency() returns an extremely large value, causing string formatting issues or panics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4fc3ed2c-93dc-44f2-9300-3331acd0e1e8?mode=deep",
+    "timestamp": "2026-01-25 14:42:53.922404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_disk_info()] [Integer overflow] Can DISK_AVAILABLE_SPACE or DISK_TOTAL_SPACE at lines 128-133 overflow during to_string() conversion if disk.available_space() or disk.total_space() return u64::MAX, leading to incorrect telemetry reporting? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ea9d752-5a01-46a9-9eaa-f9eb6bd77db5?mode=deep",
+    "timestamp": "2026-01-25 14:43:18.667599",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_memory_info()] [Integer overflow] Can MEMORY_AVAILABLE, MEMORY_TOTAL, or MEMORY_USED values at lines 144-149 overflow during string conversion if system memory values are near u64 limits, causing telemetry corruption? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60e80181-a2d2-4052-bebb-b5cfdcdfc87b?mode=deep",
+    "timestamp": "2026-01-25 14:43:45.631354",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_cpu_info()] [Integer overflow] Can cpus.len() at line 78 overflow when converted to string if the system reports an impossibly large CPU count, causing string formatting failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4da781e-8b55-4a78-ab58-b5c5c4e101a5?mode=deep",
+    "timestamp": "2026-01-25 14:44:11.855368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_disk_info()] [Format string injection] Can malicious disk.file_system() values at line 131 using Debug formatting inject control characters or escape sequences into telemetry data, corrupting downstream telemetry databases or causing injection attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd7f0ee4-06d0-4d0a-a4d0-3bbdf6fdcf3d?mode=deep",
+    "timestamp": "2026-01-25 14:44:37.716467",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_disk_info()] [Format string injection] Does the Debug format at line 132 for disk.name() properly sanitize potentially malicious disk names that could contain newlines, null bytes, or special characters that corrupt telemetry storage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a28004c-c91a-447d-90ab-cbbb03763a70?mode=deep",
+    "timestamp": "2026-01-25 14:45:02.410344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_disk_info()] [Format string injection] Can disk.type_() at line 134 return values with embedded format specifiers or control characters that cause telemetry parsing errors or injection attacks when stored in telemetry systems? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bdfb6d3a-23a4-4a3c-987e-e62c0b6b1890?mode=deep",
+    "timestamp": "2026-01-25 14:45:25.772956",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_cpu_info()] [String injection] Can CPU_BRAND, CPU_NAME, or CPU_VENDOR_ID values at lines 89-92 contain malicious strings with embedded null bytes, newlines, or SQL injection payloads that corrupt telemetry databases? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3be0676b-c852-4689-bddc-85a8a2544fdd?mode=deep",
+    "timestamp": "2026-01-25 14:45:48.339798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_system_info()] [TOCTOU] Between refresh_system() at line 60 and subsequent data collection in collect_cpu_info() at line 64, can system state change such that stale CPU information is collected, leading to misleading telemetry about validator health? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6a0a6d8-6503-4a35-821f-5550086191b3?mode=deep",
+    "timestamp": "2026-01-25 14:46:09.070617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_system_info()] [TOCTOU] Between refresh_disks() at line 61 and collect_disk_info() at line 65, can disk configurations change (mount/unmount) causing inconsistent or invalid disk telemetry data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1de5fa6-0796-4abc-a58f-a3813c049733?mode=deep",
+    "timestamp": "2026-01-25 14:46:30.324156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_disk_info()] [TOCTOU] Between checking disks.is_empty() at line 110 and accessing disks[largest_disk_index] at line 126, can the disk array be modified by concurrent system changes, causing invalid access or stale data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92d848e7-4e84-43b2-8359-63bd1734747b?mode=deep",
+    "timestamp": "2026-01-25 14:46:53.407402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-telemetry/src/system_information.rs] [Function: collect_cpu_info()] [TOCTOU] Between acquiring the system_lock at line 76 and accessing cpus() at line 77, can the system state become stale if another thread called refresh_system(), causing inconsistent CPU count and info collection? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cb70a80-583f-4a31-9119-8a93b22e388a?mode=deep",
+    "timestamp": "2026-01-25 14:47:16.802574",
+    "report_generated": false
+  }
+]
