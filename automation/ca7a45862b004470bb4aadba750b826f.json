@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Assert vulnerability] The assert!(self.pruner_worker.is_some()) at line 163 will panic if called when pruner is disabled - can state transitions or race conditions cause this code path to be reached unexpectedly, crashing the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_299d72c0-eb89-45f6-a9f4-3becd0b9c4c0?mode=deep",
+    "timestamp": "2026-01-25 17:22:58.576871",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Ordering violation] The min_readable_version is stored atomically (line 165-166), then set on worker (line 172-175) - if worker starts pruning immediately, can it operate on stale min_readable_version from previous calls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecd33316-2e92-4140-b823-a2627662b8e8?mode=deep",
+    "timestamp": "2026-01-25 17:23:12.393504",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Struct: LedgerPrunerManager] [Data race] The latest_version field uses Arc<Mutex<Version>> while min_readable_version uses AtomicVersion - can unsynchronized access between these two fields cause version skew where latest < min_readable? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ecaaac2-229f-42cc-a7c5-c4e3ed9ae3fb?mode=deep",
+    "timestamp": "2026-01-25 17:23:26.331585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Struct: LedgerPrunerManager] [Lock ordering] If multiple threads lock latest_version.lock() at different points (line 58, 67), can this lead to deadlocks when combined with other database locks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72d84bc1-8079-424e-835b-6f403162e59b?mode=deep",
+    "timestamp": "2026-01-25 17:23:41.002975",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Struct: LedgerPrunerManager] [Shared state] The Arc<LedgerDb> is shared - if multiple LedgerPrunerManager instances exist (though unlikely), can concurrent write_pruner_progress() calls corrupt metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ffd836f-c891-440e-80da-c0031db92bc2?mode=deep",
+    "timestamp": "2026-01-25 17:23:57.132367",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Mutex poisoning] If a panic occurs while holding latest_version.lock() at line 67, the mutex becomes poisoned - does this permanently disable pruning and cause storage exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f00729fc-984c-48f8-ac0b-233d6d4270ef?mode=deep",
+    "timestamp": "2026-01-25 17:24:14.513345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: get_min_viable_version()] [Mutex contention] The latest_version.lock() at line 58 is held while performing arithmetic - can high contention on this lock from frequent queries cause validator performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1337a87-b258-492a-8cc3-50b5ef878727?mode=deep",
+    "timestamp": "2026-01-25 17:24:33.284151",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: is_pruning_pending()] [Reference safety] At lines 92-94, is_some_and() checks and accesses pruner_worker - can this cause undefined behavior if pruner_worker is being modified concurrently? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eba9d9ad-2e15-4c74-b8b3-6f78643c2c4c?mode=deep",
+    "timestamp": "2026-01-25 17:24:54.425144",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: init_pruner()] [Panic propagation] The .expect('Failed to create ledger pruner.') at line 148 will panic if LedgerPruner::new() fails - can corrupted database state or resource exhaustion trigger this during validator operation, causing downtime? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d523b8a-eebf-40aa-984d-ede6c0faf221?mode=deep",
+    "timestamp": "2026-01-25 17:25:17.711814",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: init_pruner()] [Resource leak] If PrunerWorker::new() at line 159 starts a thread but the manager is later dropped, does the worker thread properly shut down, or can this leak thread resources over time? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3ec7946-5006-4496-aac3-0db2396170f9?mode=deep",
+    "timestamp": "2026-01-25 17:25:42.148680",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: init_pruner()] [Configuration validation] The batch_size from ledger_pruner_config is passed to both pruner (line 146-149) and worker (line 159) - if these values are inconsistent or invalid (e.g., 0), can this cause infinite loops or division by zero? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_efd77bcb-e9d3-418b-a326-fc58a4a51ab7?mode=deep",
+    "timestamp": "2026-01-25 17:26:07.813454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: init_pruner()] [Metric overflow] PRUNER_WINDOW and PRUNER_BATCH_SIZE metrics are set to i64 casts of u64 values (lines 152-157) - can large u64 values overflow when cast, causing negative metric values that confuse monitoring? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b78b8235-30b1-442a-a358-d1b0919d9a8c?mode=deep",
+    "timestamp": "2026-01-25 17:26:35.569702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Struct: LedgerPrunerManager] [Worker state] The Option<PrunerWorker> can be None if pruner is disabled - can code paths that assume it's Some (like set_pruner_target_db_version unwraps) be reached through state transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10f0896e-b88b-4707-bd25-c041738b2ab5?mode=deep",
+    "timestamp": "2026-01-25 17:27:04.530148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: set_worker_target_version()] [Test code in production] The #[cfg(test)] function at lines 97-103 uses unwrap() - if this annotation is accidentally removed, can production code panic if pruner_worker is None? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b52b7ef-2047-4e86-93b0-89095b4e55bd?mode=deep",
+    "timestamp": "2026-01-25 17:27:34.044151",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: save_min_readable_version()] [Partial write] If write_pruner_progress() at line 88 partially succeeds (writes to some sub-databases but not others), can this cause inconsistent pruning state across different ledger components? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70cf3622-68e1-4720-9048-9defff5ac6cd?mode=deep",
+    "timestamp": "2026-01-25 17:28:04.277356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: save_min_readable_version()] [Rollback vulnerability] If a transaction is aborted after save_min_readable_version() succeeds, does the atomic min_readable_version remain updated while database state is rolled back, causing data unavailability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf93de85-205d-4a38-9f52-35d010bf7e38?mode=deep",
+    "timestamp": "2026-01-25 17:28:34.716086",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: save_min_readable_version()] [Monotonicity violation] Is there validation that min_readable_version only increases, or can a malicious caller pass a lower value, causing previously pruned data to be marked as available? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_775adc23-5240-44c2-aa11-f328d731db1e?mode=deep",
+    "timestamp": "2026-01-25 17:29:05.924812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: save_min_readable_version()] [Metric inconsistency] PRUNER_VERSIONS metric is updated at line 84-86 before write_pruner_progress() - if the write fails, can metrics show incorrect pruning progress, masking failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43f037ee-edd5-45e0-8e55-3664d635dc5c?mode=deep",
+    "timestamp": "2026-01-25 17:29:33.797494",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: new()] [Progress recovery] At line 123-124, if get_ledger_pruner_progress() returns a version that's ahead of actual pruned data (due to crash during pruning), can queries access data that's been deleted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de4c1d9e-bdbd-408c-9fa6-19464de059d8?mode=deep",
+    "timestamp": "2026-01-25 17:30:01.163112",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Off-by-one] The condition at line 73-74 uses >= which may trigger pruning one version too early - can this cause the loss of the most recent data point within the prune_window? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a65dd7e-c41a-45a3-a675-363000bf04a4?mode=deep",
+    "timestamp": "2026-01-25 17:30:29.293492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: get_min_viable_version()] [Zero handling] If prune_window is 0, does saturating_sub at line 56-57 and 58 behave correctly, or can this cause all historical data to be marked for pruning? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ad1de1b-a8a4-4ee9-b5e6-41a9719a8ca3?mode=deep",
+    "timestamp": "2026-01-25 17:30:57.357477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: set_pruner_target_db_version()] [Version 0] If latest_version is 0 (genesis), does saturating_sub(prune_window) at line 164 correctly return 0, or can this cause integer underflow issues in downstream pruning logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90cc68dd-4dde-416b-89db-f85ed208687a?mode=deep",
+    "timestamp": "2026-01-25 17:31:23.787025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: get_min_viable_version()] [Maximum value] If latest_version approaches u64::MAX, can the arithmetic at line 58 (saturating_sub followed by more operations) cause unexpected wrapping or saturation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f96a5712-9c09-4766-b787-c37eb08e07cf?mode=deep",
+    "timestamp": "2026-01-25 17:31:50.251531",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: maybe_set_pruner_target_db_version()] [Batch size edge cases] If pruning_batch_size is u64::MAX, can the addition at line 74 always overflow, preventing pruning from ever triggering? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e588595b-ab7b-4436-97a9-8f5b0cba4c69?mode=deep",
+    "timestamp": "2026-01-25 17:32:16.020746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Function: get_min_viable_version()] [Validator divergence] If different validators have different user_pruning_window_offset configurations, can they serve different min_viable_version values, causing query inconsistencies across the network? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ede504e-be92-43d4-9c0a-56da74c474fa?mode=deep",
+    "timestamp": "2026-01-25 17:32:42.276292",
+    "report_generated": false
+  }
+]
