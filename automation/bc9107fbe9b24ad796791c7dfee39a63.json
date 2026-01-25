@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Macro: abort_unless_feature_flag_enabled!] [TOCTOU race] Between checking is_enabled(flag) at line 284 and actually executing the cryptographic operation, could a governance action disable the feature flag, causing inconsistent state where some validators execute and others don't? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e67473b8-c20e-44c8-a96f-c31838f1de5e?mode=deep",
+    "timestamp": "2026-01-25 08:49:07.244882",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Function: feature_flag_from_structure()] [Incorrect mapping] Lines 257-261 map BLS12381 structures to BLS12_381_STRUCTURES flag - if a new Structure variant is added but feature_flag_from_structure isn't updated, could operations proceed without feature flag protection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88c94344-f7f7-4380-8b2a-3ceaa44a91fc?mode=deep",
+    "timestamp": "2026-01-25 08:49:20.216089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Macro: abort_unless_arithmetics_enabled_for_structure!] [Double flag check] This macro calls feature_flag_from_structure and then abort_unless_feature_flag_enabled - are there code paths where only one check is performed, creating bypass opportunities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c97b7a7-ecf7-43e8-ab31-1d8209440feb?mode=deep",
+    "timestamp": "2026-01-25 08:49:33.451511",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Macro: abort_unless_feature_flag_enabled!] [Error code confusion] Both feature flag disabled and not-implemented errors return MOVE_ABORT_CODE_NOT_IMPLEMENTED (line 289) - can an attacker exploit ambiguity between these error states to probe which features are enabled? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_267b06fb-69fe-4aa8-afa2-f4132670d2da?mode=deep",
+    "timestamp": "2026-01-25 08:49:47.148526",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Static: BLS12381_GT_GENERATOR] [Initialization failure] The Lazy static at line 301 calls deserialize_uncompressed().unwrap() - if the hardcoded hex string is corrupted or invalid, could this panic during initialization, causing all validators to halt simultaneously? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_124cf368-4081-4d17-8a35-53286522496e?mode=deep",
+    "timestamp": "2026-01-25 08:50:03.050705",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Static: BLS12381_GT_GENERATOR] [Generator correctness] Is there cryptographic verification that the hex-decoded value at line 302 is actually the correct GT generator for BLS12-381, or could a supply chain attack have corrupted this constant during compilation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0624550-5ca5-4a50-a87e-2203484a4e2d?mode=deep",
+    "timestamp": "2026-01-25 08:50:19.033958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Static: BLS12381_R_SCALAR] [Modulus tampering] The BLS12381_R_SCALAR at line 310-312 is derived from BLS12381_R_LENDIAN hex string - if this modulus is incorrect, could it allow creation of invalid scalar values that break the discrete logarithm hardness assumption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_886ee4e1-6477-4923-8665-0e387370efca?mode=deep",
+    "timestamp": "2026-01-25 08:50:36.845317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Static: BN254_GT_GENERATOR] [Pairing soundness] The BN254 GT generator at line 318 is claimed to be e(g1_generator, g2_generator) - if this value is incorrect, could pairing operations produce wrong results, breaking BN254-based cryptographic protocols? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f5e6f25-f922-4b3a-9d0a-d0aad0815746?mode=deep",
+    "timestamp": "2026-01-25 08:50:56.419697",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Constant: BN254_R_SCALAR] [Const vs runtime] BN254_R_SCALAR is a const (line 325) while BLS12381_R_SCALAR is a Lazy static - could this difference cause subtle bugs where one is initialized at compile-time and the other at runtime with different values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad2d1e85-d22d-4c29-8da0-9a517edffbad?mode=deep",
+    "timestamp": "2026-01-25 08:51:17.137556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Static: BN254_Q12_LENDIAN] [Fq12 modulus] The BN254_Q12_LENDIAN at line 330 is computed as Fq::MODULUS.pow(12) - is this mathematically correct for the Fq12 extension field order, or could incorrect modulus arithmetic allow invalid Fq12 elements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7d529ea-73f6-455b-ac36-c2d0925b4686?mode=deep",
+    "timestamp": "2026-01-25 08:51:39.278740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Static initialization] [Race condition] Lazy statics (lines 301, 306, 310, 318, 324, 326, 330) initialize on first access - could concurrent first access from multiple threads cause race conditions during deserialization or panic propagation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79b93e0e-d1ac-4ec8-b20a-f5b9f3c3ff3b?mode=deep",
+    "timestamp": "2026-01-25 08:52:02.109704",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Function: make_all()] [Registration order] The natives vector at lines 339-365 registers functions in a specific order - does SafeNativeBuilder depend on this order, or could reordering cause function name collisions or missing registrations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16b40c2c-6e09-4df9-a750-8e18118e0f93?mode=deep",
+    "timestamp": "2026-01-25 08:52:25.771286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Function: make_all()] [Test-only natives] Lines 368-372 conditionally register rand_insecure_internal in testing mode - could this function accidentally be enabled in production builds, allowing attackers to generate predictable randomness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33a0f22f-be47-4402-84f1-23706ac8138f?mode=deep",
+    "timestamp": "2026-01-25 08:52:50.496625",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Function: make_all()] [Name collision] If two internal functions have the same Move-side name but different Rust implementations, which one wins in make_named_natives at line 374, and could this cause silent function replacement attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee90b4c2-648b-4b6f-82c7-2aafc65c701c?mode=deep",
+    "timestamp": "2026-01-25 08:53:15.548435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Function: make_all()] [Missing natives] If a new native function is added to sub-modules but not registered in make_all(), would the VM gracefully handle missing natives or cause undefined behavior when Move code calls them? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76f09983-4a8a-49ef-a0b1-872b2f20d9d8?mode=deep",
+    "timestamp": "2026-01-25 08:53:39.337721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Function: make_all()] [Type casting] Functions like deserialize_internal are cast to RawSafeNative at line 342 - could this casting lose type safety information, allowing incorrect function signatures to be registered? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_686f4ad8-1a5f-448b-8460-0027de9b8509?mode=deep",
+    "timestamp": "2026-01-25 08:54:05.991088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Method: AlgebraContext::start()] [State reset] At line 195, bytes_used is reset to 0 and objs.clear() is called - if a transaction is executing when start() is called for a new session, could this cause use-after-free when accessing previously stored elements? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34b1fa7d-8486-4741-9845-47b2223eeab7?mode=deep",
+    "timestamp": "2026-01-25 08:54:33.009003",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Method: AlgebraContext::finish()] [No-op finish] Line 200 says 'No state changes to save' - should finish() validate that all allocated objects were properly freed, or could memory leaks accumulate if finish() is called without cleanup? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e67a6bd2-5ed2-4767-bbaf-ef1c2d0f9003?mode=deep",
+    "timestamp": "2026-01-25 08:55:00.329768",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Method: AlgebraContext::abort()] [No-op abort] Line 204 says context will be reset on next start - could this leave sensitive cryptographic material in memory longer than necessary, exposing it to side-channel attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a597eed4-ce54-454c-b0e0-0d920310b575?mode=deep",
+    "timestamp": "2026-01-25 08:55:27.441542",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Trait: SessionListener] [Concurrent sessions] If multiple VM sessions run concurrently in parallel execution, does each get its own AlgebraContext instance, or could they share state leading to cross-transaction data leakage? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9df78881-6ed3-4b3f-a927-fc6865ff462d?mode=deep",
+    "timestamp": "2026-01-25 08:55:56.239884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Method: AlgebraContext::start()] [Session counter] The start() method receives session_counter parameter (line 194) but doesn't use it - could this counter be used to detect session replay attacks if it's not validated? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39f151e9-4d98-4c24-ac9b-4ed44047bd4d?mode=deep",
+    "timestamp": "2026-01-25 08:56:25.646585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Struct: AlgebraContext] [Default trait] Line 187 derives Default - could this be misused to create AlgebraContext outside the normal session lifecycle, bypassing initialization checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7df2d657-e1b6-46ad-887e-826a32f36716?mode=deep",
+    "timestamp": "2026-01-25 08:56:55.416904",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Macro: structure_from_ty_arg!] [Error propagation] At line 94, the macro uses ? operator on type_to_type_tag - if this returns an error, does the calling function properly handle it, or could it cause unwrapping panics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7eecc0f-449a-4e12-8a4b-d96d86bac970?mode=deep",
+    "timestamp": "2026-01-25 08:57:24.521540",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Macro: structure_from_ty_arg!] [None handling] The macro returns Option<Structure> (line 95) - are all call sites checking for None before using the result, or could this cause unwrap panics in native functions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2499224-31f0-4a71-860f-dda4ad5127bb?mode=deep",
+    "timestamp": "2026-01-25 08:57:54.640054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/mod.rs] [Macro: safe_borrow_element!] [Clone overhead] At line 229, the macro clones the Rc<dyn Any> - could excessive cloning cause performance degradation or memory exhaustion in tight loops? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84553449-9e6b-4325-8f89-af6ccb1c2e9b?mode=deep",
+    "timestamp": "2026-01-25 08:58:24.161595",
+    "report_generated": false
+  }
+]
