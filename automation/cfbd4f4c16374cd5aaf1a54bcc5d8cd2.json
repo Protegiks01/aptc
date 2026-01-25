@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: add_peer()] [HashMap insertion vulnerability] At line 683-684, the peer_id is inserted into active_peers, but if this peer_id was already present due to a race condition, does the old value get silently overwritten without cleanup, leaking the old peer's channel and resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af4df9a4-a031-41cc-8597-e4c6b215343f?mode=deep",
+    "timestamp": "2026-01-25 20:24:14.536439",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: add_peer()] [Metadata insertion failure] At line 685-688, peers_and_metadata.insert_connection_metadata() can return an Error, but this error is only propagated, not handled - does the caller properly clean up the peer_id from active_peers, or is the peer left in an inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61aa51ea-f93f-4fa0-96fe-9535dd89f617?mode=deep",
+    "timestamp": "2026-01-25 20:24:27.214181",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: add_peer()] [Notification delivery failure] At line 689-694, send_conn_notification() is called but doesn't return a Result - if all connection_event_handlers fail to receive the notification (checked at line 702), do consensus and mempool components never learn about the new peer? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8dd9d5ab-9f5b-45f8-96c2-62c9167b89bc?mode=deep",
+    "timestamp": "2026-01-25 20:24:39.891916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: add_peer()] [Connection metadata cloning] At line 609 and 687, conn_meta is cloned twice - if ConnectionMetadata contains large buffers or sensitive data, can repeated cloning cause memory exhaustion or leak cryptographic keys across boundaries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f68ca4d9-8866-4415-85b5-2ee4cdc3356b?mode=deep",
+    "timestamp": "2026-01-25 20:24:53.123723",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: add_peer()] [Peer struct initialization] At line 666-679, the Peer struct is initialized with numerous parameters including upstream_handlers, max_frame_size, and max_message_size - if these values are mismatched between peers or manipulated, can it cause protocol violations or message parsing vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e7b091f-b738-4fbb-a377-e121546d6713?mode=deep",
+    "timestamp": "2026-01-25 20:25:07.080796",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: disconnect()] [Timeout handling] At line 590-591, the socket.close() operation is wrapped in time_service.timeout(TRANSPORT_TIMEOUT, ...), but what happens if the timeout expires? Is the connection still closed, or does it remain open, potentially leaking sockets and allowing the malicious peer to maintain state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f66c0b0-fe6f-468c-86cf-f5d3f613c849?mode=deep",
+    "timestamp": "2026-01-25 20:25:22.067683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: disconnect()] [Error suppression] At line 593-603, if socket.close() returns an error, it's only logged as a warning - but could this error indicate that the peer is still connected and capable of sending messages, potentially exploiting a race condition before the disconnect completes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_add17dd1-cdf7-4be0-8e8a-aaf64de6583d?mode=deep",
+    "timestamp": "2026-01-25 20:25:38.051321",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: disconnect()] [Async spawn without join] At line 605, the drop_fut is spawned onto the executor but there's no mechanism to wait for its completion - if the PeerManager shuts down immediately after calling disconnect(), could sockets remain open indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7048f1eb-28fd-45fb-a165-1371bb88a3c8?mode=deep",
+    "timestamp": "2026-01-25 20:25:55.416018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: disconnect()] [Connection capture] At line 588, the connection is moved into the async closure, but between line 582 (function call) and line 588 (closure execution), could another thread access this connection if it was previously stored in active_peers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8581432d-7a96-47bc-a4a6-84284e8bbb1d?mode=deep",
+    "timestamp": "2026-01-25 20:26:13.201919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: disconnect()] [Metadata leakage] The connection.metadata is only used at line 589 to get peer_id for logging - but is all other connection metadata (including addresses, keys, etc.) properly cleaned up when the connection is dropped, or could it persist in memory? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82fdd64f-d8b5-41c1-9208-83869c77d3b4?mode=deep",
+    "timestamp": "2026-01-25 20:26:32.336395",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: disconnect()] [Executor availability] If self.executor.spawn() at line 605 fails silently because the executor is full or shut down, the connection would never be properly closed - can an attacker exploit this by exhausting executor capacity to prevent disconnections? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa0d9c13-7271-4974-801b-bea9331f0672?mode=deep",
+    "timestamp": "2026-01-25 20:26:52.329878",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_connection_event()] [Event ordering] At line 263, this function processes TransportNotification events, but can events arrive out of order (e.g., Disconnected before NewConnection)? If so, could this cause the state machine to become inconsistent? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca6ffac0-c327-4d69-ae1a-0769a86cf443?mode=deep",
+    "timestamp": "2026-01-25 20:27:13.955156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_connection_event()] [Duplicate disconnect events] At line 276, a Disconnected event is handled, but what if multiple Disconnected events arrive for the same connection_id? Could the second event cause the code at line 302-317 to send duplicate oneshot responses or double-notify upstream handlers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03e67a87-0347-4a7d-ae0a-9d165efc2dcc?mode=deep",
+    "timestamp": "2026-01-25 20:27:34.936635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_connection_event()] [Connection ID mismatch] At line 290-297, the code checks if connection_id == lost_conn_metadata.connection_id before removing the peer, but can a malicious peer reconnect with a different connection_id for the same peer_id, causing the old connection to remain in active_peers indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_036188fc-35cf-4c5f-8d93-668f40397130?mode=deep",
+    "timestamp": "2026-01-25 20:27:57.451576",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_connection_event()] [Remove without notification] At line 295-296, entry.remove() is called and remove_peer_from_metadata follows, but if this operation fails, the peer is still removed from active_peers but might remain in metadata storage - can this cause inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e754add-4020-455f-9310-0a85a47ade26?mode=deep",
+    "timestamp": "2026-01-25 20:28:20.809833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_connection_event()] [Outstanding disconnect cleanup] At line 302-304, outstanding_disconnect_requests.remove() is called, but what if this connection_id has multiple outstanding disconnect requests (if duplicates were added)? Only one would be removed and responded to. (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_deeb67e2-d0cb-4e47-8b29-a3da0ca8225d?mode=deep",
+    "timestamp": "2026-01-25 20:28:44.913966",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_connection_event()] [Oneshot send failure] At line 307-316, if oneshot_tx.send(Ok(())) fails, it's only logged - but does the caller of DisconnectPeer ever learn that the disconnect succeeded? Could they retry unnecessarily, causing extra work? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73a4ea37-650f-4219-9465-abb70480d07e?mode=deep",
+    "timestamp": "2026-01-25 20:29:08.736872",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_connection_event()] [Redundant notification check] At line 320, the code checks if !self.active_peers.contains_key(&peer_id) before sending LostPeer notification, with a comment saying 'This might be redundant' - could this actually prevent legitimate notifications if the peer reconnected immediately between line 295 and line 321? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13961687-25ec-4f22-812e-a9b624f328fd?mode=deep",
+    "timestamp": "2026-01-25 20:29:32.915067",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_connection_event()] [Metrics timing] At line 299, update_connected_peers_metrics() is called after removing a peer but before checking outstanding_disconnect_requests - could this cause metrics to be inaccurate if the same peer reconnects in another thread during this window? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b146eb36-9edd-4833-8584-d419f364dae1?mode=deep",
+    "timestamp": "2026-01-25 20:29:57.540509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_outbound_connection_request()] [DialPeer race condition] At line 435, the code checks if a peer is in active_peers before dialing, but between this check and the actual dial at line 466, could the peer connect inbound, causing both connections to be established and triggering tie-breaking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_536ad106-e970-4a5d-b321-176d1afabc30?mode=deep",
+    "timestamp": "2026-01-25 20:30:22.310965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_outbound_connection_request()] [Response send failure] At line 446-455, if response_tx.send(Err(error)) fails, it's only logged - does the caller block forever waiting for a response, potentially deadlocking the connection management system? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3f49567-c413-4ba1-8643-143d2aa03fd9?mode=deep",
+    "timestamp": "2026-01-25 20:30:46.902104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_outbound_connection_request()] [Transport request unwrap] At line 466, self.transport_reqs_tx.send(request).await.unwrap() will panic if the send fails - can the transport_handler actor die, causing this unwrap to crash the entire PeerManager? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a2916a0-bb1a-4a60-8981-031b006e1c7d?mode=deep",
+    "timestamp": "2026-01-25 20:31:12.221865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_outbound_connection_request()] [DisconnectPeer double-remove] At line 479, active_peers.remove(&peer_id) is called, but what if this peer_id was already removed by handle_connection_event processing a Disconnected notification? Could this cause metadata cleanup to be skipped? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8134fba6-37af-4267-bb0e-4909f928acb2?mode=deep",
+    "timestamp": "2026-01-25 20:31:35.951927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_outbound_connection_request()] [Sender drop without close] At line 484, the PeerRequest sender is dropped to trigger disconnect, but is there a guarantee that dropping the sender immediately closes the connection? Could there be a delay during which the peer remains partially connected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a80d4c60-ac74-4bdd-b12e-38bc822ecd96?mode=deep",
+    "timestamp": "2026-01-25 20:32:00.574439",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: handle_outbound_connection_request()] [Outstanding disconnect collision] At line 486-487, a new entry is inserted into outstanding_disconnect_requests, but what if this connection_id already has an outstanding request? The old oneshot_tx would be silently dropped without being responded to. (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25459c81-a701-40de-84b1-77ec794e85e9?mode=deep",
+    "timestamp": "2026-01-25 20:32:23.123957",
+    "report_generated": false
+  }
+]
