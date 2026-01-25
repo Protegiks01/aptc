@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [LZ4 version compatibility] At line 64, CompressionMode::FAST(1) is used - if different validators run different versions of the lz4-rs crate with incompatible compression formats, could this cause consensus failures when decompressing blocks from other validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df03e210-a672-460f-916d-a29826cc1a4a?mode=deep",
+    "timestamp": "2026-01-25 21:32:52.478821",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: decompress()] [LZ4 malformed header] If compressed_data contains a malformed LZ4 block header after the 4-byte size prefix, could lz4::block::decompress_to_buffer() at line 111 crash, panic, or exhibit undefined behavior instead of returning an error? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d2f5ff0-d89e-49df-a42a-bb369992af5e?mode=deep",
+    "timestamp": "2026-01-25 21:33:05.806116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [Consensus block tampering] If a malicious validator compresses consensus blocks using this function and deliberately exceeds max_bytes at line 53 or 75, does this cause the block to be rejected silently or does it trigger error handling that could be exploited to delay block propagation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a78c866-0e12-45b7-919d-f6211b12c020?mode=deep",
+    "timestamp": "2026-01-25 21:33:19.328807",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: decompress()] [State sync corruption] When StateSync client decompresses state chunks using this function, if decompression succeeds but the raw_data returned at line 120 is corrupted due to LZ4 bugs, could this cause validators to commit incorrect state and fork the chain? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee64838c-0b89-4320-bc42-d38ad59ddb48?mode=deep",
+    "timestamp": "2026-01-25 21:33:34.127454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [Byzantine validator resource exhaustion] Can a Byzantine validator (within the 1/3 threshold) repeatedly send maximum-sized compressed consensus messages that pass the max_bytes check at lines 53-82 but force honest validators to spend excessive CPU/memory on decompression, slowing down consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0214af2a-2404-46fe-84bb-cba5c8938878?mode=deep",
+    "timestamp": "2026-01-25 21:33:49.354543",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: decompress()] [Network partition via decompression failures] If an attacker causes decompress() to fail for certain validators (e.g., by exploiting platform-specific LZ4 bugs), could this cause some validators to reject valid consensus messages, leading to network partition? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3f4d8cb-a85e-4d35-bc1d-2d2236e2b8a9?mode=deep",
+    "timestamp": "2026-01-25 21:34:05.827475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [Deterministic compression requirement] Is LZ4 compression deterministic across different platforms and library versions? If not, could the same raw_data compress to different compressed_data on different validators, breaking consensus when validators hash compressed blocks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32ad3bca-16e1-47c5-97c6-8d8306bca9b8?mode=deep",
+    "timestamp": "2026-01-25 21:34:24.051295",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: decompress()] [Replay attack via compression] Can an attacker capture compressed consensus messages, modify the compressed_data slightly (without changing the size prefix), and replay them to cause decompression errors that force validators to re-sync, disrupting liveness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bd93a99-8314-40fa-87a0-250b83f5a503?mode=deep",
+    "timestamp": "2026-01-25 21:34:44.399467",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [Block propagation delay] If compress() at lines 44-89 takes unexpectedly long for certain data patterns (worst-case LZ4 performance), could an attacker craft consensus proposals that delay block propagation beyond timeout thresholds, causing unnecessary view changes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26e74900-0d00-4eaa-a80b-59fb5619f0f8?mode=deep",
+    "timestamp": "2026-01-25 21:35:06.828274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: create_compression_error()] [Information leakage in errors] At lines 124-133, error strings are created with format!() including raw_data.len() and max_bytes values - could these error messages leak information about validator configuration or internal state to attackers observing logs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f968a385-2551-4330-8d23-22a92a0f340b?mode=deep",
+    "timestamp": "2026-01-25 21:35:30.454752",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: create_decompression_error()] [Error message injection] At lines 136-145, error messages from LZ4 library are included in error_string - if LZ4 error messages contain unescaped user input, could this lead to log injection attacks or misleading error messages? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86f12341-5ae0-45b5-a7f0-b683243895a9?mode=deep",
+    "timestamp": "2026-01-25 21:35:53.511717",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [Silent failure handling] When compress() returns an error at lines 59, 68, or 81, does the calling code (consensus, state sync) handle these errors gracefully, or could unhandled errors cause validator crashes or consensus stalls? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fea82429-de91-48ad-86d4-177c120266ec?mode=deep",
+    "timestamp": "2026-01-25 21:36:18.308692",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: decompress()] [Partial decompression handling] If lz4::block::decompress_to_buffer() at line 111 returns an error after partially filling raw_data buffer, does the function properly clean up, or could partially decompressed data be leaked or reused? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33b0950b-110e-464d-a799-a5098f0033d0?mode=deep",
+    "timestamp": "2026-01-25 21:36:45.052581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: get_decompressed_size()] [Error propagation chain] When get_decompressed_size() returns an error at lines 156, 168, or 177, does the error propagate correctly through decompress() at line 105 and eventually to the calling client, or could errors be swallowed silently? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef0b9bc0-5699-4bfb-bfb2-3e1a7583c2be?mode=deep",
+    "timestamp": "2026-01-25 21:37:12.840512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [Panic vs Result handling] Does the LZ4 library at line 64 always return Result, or could it panic on certain invalid inputs? If it panics, does this crash the validator thread/process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_775d04bf-e639-4d1e-bc2c-9b99a9634ec1?mode=deep",
+    "timestamp": "2026-01-25 21:37:40.906173",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [Metrics counter overflow] At lines 85-86, metrics::update_compression_metrics() is called - if an attacker sends billions of compression requests, could the cumulative byte counters in metrics.rs overflow (even as u64) and wrap around, providing false metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_179e6088-7ae8-4fc1-a48b-3a814275a3a0?mode=deep",
+    "timestamp": "2026-01-25 21:38:09.660638",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: decompress()] [Metrics timing side-channel] At lines 98 and 117, timing metrics are recorded - could an attacker use these timing measurements as a side-channel to infer information about decompressed data size or content by observing latency patterns? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c280b962-073d-4c7e-84ee-1c1bd087433f?mode=deep",
+    "timestamp": "2026-01-25 21:38:40.064836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: create_compression_error()] [Error counter manipulation] At lines 129 and 141, metrics::increment_compression_error() and increment_decompression_error() are called - could an attacker deliberately trigger errors to manipulate error rate metrics and trigger false alerts or hide actual attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cf06e21-a703-41f7-93d3-ae24be83c266?mode=deep",
+    "timestamp": "2026-01-25 21:39:09.672736",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [Metrics memory exhaustion] If metrics collection at lines 85-86 accumulates data in memory (histograms, time series), could an attacker cause millions of compression operations to exhaust memory in the metrics subsystem? (Medium)",
+    "url": "https://deepwiki.com/grass-dev-pa/aptos-core-073",
+    "timestamp": "2026-01-25 21:39:34.472793",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: decompress()] [Client label spoofing] The CompressionClient parameter at line 94 determines which metrics label is used - if an attacker can control or spoof this client value, could they pollute metrics with incorrect labels, making observability ineffective? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cbf719f0-63a9-4bb1-acfd-5e4d9c488416?mode=deep",
+    "timestamp": "2026-01-25 21:40:07.100488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [Concurrent compression races] If multiple threads call compress() simultaneously with the same CompressionClient, could race conditions in metrics collection (lines 85-86) cause incorrect counter updates or metric corruption? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2168be62-3ce9-4f8f-b9e2-36ef70c724cd?mode=deep",
+    "timestamp": "2026-01-25 21:40:39.589095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: decompress()] [Shared state corruption] If decompress() is called concurrently from different consensus/state sync threads, and the LZ4 library has non-thread-safe global state, could this cause decompression to return corrupted data intermittently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a27e59bb-e9a8-4019-87da-63acfb5ef84a?mode=deep",
+    "timestamp": "2026-01-25 21:41:10.119567",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: compress()] [TOCTOU in max_bytes check] Between the check at line 53 (raw_data.len() > max_bytes) and the actual compression at line 64, could raw_data be modified by another thread, causing a race condition? (Note: raw_data is moved by value, so probably safe, but verify) (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36d64ea4-013a-4943-85dd-7a7d0ae09755?mode=deep",
+    "timestamp": "2026-01-25 21:41:36.573017",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: decompress()] [Metrics race conditions] At lines 117-118, metrics are updated after decompression - if multiple threads update BYTE_COUNTS and OPERATION_LATENCY simultaneously, could this cause lost updates or inconsistent metric values? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c19cb69-aa54-45e0-8fb6-171f08dc8b59?mode=deep",
+    "timestamp": "2026-01-25 21:42:00.710658",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-compression/src/lib.rs] [Function: get_decompressed_size()] [Atomic size reading] At lines 163-166, four bytes are read from compressed_data separately - if compressed_data is modified concurrently (unlikely due to Rust borrowing, but verify), could this lead to torn reads and incorrect size calculation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63432d70-12d0-4294-87aa-63915251c1ed?mode=deep",
+    "timestamp": "2026-01-25 21:42:24.306689",
+    "report_generated": false
+  }
+]
