@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Comment accuracy] The comment at line 29 says 'Currently only supports aptos_coin' - is this limitation enforced in code, or can the function incorrectly process other coin types leading to corrupted supply data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47c35238-05df-4f63-b4dd-8ee26d474c91?mode=deep",
+    "timestamp": "2026-01-25 15:50:12.127639",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [u128 vs BigDecimal mismatch] The comment at line 29 and value_type check at line 47 indicate u128 values, but parsing uses BigDecimal at line 76 - can values larger than u128::MAX be parsed and stored, breaking the invariant? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81af9b00-0dc4-46de-832c-04006d9372ee?mode=deep",
+    "timestamp": "2026-01-25 15:50:24.939361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Struct: CoinSupply] [VARCHAR overflow] Can the coin_type_hash (line 21) or coin_type (line 22) strings exceed their database VARCHAR length limits, causing insertion failures or silent truncation that corrupts supply tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2af32a4-6184-443a-b9b0-8733feacd7b3?mode=deep",
+    "timestamp": "2026-01-25 15:50:38.044841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Struct: CoinSupply] [NUMERIC precision] Does the PostgreSQL NUMERIC type for supply at line 23 have sufficient precision to store all u128 values without loss, or can large supplies be silently rounded? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5353f7c-cbdb-4805-a6c2-59547407506e?mode=deep",
+    "timestamp": "2026-01-25 15:50:51.624100",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Struct: CoinSupply] [Timestamp bounds] Can transaction_timestamp at line 24 exceed PostgreSQL's TIMESTAMP range (year 294276 AD), causing insertion failures for future-dated transactions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_342ef48c-5b73-4b50-9385-4eb8684d864f?mode=deep",
+    "timestamp": "2026-01-25 15:51:06.064037",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Reorg handling] If a blockchain reorganization occurs, can duplicate CoinSupply records with the same transaction_version but different supply values be inserted, violating primary key constraints or causing data inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e36286c7-cd79-49a4-82f8-149d60e20802?mode=deep",
+    "timestamp": "2026-01-25 15:51:21.510529",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Batch insertion race] When processing multiple transactions in a batch, can concurrent calls to from_write_table_item() for the same transaction_version cause race conditions in database insertion, leading to missing or duplicate supply records? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f540f17-bc2a-453a-a1b2-7cee5118f0a4?mode=deep",
+    "timestamp": "2026-01-25 15:51:38.582083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Missing transaction handling] If a transaction is missing from the blockchain data but referenced in transaction_version, can gaps in the supply history cause queries to return incorrect historical supply values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_842034d6-7f16-499b-a669-f3b482fad5d2?mode=deep",
+    "timestamp": "2026-01-25 15:51:57.197100",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [API type deserialization] Can malformed APIWriteTableItem data cause deserialization errors that aren't properly caught, allowing corrupted write_table_item objects to reach the supply parsing logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59e118c0-4b2b-4460-89a9-8237f4117908?mode=deep",
+    "timestamp": "2026-01-25 15:52:16.908043",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Handle type confusion] Does the write_table_item.handle field have a guaranteed type, or can it be a different type that coincidentally has a to_string() method, causing incorrect handle comparisons at line 51? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d4f265c-9549-4ed1-989c-14463fd8b96a?mode=deep",
+    "timestamp": "2026-01-25 15:52:37.229790",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [JSON field injection] Can an attacker inject additional fields into the data object that aren't validated (beyond key, value, key_type, value_type), potentially exploiting parser vulnerabilities or causing unexpected behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7352583-dad5-4de7-a276-c28a5eac8df9?mode=deep",
+    "timestamp": "2026-01-25 15:52:59.431121",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Ok(None) ambiguity] Does returning Ok(None) at lines 44, 48, 57, 70, and 95 clearly distinguish between 'no supply data found' versus 'validation failed' versus 'not AptosCoin', or can this ambiguity cause calling code to miss errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07ba781b-adf9-4e66-8644-b60fd743768f?mode=deep",
+    "timestamp": "2026-01-25 15:53:21.911097",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Silent error suppression] Can validation failures that should be errors (e.g., wrong key type) incorrectly return Ok(None) at line 48, causing the indexer to silently skip supply updates that should have been processed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95afd9df-5d8f-4b95-b63b-670fd8c03363?mode=deep",
+    "timestamp": "2026-01-25 15:53:45.153251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Error vs None inconsistency] Why do parsing errors at lines 77-83 return Err() while validation mismatches return Ok(None) - can this inconsistency cause calling code to handle failures incorrectly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b263cf17-ad54-4ed8-a25a-28cda8c68a52?mode=deep",
+    "timestamp": "2026-01-25 15:54:09.533840",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Aggregator table spoofing] Can a malicious actor create a fake table with key_type 'address' and value_type 'u128' that isn't actually the supply aggregator, and if the handle/key somehow match, inject false supply data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_277edbda-4c4b-4c5e-893d-a810ccafa9e8?mode=deep",
+    "timestamp": "2026-01-25 15:54:35.344725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Supply inflation attack] If an attacker gains write access to the aggregator table (through Move VM bugs or consensus issues), can they arbitrarily inflate the coin supply value recorded by the indexer, misrepresenting the actual supply? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ea4e41b-51ea-4e59-8350-d3e94b218cab?mode=deep",
+    "timestamp": "2026-01-25 15:55:01.713130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Historical supply manipulation] Can an attacker submit old transactions with manipulated supply values and valid transaction_version from the past, causing the indexer to overwrite historical supply records with false data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76719a6a-e120-44f9-90e3-09437e226992?mode=deep",
+    "timestamp": "2026-01-25 15:55:28.777280",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Empty string validation] Can coin_type_hash or coin_type be empty strings when cloned at lines 87-88, causing database constraint violations or breaking queries that assume non-empty values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed7c136d-6bc5-441c-8023-7a2c79395130?mode=deep",
+    "timestamp": "2026-01-25 15:55:56.878733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Zero supply validity] Is a supply value of '0' considered valid at line 76, and if so, does this properly represent coins that have zero supply versus uninitialized coins? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af3bbf27-d757-4018-8213-9b02bbd429c2?mode=deep",
+    "timestamp": "2026-01-25 15:56:23.748205",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Maximum supply validation] Does the code validate that supply values don't exceed reasonable limits (e.g., total APT cap), or can arbitrarily large supplies be recorded indicating a supply inflation bug? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3c431dd-45c3-4494-be45-49cf34d255f3?mode=deep",
+    "timestamp": "2026-01-25 15:56:51.154209",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Struct: CoinSupply] [Diesel macro safety] Can the #[derive(Insertable)] macro at line 16 generate unsafe SQL that's vulnerable to injection if field values contain SQL metacharacters? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b0ad60a-2873-4a5e-ad82-2500b8540312?mode=deep",
+    "timestamp": "2026-01-25 15:57:18.678361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Struct: CoinSupply] [Primary key enforcement] Does Diesel properly enforce the composite primary key (transaction_version, coin_type_hash) at line 17, or can constraint violations in the database occur due to ORM bugs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a21df420-c45e-485e-8492-9de57be37a8f?mode=deep",
+    "timestamp": "2026-01-25 15:57:46.218612",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Struct: CoinSupply] [Field count mismatch] Can the FieldCount derive at line 16 be incorrect if fields are added/removed, causing insert/update statements to fail or insert data into wrong columns? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_413ef48d-439c-44d5-8ade-e81b4c50af74?mode=deep",
+    "timestamp": "2026-01-25 15:58:14.947796",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [i64 overflow from u64] Can transaction_version (u64 at line 34) overflow when cast to i64 at line 86 for transaction_version > i64::MAX, causing negative version numbers to be stored? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8e6d93f-6bd5-4ffc-9e92-93b9c7a5fd07?mode=deep",
+    "timestamp": "2026-01-25 15:58:43.689086",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_supply.rs] [Function: from_write_table_item()] [Epoch bounds] Can txn_epoch at line 36 exceed i64::MAX when cast at line 91, causing integer overflow and negative epoch numbers in the database? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7188112-6377-4116-8845-a04396d0b68e?mode=deep",
+    "timestamp": "2026-01-25 15:59:12.712525",
+    "report_generated": false
+  }
+]
