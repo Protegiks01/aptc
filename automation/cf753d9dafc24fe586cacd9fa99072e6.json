@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Telemetry module trust] Does get_system_information_json() trust the data returned from aptos_telemetry::system_information::get_system_information() at line 34 without validation, potentially allowing malicious or compromised telemetry module to inject arbitrary data into the inspection service response? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc9f82f0-27f0-496f-a2c8-7fe5b8395bb8?mode=deep",
+    "timestamp": "2026-01-25 20:12:18.561539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Build macro trust] Does the build_information!() macro at line 35 execute at compile-time or runtime, and could a compromised build environment inject malicious data into the build information that gets exposed through this endpoint? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63c9eb1b-db89-4628-9e92-cb8cd93ad9f0?mode=deep",
+    "timestamp": "2026-01-25 20:12:31.210804",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Data corruption] When extending the system_information BTreeMap with build_information at line 35, could duplicate keys cause data overwriting where build information accidentally overwrites system information or vice versa, leading to incorrect data exposure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa55a565-d103-452f-ab4e-d152f1da776d?mode=deep",
+    "timestamp": "2026-01-25 20:12:44.109925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Mutex deadlock] If aptos_telemetry::system_information::get_system_information() holds locks on the GLOBAL_SYSTEM mutex and this endpoint is called concurrently, can this cause deadlocks or lock contention affecting the inspection service availability? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34d31ba5-0c48-4882-9022-d3302d800469?mode=deep",
+    "timestamp": "2026-01-25 20:12:57.475772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Refresh race condition] Does get_system_information() call GLOBAL_SYSTEM.lock().refresh_system() which could race with concurrent calls, potentially returning stale or partially updated system information that misrepresents the node's actual state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33c36e6d-11fd-4cc5-b17c-4e1dc631810f?mode=deep",
+    "timestamp": "2026-01-25 20:13:11.416870",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Config race condition] If the NodeConfig is shared across threads and can be modified during runtime, can concurrent modifications to inspection_service.expose_system_information create race conditions where the check at line 16 passes but the flag is disabled before get_system_information_json() executes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32de4572-ea51-4441-aff3-d64921e951b3?mode=deep",
+    "timestamp": "2026-01-25 20:13:26.212168",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Map extension race] When extending system_information with build_information at line 35, if both maps are modified concurrently by other threads, could this cause data races or memory corruption in the BTreeMap structure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6c76f2c-d2ce-4016-a5bc-be4c6f4e6f99?mode=deep",
+    "timestamp": "2026-01-25 20:13:41.714620",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Return value race] Between lines 17-28, if another thread modifies the system state while constructing the response tuple, can this cause the wrong status code to be paired with the wrong body content? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a59fea5f-65c7-42d3-9128-b168c5e67525?mode=deep",
+    "timestamp": "2026-01-25 20:13:59.611735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Concurrent serialization] If multiple threads call get_system_information_json() simultaneously, does serde_json::to_string() create new allocations each time or could it share mutable state leading to corrupted JSON output? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32e6e6ff-62d8-43d7-8178-d18c1b6f793b?mode=deep",
+    "timestamp": "2026-01-25 20:14:17.892702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Timing side-channel] Can an attacker measure the response time difference between the disabled path (line 23-27) and enabled path (line 17-21) to determine whether system information is enabled even without receiving the actual data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76639b4d-d157-4d4b-89de-a8aa387b082c?mode=deep",
+    "timestamp": "2026-01-25 20:14:37.780516",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Collection timing attack] Does the time taken to collect system information via get_system_information() at line 34 vary based on system load, allowing attackers to infer validator node performance characteristics through timing analysis? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e85cf88e-1579-42c3-82d2-d8a2a44612b0?mode=deep",
+    "timestamp": "2026-01-25 20:14:58.064588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Serialization timing leak] Can the serialization time at line 38 leak information about the size or complexity of the system information, potentially revealing whether the node has unusual hardware configurations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f075a9d4-f015-4c5a-9e71-a42643663857?mode=deep",
+    "timestamp": "2026-01-25 20:15:18.577684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Response size leak] Even when the endpoint is disabled, does the different response body size (SYS_INFO_DISABLED_MESSAGE vs actual system info) leak the size of system information through network packet sizes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa61f81c-47b5-4bc4-ae1a-ae20cf18cb1a?mode=deep",
+    "timestamp": "2026-01-25 20:15:40.397818",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [CPU exhaustion] If system_information collection at line 34 is expensive (calling refresh_system, refresh_disks), can repeated rapid requests to this endpoint cause CPU exhaustion on validator nodes affecting consensus performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd018c6d-d3bd-4c4f-bf77-c0927e993bbe?mode=deep",
+    "timestamp": "2026-01-25 20:16:01.920170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Memory leak] Does the BTreeMap allocation at line 34-35 get properly freed after serialization, or could repeated calls leak memory if error handling paths don't properly clean up? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16428fe1-6a9d-4191-a97a-f12efe75675f?mode=deep",
+    "timestamp": "2026-01-25 20:16:23.876930",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Body construction overhead] Does Body::from() at lines 19 and 25 perform deep copies of the string data, and could large system information responses cause memory pressure on the inspection service? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8fe9b34-bf99-45b0-9f24-79552dbede42?mode=deep",
+    "timestamp": "2026-01-25 20:16:46.615267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [String allocation] Does the error message format at line 40 allocate a new String on every serialization failure, potentially causing memory fragmentation under sustained error conditions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57c13872-ed6d-42a9-96ad-996d91a47d2f?mode=deep",
+    "timestamp": "2026-01-25 20:17:08.043154",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Content-Type confusion] Could mismatched content types between CONTENT_TYPE_JSON (line 20) and CONTENT_TYPE_TEXT (line 26) cause downstream consumers to misparse responses or execute code if they expect JSON but receive text? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45f8f71c-1994-4273-890f-687c0254f84d?mode=deep",
+    "timestamp": "2026-01-25 20:17:29.182032",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Status code semantics] Is StatusCode::FORBIDDEN (line 24) the correct response for a disabled endpoint, or should it be UNAUTHORIZED or NOT_FOUND to prevent information disclosure about the endpoint's existence? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a83025b-16a0-484a-8086-1037bd82ae03?mode=deep",
+    "timestamp": "2026-01-25 20:17:49.658530",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Body type consistency] Does returning different Body types (JSON string vs plain text message) at lines 19 and 25 cause issues for HTTP clients that expect consistent response formats? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4d3c0e9-5558-425b-84d9-a6b34604e639?mode=deep",
+    "timestamp": "2026-01-25 20:18:09.578400",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Tuple construction safety] Is the tuple construction at lines 17-21 and 23-27 guaranteed to be atomic, or could partial tuple construction lead to mismatched status codes and bodies being returned? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5dfc4278-4d7c-4c5f-9edd-484a6dd0b498?mode=deep",
+    "timestamp": "2026-01-25 20:18:28.891670",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Audit logging missing] Does this function log when system information is accessed or when access is denied, and without logging, can attackers probe the endpoint without leaving audit trails? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26660bf3-469d-42e3-8600-fdb2f3886426?mode=deep",
+    "timestamp": "2026-01-25 20:18:49.472690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Rate limiting] Is there rate limiting on system information requests to prevent reconnaissance attacks where attackers repeatedly query to build a time-series profile of validator node characteristics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a70b56a8-8923-46e1-8395-4f4ca4126793?mode=deep",
+    "timestamp": "2026-01-25 20:19:09.807466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: get_system_information_json()] [Sensitive data logging] If serialization fails at line 39, does the error get logged elsewhere in the codebase potentially exposing system information through log aggregation systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8c38498-49bf-4f91-a5b0-a8d614eccad2?mode=deep",
+    "timestamp": "2026-01-25 20:19:30.418580",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/system_information.rs] [Function: handle_system_information_request()] [Access pattern analysis] Without proper request logging, can attackers perform reconnaissance by observing response timing patterns without triggering security alerts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e28642be-efe0-4030-b69d-3054cae03730?mode=deep",
+    "timestamp": "2026-01-25 20:19:51.393650",
+    "report_generated": false
+  }
+]
