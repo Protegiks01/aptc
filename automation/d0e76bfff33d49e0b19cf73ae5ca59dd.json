@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: set_raw_base_values()] [Race Condition] Can concurrent calls to set_raw_base_values() for the same group_key create duplicate base entries in size_entries or group_tags, leading to inconsistent state that could allow double-spending or incorrect group size calculations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f97491db-c1f8-4ac1-93ff-2a81adfebd10?mode=deep",
+    "timestamp": "2026-01-25 20:57:43.193414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: set_raw_base_values()] [Initialization Bypass] Can an attacker exploit the Vacant entry check to skip base size computation by pre-inserting a ShiftedTxnIndex::zero_idx() entry, causing group_size_as_sum to use incorrect values and potentially bypass gas limits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e57bb3cd-2d92-4cf9-a702-bfa33f4436df?mode=deep",
+    "timestamp": "2026-01-25 20:57:55.551036",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: set_raw_base_values()] [Integer Overflow] In group_size_as_sum computation, can an attacker provide base_values with extremely large byte lengths that cause integer overflow in size calculation, leading to incorrect ResourceGroupSize and potential gas metering bypass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48f7324d-1258-4644-adc3-af03dea0a2a3?mode=deep",
+    "timestamp": "2026-01-25 20:58:08.433548",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: set_raw_base_values()] [State Inconsistency] Can the non-atomic write of size_entries and group_tags (lines 173-181) allow a reader to observe initialized size but missing tags, causing TagNotFound errors for valid base values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d37f7380-d10d-46ec-8757-893596a476a3?mode=deep",
+    "timestamp": "2026-01-25 20:58:22.345794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: set_raw_base_values()] [Memory Exhaustion] Can an attacker provide an unbounded number of base_values to exhaust memory when inserting into group_tags and calling set_base_value repeatedly, causing validator DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69d409dc-83e6-454d-8554-1b24569f07af?mode=deep",
+    "timestamp": "2026-01-25 20:58:36.490965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: update_tagged_base_value_with_layout()] [Layout Mismatch] Can updating base value layout without holding size lock create race conditions where validation compares RawFromStorage against Exchanged layouts incorrectly, invalidating legitimate transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0bd7169c-1c89-40b6-9e8d-5a2baad2f1a3?mode=deep",
+    "timestamp": "2026-01-25 20:58:51.655626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: update_tagged_base_value_with_layout()] [Validation Bypass] Can an attacker repeatedly call update_tagged_base_value_with_layout to swap between RawFromStorage and Exchanged, causing validation failures that force re-execution and degrade Block-STM performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86f0c9ae-c50e-4ca2-ba7d-8b8b292d056d?mode=deep",
+    "timestamp": "2026-01-25 20:59:08.566228",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: write()] [Invariant Violation] Can the read-before-write assumption be violated if group_sizes entry exists but group_tags is missing, causing code_invariant_error panic that crashes the validator? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60c05916-8e07-4eb8-86f0-ecf2f32b9873?mode=deep",
+    "timestamp": "2026-01-25 20:59:25.944641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: write()] [Size Validation Race] Between get_latest_entry and size_entries.insert (lines 228-256), can concurrent writes cause the size_has_changed flag to be set incorrectly, allowing estimate reads that should fail validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bc5fdb3-2230-4439-9b7b-a39a42a73197?mode=deep",
+    "timestamp": "2026-01-25 20:59:44.161665",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: write()] [Return Value Manipulation] Can an attacker craft prev_tags and new values to force write() to return false when behavior actually changed, preventing required re-validation and causing state inconsistency? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_549d45bf-8d33-4268-9576-956de5c70b97?mode=deep",
+    "timestamp": "2026-01-25 21:00:02.622555",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: write()] [Flag Logic Error] The condition '!(group_sizes.size_has_changed && ret)' (line 227) - can this short-circuit logic incorrectly skip size comparison when both flags are true, missing actual size changes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e08a800a-14f3-4c45-a0e1-fe852791cebe?mode=deep",
+    "timestamp": "2026-01-25 21:00:22.769069",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: write()] [Incarnation Zero Edge Case] Can incarnation 0 writes avoid setting size_has_changed flag (line 240-241), allowing subsequent estimate reads to succeed when they should fail, breaking Block-STM validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab6c894a-fb43-48b0-9923-4354ab917b51?mode=deep",
+    "timestamp": "2026-01-25 21:00:43.455092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: write_v2()] [Dependency Leak] Can the non-atomic sequence of data_write_impl followed by size write (lines 270-274) leak read dependencies from concurrent reads, causing incorrect invalidation sets? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_912c3970-e6c8-4367-8c71-426ef8d6e532?mode=deep",
+    "timestamp": "2026-01-25 21:01:05.418125",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: write_v2()] [Dependency Merge Vulnerability] In split_off(txn_idx + 1) and size comparison logic (lines 293-308), can off-by-one errors cause dependencies to be stored in wrong entry or double-invalidated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a2dedb4-efd1-48b9-8500-306b261a0e14?mode=deep",
+    "timestamp": "2026-01-25 21:01:28.352787",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: write_v2()] [Validation Window Race] Can size change between get_latest_entry and insert cause inconsistent validation results where some tags validate but others don't, corrupting dependency tracking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c66e536b-3b34-4875-965f-51a1c8200041?mode=deep",
+    "timestamp": "2026-01-25 21:01:51.964919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: write_v2()] [Empty Dependency Set] When size == prev_size, store_deps keeps dependencies (line 301-303), but can this incorrectly preserve dependencies from aborted incarnations that should be invalidated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_091a6f6c-c053-4f0a-8f57-7a47400fee7a?mode=deep",
+    "timestamp": "2026-01-25 21:02:16.765589",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: data_write_impl()] [Tag Superset Inconsistency] Can concurrent access to group_tags between read lock (line 630) and write lock (lines 665-668) cause new tags to be written but not added to superset, breaking finalize_group? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_192cc56d-10b3-421d-92dd-429ce4a4b2de?mode=deep",
+    "timestamp": "2026-01-25 21:02:41.975562",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: data_write_impl()] [Prev Tags Mutation] The prev_tags parameter is mut and gets modified by remove() - can this cause the return value ret_v1 to be calculated incorrectly when prev_tags changes during iteration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfa7eef9-bb90-4ed9-b91a-a24ed2891576?mode=deep",
+    "timestamp": "2026-01-25 21:03:08.972784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: data_write_impl()] [Partial Write Failure] If values.write_v2() fails mid-iteration (line 643-649), can partial writes remain in the data structure while tags_to_write accumulates, causing inconsistent state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e5b7bf0-d43a-4f6c-b8d0-e1a3b990d956?mode=deep",
+    "timestamp": "2026-01-25 21:03:36.073765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: data_write_impl()] [Remove Before Write] The remove_impl is called after writes (line 671) - can this ordering allow reads to observe intermediate state where new values exist but old values aren't removed yet? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dec1a2bf-4c7c-495a-89db-0757965b01a9?mode=deep",
+    "timestamp": "2026-01-25 21:04:04.576673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: remove()] [Panic on Missing Entry] The assert_some! macro (lines 350-356) panics if entry doesn't exist - can an attacker trigger this by removing before writing, causing validator crash? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c378ed5c-df57-4808-bd85-999c9eb178f3?mode=deep",
+    "timestamp": "2026-01-25 21:04:33.968558",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: remove()] [Size Changed Flag Ignored] Comment at line 348 says 'consider setting size_has_changed flag' - can removing entries that change observed size break estimate flag logic in get_group_size_no_record? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b132df8-0f27-43a1-9c60-7c428720a532?mode=deep",
+    "timestamp": "2026-01-25 21:05:00.618736",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: remove_v2()] [Dependency Re-registration Vulnerability] When removed_size_deps is moved to next_lower_entry (lines 395-401), can race conditions cause dependencies to be registered twice or lost entirely? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61d2232d-1793-4b25-b4c7-7c2e82a5087a?mode=deep",
+    "timestamp": "2026-01-25 21:05:28.145628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: remove_v2()] [Size Equality Check Race] The size comparison (line 395) happens without lock - can concurrent write change the size between comparison and dependency transfer, corrupting dependency tracking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fecaecec-9df0-4bb3-8315-d109aefe6349?mode=deep",
+    "timestamp": "2026-01-25 21:05:56.899831",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/mvhashmap/src/versioned_group_data.rs] [Function: remove_v2()] [Dependency Drain Race] If removed_size_deps is not drained (line 405), it's added to invalidated_dependencies - can std::mem::take at line 400 race with this check, causing double-free or use-after-free? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_620f09f7-c883-4a76-9800-98fcb04c6679?mode=deep",
+    "timestamp": "2026-01-25 21:06:26.121622",
+    "report_generated": false
+  }
+]
