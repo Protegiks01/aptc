@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: add_active_subscriber()] [Race Condition] Can concurrent calls to add_active_subscriber() from multiple threads cause race conditions in the RwLock write operations, potentially leading to inconsistent subscriber state or allowing unauthorized peers to bypass subscription validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b63d55bf-04a6-4404-93ef-fe0a9665ab26?mode=deep",
+    "timestamp": "2026-01-25 19:01:08.682234",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: remove_active_subscriber()] [Race Condition] Does the RwLock-based removal in remove_active_subscriber() interact safely with concurrent publish_message() calls reading active_subscribers, or can TOCTOU issues cause messages to be sent to removed/invalid peers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9de8315-80d3-4899-9ef5-69ae7a02f683?mode=deep",
+    "timestamp": "2026-01-25 19:01:20.576169",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: get_active_subscribers()] [Data Exposure] Does get_active_subscribers() clone the entire HashSet on every call, creating potential DoS vectors if an attacker subscribes thousands of peers and triggers frequent reads during message publishing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99526a3e-48b1-438c-94fe-36f4bd8202da?mode=deep",
+    "timestamp": "2026-01-25 19:01:34.402466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: process_network_message()] [Missing Authentication] Does process_network_message() validate that subscription requests come from authorized peers, or can any network peer subscribe to consensus updates and receive sensitive validator information? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2faf8a66-0eb7-48cf-925b-c9675eafb845?mode=deep",
+    "timestamp": "2026-01-25 19:01:48.162327",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: process_network_message()] [Duplicate Subscription] When handling Subscribe requests, does the code properly handle duplicate subscriptions from the same peer, or can an attacker flood subscription requests to exhaust memory or bypass rate limiting? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1790274-fa6d-4c91-8783-3effedee8d50?mode=deep",
+    "timestamp": "2026-01-25 19:02:02.579706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: process_network_message()] [Response Validation] Does the ResponseSender::send() call validate response delivery, or can an attacker trigger resource leaks by establishing subscriptions but never receiving ACK responses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d1c73a3-b04b-4619-b06d-2af6152b6344?mode=deep",
+    "timestamp": "2026-01-25 19:02:18.228469",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: publish_message()] [Message Amplification] Can an attacker exploit publish_message() by subscribing multiple malicious peers to cause consensus messages to be cloned and sent N times, amplifying bandwidth consumption and causing validator performance degradation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73fcbebe-ad77-4618-b66b-e4255247ab0c?mode=deep",
+    "timestamp": "2026-01-25 19:02:35.431753",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: publish_message()] [Channel Exhaustion] Does publish_message() use try_send() which can fail silently when the outbound_message_sender channel is full - can an attacker flood subscriptions to fill the channel and cause critical consensus messages to be dropped? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe66e5b8-e273-4030-9038-acb30a1b5fea?mode=deep",
+    "timestamp": "2026-01-25 19:02:55.318755",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: publish_message()] [Clone Safety] Does cloning ConsensusObserverDirectSend messages for each subscriber properly handle large consensus payloads, or can memory exhaustion occur if an attacker subscribes thousands of peers during large block proposals? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21f0b40b-2c8a-416b-9100-fb986ab8f2e3?mode=deep",
+    "timestamp": "2026-01-25 19:03:14.593519",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: publish_message()] [Non-blocking Guarantee] The function claims to be non-blocking, but does the RwLock read() call in get_active_subscribers() block if writers are waiting, potentially blocking consensus progress? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6e6ba0f-e1f7-425d-a1da-463121626d0e?mode=deep",
+    "timestamp": "2026-01-25 19:03:35.515421",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: publish_message()] [Error Handling] When try_send() fails, only a warning is logged - can this silent failure cause consensus observers to miss critical commit decisions or ordered blocks, breaking consensus observer synchronization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_725627d8-9aee-44e6-bf2e-b04e4f7d98cd?mode=deep",
+    "timestamp": "2026-01-25 19:03:57.373528",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: garbage_collect_subscriptions()] [Timing Attack] Can an attacker manipulate peer connection metadata to remain in 'connected' state while being malicious, avoiding garbage collection and maintaining unauthorized subscriptions indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_132181e0-393b-42ff-a398-e096064f8f51?mode=deep",
+    "timestamp": "2026-01-25 19:04:21.039027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: garbage_collect_subscriptions()] [Race Condition] Does garbage_collect_subscriptions() properly synchronize with concurrent add_active_subscriber() calls, or can race conditions cause legitimate subscribers to be incorrectly removed during the difference() operation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32eaea8d-3232-47c6-8d10-b60b5c76f991?mode=deep",
+    "timestamp": "2026-01-25 19:04:44.773993",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: garbage_collect_subscriptions()] [Metric Manipulation] Can an attacker manipulate the PUBLISHER_NUM_ACTIVE_SUBSCRIBERS metric by rapidly connecting/disconnecting to create false monitoring alerts or hide actual subscriber counts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3054a5e-7687-4c39-af55-57c34c757c25?mode=deep",
+    "timestamp": "2026-01-25 19:05:09.607976",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: garbage_collect_subscriptions()] [DoS via Metadata] If get_connected_peers_and_metadata() is expensive or can be manipulated to return errors repeatedly, can attackers cause garbage collection to fail and allow inactive subscriptions to accumulate indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8be61a9-f685-4635-a251-0e713fcfd4ed?mode=deep",
+    "timestamp": "2026-01-25 19:05:35.509437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: garbage_collect_subscriptions()] [Set Difference Attack] The difference() operation between active_subscribers and connected_peers could be expensive with large sets - can an attacker subscribe many peers to cause O(n²) comparison overhead during GC intervals? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c49a678-f425-4eee-982e-0f31dba4b0fb?mode=deep",
+    "timestamp": "2026-01-25 19:06:01.757794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: new()] [Buffer Overflow] Does the mpsc::channel created with max_network_channel_size prevent buffer overflow attacks, or can an attacker flood messages faster than serialization to trigger channel closure or memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30c49ed6-caaf-4d33-9a50-f099398aba76?mode=deep",
+    "timestamp": "2026-01-25 19:06:28.812719",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: new()] [Config Validation] Is max_network_channel_size validated to prevent setting it to 0 or extremely large values that could cause channel creation failures or DoS conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e386ea30-9945-403b-9e75-90216c8e8428?mode=deep",
+    "timestamp": "2026-01-25 19:06:57.620946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: start()] [Tokio Select Race] In the tokio::select! loop, can race conditions between publisher_message_receiver and garbage_collection_interval cause subscriptions to be processed out of order or lost? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ccf6b013-48d8-410b-9ebf-986b7b79fc55?mode=deep",
+    "timestamp": "2026-01-25 19:07:26.786731",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: start()] [Loop Exit] When the else branch is triggered and the loop exits, are all pending outbound messages properly flushed, or can message loss occur during shutdown causing observers to miss final consensus decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54aac8b8-41b8-4b2f-a4bb-588e61849207?mode=deep",
+    "timestamp": "2026-01-25 19:07:57.158763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: start()] [Channel Closure] If publisher_message_receiver closes unexpectedly, does the publisher exit gracefully or can it cause consensus to hang waiting for subscription responses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6a01d32-d845-42f6-ad68-3ab8464b778c?mode=deep",
+    "timestamp": "2026-01-25 19:08:27.241326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: spawn_message_serializer_and_sender()] [Task Spawn Failure] If tokio::task::spawn_blocking fails due to runtime limits, the error is only logged - can this cause critical consensus messages to be silently dropped without retry? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02e6a192-2a3a-4641-bf00-76de00383f60?mode=deep",
+    "timestamp": "2026-01-25 19:08:57.064585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: spawn_message_serializer_and_sender()] [Serialization DoS] Can an attacker craft malicious peers that cause serialize_message_for_peer() to consume excessive CPU in spawn_blocking tasks, degrading validator performance? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e690eef-01f4-4722-8609-6f629b1694b8?mode=deep",
+    "timestamp": "2026-01-25 19:09:26.998614",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: spawn_message_serializer_and_sender()] [Buffered Ordering] Does the buffered() call with max_parallel_serialization_tasks guarantee message ordering per peer, or can parallel serialization cause observers to receive blocks out of order? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7c84bef-28c5-4f5f-aa35-968e5c686eaa?mode=deep",
+    "timestamp": "2026-01-25 19:09:53.796977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensus_observer/publisher/consensus_publisher.rs] [Function: spawn_message_serializer_and_sender()] [Resource Exhaustion] Can an attacker subscribe many peers to exhaust the spawn_blocking thread pool by forcing serialization of large consensus messages for all subscribers simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de479f99-c88d-4b65-83f8-e1dfef1131fa?mode=deep",
+    "timestamp": "2026-01-25 19:10:19.067914",
+    "report_generated": false
+  }
+]
