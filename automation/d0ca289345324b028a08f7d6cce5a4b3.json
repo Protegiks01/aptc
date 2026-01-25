@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check()] [Unicode Normalization] If the captcha contains Unicode characters, are both stored and submitted values normalized consistently? Can Unicode homoglyph attacks allow visually identical but byte-different submissions to bypass validation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_575371b8-ceee-4a04-acff-865030fdccef?mode=deep",
+    "timestamp": "2026-01-25 20:54:50.594898",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: create_challenge()] [Captcha Length] Line 148 generates captchas with add_chars(5). Is this length sufficient to prevent brute force attacks where attackers try all possible 5-character combinations to bypass captcha protection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57af7e73-878a-48b7-953b-cebc7a4e1af8?mode=deep",
+    "timestamp": "2026-01-25 20:55:03.221429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check_challenge()] [Timing Oracle] Line 168's string comparison may not be constant-time. Can attackers use timing differences between early and late character mismatches to extract captcha characters one by one through repeated submissions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd1209fe-d8f2-4946-88a0-4e64e79449c2?mode=deep",
+    "timestamp": "2026-01-25 20:55:16.250723",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check_challenge()] [Existence Oracle] Lines 166-175 return different errors for 'key not found' vs 'wrong value'. Can attackers enumerate valid captcha keys by observing error messages, then brute force only the 5-character value instead of the full u32 keyspace? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d53039a-47bb-40e7-b6c8-33284b313018?mode=deep",
+    "timestamp": "2026-01-25 20:55:31.212773",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check()] [Error Message Leakage] Lines 66, 74, 86, 100, 108 return detailed error messages. Do these messages leak internal state, captcha values, or system information that attackers can use to refine attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_daf6ac9d-b2fa-42ac-b033-9136ec9bf6f3?mode=deep",
+    "timestamp": "2026-01-25 20:55:45.698798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check_challenge()] [State Probing] The function returns Ok(false) for wrong answers but doesn't remove the key. Can attackers probe the system to build a map of active captcha keys without solving them, then target specific keys for brute force? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b67a14dc-8fad-4b85-88ef-3b88186bd034?mode=deep",
+    "timestamp": "2026-01-25 20:56:00.775613",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: create_challenge()] [Image Content Leakage] The generated captcha image is returned as Vec<u8>. Could image generation bugs create patterns or metadata that leak the captcha text, allowing OCR or ML-based automated solving? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92df3997-f52f-4e90-a41e-76f37d43e7de?mode=deep",
+    "timestamp": "2026-01-25 20:56:17.373706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check_challenge()] [No Rate Limiting] There's no rate limiting on incorrect captcha submissions. Can attackers brute force the 5-character alphanumeric space (62^5 = ~916 million) for a known valid key without penalty? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f047211-06a6-407f-bccd-596779492867?mode=deep",
+    "timestamp": "2026-01-25 20:56:35.549459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check_challenge()] [Unlimited Attempts] Failed attempts (line 172) don't invalidate the captcha key. Can attackers make unlimited guesses at the captcha value without ever requesting a new challenge, effectively negating the captcha's security benefit? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f6f9c23-22b0-4a81-a953-5bbd5326e2fd?mode=deep",
+    "timestamp": "2026-01-25 20:56:54.403636",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: create_challenge()] [Key Space Exhaustion] With u32 keys (4 billion) and no cleanup, can attackers pre-generate all possible keys offline, then submit requests with predicted keys faster than legitimate users, monopolizing faucet access? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44925fb5-d028-4ff0-bda5-745f1086445c?mode=deep",
+    "timestamp": "2026-01-25 20:57:15.286781",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check()] [Parallel Brute Force] Can attackers distribute brute force attempts across multiple IP addresses or connections to bypass any external rate limiting while keeping individual request rates low? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78c78e91-9c81-4582-981e-c927947e881a?mode=deep",
+    "timestamp": "2026-01-25 20:57:36.047200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: create_challenge()] [Predictable Generation] If the captcha library uses weak randomness for character selection, can attackers reduce the search space by identifying most common captcha patterns and prioritizing those guesses? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_193a1a50-8acd-4c06-87e9-ac85eaa1535e?mode=deep",
+    "timestamp": "2026-01-25 20:57:57.158718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: create_challenge()] [Panic Safety] Line 155 uses context() which can panic. If captcha generation fails, does the panic leave the CaptchaManager in an inconsistent state with the key inserted but no value stored? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfa6c494-3cd0-4559-9f5c-f0690f8650dd?mode=deep",
+    "timestamp": "2026-01-25 20:58:19.033829",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check()] [Header Missing] Lines 71-76 and 84-88 return RejectionReason instead of AptosTapError when headers are missing. Is this inconsistency exploitable to bypass error tracking or logging mechanisms? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9df326b-7c8f-46ca-a0c4-504e22cfc57a?mode=deep",
+    "timestamp": "2026-01-25 20:58:41.254400",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check_challenge()] [Empty String] What happens if captcha_value is an empty string? Does line 168 comparison handle it correctly, or could empty submissions match uninitialized/corrupted captcha entries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5c77d43-f1f7-450a-a81c-e36fd2353579?mode=deep",
+    "timestamp": "2026-01-25 20:59:02.709046",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: create_challenge()] [u32::MAX Exclusion] Line 144 uses gen_range(0, u32::MAX - 1), explicitly excluding u32::MAX. Why is u32::MAX special? Could this create an edge case where lookup of u32::MAX always fails, allowing attackers to detect broken captcha generation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9afd083d-6b91-4399-80f0-eff4723e949c?mode=deep",
+    "timestamp": "2026-01-25 20:59:25.235220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check()] [Parse Error Handling] Line 61-69 catches parse errors but doesn't log the original value. Could attackers use crafted unparseable values to cause silent failures that bypass captcha checking entirely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d930479-f7c6-42dd-bea0-934afd30c3ba?mode=deep",
+    "timestamp": "2026-01-25 20:59:47.271746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check()] [to_str() Failure] Lines 56-60 and 80-82 handle to_str() errors. What invalid UTF-8 sequences could attackers inject to trigger these paths and potentially bypass validation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2bdcad19-7341-4afe-a6ba-40eb9eddccdf?mode=deep",
+    "timestamp": "2026-01-25 21:00:09.377358",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check_challenge()] [Inconsistent State] If the HashMap remove() operation at line 169 fails silently (e.g., due to memory corruption), could the same captcha become reusable despite appearing to succeed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8a6dd85-8c3c-4e0b-877b-bf4bd1bd1345?mode=deep",
+    "timestamp": "2026-01-25 21:00:31.269109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Struct: CaptchaManager] [No Persistence] The challenges HashMap is in-memory only. If the faucet service restarts, all active captcha challenges are lost. Can attackers trigger service restarts to invalidate legitimate users' captcha sessions and deny them access? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96bf446e-08a6-4436-9ec2-0eaba41ef2b5?mode=deep",
+    "timestamp": "2026-01-25 21:00:53.846124",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Struct: CaptchaManager] [No Expiration] Captcha challenges never expire. Can legitimate users who request a captcha but abandon the request leave orphaned entries that accumulate over time, eventually causing memory issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f67b1fcc-5053-444d-b427-6f503d5579ac?mode=deep",
+    "timestamp": "2026-01-25 21:01:17.324895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: new()] [Empty State] Lines 134-138 create an empty HashMap. Is there any initialization validation, or could the CaptchaManager be used before being properly set up, leading to undefined behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e5b6247-4eea-4fe3-9b77-552a84ec3b5b?mode=deep",
+    "timestamp": "2026-01-25 21:01:38.987722",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: cost()] [Fixed Cost] Line 116-118 returns cost of 3. Is this cost appropriate for captcha validation which involves mutex locking and HashMap lookup? Could this mispricing allow attackers to overwhelm the system with captcha checks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b39bde9-93a1-4efe-8f7c-bad649be6432?mode=deep",
+    "timestamp": "2026-01-25 21:02:00.166459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Function: check()] [Dry Run Ignored] Line 53 takes _dry_run parameter but never uses it. Should dry run mode skip actual captcha validation for testing? Could this parameter confusion lead to bypass scenarios in test/staging environments? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7bdc1ea-f08b-4fa2-8788-d669eb886e28?mode=deep",
+    "timestamp": "2026-01-25 21:02:21.869442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/checkers/tap_captcha.rs] [Struct: TapCaptchaChecker] [Shared State] Lines 31-33 use Arc<Mutex<CaptchaManager>> shared across requests. If the mutex is poisoned by a panic in another thread, will all future captcha validations fail permanently, causing faucet unavailability? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab5b6815-4cfd-42a2-ba32-da3c29ecd0f5?mode=deep",
+    "timestamp": "2026-01-25 21:02:42.948547",
+    "report_generated": false
+  }
+]
