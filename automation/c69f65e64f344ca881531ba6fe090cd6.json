@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Timestamp Comparison Atomicity] Are the three timestamp comparisons on lines 103-105 atomic, or can race conditions between reading self.timestamp_usecs(), parent.timestamp_usecs(), and grandparent_qc.timestamp_usecs() cause TOCTOU vulnerabilities? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7413a60c-a106-4ae1-ac5a-89d8a3e89d6c?mode=deep",
+    "timestamp": "2026-01-25 15:09:24.357006",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Reconfiguration Bypass] Can a malicious validator propose optimistic blocks immediately after a reconfiguration by manipulating grandparent_qc to report has_reconfiguration()=false when it should be true, allowing invalid validator set to continue proposing? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_032676cf-296e-498a-9133-3662c94fe7b4?mode=deep",
+    "timestamp": "2026-01-25 15:09:37.117185",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Validator Set Manipulation] If the has_reconfiguration() check on line 96-98 is bypassed, can old validators maintain control after epoch change by proposing optimistic blocks with their outdated validator keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6bb407c2-d2ba-4296-ac18-84008bc5cd1e?mode=deep",
+    "timestamp": "2026-01-25 15:09:50.992551",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Reconfiguration Timing Attack] Is there a race condition window during reconfiguration where grandparent_qc.has_reconfiguration() changes from false to true after the check, allowing optimistic proposals during reconfiguration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83b8e051-7b47-4ad1-a35f-3c02a05bbc99?mode=deep",
+    "timestamp": "2026-01-25 15:10:04.659040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [Reconfiguration State Capture] Can new() be called with a grandparent_qc that has has_reconfiguration()=true, creating OptBlockData that should be rejected but only fails validation when verify_well_formed() is called later? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_031f43c4-ac94-4e66-81d3-dee3c3e88ae5?mode=deep",
+    "timestamp": "2026-01-25 15:10:19.379422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Payload Epoch Mismatch] Can self.payload().verify_epoch(self.epoch()) on line 100 be bypassed if payload contains transactions from different epochs, allowing cross-epoch replay attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_112547e4-7f9f-449b-ad40-2012e5b48207?mode=deep",
+    "timestamp": "2026-01-25 15:10:34.880929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Payload Validation Order] Since payload validation occurs after round/epoch checks but before timestamp validation, can a malicious payload exploit validation ordering to cause partial state corruption before final rejection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc4123b3-a2d6-43b0-a97c-0298c20a6a94?mode=deep",
+    "timestamp": "2026-01-25 15:10:51.373437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [Malicious Payload Injection] Since new() accepts payload parameter without validation, can attackers create OptBlockData with malicious payloads (e.g., empty, duplicates, invalid transactions) that only fail later in the pipeline? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04480695-e725-4b2c-92e1-8f7e5d1c98ad?mode=deep",
+    "timestamp": "2026-01-25 15:11:10.623391",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Struct: OptBlockData] [Payload Type Confusion] Through the Deref implementation on line 120-126, OptBlockData can be treated as OptBlockBody - can this type confusion lead to accessing payload() without proper validation context? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13a0106e-3809-4e15-9b2a-0ae2e0a6839c?mode=deep",
+    "timestamp": "2026-01-25 15:11:30.787828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Struct: OptBlockData] [Hash Collision Attack] The struct derives CryptoHasher on line 21 - can an attacker craft two different OptBlockData instances with identical hashes by exploiting hash collisions in epoch, round, timestamp, or parent fields? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6858c964-252a-4453-b24a-5e384d1c7f2a?mode=deep",
+    "timestamp": "2026-01-25 15:11:53.544805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: parent_id()] [Hash Integrity] Does parent_id() on line 60-62 properly validate that self.parent.id() matches the actual cryptographic hash of parent block data, or can mismatched hashes pass through? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8ace3b5-259b-4925-b42b-c3f073bc9d42?mode=deep",
+    "timestamp": "2026-01-25 15:12:15.908876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Struct: OptBlockData] [Hash Preimage Attack] Can an attacker find a preimage for a target block hash by manipulating the OptBlockData fields (epoch, round, timestamp_usecs) that feed into the CryptoHasher derivation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91661706-684f-4f5c-9b87-8c7da0d76d51?mode=deep",
+    "timestamp": "2026-01-25 15:12:39.046525",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: parent()] [Parent Block Forgery] Since parent() returns a reference to BlockInfo without validating its cryptographic integrity against parent_id(), can the parent field be modified to point to a different block while keeping the same ID? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66bf0382-cd53-46f8-a55e-25ea9dfed771?mode=deep",
+    "timestamp": "2026-01-25 15:13:04.068814",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [Unchecked Construction] The new() constructor on lines 32-54 creates OptBlockData without calling verify_well_formed() - can this be exploited to create invalid blocks that propagate through the network before validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_843000ab-f138-4ae2-8397-7f53bfa270ee?mode=deep",
+    "timestamp": "2026-01-25 15:13:30.155363",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [Validator Transaction Injection] Can new() be called with malicious validator_txns that exploit transaction ordering or validation logic, since no validation occurs at construction time? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6b42c6d-5893-4fbe-b56c-03fcc5732b15?mode=deep",
+    "timestamp": "2026-01-25 15:13:57.113107",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [Author Spoofing] Since new() accepts author parameter and stores it in block_body without validation, can attackers impersonate other validators by providing forged author values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5962457e-293d-4fde-abfc-02840f8a0fd7?mode=deep",
+    "timestamp": "2026-01-25 15:14:25.547346",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [Grandparent QC Forgery] Can new() accept a forged grandparent_qc with invalid signatures or vote data, with the forgery only detected during verify_well_formed() or later consensus validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1a69997-9eb3-406d-8de8-dc6ea5a8f65f?mode=deep",
+    "timestamp": "2026-01-25 15:14:54.783509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [OptBlockBody Version Attack] The new() function always creates OptBlockBody::V0 on line 47 - can future version attacks occur if V1 or higher versions are introduced but old code still creates V0? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_076dff82-e09f-4143-9b5b-f8808f0f04c5?mode=deep",
+    "timestamp": "2026-01-25 15:15:24.501218",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Struct: OptBlockData] [Deserialization Bypass] OptBlockData derives Deserialize on line 21 - can an attacker craft malicious serialized data that bypasses verify_well_formed() by directly setting invalid field values through deserialization? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_780aeae9-d632-4920-b8cd-1006b0d22813?mode=deep",
+    "timestamp": "2026-01-25 15:15:54.722610",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Struct: OptBlockData] [Serialization Format Confusion] Can differences in serialization between Serialize and CryptoHasher cause two OptBlockData instances with different on-wire formats but same cryptographic hashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02c0138f-05be-4820-901c-2f45c56bf1de?mode=deep",
+    "timestamp": "2026-01-25 15:16:26.410691",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Struct: OptBlockData] [Integer Serialization Attack] When deserializing epoch, round, and timestamp_usecs (all u64 values), can endianness confusion or integer overflow during deserialization create invalid but accepted values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74912ec9-0951-4306-9012-f56581eee7a6?mode=deep",
+    "timestamp": "2026-01-25 15:16:59.680410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Struct: OptBlockData] [Parent BlockInfo Deserialization] Can the parent BlockInfo field be deserialized with inconsistent internal state (e.g., mismatched epoch/round/id) that passes OptBlockData validation but fails later? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b0f41e9-f6b0-4051-a2ad-339c04c54924?mode=deep",
+    "timestamp": "2026-01-25 15:17:34.515546",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Trait: Deref] [Deref Coercion Exploit] The Deref implementation on lines 120-126 allows OptBlockData to be implicitly coerced to OptBlockBody - can this enable bypassing validation by accessing OptBlockBody methods that should require verified OptBlockData? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ba5302d-86be-465b-8bba-f338089755eb?mode=deep",
+    "timestamp": "2026-01-25 15:18:07.116449",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Trait: Deref] [Validation Context Loss] Does the Deref to OptBlockBody lose the validation context (epoch, round, timestamp) from OptBlockData, allowing operations on the body that violate OptBlockData invariants? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80aeb093-2f8e-43cc-b411-1d1e9ed64145?mode=deep",
+    "timestamp": "2026-01-25 15:18:37.461055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Trait: Deref] [Target Mutability] While Deref returns &Self::Target (&OptBlockBody), can unsafe code or interior mutability in OptBlockBody modify the underlying block_body field after OptBlockData validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d13b4f3e-64c8-4300-b789-1c99921a9b06?mode=deep",
+    "timestamp": "2026-01-25 15:19:09.669362",
+    "report_generated": false
+  }
+]
