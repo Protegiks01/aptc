@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Function: try_from_bytes()] [Deserialization determinism] If try_from_bytes() is called with the same bytes multiple times, is it guaranteed to produce identical TokenWithdrawEvent instances, or can non-determinism in deserialization cause state divergence between validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_424e01ff-393b-4a6f-b6dd-217b3033402d?mode=deep",
+    "timestamp": "2026-01-25 18:37:14.039567",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Struct: TokenWithdrawEvent] [Memory exhaustion] Can an attacker emit millions of TokenWithdrawEvent instances with large TokenId.collection and TokenId.name strings to exhaust validator memory, especially during event indexing when all events are held in memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad514abc-4fee-4883-878b-bff2424feceb?mode=deep",
+    "timestamp": "2026-01-25 18:37:26.732906",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Field: id] [Nested structure depth] The TokenId contains nested TokenDataId which contains Strings - can deeply nested or recursive structures in future versions cause stack overflow during serialization/deserialization? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1344999-530d-422d-9563-8e8e23ffb071?mode=deep",
+    "timestamp": "2026-01-25 18:37:40.298977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Function: id()] [Reference lifetime] The id() method returns &TokenId - if this reference is held while the TokenWithdrawEvent is mutated (if it were mutable), could this violate Rust's borrowing rules and cause undefined behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13a69ddd-9e85-49df-885d-327046f71ba5?mode=deep",
+    "timestamp": "2026-01-25 18:37:53.582410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Struct: TokenWithdrawEvent] [Balance consistency] Since TokenWithdrawEvent doesn't reference the source account or validate against actual token balances, can attackers emit withdrawal events that show amounts exceeding the actual available balance, corrupting off-chain balance tracking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_675770ba-b035-45b3-8bfb-5daf18aa089e?mode=deep",
+    "timestamp": "2026-01-25 18:38:08.076332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Struct: TokenWithdrawEvent] [Supply tracking] Can withdrawal events be emitted without corresponding on-chain balance updates, allowing the total withdrawn amount tracked by events to exceed the token's total supply and breaking supply invariants? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0be4852e-e218-40a0-8460-dbc7734b0c8b?mode=deep",
+    "timestamp": "2026-01-25 18:38:23.044426",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Function: new()] [Invariant enforcement] The new() constructor doesn't enforce any invariants (e.g., amount > 0, token exists) - can this allow creation of invalid events that violate protocol assumptions downstream? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_819f012d-8c27-4538-81c6-4c44a97a3dd5?mode=deep",
+    "timestamp": "2026-01-25 18:38:40.045605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Impl: MoveEventV1Type] [Event emission bypass] Since TokenWithdrawEvent is just a Rust struct, can malicious code in the indexer or API layer create and emit fake withdrawal events without going through the actual token module's withdraw logic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d68f2dd7-060c-4437-bfc8-621580a63968?mode=deep",
+    "timestamp": "2026-01-25 18:38:58.046404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Function: try_from_bytes()] [Indexer poisoning] If the indexer calls try_from_bytes() on malicious event data from a compromised node, can specially crafted bytes cause the indexer to incorrectly record withdrawal events that never occurred on-chain? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b083263-09dc-4621-bc1b-749d53279b53?mode=deep",
+    "timestamp": "2026-01-25 18:39:17.412101",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Static: TOKEN_WITHDRAW_EVENT_TYPE] [Type matching] When matching event types, does the system compare the full StructTag including address, module, and name, or can attackers deploy a malicious module with the same name to emit events that match TOKEN_WITHDRAW_EVENT_TYPE? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d40c74ed-923d-492e-a12d-77a8c5e66fcd?mode=deep",
+    "timestamp": "2026-01-25 18:39:36.616836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Function: try_from_bytes()] [Error information leakage] Does the error returned by try_from_bytes() expose sensitive information about the internal state or structure that could help attackers craft valid malicious payloads? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad7b8747-7ca9-4616-9e29-7808c61e98da?mode=deep",
+    "timestamp": "2026-01-25 18:39:57.058973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Function: try_from_bytes()] [Partial deserialization] If BCS deserialization fails halfway through parsing TokenId, does this leave the allocator in an inconsistent state that could be exploited in subsequent deserialization attempts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3decfe8-84e2-4d15-8cde-2d52dba2bb3c?mode=deep",
+    "timestamp": "2026-01-25 18:40:18.744565",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Function: amount()] [Getter side effects] The amount() getter returns u64 by value - can this cause unintended copies in performance-critical paths that degrade validator performance under event spam attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2534602-8c9f-4bfd-affe-14b78bc2d776?mode=deep",
+    "timestamp": "2026-01-25 18:40:41.188378",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Struct: TokenWithdrawEvent] [Missing signature] The event structure doesn't include any cryptographic signature or authentication - can anyone who can emit events create fraudulent withdrawal events without owning the tokens? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9718aed3-6ab9-4a53-aa79-8c56d188d162?mode=deep",
+    "timestamp": "2026-01-25 18:41:03.688687",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Field: id] [Creator impersonation] Since TokenDataId.creator is just an AccountAddress without signature verification, can attackers create events claiming tokens were withdrawn from famous creators to manipulate market sentiment? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50c0e51c-a344-4c8f-8db7-677191dda1e2?mode=deep",
+    "timestamp": "2026-01-25 18:41:27.701404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Struct: TokenWithdrawEvent] [Event spam] Are there gas costs associated with emitting TokenWithdrawEvent instances, or can attackers spam millions of events for minimal cost to degrade indexer performance and fill up event storage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2aa9f396-c180-4572-9afa-9a633afe2830?mode=deep",
+    "timestamp": "2026-01-25 18:41:52.057357",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Function: try_from_bytes()] [Deserialization DoS] If try_from_bytes() is computationally expensive for pathological inputs (e.g., maximum-length strings), can attackers craft events that consume excessive CPU during deserialization to slow down validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a869480-6523-4cbb-a0c4-d0c2298c572b?mode=deep",
+    "timestamp": "2026-01-25 18:42:16.762565",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Struct: TokenWithdrawEvent] [Reorg handling] During blockchain reorganizations, can withdrawal events be replayed or duplicated, causing indexers to show double-counted withdrawals that don't reflect the canonical chain state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77fbed12-1f3d-46e0-8850-8db560ead25b?mode=deep",
+    "timestamp": "2026-01-25 18:42:41.991534",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Struct: TokenWithdrawEvent] [Finality confusion] If a withdrawal event is emitted in a transaction that later fails or is reverted, does the event still persist in logs, creating inconsistency between event history and actual state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32ce7965-eada-476f-ae0d-c1c86ad578fe?mode=deep",
+    "timestamp": "2026-01-25 18:43:08.435885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Impl: MoveEventV1Type] [V1 to V2 migration] When the protocol migrates from MoveEventV1Type to V2, can old TokenWithdrawEvent instances become unreadable or misinterpreted, causing loss of historical withdrawal data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e69a5f52-b20b-447d-a6e5-03030c733998?mode=deep",
+    "timestamp": "2026-01-25 18:43:35.694477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Static: TOKEN_WITHDRAW_EVENT_TYPE] [Address migration] If the token module is upgraded and moved to a different address, does TOKEN_WITHDRAW_EVENT_TYPE get updated, or will old events become unmatchable leading to orphaned withdrawal records? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_197f1208-693d-4ee7-aa99-71416034fb0a?mode=deep",
+    "timestamp": "2026-01-25 18:44:02.949682",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Struct: TokenWithdrawEvent] [Memory layout] Does the Rust struct layout guarantee consistent memory alignment across different compiler versions and architectures, or could struct padding differences cause serialization mismatches between nodes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae676596-8af1-4d4c-a591-e46b058d42f4?mode=deep",
+    "timestamp": "2026-01-25 18:44:30.962595",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Derive: Serialize, Deserialize] [Serde compatibility] Are the Serde derive macros version-locked, or could future Serde updates change serialization format and break compatibility with historical events? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a5d5549-04eb-413a-8818-a3353588add8?mode=deep",
+    "timestamp": "2026-01-25 18:44:59.330641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Static: TOKEN_WITHDRAW_EVENT_TYPE] [Thread safety] While Lazy provides thread-safe initialization, if multiple threads read TOKEN_WITHDRAW_EVENT_TYPE and clone it, could high contention on this static cause performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_718c0049-3501-4a36-966a-7d28fb39b177?mode=deep",
+    "timestamp": "2026-01-25 18:45:27.438632",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/account_config/events/token_withdraw_event.rs] [Struct: TokenWithdrawEvent] [Send/Sync bounds] Does TokenWithdrawEvent properly implement Send and Sync traits to be safely passed between threads, or could unsafe access patterns in concurrent event processing cause data races? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c93598f-11b5-4e95-a547-ef9e34c570ed?mode=deep",
+    "timestamp": "2026-01-25 18:45:54.689783",
+    "report_generated": false
+  }
+]
