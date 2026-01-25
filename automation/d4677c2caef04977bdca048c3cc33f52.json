@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: account_balance()] [TOCTOU Race Condition] Can an attacker exploit the time gap between block_height retrieval (line 67) and balance_version lookup (line 75) to cause balance inconsistencies if a block reorganization occurs, potentially returning stale or incorrect balance data that could mislead users about their actual holdings? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6aa58c0e-edc8-46a2-bc4c-1a0309979aaf?mode=deep",
+    "timestamp": "2026-01-25 23:13:45.558186",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: account_balance()] [Input Validation] Does check_network() at line 63 properly validate all fields of the network_identifier, or can an attacker supply a malicious network identifier with special characters or overflow values that bypasses validation and causes the server to query the wrong chain, leading to incorrect balance reporting? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_457f939b-cc2c-44ac-8da8-4f33e5dd2e4d?mode=deep",
+    "timestamp": "2026-01-25 23:13:58.027486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: account_balance()] [State Inconsistency] When block_info is retrieved at lines 71-74, what happens if the block is valid but the last_version within it doesn't exist in the database? Can this cause a panic or return incorrect balances for accounts that had transactions in that block? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_412b7242-9712-472a-9461-0bb807bc29b8?mode=deep",
+    "timestamp": "2026-01-25 23:14:11.283283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: account_balance()] [Integer Overflow] At line 75, balance_version is set to block_info.last_version - if last_version is u64::MAX or close to it, could subsequent operations overflow when this version is used in calculations, causing incorrect balance lookups? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e454f35-a579-49d1-878c-1e4e1b3ea045?mode=deep",
+    "timestamp": "2026-01-25 23:14:24.390294",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: account_balance()] [Cache Poisoning] The block_cache().get_block_info_by_height() call at lines 71-74 - can an attacker cause the cache to be poisoned with invalid block info by exploiting race conditions during block insertion, leading to persistent incorrect balance responses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0144342-369c-4287-a5ab-851e67858d72?mode=deep",
+    "timestamp": "2026-01-25 23:14:38.653680",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: account_balance()] [Resource Exhaustion] Can an attacker repeatedly call account_balance with rapidly changing block_identifier values to cause excessive cache misses and database queries, degrading API performance and potentially causing denial of service for legitimate users? (Low - Out of Scope)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a91f11cc-0e6c-4f34-a25d-74ef420e582f?mode=deep",
+    "timestamp": "2026-01-25 23:14:53.434778",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: account_balance()] [Information Disclosure] The AccountBalanceMetadata at lines 89-93 exposes sequence_number, operators list, and lockup_expiration - can this information be used to identify validator accounts, time attacks on unlocking periods, or track validator operator changes for chain analysis or targeted attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2c9064f-145d-4a0c-bff0-eb16a361fb87?mode=deep",
+    "timestamp": "2026-01-25 23:15:09.229546",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: account_balance()] [Error Handling] If get_balances() at lines 78-84 returns an error, how is it propagated? Can an attacker craft inputs that cause specific errors to be leaked, revealing internal state or implementation details about the node? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c8e9524-4603-42fd-b65a-68815375a01e?mode=deep",
+    "timestamp": "2026-01-25 23:15:26.424932",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_balances()] [Address Validation] At line 106, account.account_address()? converts a string address to AccountAddress - can an attacker supply a malformed address string that passes initial validation but causes parsing errors later, or bypass address format checks to query system accounts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60406b44-4372-49fe-b814-b410517286d3?mode=deep",
+    "timestamp": "2026-01-25 23:15:44.362372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_balances()] [Logic Error] At line 107, account.pool_address()? may return an address for delegation pools - if both owner_address and pool_address are the same (edge case), which code path is taken at lines 126-152? Could this cause double-counting of balances or incorrect balance queries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ee9af6a-e2d8-478b-9405-e18776096cd6?mode=deep",
+    "timestamp": "2026-01-25 23:16:03.175381",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_balances()] [State Inconsistency] Lines 119-123 filter currencies - if maybe_filter_currencies is Some but empty, does the code correctly handle this edge case, or could it cause balance lookups to fail silently and return empty balances when they should exist? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b51cb175-2fc2-4bab-8b9c-9ff4d94da96d?mode=deep",
+    "timestamp": "2026-01-25 23:16:23.517939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_balances()] [Type Confusion] The code branches on account type at lines 126-152 (base account, pool address, staking account) - can an attacker craft an AccountIdentifier that matches multiple conditions or none, causing undefined behavior in balance calculation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_380fb54a-32e3-43d9-878b-cc46224f1a5b?mode=deep",
+    "timestamp": "2026-01-25 23:16:44.461460",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_balances()] [Access Control Bypass] Lines 132 and 148 check if currencies_to_lookup.contains(&native_coin()) before querying staking info - can an attacker bypass this check by modifying the Currency struct's Hash implementation or manipulating the HashSet to always return false, causing staking balances to be hidden? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2bc2f679-0b34-4f61-8c04-e6e4a072a791?mode=deep",
+    "timestamp": "2026-01-25 23:17:06.892760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_balances()] [Sequence Number Manipulation] At line 116, get_sequence_number() is called for all account types - for pool or staking accounts where sequence numbers may not be meaningful, can returning an incorrect sequence number cause downstream transaction construction issues or replay attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c4076f6-425e-4734-8c50-ecae9788317d?mode=deep",
+    "timestamp": "2026-01-25 23:17:30.241737",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_balances()] [Funds Loss] If lockup_expiration at line 110 is initialized to 0 and never updated for certain account types, could users be misled about when their funds are unlocked, causing them to submit premature withdrawal transactions that fail and waste gas? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f3a99e2-39b8-4c16-b684-a5b964f05483?mode=deep",
+    "timestamp": "2026-01-25 23:17:53.430725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_sequence_number()] [BCS Deserialization] At lines 168-170, the code calls get_account_resource_at_version_bcs() - can an attacker who controls on-chain state (via smart contract) manipulate the Account resource bytes to cause BCS deserialization to return an inflated sequence number, breaking transaction ordering? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17914fe8-69fe-4783-b437-1764acb2a13c?mode=deep",
+    "timestamp": "2026-01-25 23:18:17.488388",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_sequence_number()] [Error Handling] Lines 176-194 catch AccountNotFound and ResourceNotFound errors and return 0 - is this safe? Can an attacker exploit this by querying an address that had an account previously but was deleted, getting sequence_number 0 instead of the last sequence, enabling transaction replay? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97769ec7-9785-484e-ae94-9f31a0dfac8c?mode=deep",
+    "timestamp": "2026-01-25 23:18:41.481757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_sequence_number()] [Version Consistency] The version parameter at line 165 specifies historical lookup - if an attacker queries sequence_number at an old version where the account existed, then creates a transaction for current version with that old sequence number, could this bypass sequence number validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71aa2406-02c1-4d8e-9981-cfcc1bc538c1?mode=deep",
+    "timestamp": "2026-01-25 23:19:07.196353",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_sequence_number()] [Generic Error Handling] Lines 195-200 have a catch-all that returns InternalError for any other error - could specific error types (like network errors, timeout, corrupted database) be exploited to make the API consistently return errors for specific accounts, hiding their existence? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee0dc9d2-6f05-4a7b-ba3b-b432eda3971e?mode=deep",
+    "timestamp": "2026-01-25 23:19:32.278207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_sequence_number()] [Integer Overflow] At line 174, account.sequence_number() returns a u64 - if a malicious contract or state manipulation causes this to be u64::MAX, could subsequent increment operations in transaction construction overflow and wrap to 0? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfc1c56f-d09e-4416-b2d6-94adeb90366b?mode=deep",
+    "timestamp": "2026-01-25 23:19:57.145673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_sequence_number()] [Resource Type Confusion] The code specifically queries '0x1::account::Account' at line 169 - can an attacker create a module with the same name in a different package that gets queried instead, returning a fake sequence number? (Low - Unlikely due to address prefix)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a44c9a8d-98a5-4889-b51e-e8158dec639d?mode=deep",
+    "timestamp": "2026-01-25 23:20:20.382394",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_staking_info()] [Integer Overflow] At line 231, total_balance is accumulated by repeatedly adding u64 values converted from strings (u64::from_str(&balance.value).unwrap_or_default()) - can an attacker with multiple staking contracts cause total_balance to overflow past u64::MAX, wrapping to a small value and reporting incorrect total stake? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52f5e730-11bb-45de-a641-ed8156961253?mode=deep",
+    "timestamp": "2026-01-25 23:20:43.751533",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_staking_info()] [Silent Failure] Lines 236-242 use warn!() to log balance retrieval failures and continue - if all staking contract balance lookups fail silently, the function returns empty balances (line 249) but no error. Could this hide a systematic failure and mislead users about their actual staked amounts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_714350ae-749c-4217-b12d-a11b2ed97f02?mode=deep",
+    "timestamp": "2026-01-25 23:21:08.286502",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_staking_info()] [Funds Loss Risk] At line 234, lockup_expiration is only set from the last successful balance_result - if a user has multiple staking contracts with different lockup periods, only the last one is reported. Could this cause users to attempt premature withdrawals from contracts still locked? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecc582a3-71c8-49a8-8634-fdf8fe96d07f?mode=deep",
+    "timestamp": "2026-01-25 23:21:33.949007",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/account.rs] [Function: get_staking_info()] [Resource Exhaustion] Lines 218-243 iterate through all staking_contracts in the Store - can an attacker create thousands of staking contracts to make this loop extremely slow, causing API timeouts and denial of service for legitimate balance queries? (Medium - Partially Out of Scope)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d038db2c-18d0-418c-a181-6821c42eb9c6?mode=deep",
+    "timestamp": "2026-01-25 23:22:00.197865",
+    "report_generated": false
+  }
+]
