@@ -1,0 +1,104 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: name()] [Unwrap panic] At line 167 using .unwrap(), if ShellSafeName parsing fails due to invalid characters in generated filename, can the panic crash entire backup worker thread, causing loss of in-progress backup metadata and requiring full backup restart? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7e43188-c867-4d3b-b665-abbfc4571ef6?mode=deep",
+    "timestamp": "2026-01-25 21:48:18.848059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_transaction_backup_range()] [Error masking] If continuity check fails at line 129-135 with ensure!(), does the error message provide enough context for operator to debug which specific backup metadata caused the failure, or can vague errors allow attacker to hide malicious metadata among many legitimate ones? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2661c055-22dc-453f-a622-8414f9d7a165?mode=deep",
+    "timestamp": "2026-01-25 21:48:31.358673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: to_text_line()] [Serialization error] At line 171-172, can serde_json::to_string() fail due to non-UTF8 characters in FileHandle strings, causing silent serialization errors that result in backup metadata being skipped without operator notification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8157ffa7-26fa-4431-9583-141344c9961b?mode=deep",
+    "timestamp": "2026-01-25 21:48:44.097054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Struct: CompactionTimestampsMeta] [Timestamp manipulation] At line 206, can an attacker set file_compacted_at to future timestamp (e.g., u64::MAX) causing compaction metadata to be sorted ahead of all legitimate entries, breaking temporal ordering assumptions in backup retention policies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02e967fd-9db3-4b6e-be39-4f3a64e6b6d9?mode=deep",
+    "timestamp": "2026-01-25 21:48:57.456473",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Struct: CompactionTimestampsMeta] [None timestamp] At line 207, compaction_timestamps HashMap values are Option<u64> - can mixing None and Some values cause inconsistent compaction tracking where some files appear never compacted while others have timestamps, confusing garbage collection logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_368bf7b8-6448-4bf1-a16c-a6bee160a3bb?mode=deep",
+    "timestamp": "2026-01-25 21:49:11.399177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: new_compaction_timestamps()] [Timestamp source] At line 62-64, where does file_compacted_at timestamp come from? If it uses system clock that can be manipulated, can attackers create compaction metadata with past/future timestamps that disrupt backup retention and pruning schedules? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16642316-b140-4ea7-b920-5db6adc07bf7?mode=deep",
+    "timestamp": "2026-01-25 21:49:26.333500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Struct: CompactionTimestampsMeta] [HashMap key collision] At line 207, if FileHandle strings are normalized differently (e.g., with/without trailing slashes), can two different files map to same key in compaction_timestamps, causing timestamp of one file to overwrite the other's? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f371ce2-f924-4c4e-842f-ddc791380cd8?mode=deep",
+    "timestamp": "2026-01-25 21:49:43.441358",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Multiple functions] [Metadata mixing] Can an attacker create backup metadata where EpochEndingBackupMeta and StateSnapshotBackupMeta reference overlapping version ranges, causing restore to attempt loading both epoch ending ledger infos and state snapshot at same version, corrupting restored state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3bdeef3c-67a1-4e41-a1fc-0bf8dfb7898a?mode=deep",
+    "timestamp": "2026-01-25 21:50:00.616509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Multiple functions] [Backup type confusion] Can metadata files be renamed to change their type indicator (e.g., rename transaction backup to state snapshot), causing restore coordinator to misinterpret backup contents and apply transaction data as state snapshot? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9956f0f-9f5b-403e-9e3a-a8334f992eaf?mode=deep",
+    "timestamp": "2026-01-25 21:50:18.623599",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: name()] [Type-specific naming] The name() function at line 153-169 uses different naming patterns for each type - can name collisions occur if epoch numbers match version numbers (e.g., epoch 100 = version 100), causing different backup types to generate identical filenames? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_951091fb-cab1-4c6e-8188-aa45d97c0fa0?mode=deep",
+    "timestamp": "2026-01-25 21:50:37.094512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_epoch_ending_backup_range()] [Subtraction underflow] At line 92 computing next_epoch - 1 for filename, if next_epoch is 0 (due to wraparound from u64::MAX + 1), does Rust's overflow checks catch the underflow, or can it produce u64::MAX creating misleading filename? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1eee5e4a-a3d1-401b-8d98-983d9090675e?mode=deep",
+    "timestamp": "2026-01-25 21:50:57.055370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_transaction_backup_range()] [Index calculation] At line 106 and 129, backup_metas.len() - 1 is used - can len() == 0 slip through despite ensure check due to race conditions, causing integer underflow that results in usize::MAX index access and panic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_764f8239-ad3c-4a7d-a390-c60f10be1f5b?mode=deep",
+    "timestamp": "2026-01-25 21:51:18.237605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: compact_statesnapshot_backup_range()] [Array access] At line 105 accessing backup_metas[0] and backup_metas[backup_metas.len() - 1], can malicious code provide Vec that changes length between these accesses, causing second access to use invalid index from first access's length calculation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0945ea02-790a-45cb-acd9-06449ae1d15a?mode=deep",
+    "timestamp": "2026-01-25 21:51:40.999879",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Struct: EpochEndingBackupMeta] [Derived Ord] The derived Ord at line 176 orders by (first_epoch, last_epoch, first_version, last_version) - can this cause backup metadata to be sorted incorrectly when last_epoch values differ but should be ordered by first_epoch for sequential restore? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e440c00d-bfa6-435b-a147-56f20b7e51e2?mode=deep",
+    "timestamp": "2026-01-25 21:52:03.191670",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Struct: TransactionBackupMeta] [Version ordering] With derived Ord at line 192, can TransactionBackupMeta with same first_version but different last_version be ordered inconsistently, causing restore to process transaction ranges in non-chronological order? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d32c9653-3ac8-4ab5-8bd1-19853ffd0bd2?mode=deep",
+    "timestamp": "2026-01-25 21:52:26.193789",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Struct: StateSnapshotBackupMeta] [Epoch-version ordering] At line 185, derived Ord compares epoch before version - can this cause snapshots from later epochs but earlier versions to be restored before earlier epochs with later versions, breaking state consistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b390d4d-61ed-4ef2-b968-625acf4e53b3?mode=deep",
+    "timestamp": "2026-01-25 21:52:48.771535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/metadata/mod.rs] [Function: new_\n\n### Citations\n\n**File:** storage/backup/backup-cli/src/metadata/mod.rs (L1-238)\n```rust\n// Copyright © Aptos Foundation\n// Parts of the project are originally copyright © Meta Platforms, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\npub mod cache;\npub mod view;\n\nuse crate::storage::{FileHandle, ShellSafeName, TextLine};\nuse anyhow::{ensure, Result};\nuse aptos_crypto::HashValue;\nuse aptos_types::transaction::Version;\nuse serde::{Deserialize, Serialize};\nuse std::{cmp::Ordering, collections::HashMap, convert::TryInto};\n\n#[derive(Deserialize, Serialize)]\n#[allow(clippy::enum_variant_names)] // to introduce: BackupperId, etc\npub(crate) enum Metadata {\n    EpochEndingBackup(EpochEndingBackupMeta),\n    StateSnapshotBackup(StateSnapshotBackupMeta),\n    TransactionBackup(TransactionBackupMeta),\n    Identity(IdentityMeta),\n    CompactionTimestamps(CompactionTimestampsMeta),\n}\n\nimpl Metadata {\n    pub fn new_epoch_ending_backup(\n        first_epoch: u64,\n        last_epoch: u64,\n        first_version: Version,\n        last_version: Version,\n        manifest: FileHandle,\n    ) -> Self {\n        Self::EpochEndingBackup(EpochEndingBackupMeta {\n            first_epoch,\n            last_epoch,\n            first_version,\n            last_version,\n            manifest,\n        })\n    }\n\n    pub fn new_state_snapshot_backup(epoch: u64, version: Version, manifest: FileHandle) -> Self {\n        Self::StateSnapshotBackup(StateSnapshotBackupMeta {\n            epoch,\n            version,\n            manifest,\n        })\n    }\n\n    pub fn new_transaction_backup(\n        first_version: Version,\n        last_version: Version,\n        manifest: FileHandle,\n    ) -> Self {\n        Self::TransactionBackup(TransactionBackupMeta {\n            first_version,\n            last_version,\n            manifest,\n        })\n    }\n\n    pub fn new_compaction_timestamps(compaction_timestamps_meta: CompactionTimestampsMeta) -> Self {\n        Self::CompactionTimestamps(compaction_timestamps_meta)\n    }\n\n    pub fn compact_epoch_ending_backup_range(\n        backup_metas: Vec<EpochEndingBackupMeta>,\n    ) -> Result<(Vec<TextLine>, ShellSafeName)> {\n        ensure!(\n            !backup_metas.is_empty(),",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66368436-402f-4402-b575-c55c869eab49?mode=deep",
+    "timestamp": "2026-01-25 21:53:11.180525",
+    "report_generated": false
+  }
+]
