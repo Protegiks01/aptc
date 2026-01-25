@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Panic vulnerability] Can an attacker craft a malicious APIWriteTableItem with a None data field to trigger the unwrap() panic on line 92, causing indexer crashes and denial of service for NFT collection indexing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db66e671-756d-4a52-97a7-bd495f03dfc9?mode=deep",
+    "timestamp": "2026-01-25 09:57:29.917621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Data corruption] If TokenWriteSet::from_table_item_type() returns an error instead of Ok(None), does the error propagation properly handle state rollback, or can partially processed collection data corrupt the database leading to inconsistent NFT metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a40e11e-33a8-4e82-8bfa-307a906bfa95?mode=deep",
+    "timestamp": "2026-01-25 09:57:43.300718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Error suppression] When get_collection_creator() fails at lines 109-119 and returns Ok(None), does this silently drop valid collection data, allowing attackers to prevent legitimate collections from being indexed and making NFTs undiscoverable? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c697ab5-7dd1-45ad-8184-2f8bde36e9e9?mode=deep",
+    "timestamp": "2026-01-25 09:57:56.773283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: get_collection_creator()] [Error handling bypass] Can an attacker exploit the anyhow::Error conversion at line 182 to mask specific database errors (like connection timeouts or constraint violations) that should halt processing, potentially leading to incomplete indexing state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6d49e27-71e7-48ec-8529-5c85dc9407d4?mode=deep",
+    "timestamp": "2026-01-25 09:58:10.972406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: get_collection_creator()] [Race condition] During concurrent transaction processing, can multiple threads simultaneously call get_collection_creator() for the same table_handle, causing QUERY_RETRIES exhaustion and systematic indexing failures for high-volume NFT collections? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_529bf96f-c035-4af1-94f0-0d4e059133be?mode=deep",
+    "timestamp": "2026-01-25 09:58:26.736139",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [TOCTOU vulnerability] Between checking table_handle_to_owner at lines 104-106 and calling get_collection_creator() at line 109, can a concurrent thread modify the database state, causing creator_address mismatches and allowing NFT ownership manipulation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66996ed9-ce80-4ba9-b8d5-350ec0fe5f43?mode=deep",
+    "timestamp": "2026-01-25 09:58:43.812582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: get_by_table_handle()] [Race condition] Can concurrent calls to get_by_table_handle() with the same table_handle during rapid collection updates cause database read inconsistencies, potentially returning stale creator addresses and breaking NFT provenance tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35f326d0-4f4c-4c19-a670-295513159e64?mode=deep",
+    "timestamp": "2026-01-25 09:59:02.695143",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Atomicity violation] When creating both CollectionData and CurrentCollectionData tuples at lines 128-159, can a database failure between insertions leave partial state where historical data exists but current state doesn't, causing query inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e274eed-acf0-4a04-a653-b1f8ed4e636d?mode=deep",
+    "timestamp": "2026-01-25 09:59:24.436132",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: get_collection_creator()] [Retry logic abuse] Can an attacker deliberately cause database delays to trigger the 5-retry loop with 500ms delays (lines 172-180), consuming indexer resources and causing processing bottlenecks that delay NFT collection indexing by 2.5+ seconds per lookup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_307a7c03-cdcc-46f4-8ecc-b9e9e8e94eee?mode=deep",
+    "timestamp": "2026-01-25 09:59:47.119131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Hash collision attack] Can an attacker craft two different (creator_address, collection_name) pairs that produce the same collection_data_id_hash via CollectionDataIdType::to_hash() at line 124, allowing them to overwrite existing collection metadata and steal NFT collections? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d05fc5b6-9705-4bd4-90e5-ded289cbb224?mode=deep",
+    "timestamp": "2026-01-25 10:00:11.803745",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Primary key collision] If collection_data_id_hash collides for different collections, can the composite primary key (collection_data_id_hash, transaction_version) at line 26 allow multiple conflicting collection versions to be inserted, corrupting collection history? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_062e1519-7da9-4ef7-9345-84132e9b7657?mode=deep",
+    "timestamp": "2026-01-25 10:00:36.586454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Struct: CurrentCollectionData] [Primary key weakness] Since current_collection_datas table uses only collection_data_id_hash as primary key (line 45), can a hash collision cause unrelated collections to overwrite each other's current state, leading to permanent loss of NFT collection metadata? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9aa7fcd6-0c3c-4eb4-951e-83599508c679?mode=deep",
+    "timestamp": "2026-01-25 10:01:03.600154",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Hash function weakness] Does the hash_str() function used in CollectionDataIdType::to_hash() use SHA-256 securely, or can length-extension attacks or chosen-prefix collisions be exploited to create controlled hash collisions for NFT collection takeover? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d2dadc5-be5c-489e-930c-229305240520?mode=deep",
+    "timestamp": "2026-01-25 10:01:32.103786",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Address normalization bypass] Can an attacker provide a non-standard table_handle format that bypasses standardize_address() at line 105, causing table_handle_to_owner lookups to fail and forcing fallback to potentially manipulated database queries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ec9e045-0f4e-4a05-b0d3-59aa794d8be9?mode=deep",
+    "timestamp": "2026-01-25 10:02:01.212128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Double standardization] Since creator_address is standardized twice (once from table_handle_to_owner at line 108, then again at line 121), can this cause address mismatches when compared with non-standardized addresses elsewhere in the indexer? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d7a85ca-7484-4206-a323-2c057b35b453?mode=deep",
+    "timestamp": "2026-01-25 10:02:29.017889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Address padding attack] If standardize_address() pads addresses to 66 characters (0x + 64 hex), can an attacker exploit inconsistent padding in table_handle_to_owner mappings to bypass creator verification and claim ownership of arbitrary collections? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be259cc5-6fd0-44eb-8993-1cf9286c4dd8?mode=deep",
+    "timestamp": "2026-01-25 10:02:58.778186",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Creator spoofing] When get_collection_creator() falls back to database lookup at line 109, can an attacker pre-populate the database with malicious creator addresses for specific table_handles, allowing them to claim ownership of collections before legitimate creators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a969c412-d0ea-40ae-8aa8-eaf538c954b0?mode=deep",
+    "timestamp": "2026-01-25 10:03:26.930757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Integer overflow] Can the supply and maximum BigDecimal fields (lines 35-36, 53-54) overflow during arithmetic operations, allowing attackers to mint unlimited NFTs by wrapping supply counters back to zero? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d6f8f8e-37d6-4715-ac77-eb9b905412a9?mode=deep",
+    "timestamp": "2026-01-25 10:03:54.719019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Supply validation bypass] Is there validation to ensure supply never exceeds maximum at lines 136-137, or can malicious transactions report supply > maximum, breaking NFT scarcity guarantees and allowing unlimited minting? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dcacc657-6cc6-4a83-ae0b-2bf0a3c2c4dd?mode=deep",
+    "timestamp": "2026-01-25 10:04:24.694272",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Negative supply attack] Can supply or maximum fields be set to negative BigDecimal values through BCS deserialization, causing underflow conditions that bypass minting limits when converting to unsigned integers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83872515-f515-4238-997f-0cfa3bea92b3?mode=deep",
+    "timestamp": "2026-01-25 10:04:52.720921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Maximum mutability exploit] If maximum_mutable is true (line 138), can an attacker repeatedly increase maximum after minting to supply limit, effectively allowing unlimited NFT minting despite original scarcity promises? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b97b411e-a003-497d-9175-8ebc34b397a7?mode=deep",
+    "timestamp": "2026-01-25 10:05:20.984260",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Supply desync] When updating CurrentCollectionData, if supply increases without corresponding token mints, can this create ghost supply that doesn't match actual token ownership, breaking NFT analytics and marketplace valuations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88ed448a-2f30-40fe-a107-01af6378d35a?mode=deep",
+    "timestamp": "2026-01-25 10:05:48.946135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [String truncation data loss] Can collection_name truncation to 128 chars via get_name_trunc() at line 125 cause two different collections with identical 128-char prefixes to collide in the collection_data_id_hash, allowing collection takeover? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b8e9e56-83b9-4572-b601-290021752e53?mode=deep",
+    "timestamp": "2026-01-25 10:06:15.663169",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [URI truncation attack] Does metadata_uri truncation to 512 chars at line 126 silently drop critical metadata URLs, allowing attackers to hide malicious content indicators or bypass content moderation systems? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_568eebe6-b32b-4d30-b3ed-7197cf44d28b?mode=deep",
+    "timestamp": "2026-01-25 10:06:44.732803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/token_models/collection_datas.rs] [Function: from_write_table_item()] [Description injection] Can attackers inject SQL special characters or null bytes in the description field (line 133, 148) that aren't sanitized, potentially causing SQL injection when queried by external applications? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8b66bd2-5708-4c68-9715-b1f8d2d82ba4?mode=deep",
+    "timestamp": "2026-01-25 10:07:13.337591",
+    "report_generated": false
+  }
+]
