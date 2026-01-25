@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: new()] [Access Control Bypass] In File::create(), are file permissions explicitly set to restrict access to owner-only (0600), or can any local user read the consensus private keys from the created file, enabling validator key theft? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b5c70bb-22ea-4218-86d8-7e5e3a2d39b5?mode=deep",
+    "timestamp": "2026-01-25 10:53:03.139799",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: new()] [Permission Escalation] Does File::create() preserve secure umask settings, or can an attacker manipulate the process umask before storage initialization to create world-readable key files, exposing all validator consensus keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e4df3ca-b2ca-4b73-bd04-94962d674645?mode=deep",
+    "timestamp": "2026-01-25 10:53:15.848679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: new()] [Filesystem Race] Between checking !file_path.exists() and File::create(), can an attacker create a symlink at file_path pointing to a sensitive system file, causing the validator to overwrite critical files when writing keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d2ea487-aa7d-4502-b774-c023d1d71bfc?mode=deep",
+    "timestamp": "2026-01-25 10:53:28.894854",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: write()] [TOCTOU Race] In write(), does File::create(self.temp_path.path()) check if temp_path was replaced with a symlink by an attacker, allowing key material to be written to attacker-controlled files? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60b81d00-c727-42a1-b243-933e66acdeec?mode=deep",
+    "timestamp": "2026-01-25 10:53:42.393722",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: write()] [Permission Inheritance] When fs::rename() moves temp_path to file_path, are the original file_path permissions preserved, or do looser permissions from the temp file expose consensus keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b21e6c2-300b-44de-9902-a19bb208f2ff?mode=deep",
+    "timestamp": "2026-01-25 10:53:56.723547",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: read()] [Symlink Attack] Does File::open(&self.file_path) follow symlinks, allowing an attacker with filesystem access to redirect reads to attacker-controlled files containing malicious serialized data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_412d7640-7746-420c-8473-ca3656bdd6e0?mode=deep",
+    "timestamp": "2026-01-25 10:54:12.437501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: new()] [Directory Traversal] If file_path contains directory traversal sequences (../../etc/shadow), does File::create() validate the path, or will it create files outside the intended storage directory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69f520a1-8279-4754-ab54-ac134540f080?mode=deep",
+    "timestamp": "2026-01-25 10:54:29.372343",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: new_with_time_service()] [Panic on Failure] When File::create() fails (disk full, permission denied), the unwrap_or_else() panics, causing validator process crash and potential consensus liveness issues - can an attacker trigger this deliberately? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81ffa82b-cb63-4e4d-a2f4-e4fc26b2f6ce?mode=deep",
+    "timestamp": "2026-01-25 10:54:47.768040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Struct: OnDiskStorage] [Multi-Process Access] Since OnDiskStorage is not thread-safe without Arc<RwLock<>>, can multiple validator processes or threads access the same file_path simultaneously, causing race conditions in read/write that corrupt consensus keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02c69ccc-b9f0-4723-bbfc-cfc923264e0f?mode=deep",
+    "timestamp": "2026-01-25 10:55:07.498198",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: write()] [Atomic Rename Failure] Does fs::rename() guarantee atomic replacement of file_path, or can it fail mid-operation leaving the storage in an inconsistent state with neither old nor new data, losing consensus keys permanently? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4aaf91b5-3e31-44d6-ace1-fa845f98fffd?mode=deep",
+    "timestamp": "2026-01-25 10:55:28.205286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: read()] [Key Material in Memory] The read() function loads the entire HashMap<String, Value> into memory as a String - does this leave consensus private keys in uncleared heap memory accessible to memory dump attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83c12650-5a6f-411a-adbb-d962e6d823b4?mode=deep",
+    "timestamp": "2026-01-25 10:55:51.320159",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: write()] [Plaintext Key Storage] The write() function serializes keys to JSON without encryption using serde_json::to_vec() - are consensus private keys stored in plaintext on disk, allowing key theft via filesystem access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67ffa40a-f595-430e-91a7-84df1e05436e?mode=deep",
+    "timestamp": "2026-01-25 10:56:14.529030",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: get()] [Key Leakage in Logs] When get() returns Error::KeyNotSet, does the error message include the key name that could leak sensitive information about validator key structure to attackers monitoring logs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_debe47c5-9ea2-47f2-a68b-36033f18f7db?mode=deep",
+    "timestamp": "2026-01-25 10:56:39.234340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: read()] [Memory Zeroing] Does read() use secure memory clearing for the String contents buffer after deserialization, or do private keys remain in process memory indefinitely accessible to debuggers/core dumps? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95eef2f0-56ac-46ed-8890-dab4b680723b?mode=deep",
+    "timestamp": "2026-01-25 10:57:04.705034",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: write()] [Temporary File Exposure] The temp_path file contains full consensus key material in plaintext before rename - does the filesystem cache or journal expose this data to recovery tools even after deletion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4b8ccbc-0aff-40d5-ba6c-976c14d28be4?mode=deep",
+    "timestamp": "2026-01-25 10:57:31.512031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: set()] [Serialization Key Copies] When serde_json::to_value(GetResponse::new(value, now)) serializes the private key value, how many copies of key material exist in memory before garbage collection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cd2b7d2-30f6-452e-99c7-155069359d4d?mode=deep",
+    "timestamp": "2026-01-25 10:57:57.121780",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: read()] [Key Enumeration] Does serde_json::from_str() validate the structure of the HashMap, or can an attacker-modified storage file enumerate all stored key names by observing deserialization errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0870352-d435-4bec-bf23-fdfa254e9edf?mode=deep",
+    "timestamp": "2026-01-25 10:58:24.147723",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: new_with_time_service()] [Temp Path Predictability] Is TempPath::new_with_temp_dir() using cryptographically secure random generation, or can an attacker predict temp_path names to pre-create malicious files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f709602f-95e0-4072-ad0b-36b60bb53783?mode=deep",
+    "timestamp": "2026-01-25 10:58:52.579372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: write()] [Key Backup Exposure] When fs::rename() replaces file_path, are old versions backed up by the filesystem (macOS Time Machine, Linux LVM snapshots), leaving historical consensus keys exposed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f6af101-7198-454a-8f95-e5b8caa0ed95?mode=deep",
+    "timestamp": "2026-01-25 10:59:17.778770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: read()] [Swap File Leakage] Can the String contents buffer be paged to swap during file.read_to_string(), permanently storing consensus private keys in unencrypted swap space accessible after reboot? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44cdb3ce-10cb-4927-bbde-68fa1910ec4a?mode=deep",
+    "timestamp": "2026-01-25 10:59:43.655991",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: read()] [Corrupted File Handling] When serde_json::from_str() fails due to file corruption (partial write, bit flip), does the error propagation allow recovery, or is the consensus key permanently lost requiring validator re-registration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56b2e35f-c48b-4b25-b5ac-59a8aea1075c?mode=deep",
+    "timestamp": "2026-01-25 11:00:10.249942",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: write()] [Partial Write Failure] If file.write_all(&contents) fails after writing partial data (disk full, IO error), does the error leave the temp file in a corrupted state that gets renamed over the valid file_path? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_155a40f7-fc40-46ce-8972-e567adba8763?mode=deep",
+    "timestamp": "2026-01-25 11:00:36.554482",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: read()] [Empty File Race] The check if contents.is_empty() returns Ok(HashMap::new()) - can an attacker timing attack cause reads during write operations to see empty files, returning empty key storage and breaking consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8058788f-2d0e-4fb8-9005-f061e42cf72e?mode=deep",
+    "timestamp": "2026-01-25 11:01:03.855134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: write()] [Rename Atomicity] Does fs::rename() guarantee atomic operation on all filesystems (NFS, CIFS, FUSE), or can network filesystems exhibit partial visibility causing validators to see inconsistent key state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f97bbda-7d9c-44d0-b5db-64eb1812ee56?mode=deep",
+    "timestamp": "2026-01-25 11:01:32.110760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/on_disk.rs] [Function: read()] [JSON Injection] If an attacker modifies the storage file to include JSON injection payloads (deeply nested objects, circular references), can serde_json::from_str() be exploited to cause stack overflow or DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9811fc26-b52a-4e7a-9800-c22494d8c8e3?mode=deep",
+    "timestamp": "2026-01-25 11:01:59.831052",
+    "report_generated": false
+  }
+]
