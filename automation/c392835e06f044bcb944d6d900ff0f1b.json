@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: create_property_value()] [Type Confusion] Can an attacker provide mismatched type and value parameters (e.g., typ='u64' with non-numeric BCS data) to cause type confusion, potentially leading to incorrect indexer state or crashes when unwrap_or silently falls back to the raw malicious value? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8aa07d4-8bb1-44a9-9da2-3cdb06a67e31?mode=deep",
+    "timestamp": "2026-01-25 13:18:49.973485",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: create_property_value()] [Error Suppression] Does the unwrap_or() fallback at line 17 mask critical BCS decoding errors, allowing malformed property values to be inserted into the indexer database without proper validation, potentially corrupting downstream queries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_391d6986-2ed7-46a3-9871-377cb0360367?mode=deep",
+    "timestamp": "2026-01-25 13:19:02.671771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: create_property_value()] [DoS via Panics] Can convert_bcs_hex() panic on deeply nested or malformed BCS structures, and does the unwrap_or() at line 17 properly catch all panic paths, or can an attacker craft inputs that cause indexer crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6f12da5-5701-46eb-a35d-729c9556776a?mode=deep",
+    "timestamp": "2026-01-25 13:19:15.678508",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: create_property_value()] [Integer Overflow] When typ is 'u128' or large integer types, can convert_bcs_hex() handle maximum value integers without overflow during BCS deserialization, or can this cause indexer state corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd409707-3d40-45fd-9d04-af5c824eb4fd?mode=deep",
+    "timestamp": "2026-01-25 13:19:30.094717",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: create_property_value()] [Memory Exhaustion] Can an attacker provide extremely large BCS hex strings in the value parameter that consume excessive memory during convert_bcs_hex() processing, causing indexer DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb0f07e0-fa83-4630-9e4c-7b13bb8f56aa?mode=deep",
+    "timestamp": "2026-01-25 13:19:44.500629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Malformed JSON] At lines 33-34, the function chains multiple ?-operators on JSON navigation - can an attacker provide malformed JSON structures that bypass these checks and cause panics or incorrect state in later processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e00408e-ca5f-49e8-b437-315c39bbaafd?mode=deep",
+    "timestamp": "2026-01-25 13:19:59.934968",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Hash Collision Attack] The HashMap at line 39 uses String keys - can an attacker craft property keys with hash collisions to degrade indexer performance or cause DoS through excessive HashMap rehashing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdf4f5a7-0cfa-43e9-a3bd-82a090eba6d0?mode=deep",
+    "timestamp": "2026-01-25 13:20:16.393603",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Key Duplication] If the input JSON contains duplicate keys in the 'data' array (lines 34-40), does HashMap.insert() silently overwrite previous values, potentially allowing attackers to manipulate which property value gets indexed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34d8cc4d-acb1-4f25-a74a-2b340506e401?mode=deep",
+    "timestamp": "2026-01-25 13:20:34.500165",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Type String Injection] At line 37, typ is extracted as string from JSON - can an attacker inject arbitrary type strings (e.g., malicious type identifiers) that bypass convert_bcs_hex() validation and cause downstream issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6bf29e0f-df14-4d37-8d8e-2699f279821e?mode=deep",
+    "timestamp": "2026-01-25 13:20:52.890437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Silent Failure] The function returns Option<Value> and returns None on any error (lines 33-40) - can attackers exploit this to cause silent data loss where property maps are dropped without logging, making indexer data incomplete? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0fe96fc3-7627-4c1d-bed9-7763531f2010?mode=deep",
+    "timestamp": "2026-01-25 13:21:13.276471",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Array Bounds] At line 33, as_array() is called without length validation - can an attacker provide extremely large arrays in 'map.data' causing memory exhaustion during iteration (line 34)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc7e76b9-8e7c-40a0-a349-113437aa5068?mode=deep",
+    "timestamp": "2026-01-25 13:21:34.336593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Empty Key Injection] Can an attacker provide empty strings as 'key' values at line 35, potentially creating HashMap entries with empty keys that corrupt indexer queries expecting non-empty property names? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e36d31b-b551-4b24-94ca-cff69d607ad2?mode=deep",
+    "timestamp": "2026-01-25 13:21:56.785390",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Null Byte Injection] Can property keys at line 35 contain null bytes or special characters that cause issues in downstream database queries or JSON serialization? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_035d49fc-9fa8-4c4a-abaa-a090f8ac37ff?mode=deep",
+    "timestamp": "2026-01-25 13:22:19.510152",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Type Mismatch] At line 37, if the 'type' field in JSON is not a string (e.g., integer or object), does as_str() properly handle this or can it cause unexpected None returns that hide malicious property values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d26f21a1-55e8-41f0-a89b-ae59baada1f8?mode=deep",
+    "timestamp": "2026-01-25 13:22:43.844036",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::from_bcs_encode_str()] [Value Field Manipulation] At line 36, the nested path 'value.value' is accessed - can an attacker provide JSON where this structure is malformed but still partially valid, causing inconsistent property map parsing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3553221-789d-4396-952f-397d7f828736?mode=deep",
+    "timestamp": "2026-01-25 13:23:10.023163",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::to_flat_json()] [Panic on Unwrap] At line 52, serde_json::to_value(map).unwrap() can panic if the HashMap contains values that cannot be serialized - can an attacker craft property values that trigger this panic and crash the indexer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bb4e888-ae09-46bc-a97d-f8d3f79a39b7?mode=deep",
+    "timestamp": "2026-01-25 13:23:37.085596",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::to_flat_json()] [Type Information Loss] Lines 49-50 discard the PropertyValue.typ field and only keep the value string - can this cause downstream type confusion where consumers cannot distinguish between different property types? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_902a9927-1d03-4e37-a08e-554b789f541b?mode=deep",
+    "timestamp": "2026-01-25 13:24:04.392523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::to_flat_json()] [Key Collision] When flattening to flat JSON (lines 48-51), if multiple PropertyValue entries have the same key after string conversion, does the HashMap insertion silently drop values? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41e63052-d7ed-4e6d-9d31-7ab28e3b0f80?mode=deep",
+    "timestamp": "2026-01-25 13:24:33.788701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::to_flat_json()] [Memory Exhaustion] If the PropertyMap contains millions of entries, does the HashMap allocation at line 48 and serde_json serialization at line 52 handle this efficiently or cause memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_733cff88-4aec-461a-a366-90599a6a99ad?mode=deep",
+    "timestamp": "2026-01-25 13:25:03.138104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: PropertyMap::to_flat_json()] [Invalid UTF-8] If PropertyValue.value strings contain invalid UTF-8 sequences, does serde_json::to_value() at line 52 handle this gracefully or panic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73c2d0f3-f90b-4d4a-a8fa-708279451c6e?mode=deep",
+    "timestamp": "2026-01-25 13:25:31.519198",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: create_token_object_property_value()] [Type Integer Overflow] At line 63, typ is u8 - can an attacker provide type values > 9 (beyond the defined type enum) that cause convert_bcs_hex_new() to return unexpected fallback values, corrupting token property indexing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e993ddb3-0f02-49c3-a423-3bc2abf96d3f?mode=deep",
+    "timestamp": "2026-01-25 13:25:58.172999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: create_token_object_property_value()] [Type Mismatch] Can an attacker provide typ values that don't match the actual BCS-encoded value format, causing convert_bcs_hex_new() to produce incorrect decoded values that corrupt token metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_928edc0d-e92c-4adb-9e2a-074da5ffa3a6?mode=deep",
+    "timestamp": "2026-01-25 13:26:24.948683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: create_token_object_property_value()] [Error Masking] The unwrap_or() at line 67 silently falls back to raw value on decode errors - can this allow malformed token properties to be indexed without validation, affecting NFT metadata integrity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bd28542-f771-4d1b-ba93-f5c51f562cd6?mode=deep",
+    "timestamp": "2026-01-25 13:26:52.718369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: create_token_object_property_value()] [u256 Overflow] When typ=6 (u256), does convert_bcs_hex_new() properly handle maximum u256 values without overflow during BigDecimal conversion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82b86f6f-94d8-45a5-93b3-2130ab761540?mode=deep",
+    "timestamp": "2026-01-25 13:27:17.893237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/property_map.rs] [Function: TokenObjectPropertyMap::from_bcs_encode_str()] [Integer Truncation] At line 88, typ is extracted as u64 then cast to u8 - can an attacker provide type values > 255 causing integer truncation that results in incorrect type interpretation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_575c84d8-470d-4deb-9aab-b664a72a0a5f?mode=deep",
+    "timestamp": "2026-01-25 13:27:44.013472",
+    "report_generated": false
+  }
+]
