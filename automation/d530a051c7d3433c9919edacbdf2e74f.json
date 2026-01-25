@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: commit_single_shard()] [Shard ID bounds] Does the function validate that shard_id < NUM_STATE_SHARDS before indexing into state_kv_db_shards array, or can an out-of-bounds shard_id cause array access violations that crash the validator or corrupt adjacent memory? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c78fe239-f237-46d0-8057-f9da2f403724?mode=deep",
+    "timestamp": "2026-01-25 23:48:44.887556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: commit_single_shard()] [Version overwrite] Can an attacker call this function directly with an older version number to overwrite the DbMetadataKey::StateKvShardCommitProgress, causing the shard to report stale progress and potentially triggering incorrect pruning that deletes recent state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03700e35-d9e1-4aed-9a9f-ead8da252a26?mode=deep",
+    "timestamp": "2026-01-25 23:48:58.119812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: commit_single_shard()] [Batch poisoning] If the WriteBatch contains malicious entries that violate schema constraints, does write_schemas() properly validate and reject them, or can invalid data be persisted that crashes readers or corrupts state integrity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73498c7e-157b-45ed-84ec-b40bf9b1b6b0?mode=deep",
+    "timestamp": "2026-01-25 23:49:11.861101",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: commit_single_shard()] [Metadata injection] Can an attacker include DbMetadataKey entries in the input batch that conflict with the StateKvShardCommitProgress being written, causing the metadata write to fail or be overwritten with attacker-controlled values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d255c14-56d9-4660-aeba-3602b12060ae?mode=deep",
+    "timestamp": "2026-01-25 23:49:25.645583",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: commit_single_shard()] [Write amplification DoS] Can an attacker provide extremely large WriteBatch objects that cause write_schemas() to consume excessive disk I/O bandwidth, slowing down commits and affecting consensus participation timing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdb03c7c-36f7-4ad6-9d09-41e73721ba5d?mode=deep",
+    "timestamp": "2026-01-25 23:49:40.325408",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: write_progress()] [Version rollback] Can an attacker call write_progress() with a version number lower than the current StateKvCommitProgress, causing the overall progress to move backwards and triggering re-execution of already committed blocks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6785d84f-23ed-47c2-9329-bbcc142a8460?mode=deep",
+    "timestamp": "2026-01-25 23:49:56.514238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: write_progress()] [Concurrent write race] If multiple threads call write_progress() concurrently with different version numbers, can race conditions cause the wrong version to be persisted, leading to inconsistent progress tracking across validator restarts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd139375-25ef-4339-9dac-58b2c577859c?mode=deep",
+    "timestamp": "2026-01-25 23:50:13.662660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: write_progress()] [Type confusion] Can DbMetadataValue::Version be confused with other DbMetadataValue variants during deserialization, allowing an attacker to inject non-version data that breaks progress tracking logic in dependent components? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17d3afae-3275-4dad-bd6b-130682b2baa7?mode=deep",
+    "timestamp": "2026-01-25 23:50:33.236283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: write_progress()] [Integer overflow] Can the version parameter overflow when stored as DbMetadataValue::Version, causing wrap-around to zero or negative values that break version comparison logic in recovery paths? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f04f4957-0ca5-4d77-acf8-864cd4a8164e?mode=deep",
+    "timestamp": "2026-01-25 23:50:53.880389",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: write_pruner_progress()] [Progress desynchronization] If write_pruner_progress() is called with a version greater than StateKvCommitProgress, can this create a state where the pruner believes it has more data than actually exists, causing it to delete un-prunable state and breaking state queries? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_923d78cc-d422-49cc-a83f-cd452c6416d2?mode=deep",
+    "timestamp": "2026-01-25 23:51:16.077339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: write_pruner_progress()] [Missing validation] Does the function verify that the pruner version is monotonically increasing, or can calling it with decreasing versions cause the pruner to re-prune already processed ranges, wasting resources or corrupting pruner state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_efe9156f-31af-4fa9-ad1c-d382487e9536?mode=deep",
+    "timestamp": "2026-01-25 23:51:40.045070",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: write_pruner_progress()] [Key collision] Can DbMetadataKey::StateKvPrunerProgress collide with other metadata keys due to hash collisions or enum variant manipulation, causing pruner progress updates to overwrite critical metadata like commit progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9fb77f0-b4c8-4f40-9588-69d8b329e830?mode=deep",
+    "timestamp": "2026-01-25 23:52:05.285911",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: create_checkpoint()] [Path traversal] Can an attacker manipulate cp_root_path to contain path traversal sequences that cause the checkpoint to be created outside the intended directory, potentially overwriting system files or exposing sensitive data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99c68a32-3dbc-493b-b18b-3fe8f5bc0415?mode=deep",
+    "timestamp": "2026-01-25 23:52:30.971250",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: create_checkpoint()] [TOCTOU race] Between std::fs::remove_dir_all() and std::fs::create_dir_all(), can an attacker create a malicious directory structure at cp_state_kv_db_path that gets filled with checkpoint data, allowing them to manipulate or steal state snapshots? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd3d6494-58e4-47bf-b4f5-f8887d62ed47?mode=deep",
+    "timestamp": "2026-01-25 23:52:57.584816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: create_checkpoint()] [Incomplete checkpoint] If creating checkpoint for shard N fails after successfully creating checkpoints for shards 0..N-1, does the function leave a partial checkpoint that could be loaded as valid, causing state inconsistencies when restored? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d72f9e72-6a74-486c-8fb0-6f01ead02866?mode=deep",
+    "timestamp": "2026-01-25 23:53:25.106620",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: create_checkpoint()] [Hot state omission] The function does not checkpoint hot_state_kv_db_shards - can this cause validators restoring from checkpoints to have missing hot state data, leading to cache misses, performance degradation, or incorrect state reads during the warm-up period? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf57f15b-6fa3-4a4f-aefb-0fd9a3ff74d0?mode=deep",
+    "timestamp": "2026-01-25 23:53:53.906924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: create_checkpoint()] [Concurrent modification] While create_checkpoint() is reading from the source database, can concurrent writes modify the state being checkpointed, creating an inconsistent snapshot where different shards represent different blockchain versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aeebb1cc-471f-4295-a857-399a11f19a3f?mode=deep",
+    "timestamp": "2026-01-25 23:54:22.828471",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: create_checkpoint()] [Directory permission bypass] Does unwrap_or(()) on fs::remove_dir_all and fs::create_dir_all silently ignore permission errors, allowing checkpoint creation to fail without error reporting and leaving validators with stale or missing checkpoints? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e1ee169-92dc-45c9-9ad3-fbef481d767a?mode=deep",
+    "timestamp": "2026-01-25 23:54:52.262539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: create_checkpoint()] [Metadata-shard version mismatch] If metadata_db checkpoint succeeds but shard checkpoints fail, can this create a checkpoint where metadata indicates a certain version but shard data is missing or outdated, causing crashes or data loss when loaded? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67a024c6-791a-4bee-8dae-6a7750bd3d01?mode=deep",
+    "timestamp": "2026-01-25 23:55:21.466470",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: create_checkpoint()] [Resource exhaustion] Can creating checkpoints for all 16 shards simultaneously exhaust disk I/O bandwidth or available storage space, causing checkpoint creation to fail or other system operations to timeout? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2dc4659-d449-4f9e-aeb9-d9f80826819b?mode=deep",
+    "timestamp": "2026-01-25 23:55:52.248523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: create_checkpoint()] [Symbolic link exploitation] If an attacker creates symbolic links at the checkpoint paths before create_checkpoint() runs, can they redirect checkpoint data to arbitrary locations where they have read access, enabling state data exfiltration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eac95022-3dde-460e-9836-8f5c7fe7d6c2?mode=deep",
+    "timestamp": "2026-01-25 23:56:21.482846",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: get_state_value_with_version_by_version()] [Shard routing attack] Can an attacker craft a StateKey with a manipulated hash that causes get_shard_id() to return an incorrect shard_id, routing the query to the wrong shard and returning stale or incorrect state values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41ba8c59-42cd-4d91-bdda-d2b394a645d8?mode=deep",
+    "timestamp": "2026-01-25 23:56:51.180178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: get_state_value_with_version_by_version()] [Version confusion] In non-sharded mode, the function uses StateValueSchema which includes StateKey in the composite key, but in sharded mode uses StateValueByKeyHashSchema with only the hash - can this schema mismatch cause the same StateKey to resolve to different values depending on sharding configuration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf203aa9-0d69-4751-b3c9-f20fb0d3880b?mode=deep",
+    "timestamp": "2026-01-25 23:57:20.483120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: get_state_value_with_version_by_version()] [Iterator prefix attack] Does set_prefix_same_as_start properly prevent an attacker from crafting StateKeys that share a common prefix with legitimate keys, allowing them to read unauthorized state values by exploiting prefix matching behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46fcd4d7-68e6-4481-ac2f-a1b6413b9a8a?mode=deep",
+    "timestamp": "2026-01-25 23:57:49.634418",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_kv_db.rs] [Function: get_state_value_with_version_by_version()] [Hash collision exploitation] When using StateValueByKeyHashSchema, can an attacker find StateKeys with colliding hashes that cause the wrong state value to be returned, enabling them to read or manipulate state they shouldn't have access to? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb1032d8-4879-4dc7-8ba7-c265aa5d7b22?mode=deep",
+    "timestamp": "2026-01-25 23:58:19.418314",
+    "report_generated": false
+  }
+]
