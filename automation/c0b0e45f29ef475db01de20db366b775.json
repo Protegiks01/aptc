@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [Ledger info validation] The ledger_infos array is passed directly to the DB. Can an attacker provide empty ledger_infos or ledger infos with invalid signatures, causing the snapshot to be finalized without proper consensus verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7af5de3-f870-45c2-9b18-b3a63bab5d6b?mode=deep",
+    "timestamp": "2026-01-25 11:34:00.452578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [Version mismatch] If the version parameter doesn't match the version in output_with_proof or ledger_infos, can this cause state inconsistency where the snapshot is finalized at the wrong version? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36407159-2343-4d4c-90cd-48454ff8168c?mode=deep",
+    "timestamp": "2026-01-25 11:34:13.102302",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_state_snapshot_receiver()] [Multiple snapshots] Can an attacker call get_state_snapshot_receiver() multiple times with different versions before finalize is called, creating multiple snapshot receivers that compete and potentially corrupt each other's state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c96630d1-1e5e-41e0-946d-ccf595fb3b18?mode=deep",
+    "timestamp": "2026-01-25 11:34:26.165355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [Partial finalization] If finalize_state_snapshot() partially succeeds in the underlying DB but fails before updating fast_sync_status to FINISHED at line 166, can subsequent operations still write to the wrong database, causing split state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d3f9502-c5fd-4444-9bcf-f5fdcbaceba2?mode=deep",
+    "timestamp": "2026-01-25 11:34:40.789164",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_state_snapshot_receiver()] [State reversion] After calling get_state_snapshot_receiver() and setting status to STARTED, if the operation fails, is there a mechanism to revert status back to UNKNOWN? Or does the wrapper remain stuck in STARTED state even without a valid snapshot receiver? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_005dfd52-913f-4e41-aae8-322125ff5909?mode=deep",
+    "timestamp": "2026-01-25 11:34:55.382962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [Idempotency] Is finalize_state_snapshot() idempotent? If it's called twice with the same parameters after status is FINISHED, will it cause data corruption or panic, or will it safely return? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b8030ba-8b00-4e3c-af01-3e56492053a1?mode=deep",
+    "timestamp": "2026-01-25 11:35:10.863002",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [Snapshot size limit] Is there a limit on the size of the snapshot being finalized? Can an attacker provide an extremely large output_with_proof that causes memory exhaustion when finalize is called? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_526fcde1-b996-47c0-9845-c63bb9a0b0dd?mode=deep",
+    "timestamp": "2026-01-25 11:35:28.001293",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_read_ref()] [Read inconsistency] When status transitions from STARTED to FINISHED, reads switch from temporary_db_with_genesis to db_for_fast_sync. Can this cause a validator to read genesis state from temporary_db and then current state from db_for_fast_sync in the same consensus round, leading to invalid proposals? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c6920e8-05e8-46f3-a1fe-df18eb63b855?mode=deep",
+    "timestamp": "2026-01-25 11:35:46.784010",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_write_ref()] [Write inconsistency] The write ref switches DBs when status is STARTED or FINISHED. During the exact moment of transition, can writes be lost or duplicated across both databases, causing state divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_704b4a18-70a6-48dc-a717-50a5b067dfbd?mode=deep",
+    "timestamp": "2026-01-25 11:36:05.797406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Trait: DbReader] [Delegation vulnerability] The DbReader trait delegates all operations to get_read_delegatee(). If a long-running read operation starts before status transitions and the DB reference is cached, will it continue reading from the old DB even after transition, causing stale reads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ef2075b-0439-4f64-a628-600ac696d70f?mode=deep",
+    "timestamp": "2026-01-25 11:36:27.055382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Trait: DbWriter] [Write ordering] The DbWriter methods delegate to get_aptos_db_write_ref(). If pre_commit_ledger() is called before status is STARTED and commit_ledger() is called after status is STARTED, can the commit go to a different DB than pre_commit, causing commit failure or data loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4aa03761-427d-4a6d-b387-76b39750a71c?mode=deep",
+    "timestamp": "2026-01-25 11:36:48.594248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: pre_commit_ledger()] [State machine bypass] pre_commit_ledger() doesn't check or update fast_sync_status. Can an attacker call pre_commit_ledger() at any status (UNKNOWN, STARTED, FINISHED) and potentially pre-commit to the wrong database before snapshot is complete? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69dbb70d-5e53-427d-b4b3-25e70356c8a5?mode=deep",
+    "timestamp": "2026-01-25 11:37:11.689583",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: commit_ledger()] [State machine bypass] commit_ledger() doesn't check fast_sync_status. Can commits be made to temporary_db_with_genesis after the snapshot is finalized, wasting resources or causing confusion about which DB contains authoritative state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05d19521-3337-4c2f-b9b6-0fd00c0d087c?mode=deep",
+    "timestamp": "2026-01-25 11:37:34.996866",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_read_ref()] [Genesis data accessibility] After fast sync finishes and status is FINISHED, reads switch to db_for_fast_sync. Is the genesis data from temporary_db_with_genesis still accessible? Can loss of genesis data break historical queries or state proofs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6cc08453-1fab-4b2e-a86a-3856c4b4f999?mode=deep",
+    "timestamp": "2026-01-25 11:38:00.715497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_write_ref()] [Write before snapshot] Before snapshot starts (status UNKNOWN), writes go to temporary_db_with_genesis. If genesis transactions are committed and then snapshot starts, are these writes preserved or overwritten by the snapshot? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ff0953e-3a2b-4be6-a9a7-4d9f1c430897?mode=deep",
+    "timestamp": "2026-01-25 11:38:26.876524",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_read_delegatee()] [Reference lifetime] The function returns &dyn DbReader with the lifetime of &self. If the underlying DB reference switches during status transition, can this cause use-after-free or dangling references in callers holding the delegatee? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f97632f-867d-4f62-851b-ee6632c2ece3?mode=deep",
+    "timestamp": "2026-01-25 11:38:54.339786",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Struct: FastSyncStorageWrapper] [Arc cloning] The get_fast_sync_db() and get_temporary_db_with_genesis() methods return Arc clones. Can an attacker obtain references to both DBs and perform operations on both simultaneously, causing state inconsistency or allowing them to forge state by selectively reading from different DBs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db83ee30-e598-4c75-bb92-be8b7b1cb4dd?mode=deep",
+    "timestamp": "2026-01-25 11:39:22.932666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Struct: fast_sync_status] [Read-write priority] The RwLock allows multiple concurrent readers but only one writer. Can an attacker spam read operations (via get_fast_sync_status() or operations that check status) to starve write operations in get_state_snapshot_receiver() or finalize_state_snapshot(), preventing fast sync from completing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17e85dbf-e08c-4098-8202-e29461bbfb79?mode=deep",
+    "timestamp": "2026-01-25 11:39:53.055485",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: is_fast_sync_bootstrap_finished()] [Redundant lock acquisition] This function acquires read lock on fast_sync_status. If called from within a context that already holds the lock, can this cause deadlock or recursive locking issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88c79845-7f14-4497-ad63-1d9c2c82f7dc?mode=deep",
+    "timestamp": "2026-01-25 11:40:24.456384",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: is_fast_sync_bootstrap_started()] [Redundant lock acquisition] Similar to is_fast_sync_bootstrap_finished(), can redundant lock acquisition cause deadlock? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b5ce40f-57fd-40f6-bcc1-2d87b75cf177?mode=deep",
+    "timestamp": "2026-01-25 11:40:55.295710",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_read_ref()] [Reference escaping] The returned reference has the same lifetime as &self. Can this reference escape the lock scope and be used after fast_sync_status has changed, pointing to the wrong database? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ca67bfe-34b4-44ed-a2e5-3381f414fd45?mode=deep",
+    "timestamp": "2026-01-25 11:41:25.272592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: get_aptos_db_write_ref()] [Non-atomic check-then-act] The function calls two separate status check functions (is_fast_sync_bootstrap_started() and is_fast_sync_bootstrap_finished()) which each acquire and release the lock. Between these checks, can status change, causing incorrect database selection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22ba6e07-3518-48c8-ba1e-f1a8f1b338ef?mode=deep",
+    "timestamp": "2026-01-25 11:41:56.119173",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Struct: FastSyncStorageWrapper] [No Send/Sync bounds] Are there proper Send/Sync trait bounds on the wrapper and its fields? Can unsound concurrent access occur if the wrapper is shared across threads without proper synchronization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2dbb77a-92ea-4298-9ac1-67bc52bce305?mode=deep",
+    "timestamp": "2026-01-25 11:42:26.600563",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Function: finalize_state_snapshot()] [Lock upgrade] The function first reads status with get_fast_sync_status() then writes with fast_sync_status.write(). Can this read-then-write pattern cause lost updates if another thread modifies status between the read and write? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18155f54-af8d-4642-8104-3441a3f0fd35?mode=deep",
+    "timestamp": "2026-01-25 11:42:56.923920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/fast_sync_storage_wrapper.rs] [Trait: DbReader, DbWriter] [Interface thread-safety] The DbReader and DbWriter traits are implemented for FastSyncStorageWrapper which has interior mutability via RwLock. Are all trait method calls thread-safe, or can concurrent calls violate internal invariants? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_25c77cf5-3ddc-4a85-87cc-b15d8e70ad7a?mode=deep",
+    "timestamp": "2026-01-25 11:43:26.914866",
+    "report_generated": false
+  }
+]
