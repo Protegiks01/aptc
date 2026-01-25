@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_deserialized_module(), lines 255-286] [Version downgrade attack] In UnsyncModuleCache::insert_deserialized_module(), can an attacker exploit race conditions between version comparison (line 265) and entry insertion (line 274) to insert older deserialized code over newer verified code, potentially bypassing verification and executing malicious bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f61e2168-4613-486f-9553-f5a86453ce63?mode=deep",
+    "timestamp": "2026-01-25 15:53:40.385188",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_deserialized_module(), lines 411-442] [Race condition] In SyncModuleCache::insert_deserialized_module(), between the Ordering::Greater check (line 424) and entry.insert() (line 430), can concurrent threads exploit TOCTOU to replace a higher-version module with lower-version malicious code, breaking consensus determinism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_720b4242-bfca-463d-b20a-555644ee4889?mode=deep",
+    "timestamp": "2026-01-25 15:53:52.854605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_verified_module(), lines 288-331] [Version comparison bypass] In UnsyncModuleCache::insert_verified_module(), the version comparison uses Ordering::Less (line 299) but what happens if version implements Ord incorrectly or overflows during comparison, allowing attacker to bypass version checks and inject malicious verified code? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13b28b1a-725e-482e-a0ca-b5b529081f5a?mode=deep",
+    "timestamp": "2026-01-25 15:54:05.827902",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_verified_module(), lines 444-485] [Cache poisoning] In SyncModuleCache::insert_verified_module(), can an attacker with partial Byzantine control time their insert_verified_module() calls to poison the cache with malicious verified modules during epoch transitions, causing all validators to execute compromised code? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea038437-c3ab-457a-8987-fa8a3d838ca8?mode=deep",
+    "timestamp": "2026-01-25 15:54:20.086563",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Macro: version_too_small_error!(), lines 200-208] [Error code abuse] The version_too_small_error macro returns SPECULATIVE_EXECUTION_ABORT_ERROR status code - can an attacker craft transactions that deliberately trigger version conflicts to cause speculative execution aborts, manipulating Block-STM execution order and creating non-deterministic state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a0b6a24-198f-42e1-a7d8-81b7e8e1006b?mode=deep",
+    "timestamp": "2026-01-25 15:54:33.983859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_deserialized_module(), line 266] [Integer overflow] When comparing versions with version.cmp(&entry.get().version()), can integer overflow in the Version type's Ord implementation cause incorrect ordering results, allowing lower versions to appear greater and bypass the downgrade protection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebb576ed-cdaf-404d-a122-2f43888cfe98?mode=deep",
+    "timestamp": "2026-01-25 15:54:48.953369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_verified_module(), lines 300-311] [State inconsistency] In insert_verified_module(), when the version is Equal (line 300) and code is not verified (line 301), a new verified module replaces the deserialized one - can rapid concurrent calls create a state where some transactions see verified code while others see deserialized, breaking determinism? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_217a8226-7a08-4e6a-91a9-736d8ebcac11?mode=deep",
+    "timestamp": "2026-01-25 15:55:04.558626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_verified_module(), lines 456-467] [TOCTOU vulnerability] In SyncModuleCache::insert_verified_module(), the is_verified() check (line 457) and subsequent insert (line 465) are not atomic - can an attacker exploit this to replace verified code with deserialized code between checks, bypassing bytecode verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cca58d15-b13d-422c-b5f1-d9bfa5b89ede?mode=deep",
+    "timestamp": "2026-01-25 15:55:22.545561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Struct: VersionedModuleCode, lines 143-146] [Version field manipulation] VersionedModuleCode stores version as a separate field - can memory corruption or unsafe code in other modules directly manipulate the version field without going through proper validation, allowing arbitrary version downgrades? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5174260-8bf6-4ac0-960c-b06846218df2?mode=deep",
+    "timestamp": "2026-01-25 15:55:41.346528",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_deserialized_module(), line 267] [Same-version noop] When versions are Equal (line 267), the existing module is returned without replacement - can an attacker exploit this to prevent legitimate module upgrades by pre-populating cache with malicious code at the target version? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5df4995-3d15-4744-bfbb-e9c9b1e5c03b?mode=deep",
+    "timestamp": "2026-01-25 15:56:00.615613",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Struct: SyncModuleCache, line 367] [DashMap concurrent access] SyncModuleCache uses DashMap for concurrent access - can attackers exploit known DashMap race conditions or memory ordering issues to create cache inconsistencies between parallel transaction executions in Block-STM? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93a10041-6640-46cb-85b7-26411cc8430f?mode=deep",
+    "timestamp": "2026-01-25 15:56:20.525441",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: get_module_or_build_with(), lines 487-518] [Double-check race] In SyncModuleCache::get_module_or_build_with(), there's a pre-check (line 504) before entry() call (line 508) - can concurrent threads both pass the check and call builder.build() simultaneously, causing duplicate initialization with different module contents? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_338f3e7a-f79b-4605-a114-ab3da88dbe3f?mode=deep",
+    "timestamp": "2026-01-25 15:56:41.954519",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: take_modules_iter(), lines 390-396] [Memory corruption during iteration] take_modules_iter() uses mem::take() to extract the entire DashMap - can concurrent insert operations during iteration corrupt memory or cause iterator invalidation, leading to validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b1433f6-e8a7-4b82-94a9-7045da7da072?mode=deep",
+    "timestamp": "2026-01-25 15:57:04.323776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Struct: SyncModuleCache, line 367] [CachePadded false sharing] DashMap values are wrapped in CachePadded - is the padding size sufficient to prevent false sharing across CPU cache lines during high-frequency parallel execution, or can cache line contention create performance DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4cc0fb94-2659-4f31-b186-0cd72a27af3c?mode=deep",
+    "timestamp": "2026-01-25 15:57:27.082516",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_deserialized_module(), lines 420-432] [Entry lock holding] When entry.insert() is called (line 430), how long is the DashMap entry lock held? Can an attacker craft modules that take excessive time to clone/insert, causing lock contention and validator slowdown? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b810903d-bb61-49d6-849e-18f5a0cfee32?mode=deep",
+    "timestamp": "2026-01-25 15:57:50.543447",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: get_module_or_build_with(), lines 333-358] [RefCell panic] In UnsyncModuleCache::get_module_or_build_with(), RefCell::borrow_mut() is called (line 350) - can reentrant calls through builder.build() cause RefCell borrow panics and crash the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c57c464-f549-4a21-8919-94fd60c8643a?mode=deep",
+    "timestamp": "2026-01-25 15:58:15.053886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: num_modules(), line 520-522] [Inconsistent count] SyncModuleCache::num_modules() returns DashMap::len() which may not be consistent during concurrent modifications - can validators get different module counts leading to consensus disagreement? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb4b7ced-85e0-4fae-a602-77e974a0f1dd?mode=deep",
+    "timestamp": "2026-01-25 15:58:40.583876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: get_module_version(), lines 385-387] [Version visibility] In get_module_version(), the DashMap::get() may see stale versions due to memory ordering - can this cause different validators to execute transactions against different module versions, breaking determinism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce3fc43b-72db-4070-a716-491f9b6325e5?mode=deep",
+    "timestamp": "2026-01-25 15:59:07.058142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Struct: UnsyncModuleCache, line 212] [RefCell borrowing] UnsyncModuleCache uses RefCell<HashMap> - if used accidentally in multi-threaded context, can concurrent borrows cause undefined behavior or data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97ceece8-aef8-4a9b-942c-e0f519314275?mode=deep",
+    "timestamp": "2026-01-25 15:59:33.006868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: insert_verified_module(), lines 453-478] [Occupied entry double-borrow] In SyncModuleCache::insert_verified_module(), entry.get() is called multiple times (lines 454, 457, 458) - can DashMap's borrow semantics cause conflicts if module_code().code() internally holds references? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_153b4d46-a8fa-4159-a26d-608bc219bee9?mode=deep",
+    "timestamp": "2026-01-25 16:00:00.291956",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Trait: ModuleCodeBuilder, lines 67-79] [Builder malicious implementation] The ModuleCodeBuilder trait is implemented by external code - can a malicious builder.build() implementation return inconsistent modules across calls, poison the cache with different code for same key, or cause non-deterministic execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3524aa46-5016-48ec-866b-8d065744f56a?mode=deep",
+    "timestamp": "2026-01-25 16:00:27.562951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: get_module_or_build_with(), line 352] [Builder panic propagation] In get_module_or_build_with(), if builder.build() panics during initialization, does the cache entry remain in an inconsistent state (Vacant but partially initialized), causing subsequent accesses to fail or return corrupted data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2e866a6-f34f-4dd3-bc80-32360aed349c?mode=deep",
+    "timestamp": "2026-01-25 16:00:53.103338",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: get_module_or_build_with(), lines 504-517] [TOCTOU in double-check] Between the first get() check (line 504) and the entry() call (line 508), another thread might insert - but the Occupied branch (line 509) assumes it's the same module. Can this cause builder.build() to be called with wrong assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c210d1c-4bd7-443d-98d8-e381d88e2819?mode=deep",
+    "timestamp": "2026-01-25 16:01:19.317320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Function: get_module_or_build_with(), line 354] [Default version assumption] VersionedModuleCode::new_with_default_version() is used (line 354) - what if the builder returns a module that should have a specific version? Can this cause version mismatches and consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d2e335b-9661-43a2-8788-91d46ac63b34?mode=deep",
+    "timestamp": "2026-01-25 16:01:46.788782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/code/cache/module_cache.rs] [Trait: ModuleCodeBuilder, line 78] [Optional module None handling] Builder.build() returns Option<ModuleCode> - if it returns None for a critical system module, can this cause validators to diverge when some have the module cached and others don't? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21d2ff3e-3e16-4c00-8d50-1c6d4c44b66f?mode=deep",
+    "timestamp": "2026-01-25 16:02:14.853487",
+    "report_generated": false
+  }
+]
