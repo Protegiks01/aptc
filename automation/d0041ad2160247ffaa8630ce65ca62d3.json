@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read()] [Panic safety] Can a Byzantine validator intentionally cause a panic in a thread holding a write lock on consensus state (e.g., BlockStore), triggering lock poisoning that propagates via read().expect() and causes all validators to panic when accessing shared state, leading to total network halt? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f89fc385-79cc-43f2-9116-9ff44d60ec0f?mode=deep",
+    "timestamp": "2026-01-25 20:34:39.902126",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Panic safety] If a validator's execution thread panics while holding a write lock on execution state, does the write().expect() on line 30 cause cascading panics across all threads trying to access that lock, resulting in validator crash and potential loss of liveness if affecting >1/3 validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dfd88b8-2df9-46a2-9fd1-bd0dd59e360e?mode=deep",
+    "timestamp": "2026-01-25 20:34:52.334039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: into_inner()] [Panic safety] Can an attacker exploit the into_inner().expect() on line 37 by causing lock poisoning during critical state transitions (e.g., epoch changes), causing validators to panic when consuming locks and preventing recovery without node restart? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5006fb8b-4be2-417c-ac4e-5886ae1d936f?mode=deep",
+    "timestamp": "2026-01-25 20:35:05.182903",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read()] [Panic propagation] When read() panics due to poisoned lock on line 23, does this prevent catch_unwind recovery in safety-critical paths like SafetyRules, potentially allowing double-signing if the panic prevents proper state persistence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc4322c0-2d24-4b76-b595-9c24f13cddd7?mode=deep",
+    "timestamp": "2026-01-25 20:35:19.172686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [State corruption] If write().expect() panics on line 30 during a partial state update in AptosDB's FastSyncStorageWrapper, can this leave the database in an inconsistent state where subsequent reads see partially committed data, breaking deterministic execution guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98c35d97-a7c8-4960-b059-46aa485a6edb?mode=deep",
+    "timestamp": "2026-01-25 20:35:33.403308",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read()] [Consensus impact] Can lock poisoning caused by malicious transaction execution propagate to consensus layer via read().expect(), causing BlockStore access to panic and preventing validators from processing new blocks, resulting in chain halt? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eaf1e600-c8bd-48ac-b110-5e67c4799c6d?mode=deep",
+    "timestamp": "2026-01-25 20:35:48.412221",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Resource exhaustion] If multiple threads simultaneously trigger write().expect() panics due to poisoned lock, can the panic unwinding process exhaust stack space or heap memory, causing validator OOM crashes affecting network liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6825e30d-fd03-4b0e-9d0a-33355dc1c680?mode=deep",
+    "timestamp": "2026-01-25 20:36:03.748268",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read()] [Recovery failure] Does the expect() on line 23 prevent graceful degradation during transient failures, forcing validators to crash restart rather than recovering, potentially causing extended downtime if many validators restart simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5548643d-12b9-4e6d-8b07-5c5dc93faa9d?mode=deep",
+    "timestamp": "2026-01-25 20:36:20.920959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: into_inner()] [Ownership transfer] When into_inner() panics on line 37 during consensus state transitions, can this leave orphaned locks in memory without proper cleanup, causing memory leaks that degrade validator performance over time? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e4197bc-de2f-4e59-b680-5c9707028500?mode=deep",
+    "timestamp": "2026-01-25 20:36:38.241694",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Panic timing] Can an attacker time transactions to cause panics precisely when write() is called during critical consensus operations (e.g., block commitment), exploiting the panic to create race conditions that violate safety properties? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2da1a79d-e9f4-487f-8c2b-1e492e0ab4d8?mode=deep",
+    "timestamp": "2026-01-25 20:36:56.939520",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read() + write()] [Deadlock] Can a thread holding read() lock on BlockStore attempt to acquire write() lock on the same RwLock when processing a block proposal, causing deadlock since RwLock is not reentrant, halting consensus progress? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d137780-387d-49c6-b754-4dfbcb30cba9?mode=deep",
+    "timestamp": "2026-01-25 20:37:15.979048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Circular dependency] Can two threads create circular lock dependency by acquiring write() on RwLock A then attempting write() on RwLock B, while another thread holds B and attempts A, causing validator deadlock and network partition? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_999abe6b-af5d-41ec-9d21-0cf528d16e18?mode=deep",
+    "timestamp": "2026-01-25 20:37:36.736201",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read()] [Nested locking] Does the code prevent nested read() lock acquisition patterns in consensus where outer read() on DagStore calls function requiring read() on BlockStore, potentially causing subtle deadlocks under specific execution orders? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e72a24d-7a50-4ee9-9efa-86513ff3e4a6?mode=deep",
+    "timestamp": "2026-01-25 20:37:58.601853",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Lock ordering] Are there documented lock ordering requirements for write() calls across different RwLock instances (BlockStore, DagStore, SafetyRules), or can arbitrary ordering lead to deadlocks during concurrent block processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78d12814-2d69-4ffb-9c9c-1bfebb90582a?mode=deep",
+    "timestamp": "2026-01-25 20:38:21.466065",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read() + write()] [Upgrade deadlock] Can multiple threads simultaneously holding read() locks attempt to upgrade to write() locks, causing deadlock since none can acquire exclusive access, halting execution pipeline? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd82347b-0a13-4e78-9581-d41db2826495?mode=deep",
+    "timestamp": "2026-01-25 20:38:44.334402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Cross-component deadlock] Can write() on mempool's RwLock-protected state while holding consensus lock cause deadlock when consensus simultaneously tries to acquire mempool lock, preventing transaction processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84fe153b-386b-4e71-bd60-c8fdea19cfdb?mode=deep",
+    "timestamp": "2026-01-25 20:39:08.301513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read()] [Async deadlock] When read() is called within async context, can await points while holding lock lead to deadlock if scheduler resumes task on different thread that tries to acquire same lock? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06f8f3a1-7ebd-4b78-b5f9-a60938e48bd5?mode=deep",
+    "timestamp": "2026-01-25 20:39:33.515496",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Timeout absence] Since write() blocks indefinitely without timeout mechanism on lines 27-30, can malicious thread hold lock forever by never releasing guard, causing permanent validator deadlock? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44d70d0b-577e-4a16-ab68-30c5d9fb373a?mode=deep",
+    "timestamp": "2026-01-25 20:39:59.270638",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read()] [Multi-lock acquisition] Can transaction execution requiring read() on multiple RwLocks (state cache, gas meter, storage) in inconsistent order across validators create non-deterministic deadlocks that only affect subset of nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6efcea86-068c-41ee-a829-adf228dd69d9?mode=deep",
+    "timestamp": "2026-01-25 20:40:25.149701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: into_inner()] [Move deadlock] Does into_inner() consumption on line 34-38 prevent proper lock release if called while other threads hold references, potentially deadlocking during epoch reconfiguration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_300d7bca-e625-49fe-b5e4-e5c157ee64e8?mode=deep",
+    "timestamp": "2026-01-25 20:40:52.332532",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Writer starvation] Can continuous read() calls on BlockStore by observer nodes starve write() attempts by consensus leader trying to insert new blocks, degrading block production rate below performance requirements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63e6f5d1-fa9e-4d49-9b9e-4538dc43f1be?mode=deep",
+    "timestamp": "2026-01-25 20:41:19.799180",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read()] [Reader starvation] Under high write() pressure during state synchronization, can readers be indefinitely starved from acquiring read() locks on AptosDB state, preventing API queries and causing service degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19257c82-1888-44d4-8817-a43db226fbea?mode=deep",
+    "timestamp": "2026-01-25 20:41:46.316356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Priority inversion] Does RwLock implementation guarantee write priority, or can Byzantine validators flood read() operations to delay critical write() operations like safety rule updates, violating consensus timing assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd0664fb-fa15-4b4d-964e-167bb8405920?mode=deep",
+    "timestamp": "2026-01-25 20:42:11.193504",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: read()] [Lock contention] Can malicious full nodes spam read() requests on shared state locks, causing legitimate validator read() calls to experience high latency, degrading consensus performance below finality requirements? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c211d9a6-83bd-4e7e-84f8-56367ce136d3?mode=deep",
+    "timestamp": "2026-01-25 20:42:36.868128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-infallible/src/rwlock.rs] [Function: write()] [Batch operations] When write() is held for extended periods during batch operations (e.g., large block execution), can this starve readers causing transaction query APIs to timeout and appear as service unavailability? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f95774e8-089f-4381-b4b6-1e4a2a352b47?mode=deep",
+    "timestamp": "2026-01-25 20:43:02.092881",
+    "report_generated": false
+  }
+]
