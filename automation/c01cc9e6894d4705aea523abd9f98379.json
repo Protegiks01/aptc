@@ -1,0 +1,62 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Global: Transaction execution] [Execution status consistency] Can ExecutionStatus be arbitrary regardless of actual transaction outcome, potentially hiding bugs where failed transactions still modify state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13b40080-870e-42ca-a1bd-73df7ec31143?mode=deep",
+    "timestamp": "2026-01-25 11:08:53.199063",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Global: Validator signatures] [Signature aggregation bugs] Does BLS signature aggregation in LedgerInfoWithSignatures properly validate that all signatures are from distinct validators before aggregation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3bb52e47-ad36-49d0-9c67-6c975500503e?mode=deep",
+    "timestamp": "2026-01-25 11:09:06.896809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Global: Block structure] [Block integrity] Can the separation of block metadata, transactions, and ledger info generation create inconsistencies where block components don't properly reference each other? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9a32c4c-0fcb-4aec-8b24-cab37f2a8d32?mode=deep",
+    "timestamp": "2026-01-25 11:09:21.564751",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Global: Resource semantics] [Move resource safety] Do generated transactions properly respect Move's resource semantics (no copy, no drop) when modifying state, or can test data violate resource safety invariants? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_687880c1-242c-4e2f-bcaf-13be074f97e4?mode=deep",
+    "timestamp": "2026-01-25 11:09:36.369346",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Global: Concurrency] [Race conditions] Is the AccountInfoUniverse thread-safe when used concurrently in parallel property tests, or can concurrent access corrupt test state leading to flaky tests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa7b0460-6bc8-45e3-94b8-2dfa36fe0dd7?mode=deep",
+    "timestamp": "2026-01-25 11:09:52.378585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Global: Memory safety] [Unsafe code] Does any test generation code use unsafe Rust blocks that could introduce memory safety violations, potentially corrupting test execution or hiding real bugs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5878172-d700-4508-b077-b99660e3b242?mode=deep",
+    "timestamp": "2026-01-25 11:10:10.105133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Global: Integer overflow] [Arithmetic safety] Are all arithmetic operations in counter increments (round, version, sequence number, event counter) checked for overflow, or can overflow cause wraparound to invalid values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d54ac7ca-263e-4b55-b1f8-94ca6dd53339?mode=deep",
+    "timestamp": "2026-01-25 11:10:29.113672",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Function: AccountInfoUniverse::arbitrary_with()] [Zero account scenario] Does the code handle the edge case where num_accounts parameter is 0, or would this cause empty validator sets and invalid test universes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_712d741f-cbd2-4bd3-967a-d9b767705272?mode=deep",
+    "timestamp": "2026-01-25 11:10:50.973114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Function: WriteSetMut::freeze()] [Freeze validation] What specific validation does freeze() perform at line 132, and could bypassing this in production allow invalid write sets to be committed to state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_294a2c8f-6eda-47e8-9311-209408f0bcb5?mode=deep",
+    "timestamp": "2026-01-25 11:11:14.829904",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proptest_types.rs] [Function: ContractEvent::new_v1/v2()] [Event creation validation] Do the new_v1 and new_v2 constructors at lines 748\n\n### Citations\n\n**File:** types/src/proptest_types.rs (L1-1385)\n```rust\n// Copyright © Aptos Foundation\n// Parts of the project are originally copyright © Meta Platforms, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\n#![allow(clippy::arc_with_non_send_sync)]\n\nuse crate::{\n    account_address::{self, AccountAddress},\n    account_config::{\n        AccountResource, CoinStoreResource, NewEpochEvent, NEW_EPOCH_EVENT_V2_MOVE_TYPE_TAG,\n    },\n    aggregate_signature::PartialSignatures,\n    block_info::{BlockInfo, Round},\n    block_metadata::BlockMetadata,\n    block_metadata_ext::BlockMetadataExt,\n    chain_id::ChainId,\n    contract_event::ContractEvent,\n    dkg::{DKGTranscript, DKGTranscriptMetadata},\n    epoch_state::EpochState,\n    event::{EventHandle, EventKey},\n    ledger_info::{generate_ledger_info_with_sig, LedgerInfo, LedgerInfoWithSignatures},\n    on_chain_config::{Features, ValidatorSet},\n    proof::TransactionInfoListWithProof,\n    state_store::state_key::StateKey,\n    transaction::{\n        ChangeSet, EntryFunction, ExecutionStatus, IndexedTransactionSummary, Module, Multisig,\n        MultisigTransactionPayload, RawTransaction, ReplayProtector, Script,\n        SignatureCheckedTransaction, SignedTransaction, Transaction, TransactionArgument,\n        TransactionAuxiliaryData, TransactionExecutable, TransactionExtraConfig, TransactionInfo,\n        TransactionListWithProof, TransactionPayload, TransactionPayloadInner, TransactionStatus,\n        TransactionToCommit, Version, WriteSetPayload,\n    },\n    validator_info::ValidatorInfo,\n    validator_signer::ValidatorSigner,\n    validator_txn::ValidatorTransaction,\n    validator_verifier::{ValidatorConsensusInfo, ValidatorVerifier},\n    vm_status::VMStatus,\n    write_set::{WriteOp, WriteSet, WriteSetMut},\n    AptosCoinType,\n};\nuse aptos_crypto::{\n    bls12381::{self, bls12381_keys},\n    ed25519::{self, Ed25519PrivateKey, Ed25519PublicKey},\n    test_utils::KeyPair,\n    traits::*,\n    HashValue,\n};\nuse move_core_types::{\n    identifier::Identifier,\n    language_storage::{ModuleId, TypeTag},\n};\nuse proptest::{\n    collection::{vec, SizeRange},\n    option,\n    prelude::*,\n    sample::Index,\n};\nuse proptest_derive::Arbitrary;\nuse serde_json::Value;\nuse std::{\n    collections::{BTreeMap, BTreeSet},\n    iter::Iterator,\n    sync::Arc,\n};\n\nimpl Arbitrary for IndexedTransactionSummary {\n    type Parameters = ();\n    type Strategy = BoxedStrategy<Self>;\n\n    fn arbitrary_with(_args: Self::Parameters) -> Self::Strategy {\n        (\n            any::<AccountAddress>(),\n            any::<ReplayProtector>(),\n            any::<Version>(),\n            any::<HashValue>(),\n        )\n            .prop_map(|(sender, replay_protector, version, transaction_hash)| {\n                IndexedTransactionSummary::V1 {\n                    sender,\n                    replay_protector,\n                    version,\n                    transaction_hash,\n                }\n            })\n            .boxed()\n    }\n}\n\nimpl WriteOp {\n    pub fn value_strategy() -> impl Strategy<Value = Self> {\n        vec(any::<u8>(), 0..64).prop_map(|bytes| WriteOp::legacy_modification(bytes.into()))\n    }\n\n    pub fn deletion_strategy() -> impl Strategy<Value = Self> {\n        Just(WriteOp::legacy_deletion())\n    }\n}\n\nimpl Arbitrary for WriteOp {\n    type Parameters = ();\n    type Strategy = BoxedStrategy<Self>;\n\n    fn arbitrary_with(_args: ()) -> Self::Strategy {\n        prop_oneof![Self::deletion_strategy(), Self::value_strategy()].boxed()\n    }\n}\n\nimpl Arbitrary for WriteSetPayload {\n    type Parameters = ();\n    type Strategy = BoxedStrategy<Self>;\n\n    fn arbitrary_with(_args: ()) -> Self::Strategy {\n        any::<ChangeSet>().prop_map(WriteSetPayload::Direct).boxed()\n    }\n}\n\nimpl Arbitrary for WriteSet {\n    type Parameters = ();\n    type Strategy = BoxedStrategy<Self>;\n\n    fn arbitrary_with(_args: ()) -> Self::Strategy {\n        // XXX there's no checking for repeated access paths here, nor in write_set. Is that\n        // important? Not sure.\n        vec((vec(any::<u8>(), 1..100), any::<WriteOp>()), 0..64)\n            .prop_map(|write_set| {\n                let write_set_mut = WriteSetMut::new(\n                    write_set\n                        .iter()\n                        .map(|(raw_key, write_op)| (StateKey::raw(raw_key), write_op.clone())),\n                );\n                write_set_mut\n                    .freeze()\n                    .expect(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3eec686-1050-42fc-a156-0b8981871c76?mode=deep",
+    "timestamp": "2026-01-25 11:11:38.593107",
+    "report_generated": false
+  }
+]
