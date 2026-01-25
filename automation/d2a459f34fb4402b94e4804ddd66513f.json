@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: data HashMap] [Unbounded growth] Since the HashMap has no size limits, can an attacker exhaust all available memory by repeatedly calling set() with unique keys, causing OOM crashes on validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7039e5e-0fe6-47f7-9398-6c5f7eeefab8?mode=deep",
+    "timestamp": "2026-01-25 22:10:58.716809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Large value DoS] Can an attacker store extremely large values (multi-GB Vec<u8>) that consume all heap memory, bringing down the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c06bac9a-0c8c-4e33-a47b-488bbda8a8e9?mode=deep",
+    "timestamp": "2026-01-25 22:11:11.394336",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Repeated deserialization] Can repeatedly calling get() on the same large value cause excessive CPU usage during serde_json deserialization, degrading validator performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5203b5e9-09fb-49ae-b885-8e2b24abb834?mode=deep",
+    "timestamp": "2026-01-25 22:11:24.388050",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: InMemoryStorage] [Memory fragmentation] Can repeated set() and implicit removal operations cause severe heap fragmentation, reducing available memory for consensus operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c303027a-885a-4bb8-a118-0183055d2f18?mode=deep",
+    "timestamp": "2026-01-25 22:11:39.749556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Time manipulation] Since set() uses time_service.now_secs() for timestamps, can providing a malicious TimeService mock allow backdating or forward-dating of key updates to bypass time-based security checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8be9ccad-6b08-4c8a-990b-a33a89bbe17c?mode=deep",
+    "timestamp": "2026-01-25 22:11:54.149434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: new_with_time_service()] [Time service injection] Can an attacker inject a malicious TimeService implementation that returns arbitrary timestamps, corrupting the last_update field in GetResponse? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_530d9111-d31a-4c89-8f7c-330a9c4f383d?mode=deep",
+    "timestamp": "2026-01-25 22:12:09.446796",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Clock skew] If time_service.now_secs() returns a timestamp in the past relative to existing keys, can this cause ordering issues when comparing key update times? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5f7ffc7-1a0c-4a7a-a015-791d5124552d?mode=deep",
+    "timestamp": "2026-01-25 22:12:25.745171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Timestamp overflow] Can time_service.now_secs() return u64::MAX, and does this cause any arithmetic overflow in downstream code that compares or calculates with last_update? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbea8bd9-3bce-44cc-9c0e-13699966e1db?mode=deep",
+    "timestamp": "2026-01-25 22:12:44.247192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Key name leakage] Does Error::KeyNotSet(key.to_string()) expose sensitive key names in error messages that could aid attackers in mapping the storage structure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fd3665b-9746-4de8-b0cd-6c494fe6fe03?mode=deep",
+    "timestamp": "2026-01-25 22:13:03.783212",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Deserialization error leakage] Can serde_json errors expose partial key material or storage structure details through verbose error messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99a8ecee-af2d-4b63-ae7b-a12ddd0caa79?mode=deep",
+    "timestamp": "2026-01-25 22:13:24.837440",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Serialization failure] If serde_json::to_vec() fails, is the storage left in an inconsistent state where the key exists but with corrupted data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9393d6ae-b429-4c47-9ae0-c0e6f11ede3d?mode=deep",
+    "timestamp": "2026-01-25 22:13:46.687181",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Panic on malformed data] Can malformed Vec<u8> data cause serde_json::from_slice() to panic instead of returning an error, crashing the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d74d4722-3099-47d4-a210-9e1550a40417?mode=deep",
+    "timestamp": "2026-01-25 22:14:10.588451",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: InMemoryStorage] [Data loss on crash] Since all data is in-memory only, will a validator crash cause complete loss of safety data (last voted round), leading to potential double-signing when restarted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4158ae58-dd67-4a4d-ab15-a4e5b762ec9f?mode=deep",
+    "timestamp": "2026-01-25 22:14:34.032851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: InMemoryStorage] [No persistence] Does using InMemoryStorage in production violate consensus safety guarantees by not persisting critical safety state across restarts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62944e52-6c17-4785-8930-19069387e4eb?mode=deep",
+    "timestamp": "2026-01-25 22:14:58.449305",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: reset_and_clear()] [Irreversible data loss] Can accidental calls to reset_and_clear() during testing configurations leak into production, causing permanent loss of validator keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c83755e-5fb6-40cb-9b93-3d11162ba261?mode=deep",
+    "timestamp": "2026-01-25 22:15:22.333346",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: InMemoryStorage] [No backup] Is there any mechanism to backup or recover InMemoryStorage state, or is all data unrecoverable after process termination? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3e90d72-6151-4b67-b0df-2cdb9bc5eb12?mode=deep",
+    "timestamp": "2026-01-25 22:15:46.400626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Comment line 15] [Production misuse] Despite the comment warning 'This should not be used in production', can misconfigurations accidentally deploy validators using InMemoryStorage, violating all security guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9a16bc4-2023-4f86-b00c-2f398bd2de8f?mode=deep",
+    "timestamp": "2026-01-25 22:16:11.563624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: InMemoryStorage] [No warning mechanism] Is there any runtime check or warning when InMemoryStorage is used outside of test environments? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_934c7147-c4e0-46d1-b276-c7d7161b53b8?mode=deep",
+    "timestamp": "2026-01-25 22:16:38.010454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Default trait] [Dangerous default] Does implementing Default trait make it too easy to accidentally instantiate InMemoryStorage in production code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb09c26d-7356-4df5-bd90-52a40bb90a39?mode=deep",
+    "timestamp": "2026-01-25 22:17:04.105089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [CryptoKVStorage impl] [Key rotation vulnerabilities] When CryptoKVStorage::rotate_key() is called, does InMemoryStorage properly handle concurrent access to both current and previous key versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ca3f0db-f207-4ad6-8395-522bccccfc19?mode=deep",
+    "timestamp": "2026-01-25 22:17:30.765590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [CryptoKVStorage impl] [Export key security] Can CryptoKVStorage::export_private_key() be called to extract validator keys even when security policies should restrict such operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddb01450-7d13-4e1e-9271-34690547c7f5?mode=deep",
+    "timestamp": "2026-01-25 22:17:55.568077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Previous version confusion] Can the get_previous_version_name() pattern cause key collisions where 'key_previous' conflicts with a legitimately named key? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b09221df-ddbf-4b04-be53-efc5dac1877b?mode=deep",
+    "timestamp": "2026-01-25 22:18:20.649061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [CryptoKVStorage impl] [Signing key extraction] Can malicious code use InMemoryStorage to extract signing keys and create forged signatures outside the proper safety-rules validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_162bd366-f02e-4c15-9b85-6944b8450ca0?mode=deep",
+    "timestamp": "2026-01-25 22:18:45.962711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Type parameter abuse] Can callers specify incorrect generic type parameters for get<V: DeserializeOwned>(), causing a different type to be deserialized than what was stored? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4f58b43-6310-449f-932f-05de281eed83?mode=deep",
+    "timestamp": "2026-01-25 22:19:12.198420",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Type erasure] Since values are stored as serialized Vec<u8>, is type information lost, allowing get() to deserialize to incompatible types? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d43f29b8-b6eb-472a-964b-f1e0b6208498?mode=deep",
+    "timestamp": "2026-01-25 22:19:38.348933",
+    "report_generated": false
+  }
+]
