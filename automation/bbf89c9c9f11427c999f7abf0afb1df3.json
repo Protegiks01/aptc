@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Struct: MoveModule] [Soft delete vs hard delete] The is_deleted flag implements soft deletion. Can accumulation of deleted module records cause database bloat, slow query performance, or confusion when multiple deletion records exist for the same module? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8472235f-21fb-4430-ac22-41b5e2cef5c7?mode=deep",
+    "timestamp": "2026-01-25 08:31:07.701569",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: from_write_module()] [Race condition on indexing] If multiple indexer workers process the same transaction concurrently, can they create duplicate module records or race conditions in database insertion, causing constraint violations or lost updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67da3a03-7af7-45d2-87fd-23d22c240f70?mode=deep",
+    "timestamp": "2026-01-25 08:31:20.210543",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Struct: MoveModule] [Transaction atomicity] If a transaction writes multiple modules but indexer crashes mid-processing, can partial module records be committed to the database, creating incomplete transaction state that breaks module resolution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9ab38a4-78e0-49e8-b5f9-be21d17417fb?mode=deep",
+    "timestamp": "2026-01-25 08:31:32.939845",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: from_write_module()] [Block height consistency] The transaction_block_height is provided externally. If the block height value doesn't match the actual block containing the transaction due to reorgs or indexer bugs, can this create inconsistent block-to-module mappings? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4eb49c80-af92-48e5-81e3-65040f3c21ea?mode=deep",
+    "timestamp": "2026-01-25 08:31:46.343763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Struct: MoveModule] [Bytecode size limits] The bytecode field is Option<Vec<u8>> with no size constraints. Can an attacker publish a module with multi-gigabyte bytecode that gets stored in memory and database, causing indexer memory exhaustion or database bloat? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11c8ee40-c64f-4791-998c-1187d6a9011d?mode=deep",
+    "timestamp": "2026-01-25 08:32:01.531538",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Struct: MoveModuleByteCodeParsed] [Bytecode ownership] The parsed bytecode is Vec<u8> owned data. Can repeated parsing and cloning of large modules cause excessive memory allocations, fragmentations, or performance degradation in long-running indexer processes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2ea9970-0605-4fd9-b123-14944fca4ca8?mode=deep",
+    "timestamp": "2026-01-25 08:32:16.305589",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: convert_move_module()] [Iterator collection] The iter().map().collect() patterns create temporary collections. For modules with thousands of functions or structs, can this cause memory spikes or allocation failures during indexing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_372d7db2-69c8-4e1f-9d40-5b8533b6b066?mode=deep",
+    "timestamp": "2026-01-25 08:32:31.913193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: from_write_module()] [Empty module name] When parsing fails, unwrap_or_default() sets name to empty string. Can queries or APIs that filter by module name break when encountering empty-named modules, or can this be exploited to hide malicious modules from detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15666915-7b4f-4ca7-901e-e3fcd28baa1b?mode=deep",
+    "timestamp": "2026-01-25 08:32:49.543341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: from_delete_module()] [Module name validation] The delete operation uses delete_module.module.name.to_string() without validation. Can special characters, extremely long names, or null bytes in module names cause SQL injection, database errors, or indexer crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f9c03b6-3ad8-4a71-a32d-72b45ac4a9e2?mode=deep",
+    "timestamp": "2026-01-25 08:33:08.188609",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: convert_move_module()] [Name collision] The module name is extracted from move_module.name.0.to_string(). If Move allows duplicate module names at different addresses, can indexer queries that search by name alone return wrong modules? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c5034bc-cc4e-470d-a4c7-72d5315ac79f?mode=deep",
+    "timestamp": "2026-01-25 08:33:27.111886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Struct: MoveModule] [Foreign key constraint] The struct belongs_to Transaction with foreign_key transaction_version. If the referenced transaction is deleted or not yet indexed, can this create orphaned module records or foreign key constraint violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92179051-498f-4f79-87e7-8961c4141c99?mode=deep",
+    "timestamp": "2026-01-25 08:33:45.941527",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Struct: MoveModule] [Cascade behavior] If a transaction is deleted from the database, what happens to associated modules? Can cascade deletes cause unintended loss of module history, or can orphaned modules persist causing referential integrity violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6db02595-b1df-4273-9762-434a0f9d2585?mode=deep",
+    "timestamp": "2026-01-25 08:34:06.990844",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: convert_move_module()] [Function signature accuracy] The exposed_functions serialization may not fully capture generic type parameters, constraints, or abilities. Can this cause indexer to store incomplete function signatures that break smart contract analysis tools? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6cba537-7455-44ef-a41b-91f1ddcb706b?mode=deep",
+    "timestamp": "2026-01-25 08:34:28.376484",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: convert_move_module()] [Friend module resolution] The friends list stores module IDs but may not validate they exist. Can circular friend dependencies, non-existent friends, or malformed module IDs be stored, breaking module dependency graphs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe3ea3fd-5e5f-488a-8510-15d3e0ffd835?mode=deep",
+    "timestamp": "2026-01-25 08:34:50.686844",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: convert_move_module()] [Struct definition completeness] The structs serialization may not capture all type parameters, phantom types, or abilities. Can this cause indexer to provide incorrect struct metadata that breaks clients trying to construct or deserialize Move structs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_528210c3-f7e7-48cf-8855-107b28c17485?mode=deep",
+    "timestamp": "2026-01-25 08:35:12.421171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: from_write_module()] [Idempotency violation] If the same WriteModule is processed multiple times (due to indexer restart or reprocessing), can duplicate insertions occur, or does the primary key constraint properly prevent duplicates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57fe6695-4d24-4f42-be42-42ad54013413?mode=deep",
+    "timestamp": "2026-01-25 08:35:35.798042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: from_delete_module()] [Deletion without prior write] Can a DeleteModule be indexed before the corresponding WriteModule, creating a deletion record for a module that never existed in the indexer, causing confusion in module existence queries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae0648ce-bc01-4702-a240-d5a615702beb?mode=deep",
+    "timestamp": "2026-01-25 08:35:59.727360",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Struct: MoveModule] [Version gaps] If transaction versions have gaps due to filtering or selective indexing, can module records reference non-existent transaction versions, breaking temporal queries or historical module lookups? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c650a2f9-ae93-4ffd-9452-6b288b97b0c8?mode=deep",
+    "timestamp": "2026-01-25 08:36:24.782678",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: convert_move_module_bytecode()] [Unnecessary cloning] The mmb.clone() creates a full copy before parsing. If modules are processed in tight loops or high throughput, can excessive cloning cause performance degradation or memory pressure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3edac0ee-6478-4290-a444-32a5bca56d5c?mode=deep",
+    "timestamp": "2026-01-25 08:36:49.416423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Struct: MoveModuleByteCodeParsed] [Data duplication] The parsed structure duplicates address, name, and bytecode that may already exist elsewhere. Can this cause memory bloat when parsing many modules, especially if the same module is parsed multiple times? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c167bc76-8696-449c-bc22-644e5f63ec29?mode=deep",
+    "timestamp": "2026-01-25 08:37:14.729365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: from_write_module()] [Zero-length bytecode] Can a module with zero-length bytecode be published? If so, does the indexer handle empty Vec<u8> correctly, or can this cause parsing failures, null pointer issues, or database constraint violations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4691283f-2b1f-42cd-b809-67ef77afabfe?mode=deep",
+    "timestamp": "2026-01-25 08:37:39.029937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: convert_move_module()] [Empty collections] If a module has no exposed_functions, friends, or structs, do the empty iterators create empty JSON arrays or null values? Can this cause inconsistent query results or JSON parsing errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4eb7bf3f-923f-4baf-97e3-cd8f5528a4a5?mode=deep",
+    "timestamp": "2026-01-25 08:38:04.562135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Struct: MoveModule] [Maximum field lengths] The name and address fields are String with no length constraints. Can extremely long module names or addresses exceed database column limits, causing truncation or insertion failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8905bcaf-ec68-4f67-b3fd-6d43ca29f5dd?mode=deep",
+    "timestamp": "2026-01-25 08:38:30.826729",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: from_write_module()] [Index ordering assumption] The write_set_change_index is part of the primary key. If write set changes are not processed in strict sequential order, can gaps or duplicates in indices cause modules to be skipped or overwritten? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad98ce89-8f12-441a-85f2-a1aa58793563?mode=deep",
+    "timestamp": "2026-01-25 08:38:56.624971",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/move_modules.rs] [Function: from_delete_module()] [Index consistency] Do write and delete operations share the same index space, or can a write at index 5 and delete at index 5 in the same transaction conflict, causing primary key violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37597c0f-4cc6-4454-984b-4f51da261b6f?mode=deep",
+    "timestamp": "2026-01-25 08:39:22.296874",
+    "report_generated": false
+  }
+]
