@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: encode_key()] [Deserialization attack] Can an attacker craft malicious BCS-encoded DbMetadataKey bytes that cause buffer overflows, infinite loops, or excessive memory allocation during bcs::to_bytes() serialization, potentially crashing validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8fb046cf-cf45-4d5d-ad4d-1aabb5047c52?mode=deep",
+    "timestamp": "2026-01-25 23:28:06.397958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: decode_key()] [Deserialization attack] Does bcs::from_bytes() properly validate the deserialized DbMetadataKey enum discriminant, or can an attacker inject corrupted database entries with invalid enum variants that crash nodes when read? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe971514-5b4d-4b76-9aaa-730d01851c36?mode=deep",
+    "timestamp": "2026-01-25 23:28:18.999050",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: encode_value()] [Serialization bomb] Can an attacker write a DbMetadataValue::StateSnapshotProgress containing extremely large StateSnapshotProgress structures that cause denial of service through excessive serialization time or memory consumption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9498fbc3-fe2e-41e2-8dda-3f7de08286c1?mode=deep",
+    "timestamp": "2026-01-25 23:28:32.275002",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: decode_value()] [Type confusion] If the BCS serialization format changes between versions, can old serialized DbMetadataValue::Version data be misinterpreted as DbMetadataValue::StateSnapshotProgress, leading to state corruption when expect_state_snapshot_progress() is called? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40362691-c7c7-43a3-b66f-c7547d3432bf?mode=deep",
+    "timestamp": "2026-01-25 23:28:45.643920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: decode_key()] [Schema evolution] Does the BCS deserialization handle backward compatibility correctly when new DbMetadataKey variants are added, or can existing nodes crash when encountering future schema versions during upgrade rollbacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a73651b5-e608-432c-a093-e9cf5eb0e0ae?mode=deep",
+    "timestamp": "2026-01-25 23:28:59.944269",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: encode_key()] [Integer overflow] For DbMetadataKey variants containing ShardId or Version parameters, can integer overflow during BCS encoding cause key collisions where different logical keys map to the same serialized bytes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48695bf1-0119-4bc3-a4cc-f2e29131639b?mode=deep",
+    "timestamp": "2026-01-25 23:29:15.489334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: decode_value()] [Malformed data] If corrupted BCS bytes are stored in the database (e.g., via storage hardware errors), does decode_value() fail gracefully with proper error messages, or does it trigger undefined behavior through unsafe deserialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_488d9dad-fee1-44a8-8654-e962500d624f?mode=deep",
+    "timestamp": "2026-01-25 23:29:31.929940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: expect_version()] [Panic-based DoS] Can an attacker write DbMetadataValue::StateSnapshotProgress to a metadata key where expect_version() is later called, triggering the unreachable!() panic and crashing validator nodes during pruner or commit operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e42e1862-d1b2-41ca-b07f-2d28fd8e8d55?mode=deep",
+    "timestamp": "2026-01-25 23:29:48.934183",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: expect_state_snapshot_progress()] [Type confusion attack] Can an attacker swap metadata values by writing DbMetadataValue::Version to StateSnapshotKvRestoreProgress keys, causing panics when expect_state_snapshot_progress() is invoked during state restoration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb71c328-d447-4c61-806d-6acc414ff9fe?mode=deep",
+    "timestamp": "2026-01-25 23:30:06.798092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: expect_version()] [Validator crash] Since get_progress() in utils/mod.rs calls expect_version() without checking the variant type first, can writing wrong variant types to progress keys cause all validators to crash simultaneously during pruning operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb9b56f4-d8a7-4a1a-9a24-633c5d52589f?mode=deep",
+    "timestamp": "2026-01-25 23:30:26.336959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Enum: DbMetadataValue] [Type safety] Is there runtime validation ensuring that each DbMetadataKey type is only ever paired with the correct DbMetadataValue variant, or can type mismatches between key and value lead to data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_203bb517-2cb7-41f1-b45c-f470b35e3628?mode=deep",
+    "timestamp": "2026-01-25 23:30:46.775317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: expect_version()] [Error comment mismatch] The expect_state_snapshot_progress() panic message says 'expected KeyHashAndUsage, got {:?}' but StateSnapshotProgress is the actual type - does this documentation error indicate potential misunderstanding of the code that could lead to incorrect usage elsewhere? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_766b673f-7249-4b4b-9cc7-4f0be835c468?mode=deep",
+    "timestamp": "2026-01-25 23:31:08.643142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Enum: DbMetadataKey] [Key collision] Can ShardId parameters in StateKvShardCommitProgress(ShardId) and StateMerkleShardCommitProgress(ShardId) collide if ShardId values are reused between different sharding schemes, causing commit progress tracking corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46e3a80e-14f6-4d7e-8058-817d24e3bc17?mode=deep",
+    "timestamp": "2026-01-25 23:31:30.898119",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Enum: DbMetadataKey] [Version parameter collision] Do StateSnapshotKvRestoreProgress(Version) and StateMerkleShardRestoreProgress(ShardId, Version) keys properly distinguish between different restore operations, or can version number reuse cause restore progress conflicts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c56f4c1-9d41-48e9-b721-533007ad5602?mode=deep",
+    "timestamp": "2026-01-25 23:31:54.185074",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Function: encode_key()] [BCS encoding collision] Does the BCS encoding of enum variants guarantee that StateMerkleShardPrunerProgress(0) cannot collide with StateKvShardPrunerProgress(0), or can the discriminant encoding cause key ambiguity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e26fb67-7f88-4a7f-8031-195ae6adde99?mode=deep",
+    "timestamp": "2026-01-25 23:32:17.782436",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Enum: DbMetadataKey] [Namespace separation] Are there sufficient namespace separations between pruner progress keys and commit progress keys to prevent accidental overwrites when refactoring code that handles both? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f95d449-5613-44d4-88ce-8fcefd5fb3c0?mode=deep",
+    "timestamp": "2026-01-25 23:32:43.475191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Key: LedgerPrunerProgress] [Data loss] Can an attacker with database write access manipulate LedgerPrunerProgress to a value higher than actual pruned data, causing the pruner to incorrectly believe old data is deleted and leading to state inconsistencies? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9bebf9f-68cc-489f-8fce-ba4fe107c917?mode=deep",
+    "timestamp": "2026-01-25 23:33:09.495098",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Key: StateMerklePrunerProgress] [Merkle tree corruption] If StateMerklePrunerProgress is artificially advanced beyond actual pruning, can queries for historical state fail to find Merkle proofs, breaking light client verification and causing network partition? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18cc95fe-2cd8-476c-9c9f-0502562ad223?mode=deep",
+    "timestamp": "2026-01-25 23:33:34.894047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Key: StateKvPrunerProgress] [State corruption] Can rolling back StateKvPrunerProgress to an earlier version cause the pruner to re-delete already-needed state data, permanently corrupting the state database and requiring hardfork recovery? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8a60864-a7db-4cf7-b793-7b21a3ad93ff?mode=deep",
+    "timestamp": "2026-01-25 23:34:01.610742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Key: EpochEndingStateMerklePrunerProgress] [Epoch boundary attack] Can manipulating EpochEndingStateMerklePrunerProgress cause epoch-ending proofs to be incorrectly pruned, breaking validator reconfiguration and causing consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97ae4d2b-3923-4a64-81b9-e3e2265d6509?mode=deep",
+    "timestamp": "2026-01-25 23:34:28.584343",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Key: EventPrunerProgress] [Event history loss] If EventPrunerProgress is set to u64::MAX, can this cause immediate pruning of all event data, breaking applications that depend on event queries and causing permanent data loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_022b9f58-b367-43cc-abb4-c80be50586df?mode=deep",
+    "timestamp": "2026-01-25 23:34:55.772054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Key: TransactionPrunerProgress] [Transaction history attack] Can advancing TransactionPrunerProgress ahead of LedgerCommitProgress cause unpruned transaction data to become inaccessible, breaking blockchain explorers and audit requirements? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_859d693a-2c09-4efe-9249-43e6cdb135e6?mode=deep",
+    "timestamp": "2026-01-25 23:35:24.310525",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Key: StateMerkleShardPrunerProgress(ShardId)] [Shard imbalance] Can selectively manipulating pruner progress for specific shards cause storage imbalance where some shards retain excessive historical data while others are over-pruned? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be1d973f-f78c-46ae-b865-0e89391762ad?mode=deep",
+    "timestamp": "2026-01-25 23:35:53.877445",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Key: WriteSetPrunerProgress] [Write set integrity] If WriteSetPrunerProgress is manipulated to prune write sets needed for state verification, can this break the ability to replay transactions and verify state transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af7dcd61-9dff-4beb-9dd6-87e04cb87a14?mode=deep",
+    "timestamp": "2026-01-25 23:36:19.832296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/schema/db_metadata/mod.rs] [Key: OverallCommitProgress] [State fork] If OverallCommitProgress is rolled back while individual component commit progress (StateKvCommitProgress, StateMerkleCommitProgress) remains ahead, can this create inconsistent state views causing validator disagreement? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d67a2a87-4ffd-4acd-8b9c-9aed53e2ae24?mode=deep",
+    "timestamp": "2026-01-25 23:36:45.780065",
+    "report_generated": false
+  }
+]
