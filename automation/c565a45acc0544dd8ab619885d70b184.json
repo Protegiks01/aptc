@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [State consistency] Can a malicious validator observe a JWK update and immediately trigger consensus while simultaneously another validator processes reset_with_on_chain_state(), causing states_by_key to contain stale consensus states that reference outdated base_versions, potentially leading to conflicting validator transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b35a7016-393e-4904-a765-d0aedc690d3b?mode=deep",
+    "timestamp": "2026-01-25 14:17:04.234601",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: reset_with_on_chain_state()] [State retention logic] In the state retention logic at lines 244-254, can an attacker manipulate the version comparison by causing rapid on-chain updates, resulting in valid InProgress consensus states being incorrectly discarded, leading to loss of quorum progress and repeated consensus restarts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5ebbf6f-15ec-457c-8f35-56ce8140a7e1?mode=deep",
+    "timestamp": "2026-01-25 14:17:16.649134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [HashMap growth] Can an attacker spam observations with unique (issuer, kid) pairs to cause unbounded growth of states_by_key HashMap at line 59, leading to memory exhaustion and validator node crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87449ae6-e7e1-49cc-b58c-d950473d9d01?mode=deep",
+    "timestamp": "2026-01-25 14:17:29.492043",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [Race condition] At lines 128-174, when processing observations for multiple kids concurrently, can race conditions occur where two threads simultaneously check states_by_key.get() and both proceed to start consensus for the same key, creating duplicate consensus processes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9c48846-66fd-4dfa-bf1c-f3d5842a0671?mode=deep",
+    "timestamp": "2026-01-25 14:17:42.715146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: reset_with_on_chain_state()] [Atomic state update] Is the onchain_jwks update at line 256 atomic with respect to states_by_key retention at lines 244-254? Can partial state updates occur if reset_with_on_chain_state() is interrupted, leaving onchain_jwks and states_by_key in an inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba286889-e950-49fc-9dff-2d1c6c40c091?mode=deep",
+    "timestamp": "2026-01-25 14:17:56.619749",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [State removal timing] At line 135, when removing a consensus state because onchain JWK matches observed JWK, does this create a race where process_quorum_certified_update() could arrive after removal, causing an unexpected state transition error at line 356? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_344aabd8-b25e-4c13-9edc-d8b855ab5c51?mode=deep",
+    "timestamp": "2026-01-25 14:18:11.174965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Struct: KeyLevelConsensusManager] [Field: onchain_jwks] Can the cached onchain_jwks at line 56 become permanently stale if reset_with_on_chain_state() fails partway through, causing all future consensus to use incorrect base_versions and resulting in rejected validator transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40c8d047-0e3a-4370-89bf-f18d43d39b1e?mode=deep",
+    "timestamp": "2026-01-25 14:18:26.459927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [Logic bug] At line 133, when comparing onchain JWK with observed JWK using ==, does this properly handle all JWK fields including optional parameters? Could crafted JWKs with different serializations but equivalent cryptographic meaning bypass the equality check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40599742-d6ef-4e97-a1cb-665d807a805c?mode=deep",
+    "timestamp": "2026-01-25 14:18:43.373051",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: reset_with_on_chain_state()] [Version wraparound] If version numbers wrap around (u64 overflow), can the version comparison at lines 246-253 incorrectly retain states, causing consensus to continue with incorrect base_versions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67b517fd-6181-43ad-8ad5-fdeedfc569bb?mode=deep",
+    "timestamp": "2026-01-25 14:19:01.026169",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [Unreachable panic] The unreachable!() at line 171 assumes kid must be in union of two sets. Can malicious concurrent modifications to onchain_jwks or observed_jwks_by_kid cause this panic to be triggered, crashing the validator node? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e79461fe-284d-462c-bacc-bda120a10fd3?mode=deep",
+    "timestamp": "2026-01-25 14:19:19.919688",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [Cloning overhead] Does repeated cloning of issuer and kid at lines 135, 139, 151, 162 for HashMap operations create performance bottlenecks that could be exploited for slowdown attacks with many keys? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d327ee52-fa85-4c87-bcfd-6fb99b78a7a5?mode=deep",
+    "timestamp": "2026-01-25 14:19:39.448709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: reset_with_on_chain_state()] [Missing validation] At line 240, does indexed() perform sufficient validation on AllProvidersJWKs structure? Could malformed on-chain state cause the indexing to fail silently or produce incorrect version numbers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0522cb6b-d8c8-4554-9191-0ba23d00c41c?mode=deep",
+    "timestamp": "2026-01-25 14:19:59.655058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [Base version consistency] When creating KeyLevelUpdate at lines 138-143, 150-155, 161-166, all use effectively_onchain.version as base_version. Can race conditions with reset_with_on_chain_state() cause this base_version to become stale before consensus completes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4082f3c8-5e66-4703-b1ca-169ac1c8704c?mode=deep",
+    "timestamp": "2026-01-25 14:20:21.048880",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_peer_request()] [State machine violation] At line 276, using entry().or_default() creates a ConsensusState::NotStarted entry. Can this pollute states_by_key with empty entries that never get cleaned up, gradually consuming memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c451c9b-8668-4410-a9a6-35a0323ff738?mode=deep",
+    "timestamp": "2026-01-25 14:20:42.750248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_quorum_certified_update()] [State transition validation] At lines 334-346, the state transition from InProgress to Finished doesn't verify that the quorum_certified update matches my_proposal. Can Byzantine validators inject a different certified update, causing consensus drift? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b018691a-3d2e-4b1b-8f4e-9e3447c1f091?mode=deep",
+    "timestamp": "2026-01-25 14:21:06.109033",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [Kid iteration order] At line 128, all_kids is built from HashSet which has non-deterministic iteration order. Could this cause different validators to process keys in different orders, leading to timing-dependent consensus behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73ada660-442f-4fe9-9de3-dc764f6fb23d?mode=deep",
+    "timestamp": "2026-01-25 14:21:30.207492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: maybe_start_consensus()] [Double consensus] At lines 180-194, the consensus_already_started check only verifies my_proposal.observed.to_upsert matches. Can an attacker trigger consensus for updates with same to_upsert but different base_versions, creating conflicting consensus processes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc38f970-289b-421b-867e-19e96929f625?mode=deep",
+    "timestamp": "2026-01-25 14:21:55.061095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: reset_with_on_chain_state()] [Partial cleanup] If states_by_key.retain() at line 244 panics or errors midway, can it leave states_by_key in a partially cleaned state with some stale entries remaining? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e054316-6c9e-4ff2-b5f4-a15d797d7837?mode=deep",
+    "timestamp": "2026-01-25 14:22:20.287770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Struct: KeyLevelConsensusManager] [Field: states_by_key] Can the (Issuer, KID) HashMap key at line 59 have hash collisions if malicious issuers craft issuer/kid byte sequences with identical hashes, causing state overwrites? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6045eef6-bfa0-467b-95e7-8a0a38eb9c2d?mode=deep",
+    "timestamp": "2026-01-25 14:22:44.938703",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [Effectively onchain] At lines 117-121, effectively_onchain falls back to creating a new ProviderJWKsIndexed with issuer.clone(). Does this default version=0 correctly handle first-time issuers, or could it conflict with actual on-chain state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79282d15-fdb8-45d8-ba72-af0d69866658?mode=deep",
+    "timestamp": "2026-01-25 14:23:10.669248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_quorum_certified_update()] [Entry or_default] At line 332, entry().or_default() could create NotStarted state right before processing a certified update. Does this indicate a logic error where updates arrive out-of-order? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d62f4bd5-b21d-4891-83c4-dc73ef3dd65f?mode=deep",
+    "timestamp": "2026-01-25 14:23:36.599707",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: maybe_start_consensus()] [Consensus state consistency] When inserting new InProgress state at line 216, is there any synchronization to prevent concurrent process_quorum_certified_update() from processing the same key simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3243a8cc-94c3-4392-bd63-42ed45d61e16?mode=deep",
+    "timestamp": "2026-01-25 14:24:02.757977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: reset_with_on_chain_state()] [Version equality] The version comparison at line 246-253 uses == to check if versions match. Can u64 overflow or malicious version values cause incorrect retention decisions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a20d2724-602b-44fc-adb1-83ba74bcd2eb?mode=deep",
+    "timestamp": "2026-01-25 14:24:28.500895",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_new_observation()] [Issuer cloning] At line 121, issuer.clone() is called to create default ProviderJWKsIndexed. Can extremely large issuer byte arrays (Vec<u8>) cause memory exhaustion through repeated cloning? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c3ca341-968e-40c6-9e3a-54dae71ba12b?mode=deep",
+    "timestamp": "2026-01-25 14:24:54.234699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/jwk_manager_per_key.rs] [Function: process_peer_request()] [Response inconsistency] At lines 287-300, the response contains my_proposal from either InProgress or Finished state. Can this leak information about which validators have completed consensus, enabling targeted attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2123992-7e35-4236-bd28-c749317ce30f?mode=deep",
+    "timestamp": "2026-01-25 14:25:20.676695",
+    "report_generated": false
+  }
+]
