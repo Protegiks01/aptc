@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_close_cmd()] [Vtxn_guard drop safety] At line 243, vtxn_guard is explicitly dropped - if the vtxn_pool is already shut down or in an inconsistent state, can this panic and crash the validator node during epoch transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40a640fc-b72e-4d06-82dd-80c7e1dffe9e?mode=deep",
+    "timestamp": "2026-01-25 20:42:26.672818",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: run()] [Channel leak on early exit] At lines 164-203, if stopped becomes true unexpectedly or close_rx triggers early, do the channel receivers properly clean up? Could unreceived messages in dkg_start_event_rx or rpc_msg_rx cause memory leaks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_510c751c-0335-42ce-9192-225488c0dfd6?mode=deep",
+    "timestamp": "2026-01-25 20:42:38.897281",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: setup_deal_broadcast()] [Transcript serialization OOM] At line 344, bcs::to_bytes(&trx) serializes the DKG transcript - if DKG::generate_transcript() at line 332 produces an unexpectedly large transcript due to malicious public_params, can this cause OOM and crash the validator? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea071f8a-8778-4c0c-8c57-1f7f6e0e2ede?mode=deep",
+    "timestamp": "2026-01-25 20:42:51.606846",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_aggregated_transcript()] [Aggregated transcript size bomb] At line 402, bcs::to_bytes(&agg_trx) serializes the aggregated transcript - can Byzantine validators contribute malformed shares that aggregate into an enormous transcript, causing serialization to exhaust memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd269bd0-934a-48fe-888f-bc7ebc7cf4db?mode=deep",
+    "timestamp": "2026-01-25 20:43:04.805576",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Struct: DKGManager] [Arc reference cycle] The agg_trx_producer at line 61 is Arc<dyn TAggTranscriptProducer<DKG>> - if the producer implementation holds references back to DKGManager state, can this create reference cycles preventing proper cleanup and causing memory leaks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4723fda-f225-4273-9c92-6a07ba8c0983?mode=deep",
+    "timestamp": "2026-01-25 20:43:19.340493",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: run()] [Error swallowing] At lines 196-202, all errors are logged but execution continues - if critical operations like setup_deal_broadcast() fail repeatedly, does the manager retry indefinitely without circuit breaking, potentially causing resource exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b14e2ac-4105-4f22-8e98-d6e0ad068216?mode=deep",
+    "timestamp": "2026-01-25 20:43:33.895760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_peer_rpc_msg()] [Response send failure ignored] At line 476, response_sender.send(response) returns a Result but it's not checked - if send fails due to dropped receiver, does this silently skip responses and cause requesting peers to timeout, degrading DKG liveness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74510116-83c3-4635-af36-e70190243cfe?mode=deep",
+    "timestamp": "2026-01-25 20:43:49.050442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: setup_deal_broadcast()] [Panic on transcript serialization] At line 344, .map_err(|e| anyhow!(...))? will propagate errors, but what if bcs::to_bytes panics instead? Could malicious DKG::Transcript implementations cause validator crashes through panic-on-serialize? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e978376a-2067-4fb8-a8af-7333ca95b2a5?mode=deep",
+    "timestamp": "2026-01-25 20:44:06.173850",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_aggregated_transcript()] [Bail without cleanup] At line 422, bail!() is called if state is not InProgress - but does this leave agg_trx_producer in an inconsistent state with running tasks that never get aborted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22a68352-52fe-4a98-9f68-7a47756cf7eb?mode=deep",
+    "timestamp": "2026-01-25 20:44:23.904339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_dkg_txn_pulled_notification()] [Unexpected state bail] At line 283, bail!() is called if state is not Finished - can this rejection cause consensus to think the transcript was never published, while the validator believes it was, creating state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35eaa0af-56b6-43dc-9488-4fa50de4cb23?mode=deep",
+    "timestamp": "2026-01-25 20:44:41.765552",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: setup_deal_broadcast()] [Timing side channel] At lines 303-357, multiple DKG_STAGE_SECONDS metrics are recorded - can an attacker observe metric publication timing via Prometheus to infer information about DKG participants, validator set size, or network topology? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfa528a2-8fd9-4c15-b2a3-55bee00c545c?mode=deep",
+    "timestamp": "2026-01-25 20:45:00.836152",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_dkg_txn_pulled_notification()] [Time-of-check manipulation] At lines 267-268, duration_since_epoch() is called to measure secs_since_dkg_start - if an attacker can manipulate system time during DKG, can this cause metrics to report negative durations or overflow, corrupting monitoring? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97b9dc54-646e-4d13-9e8d-33e8d3c00d5e?mode=deep",
+    "timestamp": "2026-01-25 20:45:21.565110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: run()] [Interval timing predictability] At line 135, tokio::time::interval(Duration::from_millis(5000)) creates a predictable observation schedule - can attackers time malicious messages to arrive just before/after interval ticks to evade detection or manipulate observed state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f8504d7-fbe0-4237-ad4f-24172bc3c416?mode=deep",
+    "timestamp": "2026-01-25 20:45:42.556887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_close_cmd()] [Epoch change timing leak] At lines 230-241, secs_since_dkg_start is calculated and published - can this leak information about DKG duration that helps attackers identify slow validators to target for DoS during future epochs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e4b55fe-8acf-49cf-a18d-d89b6c3d4a5d?mode=deep",
+    "timestamp": "2026-01-25 20:46:04.249716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: setup_deal_broadcast()] [ROUNDING_SECONDS metric exposure] At lines 315-323, rounding_summary.exec_time is published - if rounding is computationally expensive, can attackers craft randomness_config to force expensive rounding and identify validator hardware specs through execution time? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_786f13bf-cf6b-4c21-8d5d-2d69de024e50?mode=deep",
+    "timestamp": "2026-01-25 20:46:27.233772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_peer_rpc_msg()] [Byzantine transcript pollution] At lines 464-474, any TranscriptRequest gets my_transcript in response regardless of requester identity - can Byzantine validators collect transcripts from all honest validators, then withhold their own to prevent aggregation while holding others' secrets? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63c526ce-6fef-4f34-a911-81f2c339543a?mode=deep",
+    "timestamp": "2026-01-25 20:46:50.743207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: setup_deal_broadcast()] [Malicious public_params injection] At line 314, DKG::new_public_params(dkg_session_metadata) is called - if session_metadata comes from on-chain data controlled by Byzantine governance, can malicious params cause DKG::generate_transcript() at line 332 to produce invalid or weak transcripts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51907385-f827-4739-9902-2db97bd947aa?mode=deep",
+    "timestamp": "2026-01-25 20:47:14.764957",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_aggregated_transcript()] [Selective aggregation attack] If a Byzantine validator only aggregates transcripts from a subset of validators (exploiting agg_trx_producer implementation), can they produce a valid-looking but biased aggregated transcript that excludes honest validators from consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b12d6280-814e-42a2-bc34-6562fe037c38?mode=deep",
+    "timestamp": "2026-01-25 20:47:39.273229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: run()] [Event channel flooding] At lines 167-170, dkg_start_event_rx can receive unlimited DKGStartEvent messages - can Byzantine validators or compromised on-chain logic flood this channel to prevent legitimate events from being processed, causing DKG never to start? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0580e520-5b34-4246-8df1-0e935f50401c?mode=deep",
+    "timestamp": "2026-01-25 20:48:02.214177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_peer_rpc_msg()] [State-dependent response manipulation] At lines 464-474, responses differ based on InnerState - can Byzantine validators probe honest validators' states via repeated TranscriptRequests to determine who has/hasn't completed DKG, then coordinate targeted attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08ba760a-29aa-4c76-af09-efaf64f24c0b?mode=deep",
+    "timestamp": "2026-01-25 20:48:26.612235",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_close_cmd()] [Premature abort causing liveness failure] At line 223, abort_handle.abort() is called unconditionally on close - if epoch manager sends premature close commands due to bugs or attacks, can this abort valid in-progress DKG sessions and prevent new epoch from starting? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1fbfdba0-4eea-47b3-90b3-21f272cb8750?mode=deep",
+    "timestamp": "2026-01-25 20:48:50.835818",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: run()] [Close_rx blocking] At line 188, close_rx.select_next_some() - if the sender never sends a close command or panics before sending, can this cause DKGManager to run indefinitely into subsequent epochs, consuming resources and causing validator degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4b943eb-669a-4c70-9b4a-40fbe77b3927?mode=deep",
+    "timestamp": "2026-01-25 20:49:15.342435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: process_aggregated_transcript()] [Vtxn_pool.put() blocking] At lines 405-409, vtxn_pool.put() may block if the pool is full - can this deadlock the DKGManager run loop and prevent processing other critical messages, causing the validator to fall behind? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0702c85-f4fc-4947-bb55-96244744fdde?mode=deep",
+    "timestamp": "2026-01-25 20:49:40.442698",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: setup_deal_broadcast()] [Expensive DKG computation DoS] At line 332, DKG::generate_transcript() performs cryptographic operations that may be computationally expensive - if dkg_session_metadata specifies a very large validator set, can this block the tokio runtime and starve other consensus tasks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a26d0ce1-6c12-4f31-999b-ce904ea55de5?mode=deep",
+    "timestamp": "2026-01-25 20:50:06.433888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/dkg/src/dkg_manager/mod.rs] [Function: run()] [Agg_trx_rx starvation] At lines 177-181, agg_trx_rx.select_next_some() competes with other message handlers - if other channels have higher message rates, can the aggregated transcript never be selected, leaving DKG stuck in InProgress state forever? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72c5f9dc-750a-40af-aa07-dcbf335a7073?mode=deep",
+    "timestamp": "2026-01-25 20:50:30.645048",
+    "report_generated": false
+  }
+]
