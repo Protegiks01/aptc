@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [Reason voting power manipulation] At lines 94-119, timeout reasons are aggregated based on voting power - can a Byzantine minority coordinate to report the same malicious reason and exceed f+1 threshold if honest validators are fragmented across multiple reasons? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96209247-2688-4655-8479-9ea328564be3?mode=deep",
+    "timestamp": "2026-01-25 17:53:26.474947",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [Missing author tracking] At lines 105-109, missing_batch_authors accumulates voting power per missing_idx - can an attacker manipulate the BitVec indices to point to invalid validator positions, causing incorrect blame assignment or crashes when accessing verifier.len()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_949d0a31-c29a-492e-bb2b-c595160be788?mode=deep",
+    "timestamp": "2026-01-25 17:53:39.162499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [Voting power summation overflow] At lines 107-108 and 117-118, voting power is accumulated with += operator - can cumulative voting power exceed u128::MAX if a validator appears multiple times in the aggregation due to a bug, causing integer overflow and incorrect quorum calculations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46af092e-00b5-4c8b-9365-bc37492b6b67?mode=deep",
+    "timestamp": "2026-01-25 17:53:52.255349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [PayloadUnavailable aggregation] At lines 136-148, a new BitVec is constructed based on f+1 voting power per author_idx - can Byzantine validators coordinate to falsely blame honest validators by all reporting the same missing_authors bitmap? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff591178-e583-485e-963b-65bbf44e9167?mode=deep",
+    "timestamp": "2026-01-25 17:54:05.882324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [Reason variant manipulation] At lines 101-116, reason variants are normalized by replacing internal data with placeholders - can this normalization cause security issues where different attacks (different missing_authors) are treated as identical, allowing attackers to hide malicious behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe6196a1-0cd2-4000-aafc-8e0693da1fd6?mode=deep",
+    "timestamp": "2026-01-25 17:54:20.162406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [Unknown reason fallback] At line 153, RoundTimeoutReason::Unknown is returned if no reason has f+1 voting power - does this allow attackers to prevent legitimate timeout reason propagation by fragmenting voting power across many different reasons? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0159ed95-af79-48c1-a4b8-eaf35996c47f?mode=deep",
+    "timestamp": "2026-01-25 17:54:35.567509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [BitVec size mismatch] At line 113, BitVec is created with verifier.len() as u16 - can this cause panics or security issues if the validator set size exceeds u16::MAX (65535 validators)? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3925c735-d1b1-477b-bc5e-cfad4abfc7af?mode=deep",
+    "timestamp": "2026-01-25 17:54:52.725861",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: aggregated_timeout_reason()] [Iterator consumption safety] At line 106, missing_authors.iter_ones() iterates over set bits - if the BitVec contains indices beyond verifier.len(), can this cause out-of-bounds access or panics when used later? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_366d6ecb-0b86-4240-8d80-ad28fe1ac93f?mode=deep",
+    "timestamp": "2026-01-25 17:55:10.786382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: TwoChainTimeoutVotes::add()] [Duplicate author handling] At lines 79-88, timeout signatures are added without checking if the author already exists - can a validator submit multiple timeout signatures to inflate the partial TC, and is the last signature silently used or are duplicates aggregated incorrectly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f07259b-25aa-4f86-83cd-5550d33e2d6d?mode=deep",
+    "timestamp": "2026-01-25 17:55:30.325970",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: TwoChainTimeoutVotes::add()] [Reason overwrite vulnerability] At line 87, timeout_reason uses entry().or_insert() which does NOT overwrite existing entries - if a validator first submits RoundTimeoutReason::Unknown then later submits a legitimate reason, is the stale Unknown reason permanently stored? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56151b79-d1d4-4e3e-bc41-a659d648d5d5?mode=deep",
+    "timestamp": "2026-01-25 17:55:50.171959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: TwoChainTimeoutVotes::new()] [Initial timeout validation] At lines 72-77, TwoChainTimeoutVotes is initialized with timeout.clone() without validating its epoch/round - can an attacker initialize the structure with an invalid timeout that causes all subsequent additions to be compared against malicious baseline values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0fcd5427-18a9-4b9c-afb8-6634bd7b2b55?mode=deep",
+    "timestamp": "2026-01-25 17:56:11.667325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Struct: TwoChainTimeoutVotes] [Memory growth] Lines 66-69 show timeout_reason HashMap has no size limit - can Byzantine validators submit timeouts with unique reasons to cause unbounded HashMap growth and memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fbc47e7-179f-415e-ba07-0f3643492e96?mode=deep",
+    "timestamp": "2026-01-25 17:56:34.011628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [f+1 calculation vulnerability] At lines 258-260, f_plus_one is calculated as total_voting_power - quorum_voting_power + 1 - can integer overflow occur if quorum_voting_power > total_voting_power due to validator set inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8f60819-50fb-481d-830b-9cd3c6f8d597?mode=deep",
+    "timestamp": "2026-01-25 17:56:57.108733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [Echo timeout state race] At line 257, echo_timeout boolean is checked without synchronization - can concurrent timeout insertions cause multiple EchoTimeout results to be returned, triggering duplicate local timeout actions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_313a8914-5bdc-4b8d-8da4-bb0994aca485?mode=deep",
+    "timestamp": "2026-01-25 17:57:21.939986",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Echo timeout persistence] At line 471, self.echo_timeout is set to true permanently for the PendingVotes instance - can this prevent subsequent rounds from properly detecting f+1 timeouts if the PendingVotes structure is reused across multiple rounds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6913b9c-f40d-4b43-828f-e2eba11dbcb6?mode=deep",
+    "timestamp": "2026-01-25 17:57:47.526742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [TC vs echo timeout ordering] At lines 237-265, TC formation is checked before echo timeout - if TC forms exactly at quorum but f+1 is also reached simultaneously, which result is returned, and can this cause consensus state inconsistency? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4a6b017-1fa5-40fc-8761-7596ef064145?mode=deep",
+    "timestamp": "2026-01-25 17:58:13.605619",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Vote vs timeout echo timing] At lines 466-474, echo timeout check is identical to insert_round_timeout() - can a combination of Vote and RoundTimeout messages cause echo timeout to trigger twice, or can attackers exploit this duality to manipulate timeout behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2270e70b-a435-4d8a-8c23-a1aefc974557?mode=deep",
+    "timestamp": "2026-01-25 17:58:39.886349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Aggregate verification timing] At lines 379-389, aggregate_and_verify() is called inside a timed block - can an attacker submit votes with maliciously crafted signatures that maximize verification time, causing DoS by slowing down consensus progress? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a69a9689-1e3e-49fc-942a-cded4a7deb27?mode=deep",
+    "timestamp": "2026-01-25 17:59:07.359346",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Signature addition ordering] At line 369, add_signature() is called before voting power verification - if the signature is invalid, is it still added to the aggregator, potentially corrupting the signature aggregation state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7667b969-6bea-4bc7-a145-8045aebf2a51?mode=deep",
+    "timestamp": "2026-01-25 17:59:34.496962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Double verification vulnerability] At lines 372 and 384, voting power is checked via check_voting_power() then aggregate_and_verify() - can the aggregated voting power differ between these calls due to concurrent modifications, causing security checks to be bypassed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0078062-1b71-4cfa-9acc-36bc00f88e00?mode=deep",
+    "timestamp": "2026-01-25 18:00:04.012512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_round_timeout()] [TC signature aggregation] At line 239, aggregate_signatures() is called on partial_tc - does this function properly validate that all signatures are for the same TwoChainTimeout data, or can attackers mix signatures for different timeouts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad25a4b3-b557-484a-8cde-717058939028?mode=deep",
+    "timestamp": "2026-01-25 18:00:33.710968",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [Verification error handling] At line 400, ErrorAggregatingSignature is returned on signature verification failure - does this error leave the SignatureAggregator in a corrupted state where subsequent valid votes cannot form a QC? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a03db20-2aee-4893-bbdb-79efc2fd4036?mode=deep",
+    "timestamp": "2026-01-25 18:01:03.611369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [BLS signature malleability] At line 369, vote.signature_with_status() is added - if BLS signatures have malleability properties, can an attacker submit multiple valid signatures for the same vote to inflate the signature count without increasing voting power? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3dadb54-bfff-4009-b170-f874f7e17986?mode=deep",
+    "timestamp": "2026-01-25 18:01:32.256344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: insert_vote()] [HashMap DoS attack] At lines 168-170, li_digest_to_votes can store multiple entries per round - can a Byzantine proposer create thousands of unique LedgerInfo digests to exhaust memory and cause node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7fb31ad-6a66-4ca8-ba88-ffc0182b001d?mode=deep",
+    "timestamp": "2026-01-25 18:01:58.415973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/pending_votes.rs] [Function: drain_votes()] [Incomplete cleanup] At lines 484-508, drain_votes() only drains HashMaps but doesn't reset echo_timeout flag - can this cause state leakage if PendingVotes is reused, where echo_timeout remains true in subsequent rounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ec2bd80-e0cd-4bfa-9fc7-0a5fe8a89c13?mode=deep",
+    "timestamp": "2026-01-25 18:02:24.925856",
+    "report_generated": false
+  }
+]
