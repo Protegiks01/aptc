@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: unwrap_or_500] [Information Leakage] Lines 84-91 in utils.rs log full error traces with warn! - can an attacker craft requests that trigger database errors containing sensitive information like internal file paths, table schemas, or query plans, enabling targeted attacks on storage infrastructure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbcc199b-46a8-4d82-b4b8-891af9ef5b83?mode=deep",
+    "timestamp": "2026-01-25 21:03:07.043735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: handle_rejection] [Information Disclosure] Lines 95-98 in utils.rs log rejection details - can an attacker send malformed requests to extract information about expected parameter types, version ranges, or internal validation logic through error messages, facilitating reconnaissance for more targeted attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4820e349-6d43-4eeb-a7fc-cb88b2684f4e?mode=deep",
+    "timestamp": "2026-01-25 21:03:19.629345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_range_proof endpoint] [Error-Based Timing Attack] Lines 37-46 return 500 on errors - can an attacker perform timing analysis on error responses to determine whether specific HashValue keys exist in state, enabling database fingerprinting or targeted account discovery? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1377c37a-3b85-4b7d-b012-46f6ed383f5d?mode=deep",
+    "timestamp": "2026-01-25 21:03:32.841935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: all endpoints] [Stack Trace Leakage] Lines 33, 45, 68, 88, 122 use unwrap_or_500 which may expose stack traces - can an attacker trigger panics in underlying BackupHandler methods to leak internal function names, revealing attack surface or implementation details? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48feff7d-fd11-492a-a8bb-f8ebaaf3c661?mode=deep",
+    "timestamp": "2026-01-25 21:03:46.425724",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: get_routes()] [Metrics Information Leakage] Lines 140-146 log endpoint access with custom logging - can an attacker analyze latency patterns in LATENCY_HISTOGRAM to infer database size, indexing status, or identify moments of high load suitable for timing attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80365b6e-3fd3-4e8d-a444-188a8c1d47a5?mode=deep",
+    "timestamp": "2026-01-25 21:04:01.434501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: get_routes()] [Clone Safety] Lines 30, 37, 49, 60, 72, 83, 92, 103, 114 clone BackupHandler - can concurrent clones access shared state in non-thread-safe ways, causing data races in underlying database connections that corrupt reads or crash the service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e0cd1fa-9518-4034-9e2f-f16d26a01416?mode=deep",
+    "timestamp": "2026-01-25 21:04:17.368085",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: reply_with_bytes_sender] [Race Condition] Lines 47-66 in utils.rs spawn_blocking with sender - can the spawned task panic after sender is dropped but before error is propagated, causing the client to hang indefinitely while consuming server resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a87948ed-dcd1-4572-9f7e-5a96bff330eb?mode=deep",
+    "timestamp": "2026-01-25 21:04:34.372478",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot endpoint] [Iterator Safety] Lines 50-57 pass iterator to try_for_each - if get_state_item_iter returns a non-Send iterator but gets moved to spawn_blocking context, can this violate thread safety guarantees and cause undefined behavior or data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8873c2a-ef23-43a7-8ef0-83263be19239?mode=deep",
+    "timestamp": "2026-01-25 21:04:52.280851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: BytesSender] [Channel Race] Lines 84-88 in bytes_sender.rs use blocking_send - if multiple threads call send_res concurrently, can mpsc channel ordering guarantees be violated, causing response chunks to arrive out-of-order and corrupting the backup data stream? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6cb8a168-f147-4ebe-a7fd-6139c96cff1b?mode=deep",
+    "timestamp": "2026-01-25 21:05:10.684386",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: abort_on_error] [Double-Free Risk] Lines 68-81 in utils.rs call either finish() or abort() - can a panic between the match and ignore-result pattern cause both finish and abort to be called, triggering double-send on bytes_tx channel and causing receiver panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcb82eb7-d344-4ff0-a50c-296d83aafe8a?mode=deep",
+    "timestamp": "2026-01-25 21:05:30.818299",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_range_proof endpoint] [Hash Collision] Lines 38-46 accept HashValue as end_key - can an attacker provide a crafted hash value that collides with internal tree structure hashes, causing get_account_state_range_proof to return proofs that verify incorrectly or expose additional state data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e11ef81-6267-4f3e-a753-d0bd833f6e72?mode=deep",
+    "timestamp": "2026-01-25 21:05:51.355761",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_root_proof endpoint] [Proof Forgery] Lines 84-89 return TransactionInfoWithProof - if the proof generation doesn't properly validate the version exists and is committed, can an attacker request proofs for future versions to receive empty but structurally valid proofs that could be abused in verification bypass attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4d16081-6908-4b90-8db2-addfcce86c9b?mode=deep",
+    "timestamp": "2026-01-25 21:06:13.320813",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: transaction_range_proof endpoint] [Accumulator Manipulation] Lines 115-123 compute TransactionAccumulatorRangeProof - can an attacker request overlapping ranges from multiple nodes to detect inconsistencies in Merkle tree construction, identifying Byzantine validators or nodes with corrupted state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3361e46-a32d-49e4-9601-138639069824?mode=deep",
+    "timestamp": "2026-01-25 21:06:36.937209",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_range_proof endpoint] [Sparse Merkle Proof Attack] Lines 37-46 generate SparseMerkleRangeProof - can an attacker request proofs with carefully chosen end_keys that force maximum tree depth traversal, exploiting O(height) proof generation complexity to cause computational DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a098ac32-b9a7-4a80-9454-ae41892bce0a?mode=deep",
+    "timestamp": "2026-01-25 21:07:00.287416",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot endpoint] [Invalid Version Access] Lines 50-57 accept Version parameter without validation - can an attacker request version=u64::MAX or version=0 to access uninitialized database state, trigger undefined behavior in storage layer, or read pruned data that should be inaccessible? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e004a98f-257f-49d4-9ae6-4e24794a7a71?mode=deep",
+    "timestamp": "2026-01-25 21:07:23.820356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot_chunk endpoint] [Version Consistency] Lines 73-79 accept version parameter independently - can an attacker request chunks from different versions (chunk1 at v100, chunk2 at v200) to construct a malicious snapshot mixing data from incompatible states that breaks invariants during restoration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d1a5408-0b59-4668-b48a-df47e086b118?mode=deep",
+    "timestamp": "2026-01-25 21:07:48.898023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: transactions endpoint] [Version Bounds] Lines 104-110 accept start_version without upper bound validation - can an attacker request transactions starting at version far beyond current committed version to trigger buffer over-reads or access uncommitted/speculative transaction data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11ba9139-fb30-4a12-8795-03a99fedbf21?mode=deep",
+    "timestamp": "2026-01-25 21:08:13.251228",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: epoch_ending_ledger_infos endpoint] [Epoch Validation] Lines 93-100 accept arbitrary epoch ranges - can an attacker request start_epoch=1000 when only 100 epochs exist to force iteration through non-existent epochs, potentially exposing uninitialized memory or causing panics that crash the service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc6af22d-0f7d-419d-9a1f-0c9e3c15b2ee?mode=deep",
+    "timestamp": "2026-01-25 21:08:38.581339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_root_proof endpoint] [Future Version Attack] Lines 84-89 accept version parameter - can an attacker request proof for version=current+1000 to receive proof for uncommitted state, enabling prediction of future state roots and preparation of preimage attacks against upcoming blocks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f60b0bd5-3594-41a8-841e-a6e110e76191?mode=deep",
+    "timestamp": "2026-01-25 21:09:04.333164",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: transaction_range_proof endpoint] [Version Ordering] Lines 115-123 accept first_version and last_version - can an attacker intentionally reverse these (first_version=100, last_version=50) to bypass the ensure! check in BackupHandler and trigger integer underflow in num_transactions calculation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f68cfbcb-2e24-41be-b1bc-8f114224df97?mode=deep",
+    "timestamp": "2026-01-25 21:09:29.879188",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_range_proof endpoint] [Path Traversal] Lines 38 parse HashValue from URL path - can an attacker provide malicious path segments like '../../../' embedded in HashValue encoding to escape path validation and access arbitrary storage locations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f8d5ce2-7290-4d83-a036-de8acb163e2d?mode=deep",
+    "timestamp": "2026-01-25 21:09:56.355996",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot_chunk endpoint] [Negative Index] Lines 73 accept start_idx as usize - on platforms where usize maps to isize, can negative values cause start_idx to wrap to large positive values near usize::MAX, triggering out-of-bounds access or memory corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6543d13-3a00-4947-8926-9f13f687eee8?mode=deep",
+    "timestamp": "2026-01-25 21:10:22.386362",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: all endpoints] [Type Confusion] Lines 38, 50, 61, 73, 84, 93, 104, 115 use warp::path! macro for parsing - if the macro fails to properly validate type boundaries, can an attacker provide Version=18446744073709551615 that overflows downstream signed integer operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45fcfa1f-ffa3-445f-b74c-1ac9a5224041?mode=deep",
+    "timestamp": "2026-01-25 21:10:48.601110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: transactions endpoint] [Size Limit Bypass] Line 104 accepts num_transactions as usize - can an attacker exploit the lack of maximum size validation to request num_transactions=usize::MAX, bypassing any iterator limits and causing unbounded memory allocation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be34b17e-3d5c-4a4b-b7d7-cd2ba5f12702?mode=deep",
+    "timestamp": "2026-01-25 21:11:14.412275",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: epoch_ending_ledger_infos endpoint] [Epoch Range Abuse] Lines 93 accept u64 epochs - can an attacker provide start_epoch=u64::MAX-1 and end_epoch=u64::MAX to trigger wraparound in epoch iteration logic, causing access to epoch 0 or corrupting epoch metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4aba7e58-a074-48c3-911b-73774cc22312?mode=deep",
+    "timestamp": "2026-01-25 21:11:39.644330",
+    "report_generated": false
+  }
+]
