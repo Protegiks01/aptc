@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Environment Variable Injection] Can an attacker with control over the MVC_LOG environment variable inject malicious log specifications that cause unexpected behavior or parse errors in LogSpecification::parse() at line 92, potentially disrupting compiler operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59ab5a03-ca2c-4e1a-b8a8-2c6e84750dfa?mode=deep",
+    "timestamp": "2026-01-25 12:32:23.452980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Path Traversal] In the file path parsing logic at lines 94-100, can an attacker specify MVC_LOG='@../../../etc/passwd' or similar path traversal sequences to write logs to arbitrary filesystem locations outside the intended directory? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fefccdab-88aa-4220-9bfc-57a016c9b9e1?mode=deep",
+    "timestamp": "2026-01-25 12:32:36.530998",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Command Injection] Does the file path handling at line 97 with format!('./{}, parts[1]) properly sanitize input, or could shell metacharacters in the filename portion lead to command injection when the path is later processed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afc11eb1-1bc0-4871-b791-630e086216fc?mode=deep",
+    "timestamp": "2026-01-25 12:32:50.369355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Panic on Invalid Input] At line 92, LogSpecification::parse(parts[0]).expect('log spec') will panic on malformed input - can an attacker deliberately provide malformed MVC_LOG values to cause denial of service through compiler crashes during critical compilation operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08d0b859-f655-4d0c-a869-1930b0c1dfa3?mode=deep",
+    "timestamp": "2026-01-25 12:33:04.429224",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Resource Exhaustion] If MVC_LOG specifies a very verbose log level like 'trace' and an extremely long module path prefix, could this cause excessive logging that exhausts disk space or memory during compilation of large Move projects? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e36b113-45ce-44a0-9ddd-e55aa5ae7240?mode=deep",
+    "timestamp": "2026-01-25 12:33:19.716521",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Symlink Attack] At lines 95-100, when checking if a path 'contains('/')' and prepending './' to relative paths, are symlinks properly handled to prevent an attacker from creating a malicious symlink that redirects log output to sensitive system files? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3868982f-10e8-4d3b-bd93-dd0640293583?mode=deep",
+    "timestamp": "2026-01-25 12:33:36.618134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [File Overwrite] Does the FileSpec::try_from(fname).expect('file name') at line 109 validate that the target file doesn't already exist or contain critical data before overwriting it with log output? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4be0a0a-f2f6-4382-aa7a-f35c4ffd3dd9?mode=deep",
+    "timestamp": "2026-01-25 12:33:53.893337",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Directory Traversal] The logic at line 95 checks '!parts[1].contains('/')' to detect relative paths, but does this correctly handle Windows path separators (backslashes), UNC paths, or mixed separators that could bypass the check? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce03eaf5-075c-4851-a7ce-760178033629?mode=deep",
+    "timestamp": "2026-01-25 12:34:13.820579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Absolute Path Abuse] Can an attacker specify MVC_LOG='@/dev/null' or '@/dev/random' to redirect logs to special device files, potentially causing unexpected behavior or blocking operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_603d503e-3fbd-4170-b711-61505e4f424f?mode=deep",
+    "timestamp": "2026-01-25 12:34:35.683971",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Race Condition on File Creation] Between checking the file path at line 109 and actually creating the log file, could a TOCTOU (Time-of-Check-Time-of-Use) race condition allow an attacker to replace the target file with a symlink to a sensitive location? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_774f0d3e-7aad-4c1b-8ff4-494665d5c65d?mode=deep",
+    "timestamp": "2026-01-25 12:34:57.800716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: format_record_file()] [Format String Injection] At lines 121-127, does the write! macro with &record.args() properly sanitize user-controlled input that might contain format string specifiers like %s, %x, or {} that could leak memory contents? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8fa4b312-1ce8-4360-b0f0-29e49b6cbe09?mode=deep",
+    "timestamp": "2026-01-25 12:35:20.915048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: format_record_colored()] [ANSI Escape Sequence Injection] At lines 135-142, the colored output uses .red(), .yellow() etc. - can malicious log messages inject additional ANSI escape sequences to manipulate terminal display, hide output, or execute terminal commands? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc7f54e0-b2e0-42ff-abb7-a46a872cc7b0?mode=deep",
+    "timestamp": "2026-01-25 12:35:46.154028",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: format_record_file()] [Information Disclosure] The module_path().unwrap_or_default() at line 125 includes module paths in logs - could this leak sensitive information about internal code structure, file paths, or implementation details to unauthorized parties with log access? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_725c94d1-f306-4d9b-989e-cc1948924790?mode=deep",
+    "timestamp": "2026-01-25 12:36:12.136252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: format_record_colored()] [Terminal Buffer Overflow] If record.args() at line 142 contains extremely long strings (megabytes), could this cause buffer overflows in terminal emulators or consume excessive memory when writing to stderr? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73a4239c-d624-41c2-91ab-4f426c9a7d38?mode=deep",
+    "timestamp": "2026-01-25 12:36:36.470022",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: format_record_file()] [Log Injection] Can an attacker inject newlines or special characters into record.args() that would create fake log entries, potentially hiding malicious activity or forging log timestamps? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_192e4530-9b66-4358-ba9d-a66b6a454dd3?mode=deep",
+    "timestamp": "2026-01-25 12:37:00.597148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: setup_logging_for_testing()] [Race Condition on Logger Init] At lines 61-66, multiple calls to setup_logging_for_testing() are allowed with error suppression - could concurrent initialization from multiple threads cause race conditions in the flexi_logger global state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce8b902b-d010-4361-91f5-36a87d6ed659?mode=deep",
+    "timestamp": "2026-01-25 12:37:26.168085",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: setup_logging_for_testing()] [Logger Hijacking] The comment at line 64 states errors are ignored if 'some outer code overriding the logger' - could a malicious dependency or compromised crate install a custom logger first to intercept and exfiltrate all log messages? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de3819d2-2c9a-4e3d-a9fe-07aa577c91ab?mode=deep",
+    "timestamp": "2026-01-25 12:37:50.723221",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Environment Variable Race] At line 71, env::var(MVC_LOG_VAR) reads the environment - if MVC_LOG is modified concurrently by another thread between check and use, could this cause inconsistent logger configuration? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1720f28e-061f-4c69-9c21-ae2e59ab4b15?mode=deep",
+    "timestamp": "2026-01-25 12:38:16.366258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: setup_logging()] [Multiple Initialization] At line 57, setup_logging() calls setup_logging_for_testing() directly - if both are called by different parts of the application, could this cause logger state confusion or missed log messages? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12d01909-54b1-4a5b-b404-aaaf7bcbb483?mode=deep",
+    "timestamp": "2026-01-25 12:38:41.441896",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Panic on File Creation] At line 109, FileSpec::try_from(fname).expect('file name') will panic if the filename is invalid - could an attacker craft a filename that causes deterministic panics, disrupting compiler operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1d40a44-dbb4-4ded-8ac8-0947451135a6?mode=deep",
+    "timestamp": "2026-01-25 12:39:06.970192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Empty String Handling] At line 88, parts[0].trim().is_empty() is checked, but what happens if parts[1] (the filename) is empty or whitespace-only at line 94? Could this create files with invalid names? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09896529-ae0b-4adc-bbdd-a05b4c23923f?mode=deep",
+    "timestamp": "2026-01-25 12:39:30.623569",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Array Index Out of Bounds] The code at lines 86-87 uses rsplitn(2, '@') and accesses parts[0] and parts[1] - are there edge cases where the vector length assumptions are violated, causing index out of bounds panics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5daebb17-f781-4266-a6db-2f2e6fd1b921?mode=deep",
+    "timestamp": "2026-01-25 12:39:53.889851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Unicode Handling] Does the string splitting and path manipulation at lines 86-100 properly handle Unicode characters, multi-byte encodings, or invalid UTF-8 sequences that could cause parsing errors or incorrect path construction? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26d98fe7-c31b-4fa3-8b0a-a7306e43a150?mode=deep",
+    "timestamp": "2026-01-25 12:40:18.236300",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: configure_logger()] [Privilege Escalation via Log Files] If the compiler runs with elevated privileges, could specifying MVC_LOG='@/etc/sensitive_file' allow an unprivileged user to overwrite system configuration files through log output? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bfb8e94-229d-44e6-91a9-0dae8cd3e795?mode=deep",
+    "timestamp": "2026-01-25 12:40:43.343117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/logging.rs] [Function: format_record_file()] [Sensitive Data Leakage] Are there any checks to prevent logging of sensitive information like private keys, passwords, or authentication tokens that might be present in Move source code or compiler internals? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ae48bda-43aa-49fb-bcf7-fe7694550bf7?mode=deep",
+    "timestamp": "2026-01-25 12:41:08.164442",
+    "report_generated": false
+  }
+]
