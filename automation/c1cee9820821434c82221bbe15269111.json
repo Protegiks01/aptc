@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: StateStore::new()] [Race condition] Can concurrent calls to new() with hack_for_tests=false and empty_buffered_state_for_restore=false lead to multiple sync_commit_progress() executions running simultaneously, causing inconsistent commit progress tracking and potential state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af07b3e9-8abb-4b68-b8ab-f23eeac78b09?mode=deep",
+    "timestamp": "2026-01-25 12:24:42.497002",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: StateStore::new()] [State inconsistency] If sync_commit_progress() crashes after truncating ledger_db but before truncating state_kv_db or state_merkle_db, can this leave databases in inconsistent states where versions don't align, potentially causing double-spending or state root mismatches? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a91c1b80-3aeb-4eea-92ff-db7c3758b0e5?mode=deep",
+    "timestamp": "2026-01-25 12:24:54.852339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Struct: StateDb] [Missing validation] The StateDb struct contains skip_usage flag - can an attacker who gains control of this flag disable usage tracking to bypass storage limits and spam the state with unlimited data causing denial of service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9436a1d6-14c9-44b0-b3d0-49cb7fdd12e4?mode=deep",
+    "timestamp": "2026-01-25 12:25:08.344417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: StateStore::new()] [Initialization bypass] When empty_buffered_state_for_restore is true, new() skips consistency checks - can an attacker trigger restore mode maliciously to bypass state validation and inject corrupted state data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_880831fc-c0ba-4e49-b1ab-52cead41c3cd?mode=deep",
+    "timestamp": "2026-01-25 12:25:22.886248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Struct: StateStore] [Concurrency vulnerability] The buffered_state is protected by a Mutex while current_state is in a separate Arc<Mutex> - can race conditions between these two locks allow reading stale state while a commit is in progress, leading to incorrect transaction execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_690bd933-2486-4354-a6b2-adcefe37334f?mode=deep",
+    "timestamp": "2026-01-25 12:25:37.330749",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: StateStore::new()] [Default config vulnerability] The code uses HotStateConfig::default() without reading from storage - can this mismatch with actual on-chain configuration lead to inconsistent hot state behavior across nodes causing consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d0e7a6b-9b69-4417-808c-cb2fadf7268f?mode=deep",
+    "timestamp": "2026-01-25 12:25:53.164161",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: create_buffered_state_from_latest_snapshot()] [Panic on error] The function uses .expect() multiple times - if buffered state creation fails during initialization, will the entire node crash and can this be triggered by Byzantine validators to cause widespread network outages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac88750f-a899-40b0-86b7-5ccdf6a735c5?mode=deep",
+    "timestamp": "2026-01-25 12:26:10.042024",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: sync_commit_progress()] [Integer underflow] When calculating difference = ledger_commit_progress - overall_commit_progress, if ledger_commit_progress < overall_commit_progress due to database corruption, does this underflow and bypass the MAX_COMMIT_PROGRESS_DIFFERENCE check, allowing unbounded truncation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_272d5c31-79b5-433d-a103-4d54f893d590?mode=deep",
+    "timestamp": "2026-01-25 12:26:28.465770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: sync_commit_progress()] [Assert bypass] The function uses assert_le! for MAX_COMMIT_PROGRESS_DIFFERENCE only when crash_if_difference_is_too_large is true - can an attacker set this to false to allow unlimited divergence between databases causing permanent state inconsistency? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e9bfd07-3f19-40c0-8e01-b1b28a226ecc?mode=deep",
+    "timestamp": "2026-01-25 12:26:47.840624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: sync_commit_progress()] [Truncation order vulnerability] The code truncates ledger_db first, then state_kv_db, then state_merkle_db - if a crash occurs between these steps, can this leave the databases in an inconsistent state where some have been truncated but others haven't? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4197f90f-f5b4-4983-934b-5f2ee7cf3401?mode=deep",
+    "timestamp": "2026-01-25 12:27:08.432352",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: sync_commit_progress()] [Missing atomicity] The sync_commit_progress() performs multiple database reads and writes without a transaction - can concurrent writes during this process cause the function to read inconsistent data and make incorrect truncation decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ccbf7027-da75-4c0a-b96d-954f2f51c63d?mode=deep",
+    "timestamp": "2026-01-25 12:27:30.461261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: sync_commit_progress()] [State merkle target selection] The code uses find_tree_root_at_or_before() and panics if no root is found - can an attacker corrupt the state merkle tree metadata to make this panic and prevent node startup causing liveness failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07b0d5a0-852d-4898-9951-35c41ebfb575?mode=deep",
+    "timestamp": "2026-01-25 12:27:53.611413",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: sync_commit_progress()] [Batch size manipulation] When truncating state_kv_db, batch_size is std::cmp::max(difference as usize, 1) - for very large differences, can this cause memory exhaustion or extremely slow truncation blocking node startup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c14d9178-fc41-43e2-882e-e58bf5c169c2?mode=deep",
+    "timestamp": "2026-01-25 12:28:18.461437",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Constant: MAX_COMMIT_PROGRESS_DIFFERENCE] [Value 1_000_000] Is this limit sufficient to prevent attacks where an attacker forces the node to process 1 million versions during sync causing excessive computation and long startup times? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_666a0cf6-f578-4f01-a327-ea2f1fcb0e78?mode=deep",
+    "timestamp": "2026-01-25 12:28:43.017678",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: sync_commit_progress()] [None handling] If get_synced_version() returns None, the function silently returns without any synchronization - can this occur in an attack scenario where metadata is deleted, leaving databases permanently out of sync? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd54a0f9-9fe8-4880-baf8-3b5d7e99044d?mode=deep",
+    "timestamp": "2026-01-25 12:29:09.067296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: create_buffered_state_from_latest_snapshot()] [Snapshot version overflow] When calculating snapshot_next_version = latest_snapshot_version.map_or(0, |v| v + 1), can v + 1 overflow if latest_snapshot_version is u64::MAX causing incorrect version calculations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1632b5a9-97eb-4e6b-a65b-222abd4996b1?mode=deep",
+    "timestamp": "2026-01-25 12:29:35.784474",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: create_buffered_state_from_latest_snapshot()] [Write set replay attack] The function replays write sets from snapshot_next_version to num_transactions - can a malicious validator inject crafted write sets during this window to manipulate the replayed state before checksum validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_465cb295-87d3-4b2d-8f0e-8c76c8ff0ee0?mode=deep",
+    "timestamp": "2026-01-25 12:30:03.728133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: create_buffered_state_from_latest_snapshot()] [MAX_WRITE_SETS_AFTER_SNAPSHOT bypass] The check for MAX_WRITE_SETS_AFTER_SNAPSHOT only happens when check_max_versions_after_snapshot is true - can this be set to false to allow unlimited write set replay causing memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_638c33dd-5769-4af8-852f-74458df54c70?mode=deep",
+    "timestamp": "2026-01-25 12:30:32.313745",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Constant: MAX_WRITE_SETS_AFTER_SNAPSHOT] [Calculation overflow] The calculation involves ASYNC_COMMIT_CHANNEL_BUFFER_SIZE + 2 + 1 multiplied by 2 - can these constants be manipulated via configuration to cause integer overflow in the limit calculation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd4f1239-9263-4a02-8650-80d2e226189e?mode=deep",
+    "timestamp": "2026-01-25 12:31:01.096955",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: create_buffered_state_from_latest_snapshot()] [State root hash mismatch] If latest_snapshot_root_hash from state_merkle_db doesn't match the actual state, but the code doesn't verify this match, can an attacker corrupt the merkle tree to force nodes to sync to a false state root? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0142c479-773e-4e44-80d8-91c450e61074?mode=deep",
+    "timestamp": "2026-01-25 12:31:30.160313",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: create_buffered_state_from_latest_snapshot()] [Hot state placeholder] The code initializes hot state with SPARSE_MERKLE_PLACEHOLDER_HASH regardless of actual hot state - can this cause incorrect hot state tracking allowing validators to diverge on hot vs cold state boundaries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6e948b4-8d01-4552-8587-f7dbd752be98?mode=deep",
+    "timestamp": "2026-01-25 12:32:00.072817",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: create_buffered_state_from_latest_snapshot()] [Checkpoint indices manipulation] The code collects all_checkpoint_indices from has_state_checkpoint_hash() - can a Byzantine validator manipulate transaction info to add/remove checkpoint markers causing nodes to checkpoint at wrong versions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14b67965-b514-4099-8bc8-532768c407b4?mode=deep",
+    "timestamp": "2026-01-25 12:32:31.266244",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: create_buffered_state_from_latest_snapshot()] [Update without validation] The function calls buffered_state.update() with sync_commit=true but doesn't validate the resulting state root - can this commit corrupted state permanently to disk? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_661bb055-722f-4f86-9b8d-0f79df0a123f?mode=deep",
+    "timestamp": "2026-01-25 12:33:01.931174",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: create_buffered_state_from_latest_snapshot()] [Restore mode detection] The code checks if snapshot_next_version > num_transactions and logs 'should only happen in restore mode' - can an attacker craft this condition outside restore mode to bypass security checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7123e544-005f-4a6a-8e97-6844c24c42ea?mode=deep",
+    "timestamp": "2026-01-25 12:33:33.081290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: get_state_value_by_version()] [Version validation bypass] The function doesn't validate that the requested version is not greater than the latest committed version - can an attacker query future versions to probe uncommitted state or cause undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82ba8e89-cf43-4b50-9482-2851c86f77b2?mode=deep",
+    "timestamp": "2026-01-25 12:34:03.914119",
+    "report_generated": false
+  }
+]
