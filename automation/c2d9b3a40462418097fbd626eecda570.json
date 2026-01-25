@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [OnChainConfig trait] [Identifier collision] At lines 289-292, Features implements OnChainConfig with MODULE_IDENTIFIER = 'features' and TYPE_IDENTIFIER = 'Features'. Can another malicious module register the same identifiers, causing feature flag state to be overwritten by attacker-controlled data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06361d63-d4e4-429b-ac1d-8182a9032ffe?mode=deep",
+    "timestamp": "2026-01-25 12:58:48.431737",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: aptos_test_feature_flags_genesis()] [ChangeSet validation] At lines 498-504, the ChangeSet uses Op::New() to initialize Features at CORE_CODE_ADDRESS. Is there validation preventing multiple genesis initializations? Can an attacker call this multiple times to reset feature flags mid-operation, causing state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0fac94d6-e6ce-475c-b790-b239d18f3131?mode=deep",
+    "timestamp": "2026-01-25 12:59:01.553057",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Struct: Features] [Bitset padding] If the features vector has trailing zero bytes, does this affect feature flag interpretation? Can an attacker pad the vector with zeros or ones to manipulate high-index features that haven't been officially defined yet, pre-enabling future flags? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c162ac1-3a16-4450-8dd4-df59a261905f?mode=deep",
+    "timestamp": "2026-01-25 12:59:15.256656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Struct: Features] [Canonical representation] Two Features instances with different vector lengths but same enabled flags (e.g., [0xFF] vs [0xFF, 0x00, 0x00]) are semantically equivalent. Can this non-canonical representation cause hash mismatches in Merkle tree storage, leading to state commitment failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4c2c796-d717-448c-8cdb-42fcf4deba39?mode=deep",
+    "timestamp": "2026-01-25 12:59:29.418238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Derive macros] [Ordering exploits] The Features struct derives PartialOrd and Ord at line 270. How is Vec<u8> ordering defined? Can an attacker exploit lexicographic ordering to force their malicious Features config to be selected in consensus ordering, overriding legitimate feature flags? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73b99aeb-b554-4fa7-ae9f-6bc20ac2d5e7?mode=deep",
+    "timestamp": "2026-01-25 12:59:44.404368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: enable() & disable()] [TOCTOU race] If one thread calls is_enabled() to check RESOURCE_GROUPS while another thread concurrently calls disable(RESOURCE_GROUPS), can the TOCTOU (Time-of-Check-Time-of-Use) race condition cause validators to execute transactions with inconsistent feature states, leading to state divergence and consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b940e147-4f3b-4072-8746-8cf30f38c4ce?mode=deep",
+    "timestamp": "2026-01-25 13:00:00.601283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: resize_for_flag()] [Concurrent resize] If two threads simultaneously call enable() for features requiring different vector sizes (e.g., flag 40 and flag 100), can the resize_for_flag() while loop at lines 307-309 cause one resize to overwrite another, resulting in lost feature flag states? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73258802-8426-426a-93e1-39f8ddf43cd0?mode=deep",
+    "timestamp": "2026-01-25 13:00:17.018402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: into_flag_vec()] [Concurrent modification] The into_flag_vec() method at lines 323-332 consumes self and iterates over the features vector. If the Features struct is cloned and modified concurrently during iteration, can this cause non-deterministic feature flag enumeration across validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fc703e4-4a37-4035-890b-0cb86a4d8f3e?mode=deep",
+    "timestamp": "2026-01-25 13:00:36.890470",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: is_enabled()] [Unsafe concurrent read] At line 338, is_enabled() reads `self.features[byte_index]` without synchronization. If another thread is concurrently modifying this byte via enable() or disable(), can the read observe a partially-written byte value (torn read), returning incorrect feature states? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06597540-667c-4aec-8c59-733ecc940773?mode=deep",
+    "timestamp": "2026-01-25 13:00:58.211624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: default()] [Initialization race] At lines 276-286, default() creates a new Features instance and enables multiple flags. If validators call this concurrently during startup, can race conditions in enable() cause different validators to initialize with different default feature sets, immediately forking the chain at genesis? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d60ec26-5f4d-4a58-8486-f79ba76f5b0f?mode=deep",
+    "timestamp": "2026-01-25 13:01:20.772102",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: get_max_binary_format_version()] [Non-atomic checks] At lines 478-490, the function checks multiple feature flags sequentially (V9, V8, V7, V6). If feature flags are being modified concurrently, can this function observe an inconsistent snapshot (e.g., V9 enabled but V8 disabled) that doesn't correspond to any actual state, causing bytecode version confusion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b62bb5bb-9a4a-4b51-b618-edca05bb5d87?mode=deep",
+    "timestamp": "2026-01-25 13:01:44.461491",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Struct: Features] [No synchronization primitives] The Features struct has no Mutex, RwLock, or atomic operations. If multiple threads on a validator node read and write Features concurrently (e.g., during reconfiguration), can this cause data races leading to UB (undefined behavior) in Rust and memory corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5dfa6233-e2b4-413a-9be2-eaf2b1a6e293?mode=deep",
+    "timestamp": "2026-01-25 13:02:09.517283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: is_aggregator_v2_delayed_fields_enabled()] [Compound check race] At lines 378-379, this function checks two flags with AND logic. If one flag is disabled between the two checks, can validators observe inconsistent compound states, enabling parallel execution without proper VM change set splitting and causing state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45fcd48b-4bc3-4d44-9e6e-4a9a9154d969?mode=deep",
+    "timestamp": "2026-01-25 13:02:34.156641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: enable()] [Lost update problem] If thread A reads byte_index, thread B modifies that byte, then thread A writes its modified value, thread B's changes are lost. Can this lost update problem during concurrent feature flag modifications cause critical security features to remain disabled despite governance attempts to enable them? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b9e7c92-48ca-4dfb-b20c-314506551baf?mode=deep",
+    "timestamp": "2026-01-25 13:03:01.493709",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: disable()] [ABA problem] If a feature is enabled (A), then disabled (B), then re-enabled (A) across multiple threads rapidly, can observers see inconsistent state transitions that violate feature dependency requirements, such as disabling MODULE_EVENT while EMIT_FEE_STATEMENT believes it's still enabled? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a900e84-7cbe-4b0e-9a6e-799fa7265649?mode=deep",
+    "timestamp": "2026-01-25 13:03:28.280322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: into_flag_vec()] [Unwrap panic] At line 330, `.unwrap()` is called on `FeatureFlag::from_repr(feature_idx)`. If the features vector contains bits set for undefined feature indices (> 105), this will panic. Can an attacker craft a Features instance with high bits set to cause all validators to panic during feature enumeration, halting the network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7472ed16-cda3-4319-bba9-1eddf8ae1858?mode=deep",
+    "timestamp": "2026-01-25 13:03:57.151480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: aptos_test_feature_flags_genesis()] [Expect panic] At line 504, `.expect()` is called on change_set.add_resource_op(). What failure conditions could trigger this expect? Can an attacker trigger this panic during genesis initialization to prevent network bootstrap? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b879fe27-f128-4c36-b6b2-515c50302357?mode=deep",
+    "timestamp": "2026-01-25 13:04:23.505753",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: aptos_test_feature_flags_genesis()] [Unwrap on serialization] At line 494, `bcs::to_bytes(&Features::default_for_tests()).unwrap()` could fail if the Features struct exceeds BCS size limits. Can this cause genesis initialization to panic, preventing network startup and creating a permanent DoS condition? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_374e1523-68e4-453c-b068-f2c5621ea3e5?mode=deep",
+    "timestamp": "2026-01-25 13:04:51.163396",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: enable() & disable()] [Index panic] Although resize_for_flag() extends the vector, if there's a race condition or logic error, could `self.features[byte_index]` at lines 315 and 320 still panic with index out of bounds, causing validator crashes during feature flag updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65812ade-410f-4cb2-9fa1-64fe69cb251a?mode=deep",
+    "timestamp": "2026-01-25 13:05:19.027496",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: is_enabled()] [No panic guard] At line 338, the function accesses `self.features[byte_index]` after checking `byte_index < self.features.len()`. Is this bounds check sufficient? If byte_index equals usize::MAX due to integer overflow, could this cause a panic even after the bounds check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7da8dc12-7977-4a34-8e21-a0144b505b16?mode=deep",
+    "timestamp": "2026-01-25 13:05:47.615498",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: into_flag_vec()] [Arithmetic panic] At line 327, `(0..8).map(move |bit_idx| byte & (1 << bit_idx) != 0)` performs left shift. If bit_idx somehow exceeds 7 due to a bug, this could cause arithmetic overflow panic in debug mode. Can this be exploited to crash validators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9eb9df3d-20ea-436c-b68b-460dcf6afdec?mode=deep",
+    "timestamp": "2026-01-25 13:06:15.221252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: resize_for_flag()] [Allocation failure] The while loop at lines 307-309 pushes bytes without checking allocation success. On systems with memory limits, can an attacker trigger OOM by requesting extremely high feature indices, causing the allocator to panic and crash the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50648124-aa96-4528-9179-718165327f40?mode=deep",
+    "timestamp": "2026-01-25 13:06:44.190751",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: default()] [Enable panic cascade] At lines 282-284, default() calls enable() for each default feature. If any enable() call panics (due to bugs in resize_for_flag), does this prevent Features initialization, causing all validators to crash on startup and permanent network unavailability? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebf8535f-8451-4e0d-a587-4e545854b9c0?mode=deep",
+    "timestamp": "2026-01-25 13:07:12.454698",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [Function: get_max_binary_format_version()] [Unreachable version] At line 488, if all VM_BINARY_FORMAT flags are disabled, the function returns VERSION_5. Is VERSION_5 still supported? Can forcing all validators to use VERSION_5 through governance disable critical security patches in newer versions, enabling exploitation of known VM vulnerabilities? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18467544-9701-4726-919d-4c56ea84fa22?mode=deep",
+    "timestamp": "2026-01-25 13:07:38.973423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/on_chain_config/aptos_features.rs] [FeatureFlag enum] [FromRepr None case] The from_repr() call at line 330 returns Option<FeatureFlag>. While unwrap() is used, what happens if an invalid repr value is provided? Can attackers craft Features with invalid enum values to cause panics during normal operation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b494d3f-789c-4c63-8bdc-96a8a388cf00?mode=deep",
+    "timestamp": "2026-01-25 13:08:04.889652",
+    "report_generated": false
+  }
+]
