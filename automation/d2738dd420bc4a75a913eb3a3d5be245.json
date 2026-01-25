@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: IO_POOL static initialization] [Panic/Availability] The thread pool builder uses .unwrap() which will panic if thread pool creation fails - can an attacker trigger resource exhaustion conditions during node startup to cause all validators to panic and halt the network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffc286d2-dc29-40b7-8b6c-7a9273f898a8?mode=deep",
+    "timestamp": "2026-01-25 22:02:59.297444",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: IO_POOL] [Resource Exhaustion] The IO_POOL is a static thread pool with 32 threads shared across all CachedStateView instances - can an attacker flood the system with parallel cache priming requests to exhaust this fixed thread pool, preventing legitimate state reads and causing validator nodes to fall behind consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_016b1b0f-ef6a-4fa5-b6a5-6d164093aaba?mode=deep",
+    "timestamp": "2026-01-25 22:03:12.204782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: IO_POOL] [Deadlock] Since IO_POOL is a global static resource, can concurrent prime_cache operations on multiple CachedStateView instances cause thread pool starvation or deadlock when threads wait for each other's cache operations to complete? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ffc8edc-ed07-4828-835c-edcb8e673fe1?mode=deep",
+    "timestamp": "2026-01-25 22:03:25.671003",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: ShardedStateCache::new_empty()] [Integer Overflow] The next_version is calculated as 'v + 1' - can an attacker cause version to be u64::MAX, leading to integer overflow when computing next_version, potentially causing version wraparound and state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_626216a6-7571-4939-a27f-8492014bea75?mode=deep",
+    "timestamp": "2026-01-25 22:03:39.452943",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: ShardedStateCache::get_cloned()] [Cache Poisoning] The get_cloned method returns cloned StateSlot values without any validation or expiration checks - can an attacker insert malicious StateSlot values that persist indefinitely in the cache and get served to subsequent transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b702c054-d2e0-4afb-a830-fafcd1e8870f?mode=deep",
+    "timestamp": "2026-01-25 22:03:54.182428",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: ShardedStateCache::try_insert()] [Race Condition] The try_insert method uses Entry::Occupied to skip insertion if key exists, but there's no validation that the existing value matches the new value - can concurrent transactions insert conflicting StateSlot values for the same key, causing different validators to cache different states? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d42c9376-a4f4-4002-b03b-be0d87b60c7d?mode=deep",
+    "timestamp": "2026-01-25 22:04:10.220749",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: ShardedStateCache::try_insert()] [Cache Bypass] The try_insert only inserts if the entry is vacant - can an attacker pre-populate the cache with stale values during initial sync, and then these values are never updated even when the actual state changes in speculative/hot/cold layers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93ca9cd6-ca4e-433e-8c0b-4beb353217be?mode=deep",
+    "timestamp": "2026-01-25 22:04:27.273501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Struct: ShardedStateCache] [Memory Exhaustion] The shards array uses DashMap with no size limits or eviction policy - can an attacker cause unbounded cache growth by requesting state values for billions of unique StateKeys, exhausting validator memory and causing node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71878076-580f-48c4-b449-e503f134b7ca?mode=deep",
+    "timestamp": "2026-01-25 22:04:46.061844",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: ShardedStateCache::shard()] [Bounds Check] The shard method directly indexes into shards array using shard_id from StateKey::get_shard_id() - if get_shard_id() returns a malicious value >= NUM_STATE_SHARDS, can this cause an array index out of bounds panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf2a0f0e-cda7-4b00-9a65-3e4366b1b09c?mode=deep",
+    "timestamp": "2026-01-25 22:05:06.687598",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: CachedStateView::new()] [State Inconsistency] The constructor calls get_persisted_state() to fetch hot_state and persisted_state - if these are fetched non-atomically during an ongoing state commit, can validators see inconsistent state snapshots leading to consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_388dd6fb-40fb-4417-86a6-48ca5ac1e8f3?mode=deep",
+    "timestamp": "2026-01-25 22:05:27.559422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: CachedStateView::new_impl()] [Version Mismatch] The function creates a StateDelta from state and persisted_state, then creates ShardedStateCache with state.version() - if state and persisted_state have inconsistent versions, can this lead to cache entries being associated with the wrong version? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffd824df-da0b-4360-a6a5-5fbb81b69104?mode=deep",
+    "timestamp": "2026-01-25 22:05:49.938179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: CachedStateView::new_dummy()] [Type Safety] The dummy implementation creates a DummyDbReader that implements no methods - if this is accidentally used in production code paths, will operations panic or return incorrect empty results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0404325-285d-4792-8a25-d3d06b736ba5?mode=deep",
+    "timestamp": "2026-01-25 22:06:14.123065",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: prime_cache()] [Resource Exhaustion] The prime_cache uses IO_POOL.install() to execute priming in parallel - can an attacker provide StateUpdateRefs with millions of keys causing the thread pool to spawn excessive work, blocking other critical operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6c206ed-f827-43c1-898d-c7690b439c6d?mode=deep",
+    "timestamp": "2026-01-25 22:06:37.948684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: prime_cache()] [Error Propagation] The function calls prime_cache_for_batched_updates which can return Result<()> errors - are these errors properly propagated and handled, or can partial cache priming failures leave the cache in an inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f1ea30a-1fe2-4bc9-94d3-f962c21a2b25?mode=deep",
+    "timestamp": "2026-01-25 22:07:03.823114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: prime_cache_for_batched_updates()] [Filter Logic Bypass] The MakeHotOnly policy filters out keys where is_value_write_op() returns true - can an attacker craft state updates that bypass this filter and force excessive hot state promotion, exhausting hot state slots? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f50e5a8-71f4-4e7c-982e-8485abf3987a?mode=deep",
+    "timestamp": "2026-01-25 22:07:30.434420",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: prime_cache_for_batched_updates()] [Parallel Iterator Safety] The function uses par_iter() on shards without any synchronization - if shards are being modified concurrently during iteration, can this cause iterator invalidation or return corrupted data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc638b11-e108-4708-ac19-385d36902f14?mode=deep",
+    "timestamp": "2026-01-25 22:07:58.740308",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: prime_cache_for_keys()] [Panic Propagation] The rayon::scope spawns tasks that call .expect('Must succeed.') on get_state_value - if any cache read fails, can this panic propagate across thread boundaries and crash the entire validator node? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6749b863-d3f9-4832-ac12-aaadc11c5bd6?mode=deep",
+    "timestamp": "2026-01-25 22:08:27.664467",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: prime_cache_for_keys()] [Deadlock] The function uses rayon::scope with nested spawns calling get_state_value which may acquire locks - can circular lock dependencies between cache shards cause deadlock when priming overlapping key sets? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34ff4c88-2c14-4a63-8ce1-7609fd9d6c23?mode=deep",
+    "timestamp": "2026-01-25 22:08:56.666539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_unmemorized()] [Cache Coherency] The function checks speculative, then hot, then cold in sequence - can a race condition allow a newer value in speculative to be overwritten by an older cached value from hot/cold if reads happen concurrently with state updates? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bdc3b487-7eb1-49e9-a042-af1109e2a985?mode=deep",
+    "timestamp": "2026-01-25 22:09:25.388338",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_unmemorized()] [Version Consistency] The cold DB fetch uses self.base_version() which may be None - if base_version is None but there's actually persisted state, will StateSlot::ColdVacant be returned incorrectly, causing transactions to read non-existent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f13fb054-7ba1-4037-b7bd-e614905d699c?mode=deep",
+    "timestamp": "2026-01-25 22:09:55.283449",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_unmemorized()] [Error Handling] The function calls get_state_value_with_version_by_version which returns Result - if this DB read fails, is the error properly propagated or does it get swallowed, causing silent state read failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3094b38c-8de7-4ce2-8839-94342a1dbd38?mode=deep",
+    "timestamp": "2026-01-25 22:10:26.337070",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_state_slot() in TStateView] [TOCTOU Race] The function first checks memorized cache, then calls get_unmemorized and inserts result - can two concurrent reads for the same key both miss the cache, fetch different values from DB due to concurrent writes, and insert conflicting values into memorized cache? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9fde80cd-3cdb-46be-a4fd-82ad7dc37050?mode=deep",
+    "timestamp": "2026-01-25 22:10:57.078572",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_state_slot() in TStateView] [Duplicate Reads] The TODO comment mentions 'reduce duplicated gets' - can multiple concurrent transactions reading the same uncached key cause redundant expensive DB fetches, creating a performance-based DoS vector? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93ca236c-0911-4d82-b91b-69122c0a4a85?mode=deep",
+    "timestamp": "2026-01-25 22:11:29.265678",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: get_state_slot() in TStateView] [Cache Inconsistency] After get_unmemorized returns a value, try_insert may fail if another thread already inserted - does the function return the self-fetched value or re-read from cache, potentially returning different StateSlot than what was actually cached? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_247e2843-54ab-4677-b2cb-dcb692ed453b?mode=deep",
+    "timestamp": "2026-01-25 22:11:58.952082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/storage-interface/src/state_store/state_view/cached_state_view.rs] [Function: contains_hot_state_value()] [Cache Mismatch] The function checks if speculative slot is_hot() but comments indicate this isn't guaranteed - can an attacker exploit cases where speculative contains a non-hot value to bypass hot state access controls or eviction policies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3384e5b6-89eb-4a4a-ae9c-0372e9afcc35?mode=deep",
+    "timestamp": "2026-01-25 22:12:28.878392",
+    "report_generated": false
+  }
+]
