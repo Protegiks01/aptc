@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [Memory ordering vulnerability] Does the use of Ordering::Relaxed in fetch_add allow for ID reordering across threads, potentially causing consensus validators to process transactions or blocks out-of-order and violating deterministic execution guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb7b3a17-4d9c-4bc9-8f7e-78d9dc25f258?mode=deep",
+    "timestamp": "2026-01-25 17:51:38.125900",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U64IdGenerator::next()] [Memory ordering vulnerability] Can Ordering::Relaxed allow a scenario where multiple validators observe different ID sequences due to weak memory ordering, leading to state divergence and potential chain splits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76a06bdc-e4ad-47d6-8bd3-f96705ccc9a7?mode=deep",
+    "timestamp": "2026-01-25 17:51:50.266261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [Race condition] In high-concurrency scenarios with thousands of concurrent next() calls, can the Relaxed ordering cause visibility delays where one thread reads a stale ID value after another thread has already incremented it, leading to duplicate IDs being used for critical consensus messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ad0ed65-2857-46d7-881f-84d70fbd94be?mode=deep",
+    "timestamp": "2026-01-25 17:52:03.346159",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U64IdGenerator::next()] [Race condition] Can the absence of stronger memory barriers (SeqCst or AcqRel) allow CPU reordering that causes ID generation to appear non-monotonic to different threads, breaking assumptions in consensus or transaction ordering logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5bfe5bad-be1f-4a62-b77b-8c8b82507bc9?mode=deep",
+    "timestamp": "2026-01-25 17:52:17.498492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [Integer overflow] When the U32IdGenerator wraps from u32::MAX back to 0, can this cause ID collisions with earlier IDs that are still in use by long-running consensus rounds, validator sets, or pending transactions, leading to state confusion or double-spending? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f31dc1c-f674-4758-a309-6b6abfb71842?mode=deep",
+    "timestamp": "2026-01-25 17:52:31.620937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U64IdGenerator::next()] [Integer overflow] Although u64 overflow is unlikely in practice, if a U64IdGenerator is used for transaction sequence numbers or block heights and wraps to 0, can this break replay protection mechanisms and allow transaction replay attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb62ae12-7265-48d3-82b9-7db26595fc48?mode=deep",
+    "timestamp": "2026-01-25 17:52:46.626190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [Overflow exploitation] Can an attacker deliberately trigger rapid ID generation (e.g., by spamming requests) to force u32 overflow and create ID collisions that break uniqueness assumptions in network message routing, causing messages to be dropped or misrouted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7aae438-7e9d-4bf0-891e-0723b7dbf659?mode=deep",
+    "timestamp": "2026-01-25 17:53:04.064590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::new_with_value()] [Initialization vulnerability] If a U32IdGenerator is initialized with a value close to u32::MAX, can it quickly overflow and start reusing IDs that were recently used, potentially causing duplicate request IDs in consensus or API layers leading to state inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_539fb58c-21d2-4927-9152-f7077549af4e?mode=deep",
+    "timestamp": "2026-01-25 17:53:22.443324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Test: check_overflow()] [Test coverage gap] The overflow test only checks immediate wrapping behavior, but does not test scenarios where overflow happens under high concurrency - can race conditions during overflow cause multiple threads to receive the same wrapped ID value? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e976be50-131f-424e-ad46-842e3a100056?mode=deep",
+    "timestamp": "2026-01-25 17:53:41.553855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Trait: IdGenerator] [Uniqueness violation] Does the IdGenerator trait provide any guarantees about global uniqueness across multiple instances, or can two separate U32IdGenerator instances produce the same IDs, causing collisions in distributed consensus where validators use separate generators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e5f172d-1013-4f46-9c30-cc3415ac6099?mode=deep",
+    "timestamp": "2026-01-25 17:54:01.776816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::new()] [Initialization collision] If multiple components or validators create separate U32IdGenerator instances all initialized to 0, will they all generate identical ID sequences, causing massive ID collisions across the network and breaking message routing or transaction ordering? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2348b4e6-40ad-4f70-a9e2-2df5a6935631?mode=deep",
+    "timestamp": "2026-01-25 17:54:22.956025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U64IdGenerator::new_with_value()] [State restoration vulnerability] If a validator crashes and restores from a checkpoint that resets the U64IdGenerator to an earlier value, will it regenerate IDs that were already used before the crash, potentially causing duplicate block proposals or consensus messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1662f2ae-2903-4586-9c06-5f03b71c67e5?mode=deep",
+    "timestamp": "2026-01-25 17:54:45.485829",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Struct: U32IdGenerator] [Persistence vulnerability] Since AtomicU32 state is not persisted across restarts, can validator restarts cause ID sequence resets that violate uniqueness assumptions in long-lived consensus protocols, leading to equivocation or safety violations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15f91c36-f9ed-45f9-8026-9df69c40e0ad?mode=deep",
+    "timestamp": "2026-01-25 17:55:07.670018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [Consensus safety] If used to generate proposal IDs or round numbers in AptosBFT consensus, can ID wraparound cause the same proposal ID to be reused in different epochs, breaking the uniqueness invariant and potentially allowing conflicting proposals to be accepted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47457534-eb4d-4a10-8c19-f485f00b147f?mode=deep",
+    "timestamp": "2026-01-25 17:55:31.281241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U64IdGenerator::next()] [Epoch boundary] If a U64IdGenerator is used for epoch-specific IDs but not reset between epochs, can accumulated ID values from previous epochs interfere with new epoch operations, causing validators to reject valid messages due to unexpected ID ranges? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd3ed76d-3f8f-4984-92cf-a265a4a58a20?mode=deep",
+    "timestamp": "2026-01-25 17:55:56.372683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [Leader election manipulation] If used in leader election or validator selection logic, can an attacker who controls when next() is called manipulate the ID sequence to influence which validator becomes leader, biasing the consensus process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_611c4385-1767-44cb-8916-b7f80a1e3824?mode=deep",
+    "timestamp": "2026-01-25 17:56:20.309661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U64IdGenerator::next()] [Vote deduplication bypass] If used to generate vote IDs in consensus, can the lack of cryptographic randomness allow an attacker to predict future IDs and craft malicious votes that collide with legitimate votes, bypassing deduplication logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bc5a51a-ed9c-472a-b138-981fe9820d72?mode=deep",
+    "timestamp": "2026-01-25 17:56:45.308742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [Transaction ordering] If used to assign internal transaction IDs for parallel execution in Block-STM, can non-deterministic ID assignment across validators cause different execution orders, leading to divergent state roots and consensus failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f340ce9d-6432-4a7d-af39-6d32014cfa83?mode=deep",
+    "timestamp": "2026-01-25 17:57:10.833154",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U64IdGenerator::next()] [Gas metering] If used to track gas computation steps or sub-operations, can integer overflow cause gas counters to wrap and allow transactions to bypass gas limits, enabling DoS attacks or free transaction execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1295ab05-9723-4bd5-8b2d-16bf5042900d?mode=deep",
+    "timestamp": "2026-01-25 17:57:35.735229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [State pruning vulnerability] If IDs are used to track state versions for pruning, can overflow cause newer state to be incorrectly pruned as if it were older state, leading to permanent loss of recent blockchain state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8224b2b-030b-4310-afdd-1d57ae719863?mode=deep",
+    "timestamp": "2026-01-25 17:58:01.649629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U64IdGenerator::next()] [Mempool ordering] If used for mempool transaction prioritization, can lack of persistence across restarts cause transaction reordering when validators restart, potentially front-running user transactions or violating ordering guarantees? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8ef27fb-8b92-4828-92dc-4677dc4fc547?mode=deep",
+    "timestamp": "2026-01-25 17:58:26.167839",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [Request ID collision] If used to generate API request IDs, can rapid ID exhaustion cause request/response mismatching where responses for old requests are incorrectly delivered to new requests, leaking sensitive state information? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac3e38c3-1aa6-4cff-a303-dbe5ecc4c117?mode=deep",
+    "timestamp": "2026-01-25 17:58:51.516377",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U64IdGenerator::next()] [Network message deduplication] If used for network message IDs, can overflow or ID collisions break deduplication logic, causing the same consensus vote or block to be processed multiple times, wasting resources or causing double-counting? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82c2c22a-d80d-48b4-9d83-b7da7467aac5?mode=deep",
+    "timestamp": "2026-01-25 17:59:17.070784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [RPC correlation] If used to correlate RPC requests/responses across validator peers, can ID collisions cause responses to be routed to wrong requestors, potentially leaking private validator state or consensus information? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1853273c-957b-437c-a9f8-7b18b412fcb1?mode=deep",
+    "timestamp": "2026-01-25 17:59:41.735925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-id-generator/src/lib.rs] [Function: U32IdGenerator::next()] [Contention hotspot] Can the shared atomic counter become a performance bottleneck under high load, causing cache line contention that degrades validator performance and potentially impacts consensus liveness during peak transaction volume? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5d79420-ec2d-48c7-8138-f4cec2b75341?mode=deep",
+    "timestamp": "2026-01-25 18:00:05.406974",
+    "report_generated": false
+  }
+]
