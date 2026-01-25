@@ -1,0 +1,134 @@
+[
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: write_u16frame()] [Backward compatibility] If a validator upgrades to a version that removes the u16::MAX limit at line 52, but other validators still enforce it, can this cause asymmetric message delivery and consensus inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50185d73-dac5-4de5-938b-4906b6f35f99?mode=deep",
+    "timestamp": "2026-01-25 11:41:40.254128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Stack exhaustion] While the function itself doesn't recurse, if called in a deep async call stack and buf.resize() at line 20 triggers large allocations, could this combined with stack frames cause stack overflow on validators with limited stack space? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a24d5a25-41af-4420-af36-df4fd94c713d?mode=deep",
+    "timestamp": "2026-01-25 11:41:53.170436",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Allocation failure handling] If buf.resize(len as usize, 0) at line 20 fails due to OOM, does it panic or return an error? Could unhandled allocation failures crash validators during high-load consensus rounds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a6c6b20-70e0-4c00-b37f-0504bbdd1226?mode=deep",
+    "timestamp": "2026-01-25 11:42:06.554944",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: write_u16frame()] [Buffer reference lifetime] At line 42, buf: &'buf [u8] is borrowed. If the buffer is modified concurrently in another thread while write_all() at line 54 is executing, could this cause data races despite borrowing rules? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8aed659c-aac7-4183-be5f-8aae4bca90f2?mode=deep",
+    "timestamp": "2026-01-25 11:42:20.243375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [MAC verification dependency] Does read_u16frame() at lines 10-23 verify message authentication codes (MACs) or signatures, or does it blindly trust framing? Could an attacker inject crafted frames that pass framing but contain malicious payloads, bypassing security checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5e4e5ca-1fe7-4bca-ac59-76545f39bee9?mode=deep",
+    "timestamp": "2026-01-25 11:42:34.951888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: write_u16frame()] [Authentication bypass] If write_u16frame() at lines 40-57 doesn't include authentication, can a man-in-the-middle attacker modify frame lengths or payloads in transit, causing validators to receive corrupted consensus messages without detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7dedfb93-698d-41ba-af42-6942f0acb5f7?mode=deep",
+    "timestamp": "2026-01-25 11:42:50.883292",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Replay attack] Does the framing layer at lines 10-23 include sequence numbers or nonces? Can an attacker capture valid frames and replay them later, causing validators to process duplicate proposals or votes, violating consensus safety? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a46a294b-c4c1-4402-880d-3e3f232984a4?mode=deep",
+    "timestamp": "2026-01-25 11:43:07.641492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Async cancellation safety] If the future returned by read_u16frame() is cancelled (e.g., via tokio::timeout) after buf.resize() at line 20 but before read_exact() at line 21, is the buffer left in a valid state for reuse, or could subsequent reads read into a partially-sized buffer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6448d98c-83cd-4827-8164-3f756b92008a?mode=deep",
+    "timestamp": "2026-01-25 11:43:26.910883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: write_u16frame()] [Write ordering] If multiple tasks call write_u16frame() on the same stream without synchronization, even though each call is internally sequential (lines 53-54), can the length prefixes and payloads from different calls interleave, completely corrupting the frame stream? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9606fa50-cffc-465e-9866-d981547e6a0f?mode=deep",
+    "timestamp": "2026-01-25 11:43:46.150423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Polling behavior] Since read_u16frame() is async, if it's polled multiple times before completion, does each poll restart from the beginning or continue from where it left off? Could incorrect polling behavior cause repeated partial reads and stream corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_602e42c7-d364-41ba-b3da-9cfaf4a9692a?mode=deep",
+    "timestamp": "2026-01-25 11:44:06.726842",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Frame boundary ambiguity] If a payload contains bytes that look like valid length prefixes, and stream desynchronization occurs, can the parser lock onto these false prefixes, permanently corrupting the message stream? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ad3e0c3-7794-4ab5-ac48-275f3f6126d4?mode=deep",
+    "timestamp": "2026-01-25 11:44:28.001572",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: write_u16frame()] [Atomicity guarantee] Does write_u16frame() at lines 40-57 guarantee atomic writes of both length and payload, or can they be interleaved with other writes? If not atomic, could this violate protocol invariants requiring frames to be contiguous? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6efaacb0-f443-4f7d-9799-0f0c51277a85?mode=deep",
+    "timestamp": "2026-01-25 11:44:50.938022",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame_len()] [BE bytes assumption everywhere] The code at line 33 assumes all peers use big-endian encoding. If any validator or peer uses a different architecture or has endianness bugs, could this cause protocol-wide frame misinterpretation and network partition? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93885050-5bad-4ce7-acc5-d623246da002?mode=deep",
+    "timestamp": "2026-01-25 11:45:13.557645",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Byzantine peer resource exhaustion] Can a Byzantine validator with < 1/3 stake deliberately send max-size frames to all honest validators via read_u16frame(), exhausting their memory in coordinated attacks and reducing honest validator participation below 2/3 threshold? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24919cb3-67fa-4287-95a6-15dca8f59b36?mode=deep",
+    "timestamp": "2026-01-25 11:45:37.055225",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: write_u16frame()] [Byzantine leader proposal size] If a Byzantine leader generates an oversized block proposal that exceeds u16::MAX, the error at line 52 prevents sending. Will honest validators timeout and move to the next leader, or could this be exploited to cause repeated leader failures and degrade liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d78336db-00c9-4aca-ab11-4bf37df1503b?mode=deep",
+    "timestamp": "2026-01-25 11:46:01.712948",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Targeted message dropping] Can a Byzantine peer selectively send corrupted frames to specific validators via stream desynchronization at lines 19-21, causing those validators to reject all subsequent consensus messages and appear offline, reducing honest participation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59d3613f-8a1b-4485-8fe7-acffb857b18d?mode=deep",
+    "timestamp": "2026-01-25 11:46:26.765663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [usize vs u16 platform differences] At line 20, 'len as usize' converts u16 to usize. On 16-bit platforms (if any exist), could u16::MAX equal usize::MAX, causing buf.resize() to fail or behave unexpectedly? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e41618ea-9eea-4c84-82bb-50bc5108138c?mode=deep",
+    "timestamp": "2026-01-25 11:46:52.002974",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: write_u16frame()] [Empty buffer writes] If buf at line 42 is an empty slice &[], will write_u16frame() successfully write a 2-byte length prefix of 0x0000 followed by no payload? Can repeated empty frame writes waste resources or cause protocol confusion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5302e54d-10fd-4675-94e2-3900b93b9374?mode=deep",
+    "timestamp": "2026-01-25 11:47:18.510383",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame_len()] [Invalid length values] While any u16 value is technically valid at line 33, are there reserved or special length values that should be rejected? Could length values like 0xFFFF or 0x0001 have special protocol meanings that aren't validated? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_717659a1-20bd-48eb-9c5f-e52d19739910?mode=deep",
+    "timestamp": "2026-01-25 11:47:44.706282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Stream reset handling] If the underlying TSocket is reset (e.g., TCP RST) between read_u16frame_len() at line 19 and read_exact() at line 21, what error is returned? Could reset handling differences across socket types cause inconsistent behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8b42db7-18c5-4d80-8317-2251ca5384e2?mode=deep",
+    "timestamp": "2026-01-25 11:48:12.726500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: write_u16frame()] [Write timeout] If write_all() at line 54 takes too long due to slow peer, and the operation times out, is the partial write rolled back or does it leave the stream corrupted with incomplete frames? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28d9fa34-5d70-42b8-8d30-40ad0b20957f?mode=deep",
+    "timestamp": "2026-01-25 11:48:39.887714",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/netcore/src/framing.rs] [Function: read_u16frame()] [Read buffer pooling] If callers implement buffer pooling to reuse BytesMut instances, could buffer state from previous failed reads corrupt subsequent reads when passed to read_u16frame() at line 12? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16667d6d-e9d6-444b-85eb-495421600596?mode=deep",
+    "timestamp": "2026-01-25 11:49:07.747769",
+    "report_generated": false
+  }
+]
