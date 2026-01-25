@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: BytesSender] [Buffer Overflow] Lines 45-53 in bytes_sender.rs extend buffer without max size check - can an attacker trigger scenarios where buffer grows beyond TARGET_BATCH_SIZE without flushing, causing heap exhaustion and OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6746465a-15c5-4be9-b074-996487e1cfdd?mode=deep",
+    "timestamp": "2026-01-25 17:29:16.213245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: send_size_prefixed_bcs_bytes] [Integer Truncation] Lines 55-67 in bytes_sender.rs cast record_bytes.len() to u32 - can an attacker provide records larger than 4GB to cause size truncation, where the prefix says size=100MB but actual data is 5GB, breaking deserialization and corrupting restored state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a751b45-eeb6-4a56-a99f-906a627483ab?mode=deep",
+    "timestamp": "2026-01-25 17:29:29.358317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot endpoint] [Iterator Drop Safety] Lines 53-55 chain try_for_each on iterator - if the iterator panics mid-iteration, can cleanup handlers fail to execute, leaving database locks held and corrupting subsequent backup operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cbe6e931-b5b8-45dc-8d59-dbbb25474a15?mode=deep",
+    "timestamp": "2026-01-25 17:29:43.383428",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: transactions endpoint] [Stream Backpressure] Lines 106-109 iterate without backpressure control - can a slow consumer cause unbounded buffering in BytesSender, exhausting memory as the producer keeps generating transaction data faster than network transmission? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc370568-a736-46d6-b6b4-b6600ad2f308?mode=deep",
+    "timestamp": "2026-01-25 17:29:57.618012",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: flush_buffer] [Partial Flush] Lines 69-74 in bytes_sender.rs split buffer and freeze - if the MPSC channel is full, can blocking_send deadlock while holding the partial buffer, causing later sends to fail and corrupting the output stream? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1dff6862-61cb-472e-af3b-cfe4da719749?mode=deep",
+    "timestamp": "2026-01-25 17:30:12.967927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: reply_with_bytes_sender] [Task Panic Handling] Lines 59-63 in utils.rs spawn task and ignore join_handle - if the spawned task panics, can the error be silently swallowed while the client waits indefinitely for data, creating ghost connections that leak resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26ad0b88-f87a-4e6a-9a06-e57ae8e5ce4d?mode=deep",
+    "timestamp": "2026-01-25 17:30:29.803108",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: reply_with_bcs_bytes] [Serialization DOS] Lines 36-45 in utils.rs serialize arbitrary records with bcs::to_bytes - can an attacker trigger serialization of deeply nested structures causing stack overflow in BCS encoder, crashing the service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9983d3b4-6a81-4a38-90e1-ce3a2965834a?mode=deep",
+    "timestamp": "2026-01-25 17:30:47.603097",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: send_size_prefixed_bcs_bytes] [BCS Bomb] Lines 59 in bytes_sender.rs serialize record without size limits - can an attacker craft state records that expand exponentially during BCS serialization (zip bomb equivalent), consuming all available memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10043e08-abdb-410e-a92a-09eb65d0d972?mode=deep",
+    "timestamp": "2026-01-25 17:31:08.019673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: db_state endpoint] [Deserialization Attack] Lines 32 serialize DbState with BCS - if DbState contains untrusted data from ledger metadata, can malicious validators insert crafted DbState that causes downstream BCS deserialization to panic or execute arbitrary code? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ce5cdf1-0736-419d-98c2-7591dd97bf19?mode=deep",
+    "timestamp": "2026-01-25 17:31:29.070936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot endpoint] [Type Confusion] Lines 54 serialize StateKey/StateValue pairs - can type confusion between Move resource types cause BCS to serialize a Coin<AptosCoin> as Coin<FakeCoin>, enabling backup consumers to mint unlimited tokens during restoration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a6d77bf-7bc6-46e9-892e-6ea80853c40f?mode=deep",
+    "timestamp": "2026-01-25 17:31:52.424571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: get_routes()] [Metrics Poisoning] Lines 140-146 record latency in LATENCY_HISTOGRAM - can an attacker send requests that hang indefinitely to skew metrics with elapsed times of days/weeks, poisoning monitoring systems and hiding real performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8242b42f-e5c4-43a0-83a3-531d915b7814?mode=deep",
+    "timestamp": "2026-01-25 17:32:17.081944",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: reply_with_bcs_bytes] [Counter Overflow] Lines 41-43 in utils.rs increment THROUGHPUT_COUNTER - can an attacker send massive requests to overflow the counter (if it's not properly atomic), causing counter wraps that break monitoring, alerting, and rate limiting based on metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d76f511-c42b-40f4-a3ef-7bfd6cd7a2c0?mode=deep",
+    "timestamp": "2026-01-25 17:32:43.979334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: get_routes()] [Endpoint Enumeration] Lines 126-135 define all route paths - can an attacker enumerate these endpoints to build a complete map of available backup operations, identifying the most valuable targets for exfiltration or the most vulnerable to DoS? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c013f0d1-023c-4af6-8c24-5c5819bfb2c2?mode=deep",
+    "timestamp": "2026-01-25 17:33:10.691905",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: custom log handler] [Log Injection] Lines 140-146 log info.path() without sanitization - can an attacker inject newlines or ANSI escape codes into paths to corrupt logs, hide attack traces, or trigger log processing vulnerabilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b21ab40-ca5f-4606-a3a4-a5e35aabe597?mode=deep",
+    "timestamp": "2026-01-25 17:33:39.651412",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: get_routes()] [HTTP Method Confusion] Lines 138 explicitly filters to GET only - can an attacker bypass this filter using HTTP verb tampering (GET→POST via X-HTTP-Method-Override header) to trigger unintended behavior if backend handlers process other methods? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55e43e6b-1d2a-4c7e-ace0-d5cc5aaf32ed?mode=deep",
+    "timestamp": "2026-01-25 17:34:09.474587",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: reply_with_bytes_sender] [Response Splitting] Lines 65 in utils.rs create Response without header validation - can an attacker inject malicious data into the response stream that includes CRLF sequences, enabling HTTP response splitting attacks against backup clients? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1861def-4818-446e-b5c3-9855f7b8d3f9?mode=deep",
+    "timestamp": "2026-01-25 17:34:41.351096",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: all endpoints] [Connection Hijacking] All endpoints return boxed Reply without TLS enforcement - can a man-in-the-middle attacker intercept backup responses to steal state data, then modify and replay them to backup clients, causing restoration of attacker-controlled state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f4229b2-b55d-4a42-911b-cc81780e1d67?mode=deep",
+    "timestamp": "2026-01-25 17:35:13.565228",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: get_routes()] [Route Confusion] Lines 126-135 OR together all routes - can overlapping path patterns cause warp router to match ambiguous requests to wrong handlers, like /state_snapshot/123 matching both state_snapshot and state_snapshot_chunk? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a6e44ab-60f6-4501-b8f9-d9a6c5eb307f?mode=deep",
+    "timestamp": "2026-01-25 17:35:46.401960",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: BytesSender] [Memory Leak] Lines 32 in bytes_sender.rs create channel with MAX_BATCHES=100 - if sender panics before calling finish() or abort(), can buffered messages leak permanently, accumulating until the process runs out of memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_143f6a3b-f58c-4548-b23a-750904626339?mode=deep",
+    "timestamp": "2026-01-25 17:36:18.081023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot endpoint] [Iterator Lifetime] Lines 52-55 pass iterator to closure - can the iterator hold references to database state that outlive transaction snapshots, causing use-after-free if the database reclaims the memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7d0183d-0d40-4a0c-a307-a23eb8665b7f?mode=deep",
+    "timestamp": "2026-01-25 17:36:49.248140",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: reply_with_bytes_sender] [Arc Leak] Lines 58 in utils.rs clone BackupHandler (which is Arc-based) - can unclosed streams prevent BackupHandler from being dropped, leaking database connections and eventually exhausting connection pool? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_778ef2d4-aab6-4ce4-bc27-c55492a1d827?mode=deep",
+    "timestamp": "2026-01-25 17:37:18.976680",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: transactions endpoint] [Unbounded Allocation] Lines 106-109 iterate over num_transactions without pagination - can requesting millions of transactions cause allocation of gigabytes of contiguous memory for WriteSet/Events, triggering OOM even with memory limits due to fragmentation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc94e204-7c2b-43d0-aabe-8e49422c9397?mode=deep",
+    "timestamp": "2026-01-25 17:37:48.773344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot + transaction_range_proof] [Backup Integrity] Combining snapshots from lines 50-57 with proofs from lines 115-123 - can an attacker mix-and-match snapshots and proofs from different versions to create backups that pass proof verification but represent impossible blockchain states, causing divergence on restoration? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5097d98d-7b36-4542-a7df-52135156e362?mode=deep",
+    "timestamp": "2026-01-25 17:38:19.416026",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: state_snapshot_chunk] [Chunked Backup Attack] Lines 73-79 allow arbitrary chunk requests - can an attacker request overlapping chunks (chunk1: idx 0-1000, chunk2: idx 500-1500) to detect if state changes occurred between requests, timing their attack to occur during validator rotations when state is most vulnerable? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_690ed954-bc50-4a90-8b10-daa0c47653ef?mode=deep",
+    "timestamp": "2026-01-25 17:38:46.127096",
+    "report_generated": false
+  },
+  {
+    "question": "[File: storage/backup/backup-service/src/handlers/mod.rs] [Function: epoch_ending_ledger_infos] [Epoch Replay Attack] Lines 93-100 return historical epoch endings - can an attacker collect epoch ending ledger infos from ancient epochs, then replay them during a new epoch transition to confuse backup restoration logic and cause validators to accept outdated validator sets? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_01cb2128-55be-41c5-884f-17d47e89d189?mode=deep",
+    "timestamp": "2026-01-25 17:39:13.999720",
+    "report_generated": false
+  }
+]
