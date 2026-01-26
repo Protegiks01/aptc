@@ -1,0 +1,86 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Scope Limitation] The file path includes 'coin_models' but processes all account transactions - if table items are commonly used for coin/token operations, does the missing table item tracking make this entire module incomplete for its intended purpose? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_652f6f7a-a6cd-4874-992b-fe209aec1ac9?mode=deep",
+    "timestamp": "2026-01-26 07:25:00.101978",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_event()] [Malformed Input] At line 91, event.guid.account_address.to_string() is passed to standardize_address without validation - if the API types allow malformed addresses, could this cause panics or SQL injection when inserting into account_transactions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3984d625-3256-41ee-99a5-932a4542b454?mode=deep",
+    "timestamp": "2026-01-26 07:25:13.080339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Address Validation] At line 105, write_resource.address.to_string() is not validated before standardization - if this contains SQL special characters or escape sequences, could it bypass parameterized queries and cause database injection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_127002fb-4262-458f-8604-9dec290fb837?mode=deep",
+    "timestamp": "2026-01-26 07:25:26.718160",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_delete_resource()] [Address Validation] At line 129, delete_resource.address.to_string() is directly used - if malicious validators can inject delete resources with crafted addresses containing newlines or null bytes, could this corrupt the account_transactions table? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c3ae9b9-cb27-4be6-a43e-66564db68ed7?mode=deep",
+    "timestamp": "2026-01-26 07:25:40.474970",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Signature Validation] At line 68, sig.signer is used directly without validation - if UserTransaction.get_signatures returns signatures with malformed or malicious signer addresses, will these be inserted into account_transactions, potentially causing query failures or security issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22e9f456-16fb-47a2-a6d5-fbb67099cf60?mode=deep",
+    "timestamp": "2026-01-26 07:25:54.985758",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Object Validation] At line 110, ObjectWithMetadata.from_write_resource may deserialize arbitrary data - if this deserialization is exploitable (e.g., buffer overflow in BCS decoder), could malicious write resources cause indexer RCE? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52dea8f9-c024-4bd9-b91e-13e4f346012e?mode=deep",
+    "timestamp": "2026-01-26 07:26:10.974089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Memory Exhaustion] At line 64, a HashMap is allocated without size hint - if a malicious transaction has thousands of events and write set changes affecting different accounts, could this cause unbounded memory allocation and OOM crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db2441e4-468f-4110-941d-2df963719d88?mode=deep",
+    "timestamp": "2026-01-26 07:26:27.820063",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Loop Amplification] At lines 71-73 and 74-83, loops process all events and write set changes - can an attacker create a transaction with maximum allowed events/changes to amplify processing cost and cause indexer DoS? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c5d378d-d373-4923-bea9-758733a3502b?mode=deep",
+    "timestamp": "2026-01-26 07:26:47.568728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_event()] [Allocation Overhead] At lines 92-95, a new HashMap is allocated for each event - if a transaction has thousands of events, will this cause excessive allocation/deallocation overhead and slow down indexing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4bf4bff-c58c-4ee6-850c-291576baf996?mode=deep",
+    "timestamp": "2026-01-26 07:27:08.356530",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_write_resource()] [Nested Allocation] At lines 104 and 107, new HashMap is created and inserted into - for transactions with many write resources, could the nested HashMap allocations cause memory fragmentation and performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3afc0b0-f405-4e2b-baa4-be54fcd23dfc?mode=deep",
+    "timestamp": "2026-01-26 07:27:30.138354",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [String Cloning] At lines 66, 68, 93, 107, and 131, account addresses are cloned multiple times - for large transactions, could this excessive string cloning cause performance issues or memory pressure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dda8f2c4-65d6-4d70-8491-cb80555dc85a?mode=deep",
+    "timestamp": "2026-01-26 07:27:52.107123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Indexer Lag] If from_transaction takes too long to process a transaction with many account associations, could this cause the indexer to fall behind the chain, creating long-term lag that makes account_transactions data stale? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ee1c618-87e1-4bbe-9b28-c16bfd60b560?mode=deep",
+    "timestamp": "2026-01-26 07:28:16.182034",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Indexer Crash Recovery] If the indexer crashes after from_transaction returns but before database commit, will reprocessing the transaction cause duplicate primary key violations, or does the database have upsert logic to handle this? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9996f98-f183-4657-8c98-0fa47223f17a?mode=deep",
+    "timestamp": "2026-01-26 07:28:40.803005",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/account_transactions.rs] [Function: from_transaction()] [Checkpoint Inconsistency] If the indexer processes transactions out of order due to parallel execution, could account_transactions have gaps where transaction N+1 is indexed before transaction N, breaking sequential queries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e79188bd-2776-4427-bd8b-e705baf22861?mode=deep",
+    "timestamp": "2026-01-26 07:29:07.716691",
+    "report_generated": false
+  }
+]
