@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: update_stream_progress()] [Race Condition] Can concurrent calls to update_stream_progress() from multiple threads cause data races when accessing StreamProgressSamples through DashMap.get_mut(), potentially leading to corrupted progress tracking or missing samples? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1776a35c-c34b-4145-9f1e-7f81aa406477?mode=deep",
+    "timestamp": "2026-01-26 08:16:56.169448",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: update_stream_progress()] [Panic Attack] In update_stream_progress(), the code calls unwrap() on get_mut(id) - can an attacker trigger a panic by removing a stream via remove_active_stream() concurrently while update_stream_progress() is executing, causing service crash and denial of availability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52945486-6d39-478c-8f9a-3e44dbedfd5c?mode=deep",
+    "timestamp": "2026-01-26 08:17:10.456265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: insert_active_stream() + remove_active_stream()] [Metrics Inconsistency] Can race conditions between insert_active_stream() and remove_active_stream() cause NUM_CONNECTED_STREAMS metrics to become permanently incorrect (e.g., multiple removals for same stream ID), leading to incorrect monitoring and operational decisions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b7d9b71-520b-4e72-ad58-0634c80e2ee5?mode=deep",
+    "timestamp": "2026-01-26 08:17:24.694881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: get_active_streams() + insert_active_stream()] [Data Race] Can a race condition between get_active_streams() iterating over active_streams and concurrent insert_active_stream() calls result in inconsistent snapshot of active streams being sent in heartbeat, potentially causing GrpcManager to have stale or incorrect stream state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee57ff57-7c45-4d61-924f-d2287405cb8f?mode=deep",
+    "timestamp": "2026-01-26 08:17:39.714985",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: update_known_latest_version()] [Memory Ordering] Does update_known_latest_version() using fetch_max with Ordering::SeqCst provide sufficient synchronization guarantees across threads, or could weaker orderings lead to stale version reads in known_latest_version() with Ordering::SeqCst causing indexer to serve outdated data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cac5cc1-da0d-428d-b5b3-55d2abf83510?mode=deep",
+    "timestamp": "2026-01-26 08:17:56.005762",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: start() + heartbeat()] [Concurrent Modification] Can multiple concurrent start() loop iterations modify grpc_manager_connections while heartbeat() is accessing it, potentially causing undefined behavior or panics when iterating over DashMap entries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3f447f1-c750-4944-a7a4-d540b85acb0a?mode=deep",
+    "timestamp": "2026-01-26 08:18:13.449142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: maybe_add_sample()] [Integer Overflow] In maybe_add_sample(), can extremely large version or size_bytes values (near u64::MAX) cause integer overflow when stored in StreamProgressSample, potentially wrapping to 0 and causing incorrect progress tracking or triggering unexpected behavior in downstream consumers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46c6ba11-d537-4856-8c0f-e3d780044a7a?mode=deep",
+    "timestamp": "2026-01-26 08:18:32.119122",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: update_known_latest_version()] [Integer Overflow] Can fetch_max() with a maliciously crafted version value near u64::MAX cause integer overflow issues or incorrect version comparisons, potentially allowing an attacker to reset the known_latest_version to a lower value? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3cf69dff-659a-48b2-aacb-65da73b84e5c?mode=deep",
+    "timestamp": "2026-01-26 08:18:55.560950",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: insert_active_stream()] [Integer Overflow] Can start_version or end_version parameters with values near u64::MAX cause issues in version range calculations when combined with update_stream_progress(), potentially causing progress tracking to fail or report incorrect completion status? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbd57c53-bc7d-41a9-aa27-a58c6d54f85e?mode=deep",
+    "timestamp": "2026-01-26 08:19:19.655809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: insert_active_stream()] [Memory Exhaustion] Can an attacker create unlimited stream connections by repeatedly calling insert_active_stream() with unique IDs without corresponding remove_active_stream() calls, causing unbounded growth of active_streams DashMap and eventually exhausting memory leading to service crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76453732-0c86-4f09-8f4e-419862b7c290?mode=deep",
+    "timestamp": "2026-01-26 08:19:45.348233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: maybe_add_sample()] [Memory Exhaustion] Although old_samples and recent_samples have MAX_OLD_SAMPLES_TO_KEEP (60) and MAX_RECENT_SAMPLES_TO_KEEP (60) limits, can an attacker with many concurrent streams each accumulate these samples causing aggregate memory exhaustion across all streams? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa982732-bb5c-4d7a-ab9e-a3725d7e2e77?mode=deep",
+    "timestamp": "2026-01-26 08:20:12.071781",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: get_active_streams()] [CPU Exhaustion] Can an attacker create millions of active streams and force get_active_streams() to iterate over all of them during every heartbeat call, consuming excessive CPU and causing performance degradation or timeout of heartbeat requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e0a9c27-d474-4c52-a3ca-0ac4f450ca18?mode=deep",
+    "timestamp": "2026-01-26 08:20:38.359068",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: update_stream_progress()] [CPU Exhaustion] Can an attacker call update_stream_progress() at extremely high frequency for many streams, forcing constant execution of maybe_add_sample() with timestamp comparisons and VecDeque operations, leading to CPU exhaustion and service degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7332fc00-809a-49b2-98ea-40e9857b4314?mode=deep",
+    "timestamp": "2026-01-26 08:21:06.196889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: heartbeat()] [Panic Attack] In heartbeat() at line 287, the code uses unwrap() on grpc_manager_connections.get(address) with a TODO comment - can a race condition where connections are removed while heartbeat is executing cause a panic and crash the service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e55016db-5962-48a1-af16-c0eeb53138f5?mode=deep",
+    "timestamp": "2026-01-26 08:21:35.290933",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: get_grpc_manager_client_for_request()] [Panic Attack] Does get_grpc_manager_client_for_request() calling unwrap() on the Option from iter().choose() handle the case where grpc_manager_connections is empty, or will it panic and crash when no connections exist? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7cefe164-6563-4564-80eb-24024873df33?mode=deep",
+    "timestamp": "2026-01-26 08:22:03.627574",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: create_client_from_address()] [Panic Attack] In create_client_from_address(), the code uses expect('Bad address.') on Channel::from_shared() - can an attacker supply malformed addresses during initialization causing the service to panic before proper startup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27c1194f-2508-4742-abc1-fb9c9d710ef2?mode=deep",
+    "timestamp": "2026-01-26 08:22:31.962328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: maybe_add_sample()] [Panic Attack] In maybe_add_sample() at line 65, pop_front().unwrap() is called - although len() is checked, can concurrent access cause the VecDeque to be empty by the time unwrap() is called, leading to a panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd3e7c42-6db0-4a2e-94a8-e72ac13f303f?mode=deep",
+    "timestamp": "2026-01-26 08:23:01.498653",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: start()] [Error Suppression] Does the start() function's infinite loop properly handle and log all errors from heartbeat(), or does the 'continue' statement at line 161 silently suppress critical errors that should halt the service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db2c2b7f-dc71-4f25-8a54-ea10f0e8f221?mode=deep",
+    "timestamp": "2026-01-26 08:23:32.841348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: accept_sample()] [Time Manipulation] In accept_sample(), can system clock adjustments (backward time jumps) cause duration_since() to return an error, leading to all samples being rejected and progress tracking becoming permanently broken until service restart? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_990303bd-9e79-4165-ab38-b723d06b09ce?mode=deep",
+    "timestamp": "2026-01-26 08:24:04.964740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: maybe_add_sample()] [Logic Error] In maybe_add_sample() at lines 62-73, when recent_samples is full and a sample is moved to old_samples, can the nested if conditions cause samples to be silently dropped if they don't meet OLD_PROGRESS_SAMPLING_RATE, resulting in incomplete progress history? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa8897ef-563c-4717-bb78-f4b8d12c90cb?mode=deep",
+    "timestamp": "2026-01-26 08:24:39.049099",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: accept_sample()] [Edge Case] Does accept_sample() handle the edge case where sample.timestamp equals last_sample.timestamp (duration_since returns Ok(0)), and if so, does it correctly reject/accept based on sampling_rate being 0? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9502231a-476b-4881-8a05-35b5fcac3d78?mode=deep",
+    "timestamp": "2026-01-26 08:25:14.971888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: maybe_add_sample()] [Time Overflow] Can SystemTime values far in the future (approaching SystemTime::MAX) cause duration_since() calculations in accept_sample() to overflow or return errors, breaking progress tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20678a3f-99ab-4909-a470-53ef4dea3171?mode=deep",
+    "timestamp": "2026-01-26 08:25:52.076764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: insert_active_stream()] [Access Control] Does insert_active_stream() validate that the caller is authorized to create a stream with the given ID, or can any component create streams with arbitrary IDs potentially impersonating other clients or causing conflicts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc6981f3-1c7b-4544-90e3-9a1cd96be552?mode=deep",
+    "timestamp": "2026-01-26 08:26:31.612239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: remove_active_stream()] [Access Control] Can remove_active_stream() be called by unauthorized components to maliciously terminate active streams, causing data synchronization failures for legitimate indexer clients? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cf3e2b2-aad7-4f54-920a-1fc9615239cd?mode=deep",
+    "timestamp": "2026-01-26 08:27:11.926634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-data-service-v2/src/connection_manager.rs] [Function: update_stream_progress()] [Access Control] Does update_stream_progress() validate that the caller owns the stream identified by 'id', or can malicious components manipulate progress tracking of other clients' streams? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_514bd899-a76f-4521-807d-e09d61045e3e?mode=deep",
+    "timestamp": "2026-01-26 08:27:53.468415",
+    "report_generated": false
+  }
+]
