@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: compute_pct()] [Precision Loss] When computing count * pct as u64 / 100, does integer division cause significant precision loss for small count values, potentially allowing attackers to gradually reduce payload sizes below safety thresholds? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b641231b-45ef-4660-a993-cd4d47e40e7b?mode=deep",
+    "timestamp": "2026-01-26 04:00:54.852309",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Struct: PayloadTxnsSize] [Block Stuffing] Can Byzantine validators exploit the normalization in new_normalized() to craft PayloadTxnsSize values that appear small in bytes but have inflated counts, allowing them to include more transactions than intended in a consensus block? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d647c9d-4889-4dcf-91f5-b8c02b8497d5?mode=deep",
+    "timestamp": "2026-01-26 04:01:07.000016",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Struct: PayloadTxnsSize] [Resource Exhaustion] Can an attacker create PayloadTxnsSize with count=1 and bytes=u64::MAX, then use compute_with_bytes() to scale it proportionally, causing memory exhaustion when validators try to allocate buffers based on inflated byte sizes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cbf6edc8-04f7-41c8-a727-eeb674121220?mode=deep",
+    "timestamp": "2026-01-26 04:01:20.223702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Struct: PayloadTxnsSize] [Censorship Attack] Can a malicious proposer manipulate PayloadTxnsSize calculations to systematically exclude certain transactions by crafting values that make victim transactions appear to exceed limits during payload selection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1437208-73a2-4fe5-b5b9-11f6fbb76650?mode=deep",
+    "timestamp": "2026-01-26 04:01:33.345077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: new()] [Non-Determinism] Since new() calls new_normalized() when validation fails, and normalization behavior depends on the relationship between count and bytes, can race conditions in concurrent payload construction cause different validators to produce different normalized values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f919bb9-1da6-4dca-896b-42bd1a23899b?mode=deep",
+    "timestamp": "2026-01-26 04:01:47.448317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Trait: Default] [Uninitialized State] At line 13, PayloadTxnsSize derives Default which creates zero values. Can code paths that use Default::default() without proper initialization be exploited to bypass validation checks that assume proper construction via new()? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0a6f491-5f99-4d1b-b7a6-b98793d12a56?mode=deep",
+    "timestamp": "2026-01-26 04:02:02.023055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Trait: Clone] [Invariant Preservation] Does Clone preserve all invariants, or can cloning in concurrent contexts combined with mutations via set_count() create race conditions where cloned copies have different invariants than the original? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28c4d628-4a2a-4b63-a3da-489eb9e2a796?mode=deep",
+    "timestamp": "2026-01-26 04:02:18.156840",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: new()] [Information Disclosure] At line 24-27, when validation fails, the function logs count, bytes, and error details. Can these logs leak sensitive consensus state information to attackers monitoring validator nodes, enabling targeted attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5caf0e6b-1aaa-4b29-9d83-111588710997?mode=deep",
+    "timestamp": "2026-01-26 04:02:35.072269",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: set_count()] [Log Flooding] At line 78-81, failed set_count() calls log warnings. Can an attacker repeatedly trigger invalid set_count() operations to flood validator logs, causing disk space exhaustion or performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28ab1e4c-504d-4238-8296-47af5fa0427a?mode=deep",
+    "timestamp": "2026-01-26 04:02:53.328578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: new()] [Silent Normalization] When new() silently normalizes invalid inputs instead of returning an error, can this mask bugs in calling code that should be failing loudly, allowing consensus bugs to propagate undetected until they cause chain splits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0bae728-4d99-46a3-9986-df552b4256cd?mode=deep",
+    "timestamp": "2026-01-26 04:03:12.662335",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: try_new()] [Error Propagation] Does try_new() returning anyhow::Result provide enough context for calling code to handle errors appropriately, or can error information loss during propagation cause validators to make different decisions when handling invalid payload sizes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75f80441-b4ad-4548-a886-27537ef782b1?mode=deep",
+    "timestamp": "2026-01-26 04:03:31.443116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Struct: PayloadTxnsSize] [Data Race] PayloadTxnsSize is Copy, meaning it's copied by value. Can concurrent reads and writes to the same PayloadTxnsSize cause torn reads where count and bytes come from different updates, violating invariants? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_687888db-6434-456a-8ca4-ffaaebd2de92?mode=deep",
+    "timestamp": "2026-01-26 04:03:51.426494",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: set_count()] [Race Condition] At line 76-84, set_count() mutates self. If multiple threads call set_count() concurrently without proper synchronization, can this lead to lost updates or inconsistent state visible to consensus algorithms? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6decd2c4-699d-4044-a861-f5b011a655f8?mode=deep",
+    "timestamp": "2026-01-26 04:04:11.966214",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: AddAssign/SubAssign] [Atomic Operations] Do the AddAssign and SubAssign operations at lines 128-130 and 142-144 need to be atomic to prevent race conditions in concurrent payload accounting used by consensus protocols? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d004025-fdf1-414b-8921-2997d23ee625?mode=deep",
+    "timestamp": "2026-01-26 04:04:33.126244",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Trait: Serialize] [Deserialization] At line 13, PayloadTxnsSize derives Serialize. Is there a corresponding Deserialize implementation that validates invariants, or can deserialized values bypass validation and violate the count <= bytes invariant? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff21728e-17c8-479b-8582-419ff499ecb6?mode=deep",
+    "timestamp": "2026-01-26 04:04:54.897084",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Trait: Serialize] [Network Protocol] When PayloadTxnsSize is serialized and sent between validators, can an attacker on the network inject crafted serialized values that violate invariants, causing receiving validators to panic or enter inconsistent states? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f26db001-4d64-434a-ab4a-fefb3e4af24b?mode=deep",
+    "timestamp": "2026-01-26 04:05:17.976220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: Display trait] [Format String] At line 174-180, the Display implementation formats count and bytes. Can maliciously crafted values cause format string vulnerabilities or panics in logging code that uses this Display implementation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31696082-6c86-407b-a82c-684c4d4c43b2?mode=deep",
+    "timestamp": "2026-01-26 04:05:42.137390",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: new_normalized()] [MAX Values] When count and bytes are both u64::MAX, does new_normalized() handle this correctly, or can subsequent operations like Add or compute_pct() overflow? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66d49478-97db-42be-87be-f5966ad2c06f?mode=deep",
+    "timestamp": "2026-01-26 04:06:07.432190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: zero()] [Zero Handling] At line 53-55, zero() returns count=0, bytes=0. Can code that checks for zero payloads using count() == 0 OR bytes == 0 instead of both create logic errors where non-zero payloads are treated as zero? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45fcba7d-c8f4-4f32-83f6-bf80842db534?mode=deep",
+    "timestamp": "2026-01-26 04:06:33.302996",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: compute_with_bytes()] [Zero Input] At line 94-104, when new_size_in_bytes is 0, what happens? Does it return zero() or can it create invalid intermediate states during the calculation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a17ec416-831f-4c58-8b12-f07af1cbb563?mode=deep",
+    "timestamp": "2026-01-26 04:06:59.308276",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: compute_pct()] [Zero Percent] When pct=0, does compute_pct() return zero() correctly, or can it create non-zero intermediate values due to the normalization process? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c43abb2-300d-4f6c-9b5e-a6c24b8c3415?mode=deep",
+    "timestamp": "2026-01-26 04:07:24.065679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: compute_pct()] [100 Percent] When pct=100, does compute_pct() return self exactly, or can division and multiplication introduce small errors that cause validators to disagree on exact payload sizes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ddde282-4909-43d3-8c90-3a38762012e3?mode=deep",
+    "timestamp": "2026-01-26 04:07:49.628110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: minimum()] [Symmetry] Is minimum(A, B) always equal to minimum(B, A), or can the order of arguments affect the result due to normalization, causing consensus disagreements? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af07be45-ecd5-445c-9a52-59b50e2d9893?mode=deep",
+    "timestamp": "2026-01-26 04:08:13.421114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Function: maximum()] [Symmetry] Is maximum(A, B) always equal to maximum(B, A), or can the order of arguments affect the result due to normalization, causing consensus disagreements? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbdd4293-972c-482c-9d84-41aa32d63d2d?mode=deep",
+    "timestamp": "2026-01-26 04:08:36.825151",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/utils.rs] [Struct: PayloadTxnsSize] [Payload Manipulation] Can a Byzantine validator craft proposals with PayloadTxnsSize values that pass validation but cause honest validators to compute different sizes using compute_with_bytes() or compute_pct(), leading to consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3aabdfb9-f333-4e5f-9137-e9a9eedfac03?mode=deep",
+    "timestamp": "2026-01-26 04:09:00.580801",
+    "report_generated": false
+  }
+]
