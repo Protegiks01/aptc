@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: update_ledger()] [Queue state corruption] At lines 382-384, save_ledger_update_output modifies commit_queue state - can failures in this operation leave the queue in an inconsistent state where some chunks are half-processed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_572e9bc9-8f65-40a4-8b4f-5c916a01523f?mode=deep",
+    "timestamp": "2026-01-26 12:54:34.237717",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: commit_chunk_impl()] [Fail point injection] At lines 275-277, there's a fail_point that can inject errors in commit_chunk - in production, can this fail point be triggered externally to cause denial of service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e9ba5b3-19fd-4968-ae8d-4cdf5872516d?mode=deep",
+    "timestamp": "2026-01-26 12:54:47.163869",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: commit_chunk_impl()] [Async write atomicity] At lines 278-282, save_transactions is called with sync_commit=false - can this allow transactions to be considered committed in memory while disk writes are still pending, causing state divergence on crash? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_acfeaaa3-7948-4d9a-9cef-9053d846a257?mode=deep",
+    "timestamp": "2026-01-26 12:55:00.376174",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: commit_chunk_impl()] [Ledger info validation] At line 272, ledger_info_opt is checked but what if it contains a valid but malicious ledger info that was crafted by Byzantine validators? Is signature verification performed here? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58b8fa25-ae63-4074-98a6-f82401fea35d?mode=deep",
+    "timestamp": "2026-01-26 12:55:14.243682",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: commit_chunk_impl()] [Queue dequeue race] At line 286, dequeue_committed is called - can concurrent commit operations cause chunks to be dequeued in the wrong order or dequeued twice? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_daf699bf-74a7-4bce-a3a5-7211a4cf2c18?mode=deep",
+    "timestamp": "2026-01-26 12:55:28.474325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: commit_chunk()] [Atomic flag ordering] At line 398, has_pending_pre_commit is set to false with Release ordering - is this sufficient to ensure all prior memory writes are visible to other threads, or could reordering cause inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c16555f7-360b-44e8-940a-cde5b96d95c6?mode=deep",
+    "timestamp": "2026-01-26 12:55:43.963389",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: commit_chunk()] [Empty transaction commitment] At line 271, the check allows committing when num_txns=0 if ledger_info_opt.is_some() - can this be exploited to commit empty chunks with fake ledger infos to advance the chain artificially? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa540dc5-bef0-4cc4-957d-3ea068512ae1?mode=deep",
+    "timestamp": "2026-01-26 12:56:00.312582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: ChunkExecutorInner::new()] [Pre-commit detection race] At lines 240-243, the has_pending_pre_commit flag is determined by comparing versions - can race conditions during initialization cause this flag to be incorrectly set, leading to spurious panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7782859a-efef-4f27-8b4c-00ef94256bc6?mode=deep",
+    "timestamp": "2026-01-26 12:56:18.833557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: ChunkExecutorInner::new()] [Version comparison vulnerability] At line 242, the assertion next_synced_version <= next_pre_committed_version could fail if database state is corrupted - should this panic or handle gracefully? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d05eacb-e0f0-4e80-8dd4-5ab13aa01a3d?mode=deep",
+    "timestamp": "2026-01-26 12:56:37.739308",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: state_view()] [State view version mismatch] At lines 253-260, CachedStateView is created with first_version from state.next_version() - can this version be manipulated to read from wrong state snapshots? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbfdbc46-7eef-4b80-8c6f-cce03eff632a?mode=deep",
+    "timestamp": "2026-01-26 12:56:58.687841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: state_view()] [Clone operation consistency] At line 258, state.clone() is performed - is this a deep clone that prevents concurrent modifications from affecting the state view, or can race conditions occur? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8ebdd26-4c16-4096-8cd0-dd1cac3bbb45?mode=deep",
+    "timestamp": "2026-01-26 12:57:20.172193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: enqueue_chunks()] [Input length mismatch] At line 457, transactions.len() is used as num_txns, but are all the input vectors (persisted_aux_info, transaction_infos, write_sets, event_vecs) validated to have the same length? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5df81956-a585-4de4-b776-1fb9f5671812?mode=deep",
+    "timestamp": "2026-01-26 12:57:43.381088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: enqueue_chunks()] [Version arithmetic overflow] At line 460, chunk_end is calculated as chunk_begin + num_txns - can this overflow with a large num_txns value, causing version wraparound and breaking sequencing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f6b568f-30a6-44e2-b719-14ced55eeacd?mode=deep",
+    "timestamp": "2026-01-26 12:58:07.551841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: enqueue_chunks()] [Epoch boundary manipulation] At lines 462-474, epoch boundaries are detected by scanning for new_epoch_events - can an attacker inject fake epoch events to force artificial epoch splits and disrupt replay? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa44285f-fffa-47c0-a946-9772cdb67965?mode=deep",
+    "timestamp": "2026-01-26 12:58:32.963370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: enqueue_chunks()] [Epoch range overlap] At lines 472-474, the last epoch is pushed with (epoch_begin, chunk_end) - can epoch_begin >= chunk_end occur, causing empty or invalid epoch ranges? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce205a64-3962-4a48-9589-2846bb6dafa0?mode=deep",
+    "timestamp": "2026-01-26 12:58:57.815193",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: enqueue_chunks()] [TPS calculation manipulation] At lines 491-495, TPS is calculated using elapsed time - can this metric be gamed to report false performance numbers by timing manipulation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc27706f-5d52-4147-9b51-67ff9c30ad71?mode=deep",
+    "timestamp": "2026-01-26 12:59:24.176857",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: commit()] [Version consistency] At line 513, expect_last_version() is returned - what happens if the last version doesn't exist or is None, can this panic in production? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4a96b25-8bb9-4a26-ace1-9f2c9e9d4668?mode=deep",
+    "timestamp": "2026-01-26 12:59:51.453920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: remove_and_replay_epoch()] [Mutable vector corruption] At lines 521-525, mutable references to multiple vectors are passed - can concurrent modifications or incorrect slicing cause out-of-bounds access or data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bca4c19e-b0a2-4567-baed-4e53d50bf979?mode=deep",
+    "timestamp": "2026-01-26 13:00:20.459687",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: remove_and_replay_epoch()] [Skip list manipulation] At lines 531-534, txns_to_skip().range() determines which transactions to skip - can an attacker craft a malicious skip list to cause important transactions to be skipped without proper validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_694bfbac-83f9-4d66-9441-2c263ec16ae3?mode=deep",
+    "timestamp": "2026-01-26 13:00:49.779980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: remove_and_replay_epoch()] [Batch boundary confusion] At lines 538-560, batch_begin and batch_end are managed - can off-by-one errors or race conditions cause transaction boundaries to overlap or create gaps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94012443-23c5-4e20-8123-5079ba6005f4?mode=deep",
+    "timestamp": "2026-01-26 13:01:18.837216",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: remove_and_replay_epoch()] [Skip without verification] At lines 541-556, known broken transactions are applied directly without VM execution - can this bypass critical validation checks and allow invalid state transitions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_274e877b-52c1-4ae7-9a1b-9f97cbb81c10?mode=deep",
+    "timestamp": "2026-01-26 13:01:48.795007",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: remove_and_replay_epoch()] [Verify mode bypass] At lines 563-576, verification is skipped if verify_execution_mode.should_verify() is false - can this mode be improperly enabled to bypass execution verification during replay? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d51a775-c3cb-4b5b-9bb2-3f11e9205207?mode=deep",
+    "timestamp": "2026-01-26 13:02:20.423172",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: remove_and_replay_epoch()] [Batch progression error] At line 587, batch_begin is updated to next_begin - can incorrect next_begin values from verify_execution cause infinite loops or skip chunks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d947068-242f-44f3-8768-16e4ebc16e82?mode=deep",
+    "timestamp": "2026-01-26 13:02:50.650793",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: verify_execution()] [State view reuse] At line 606, state_view is created from parent state - can this state become stale during long-running verification, causing verification against inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e468ae8-12a4-47ef-9362-af7211d03bde?mode=deep",
+    "timestamp": "2026-01-26 13:03:21.434171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/mod.rs] [Function: verify_execution()] [Transaction conversion safety] At lines 607-612, transactions are converted to SignatureVerifiedTransaction using into() - does this properly verify signatures or can malicious transactions bypass signature checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1008066c-3f3d-42ca-b315-357e4152b541?mode=deep",
+    "timestamp": "2026-01-26 13:03:49.933260",
+    "report_generated": false
+  }
+]
