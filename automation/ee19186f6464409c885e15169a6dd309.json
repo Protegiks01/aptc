@@ -1,0 +1,62 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Batch size limits] Is there a maximum transactions.len() limit to prevent resource exhaustion from creating too many parallel batches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2fcbdc4e-bb3a-4f49-8e0c-30226bd74778?mode=deep",
+    "timestamp": "2026-01-26 21:55:48.166389",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: get_transaction_version_by_hash()] [Ledger version source] Where does ledger_version come from and can it be manipulated to bypass the version <= ledger_version check at line 80? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a6d64a5-9c41-4417-9694-f7024d25aaf2?mode=deep",
+    "timestamp": "2026-01-26 21:56:00.843127",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Unsafe operations] Are there any unsafe blocks in the parallel execution that could lead to undefined behavior or memory corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_feebd7b3-735c-4f88-b6d4-c142443c5173?mode=deep",
+    "timestamp": "2026-01-26 21:56:14.082482",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [Borrow checker bypass] Does the WriteBatch trait implementation properly respect Rust's borrowing rules, or can it lead to aliased mutable references? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebb26d0e-82cd-47b3-92af-b2010b6ba2d3?mode=deep",
+    "timestamp": "2026-01-26 21:56:28.697509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Send/Sync violations] Are all types used in parallel processing properly implementing Send/Sync, or can this lead to data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43aac53c-8182-41ec-880b-7f7bc52548ad?mode=deep",
+    "timestamp": "2026-01-26 21:56:43.059516",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: get_transaction_iter()] [Consensus impact] If expect_continuous_versions fails due to gaps, how does this affect consensus and can it cause network splits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b93076f6-9daa-4223-a518-e6c0c068f4e0?mode=deep",
+    "timestamp": "2026-01-26 21:56:58.323764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: commit_transactions()] [Execution engine impact] If commit_transactions creates inconsistent indices, can this cause the execution engine to miss transactions or execute them out of order? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_869b5e9c-6387-4987-bdb3-4082f6cb22fb?mode=deep",
+    "timestamp": "2026-01-26 21:57:15.867144",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: put_transaction()] [API impact] If transaction summaries are inconsistent with actual transactions, will API queries return incorrect data enabling client-side exploits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b4b19c9-4bfd-47af-b65c-f13862d9efd5?mode=deep",
+    "timestamp": "2026-01-26 21:57:34.580780",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: prune_transactions()] [State sync impact] If transactions are pruned while state sync is running, can this cause nodes to fail synchronization permanently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1b58c99-1c93-4685-b327-f506d153644b?mode=deep",
+    "timestamp": "2026-01-26 21:57:54.499966",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/transaction_db.rs] [Function: get_transaction_version_by_hash()] [Mempool impact] If transaction look\n\n### Citations\n\n**File:** storage/aptosdb/src/ledger_db/transaction_db.rs (L1-192)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{\n    metrics::OTHER_TIMERS_SECONDS,\n    schema::{\n        db_metadata::{DbMetadataKey, DbMetadataSchema, DbMetadataValue},\n        transaction::TransactionSchema,\n        transaction_by_hash::TransactionByHashSchema,\n        transaction_summaries_by_account::TransactionSummariesByAccountSchema,\n    },\n    utils::iterators::ExpectContinuousVersions,\n};\nuse aptos_crypto::hash::{CryptoHash, HashValue};\nuse aptos_db_indexer_schemas::schema::ordered_transaction_by_account::OrderedTransactionByAccountSchema;\nuse aptos_metrics_core::TimerHelper;\nuse aptos_schemadb::{\n    batch::{NativeBatch, SchemaBatch, WriteBatch},\n    DB,\n};\nuse aptos_storage_interface::{AptosDbError, Result};\nuse aptos_types::transaction::{IndexedTransactionSummary, ReplayProtector, Transaction, Version};\nuse rayon::prelude::*;\nuse std::{path::Path, sync::Arc};\n\n#[derive(Debug)]\npub(crate) struct TransactionDb {\n    db: Arc<DB>,\n}\n\nimpl TransactionDb {\n    pub(super) fn new(db: Arc<DB>) -> Self {\n        Self { db }\n    }\n\n    pub(super) fn create_checkpoint(&self, path: impl AsRef<Path>) -> Result<()> {\n        self.db.create_checkpoint(path)\n    }\n\n    pub(super) fn write_pruner_progress(&self, version: Version) -> Result<()> {\n        self.db.put::<DbMetadataSchema>(\n            &DbMetadataKey::TransactionPrunerProgress,\n            &DbMetadataValue::Version(version),\n        )\n    }\n\n    pub(crate) fn db(&self) -> &DB {\n        &self.db\n    }\n\n    pub(crate) fn write_schemas(&self, batch: SchemaBatch) -> Result<()> {\n        self.db.write_schemas(batch)\n    }\n\n    /// Returns signed transaction given its `version`.\n    pub(crate) fn get_transaction(&self, version: Version) -> Result<Transaction> {\n        self.db\n            .get::<TransactionSchema>(&version)?\n            .ok_or_else(|| AptosDbError::NotFound(format!(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4419cbcf-586a-4d5d-ba44-d4faad8867a9?mode=deep",
+    "timestamp": "2026-01-26 21:58:15.434287",
+    "report_generated": false
+  }
+]
