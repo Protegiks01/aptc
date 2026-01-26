@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Snapshot Selection Bypass] At line 133, select_state_snapshot(start_version) may return None or an arbitrary snapshot - can an attacker manipulate metadata to force selection of a compromised snapshot at a specific version? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f921d228-051e-4205-949e-1e42c88b1bf9?mode=deep",
+    "timestamp": "2026-01-26 09:43:24.673399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Snapshot Version Mismatch] At lines 122-143, if in-progress snapshot exists but is at a different version than selected snapshot, which one takes precedence and could this cause state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57167c4a-dbd3-4db0-907b-022b9b596697?mode=deep",
+    "timestamp": "2026-01-26 09:43:37.844604",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Expect State Snapshot Panic] At line 130, expect_state_snapshot() may panic if metadata is inconsistent - can an attacker craft metadata that causes in-progress markers without corresponding snapshot metadata, causing denial of service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f96e7d67-0917-4c1d-9f36-1ea617d1b415?mode=deep",
+    "timestamp": "2026-01-26 09:43:51.440129",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Snapshot Epoch Manipulation] At lines 136-138, logs show snapshot.epoch - can an attacker provide a snapshot from a different epoch that has incompatible state schema or validator set, bypassing epoch transition security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b06e124-b7f0-4f21-9c3f-d6101393fd31?mode=deep",
+    "timestamp": "2026-01-26 09:44:05.382492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Skip Snapshot Logic Error] At lines 145-146, skip_snapshot is true if snapshot_version.is_none() OR next_txn_version > snapshot_version - can this logic be exploited to skip snapshot restoration when it should be required? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47e1b9e4-c5c8-4395-928e-239e6403026e?mode=deep",
+    "timestamp": "2026-01-26 09:44:20.455142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Snapshot Skip Race] If next_txn_version is manipulated to be exactly snapshot_version + 1, does this correctly skip snapshot restore, or could it leave the state incomplete before transaction replay begins? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bba22a30-34f8-4387-9df0-ac6998c4f3f6?mode=deep",
+    "timestamp": "2026-01-26 09:44:36.920458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [TOCTOU on Snapshot Decision] Between determining skip_snapshot at line 145 and actually restoring at line 174, can the restore_handler state change causing inconsistency between the skip decision and actual restoration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0d5dd50-8589-4b67-b470-337be0207a87?mode=deep",
+    "timestamp": "2026-01-26 09:44:54.058184",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Save Start Version Edge Case] At line 156, save_start_version uses (next_txn_version > 0).then_some(next_txn_version) - if next_txn_version is 0, does passing None cause TransactionRestoreBatchController to behave insecurely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54d1b22c-5f25-48e9-898d-090a0004fabb?mode=deep",
+    "timestamp": "2026-01-26 09:45:13.684663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Version Tracking Bypass] Can an attacker clear or manipulate save_start_version to cause transaction replay to restart from genesis, wasting resources or causing state corruption by re-applying already applied transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_848f7fcb-6cd0-49b5-9ad4-a71334f08a4f?mode=deep",
+    "timestamp": "2026-01-26 09:45:34.859114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Version Calculation Integer Overflow] At line 158, std::cmp::max(next_txn_version, snapshot_version.map_or(0, |v| v + 1)) adds 1 to snapshot_version - can snapshot_version=u64::MAX cause overflow that wraps to 0? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0dd59ec5-5897-40c6-bfa7-c5a44c3ea61d?mode=deep",
+    "timestamp": "2026-01-26 09:45:57.713997",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Version Selection Attack] If snapshot_version is u64::MAX - 1, does adding 1 to get next_txn_version cause it to overflow to 0, allowing an attacker to force replay from genesis despite having a high-version snapshot? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2773ad9e-812d-41e5-a977-f818ad8b17d3?mode=deep",
+    "timestamp": "2026-01-26 09:46:21.472328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Map_or Default Value] In snapshot_version.map_or(0, |v| v + 1), if snapshot_version is None, it defaults to 0 - is this safe when next_txn_version might be very large, potentially skipping important state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_897a458f-8aa7-49ea-b0a6-410e9c81d067?mode=deep",
+    "timestamp": "2026-01-26 09:46:47.137123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Transaction Selection Underflow] At line 163, next_txn_version.saturating_sub(1) is passed to select_transaction_backups() - if next_txn_version is 0, does saturating_sub return 0 causing version 0 transaction info to be selected redundantly? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e1c91b9-c321-4266-bf57-243364180dcc?mode=deep",
+    "timestamp": "2026-01-26 09:47:14.304658",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Transaction Range Manipulation] Can an attacker manipulate metadata to return transaction backups that don't cover the complete range from next_txn_version.saturating_sub(1) to end_version, causing gaps in replay? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4bf7f48-b397-427a-bcea-dcd547e38b48?mode=deep",
+    "timestamp": "2026-01-26 09:47:42.780828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Transaction Backup Overlap] If select_transaction_backups() returns overlapping backup chunks (same transactions in multiple backups), can this cause duplicate transaction replay or state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8e717ed-72eb-4839-a962-8085aa14c0d8?mode=deep",
+    "timestamp": "2026-01-26 09:48:10.813969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Transaction Order Attack] Are transaction backups guaranteed to be ordered by version, or could metadata manipulation cause them to be returned in wrong order, breaking deterministic replay? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57bd1220-d8bd-49a4-852f-a2dbeca0114d?mode=deep",
+    "timestamp": "2026-01-26 09:48:40.446427",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Target Version Bypass] At line 167, target_version is set to end_version - can an attacker provide end_version lower than the actual latest version in backups to avoid replaying recent malicious transactions that would fail verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51c86608-f1bb-4c9f-82d0-40651bff2e40?mode=deep",
+    "timestamp": "2026-01-26 09:49:09.116567",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Waypoint Verification Timing] At line 168, trusted_waypoints.verify() is called during options construction - if verification is expensive, can this be exploited for DoS, and does failure properly abort the restore? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74586295-5220-4463-812a-b341c1085ae1?mode=deep",
+    "timestamp": "2026-01-26 09:49:39.496242",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Waypoint Arc Clone] Wrapping verified waypoints in Arc at line 168 - if TrustedWaypointOpt.verify() returns mutable data, can concurrent access through Arc cause race conditions in waypoint checking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4da65d70-6592-48b5-87bc-ecd785d062a1?mode=deep",
+    "timestamp": "2026-01-26 09:50:11.165578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Replay Concurrency Override] At line 171, replay_concurrency_level is set to 0 with comment 'won't replay, doesn't matter' - is this comment accurate, or could StateSnapshotRestoreController still use this value for module validation parallelism? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f56371bf-f69e-45e0-9f0a-84f0e3ff8cd1?mode=deep",
+    "timestamp": "2026-01-26 09:50:42.622708",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Global Options Clone] GlobalRestoreOptions is cloned at line 183 - if it contains non-thread-safe data structures, can concurrent access by StateSnapshotRestoreController and TransactionRestoreBatchController cause data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f789f35-46af-4f38-bb5d-06ec73a61278?mode=deep",
+    "timestamp": "2026-01-26 09:51:13.729466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Skip Snapshot TOCTOU] Between checking skip_snapshot at line 174 and accessing state_snapshot, can concurrent operations modify skip_snapshot or state_snapshot causing use-after-free or null pointer dereference? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5c5987a-cc3b-4386-a2ff-731be49db461?mode=deep",
+    "timestamp": "2026-01-26 09:51:46.111768",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Snapshot Manifest Validation] At line 178, backup.manifest is passed to StateSnapshotRestoreController - does the manifest undergo cryptographic integrity validation before being trusted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e70768b-d224-4cfa-818e-4c5dc5ed154f?mode=deep",
+    "timestamp": "2026-01-26 09:52:18.892624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Snapshot Version Mismatch] At line 179, backup.version is used - can this differ from the snapshot_version variable used for calculations, causing version inconsistency in restored state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdf25a78-af01-4347-b5c9-88be0fb97b9e?mode=deep",
+    "timestamp": "2026-01-26 09:52:49.253195",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Module Validation Flag] At line 180, validate_modules flag is passed - if this is false, can malicious Move modules be restored that would later execute with elevated privileges? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32dcd1f1-157a-462a-ac33-7d9b15848fa7?mode=deep",
+    "timestamp": "2026-01-26 09:53:18.515575",
+    "report_generated": false
+  }
+]
