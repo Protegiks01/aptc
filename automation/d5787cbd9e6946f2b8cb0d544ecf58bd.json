@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Consensus Safety Violation] Can a Byzantine validator craft an OptBlockData where grandparent_qc.round() + 1 != parent.round() by manipulating the grandparent QuorumCert, bypassing the round sequence check to create conflicting chain branches and enable double-spending? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a39cda6e-2289-43e0-8a8b-bdcc0b76f4b3?mode=deep",
+    "timestamp": "2026-01-25 23:59:02.478265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Consensus Safety Violation] Can an attacker exploit integer overflow in the round sequence validation by setting grandparent_qc.round() to u64::MAX, causing the addition grandparent_qc.round() + 1 to wrap to 0 and potentially matching parent.round(), bypassing safety checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3c57a64-58cf-4966-b59b-cc201be6bacd?mode=deep",
+    "timestamp": "2026-01-25 23:59:15.070425",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Consensus Safety Violation] Does the parent.round() + 1 == self.round() check properly handle the case where parent.round() is u64::MAX, or could this cause integer overflow allowing blocks with invalid round 0 to be accepted as valid successors? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62ba068f-6157-416f-907e-ab7a52460593?mode=deep",
+    "timestamp": "2026-01-25 23:59:27.837761",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Chain Fork Attack] If the round sequence validation only checks arithmetic equality without verifying cryptographic integrity, can a malicious validator reuse old block headers with modified round numbers to create parallel chains and fork the network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3657516c-45e0-480d-bd62-902bada4a0db?mode=deep",
+    "timestamp": "2026-01-25 23:59:42.105816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Round Manipulation] Can an attacker craft a block with parent.round() = grandparent_qc.round() + 1 but self.round() != parent.round() + 1 where the error message on line 87-89 is logged but execution continues, allowing invalid round progression? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8973777-188a-483e-b00d-4a70499ce15d?mode=deep",
+    "timestamp": "2026-01-25 23:59:56.482618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [TOCTOU Race Condition] Is there a race condition where parent.round() or grandparent_qc.round() values can change between the validation checks on lines 79-84 and 86-90, allowing inconsistent round sequences to pass validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34c71577-5bf5-4717-b329-f2cf7a69e002?mode=deep",
+    "timestamp": "2026-01-26 00:00:11.679229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [Validation Bypass] Since the new() constructor does not call verify_well_formed(), can an attacker create OptBlockData with arbitrary round values and distribute invalid blocks before validation occurs elsewhere in the consensus pipeline? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7882d5a-a871-4070-baed-01957cc00a91?mode=deep",
+    "timestamp": "2026-01-26 00:00:28.445749",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Round Skipping Attack] Does the round sequence validation prevent round skipping attacks where self.round() = parent.round() + 2 or higher, allowing validators to skip proposer turns and manipulate leader election? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eff339cd-ff7c-41d0-8f76-fe83feb7b6dc?mode=deep",
+    "timestamp": "2026-01-26 00:00:45.401609",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Backwards Round Attack] Can an attacker propose a block where self.round() < parent.round(), potentially causing round number to decrease and break consensus liveness by forcing validators into past rounds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_294861fb-6108-45a8-aaaa-3afea18b1739?mode=deep",
+    "timestamp": "2026-01-26 00:01:02.994739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: round()] [Round Forgery] Since round() is a simple getter returning self.round without validation, can concurrent modifications to self.round field after OptBlockData creation but before verify_well_formed() cause inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d6dd0bc-8b3c-4357-829b-75d77efe7f77?mode=deep",
+    "timestamp": "2026-01-26 00:01:21.747796",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Epoch Confusion Attack] Can a Byzantine validator craft OptBlockData where grandparent_qc.epoch() != self.epoch() or parent.epoch() != self.epoch() to mix blocks from different epochs, bypassing validator set changes and maintaining Byzantine power across epoch boundaries? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67d6f0ed-cfdd-4256-9b0d-e0f85552fe5a?mode=deep",
+    "timestamp": "2026-01-26 00:01:41.016538",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Epoch Transition Exploit] Does the epoch consistency check on line 92-94 properly handle the boundary case during epoch transitions, or can validators propose blocks with parent from old epoch while claiming new epoch, causing state inconsistency? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a202c9f8-426d-4733-b634-b8d75163a047?mode=deep",
+    "timestamp": "2026-01-26 00:02:01.162469",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Epoch Overflow Attack] Can an attacker set self.epoch to u64::MAX causing overflow in downstream epoch comparisons, potentially allowing blocks from future epochs to be accepted as current epoch blocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4602d9d-de64-424d-977e-37f5d52dfc62?mode=deep",
+    "timestamp": "2026-01-26 00:02:21.731459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: epoch()] [Epoch Spoofing] Since epoch() returns self.epoch without validation and the field is public in the struct definition on line 24, can external code directly modify epoch field after construction to bypass epoch checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fdfbd42-a312-4743-b05a-88078e5c3f71?mode=deep",
+    "timestamp": "2026-01-26 00:02:42.951556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [Epoch Mismatch Creation] Can new() be called with mismatched epoch parameters where epoch != parent.epoch() != grandparent_qc.epoch(), creating invalid OptBlockData that only fails validation later, enabling timing attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f4ddca2-9fb4-4310-a5e9-0b416b79051c?mode=deep",
+    "timestamp": "2026-01-26 00:03:05.882392",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Typo Exploitation] The error message on line 93 contains a typo 'grantparent' instead of 'grandparent' - does this indicate the check itself might be incorrectly implemented, potentially using wrong field for validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fba54162-4ad8-4098-8c2a-9e1765f8a9cc?mode=deep",
+    "timestamp": "2026-01-26 00:03:29.820303",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Timestamp Manipulation] Can a malicious validator craft a block with timestamp_usecs() exactly equal to parent.timestamp_usecs(), bypassing the strictly increasing check on line 103-104 if the comparison operator has an off-by-one error? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fe63eb2-7a46-4b9a-8181-0b278511b26b?mode=deep",
+    "timestamp": "2026-01-26 00:03:53.425937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Timestamp Overflow Attack] If timestamp_usecs is set to u64::MAX - 1, does parent.timestamp_usecs() > grandparent_qc.timestamp_usecs() check still work correctly, or can overflow in comparisons allow non-increasing timestamps? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca27ad73-5725-4414-bf8b-1e2a9b2e9889?mode=deep",
+    "timestamp": "2026-01-26 00:04:18.163114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Future Timestamp Exploit] Can an attacker set timestamp_usecs to current_ts.as_micros() + TIMEBOUND + 1 (300000001 microseconds in future) to bypass the future bound check on line 113 if saturating_add causes the bound to saturate at u64::MAX? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a81140c3-40d8-4a30-bf77-4ef0d48487fb?mode=deep",
+    "timestamp": "2026-01-26 00:04:42.971656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Clock Skew Attack] Since duration_since_epoch() on line 108 uses system time, can clock skew or NTP attacks on validator nodes cause inconsistent timestamp validation, allowing some validators to accept blocks others reject? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_301a20ee-3e02-4b1f-8f10-22e6051a12a6?mode=deep",
+    "timestamp": "2026-01-26 00:05:08.135495",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [TIMEBOUND Constant Manipulation] Is TIMEBOUND=300_000_000 microseconds (5 minutes) on line 111 sufficient to prevent timestamp grinding attacks where validators propose multiple blocks with slightly different timestamps to manipulate protocol behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3bb0ce9a-4214-4a14-87ad-d593371996d5?mode=deep",
+    "timestamp": "2026-01-26 00:05:33.813576",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Timestamp Underflow] Can timestamp_usecs be set to 0 or very small values (e.g., 1) while parent.timestamp_usecs() is also small, passing the strictly increasing check but causing issues with timestamp-dependent protocol logic elsewhere? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29096286-3304-4a75-a186-977b4c86e36f?mode=deep",
+    "timestamp": "2026-01-26 00:06:00.044411",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: verify_well_formed()] [Saturating Add Bypass] On line 113, if current_ts.as_micros() as u64 overflows u64::MAX, does saturating_add correctly handle this, or can it create a scenario where any timestamp_usecs passes the future bound check? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0225dd4-6420-464f-a993-8995bd380ec3?mode=deep",
+    "timestamp": "2026-01-26 00:06:24.013568",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: new()] [Timestamp Injection] Since new() accepts timestamp_usecs as parameter without validation, can an attacker pre-create OptBlockData with far-future timestamps that later become valid, enabling time-based attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e5e66ef-1289-4dbd-825b-05d7cdd35b9a?mode=deep",
+    "timestamp": "2026-01-26 00:06:47.286519",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/consensus-types/src/opt_block_data.rs] [Function: timestamp_usecs()] [Timestamp Mutation] Is the timestamp_usecs field immutable after construction, or can it be modified through unsafe code or interior mutability patterns, bypassing timestamp validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de379642-4ee1-45cc-a257-16f27ed3ea12?mode=deep",
+    "timestamp": "2026-01-26 00:07:10.800991",
+    "report_generated": false
+  }
+]
