@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: get_events_by_version_iter()] [Integer overflow] Can an attacker cause integer overflow by passing start_version near Version::MAX and large num_versions, potentially bypassing the checked_add safety check or causing panic/wraparound that leads to incorrect version ranges being queried? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61092db9-89f7-46a8-bfb1-7cb7de943d59?mode=deep",
+    "timestamp": "2026-01-26 05:37:27.578361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: get_events_by_version_iter()] [Arithmetic validation] Does the checked_add at line 111 properly handle the case where start_version + num_versions exceeds Version::MAX, or can an attacker craft inputs that cause the error handling to fail, leading to corrupted iterator state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b987706d-522a-4800-a75a-35e7c0e994ff?mode=deep",
+    "timestamp": "2026-01-26 05:37:39.905746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events_multiple_versions()] [Version overflow] Can an attacker trigger version overflow in the checked_add at line 138 by providing a large first_version and event_vecs length that causes version arithmetic to wrap, potentially overwriting events at lower versions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec8390c4-4f4e-4b48-9b22-c5d2f881eea5?mode=deep",
+    "timestamp": "2026-01-26 05:37:52.946877",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events_multiple_versions()] [Boundary condition] If first_version is set to Version::MAX - 1 and event_vecs contains 2+ elements, does the checked_add properly reject this or could it cause version collision with existing events? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64e1fb06-7086-4bb9-af00-2b5dc5e35d19?mode=deep",
+    "timestamp": "2026-01-26 05:38:06.361041",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events()] [Index overflow] Can an attacker supply extremely large event arrays where the enumerate index (idx) causes overflow when cast to u64 at lines 161, 165, 169, potentially corrupting event indices in EventByKeySchema and EventByVersionSchema? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c330e70-c310-4625-9416-bfb21ef6ddd7?mode=deep",
+    "timestamp": "2026-01-26 05:38:20.928649",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: prune_event_indices()] [Version arithmetic] Does the subtraction (end - start) at line 202 properly validate that end > start, or can an attacker cause underflow by supplying start >= end, leading to incorrect iteration bounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c3ccb63-1ea2-4450-bcfe-e5a6c54d337a?mode=deep",
+    "timestamp": "2026-01-26 05:38:36.014039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: prune_event_indices()] [Increment overflow] Can the current_version increment at line 218 overflow if pruning a very large version range, causing incorrect version tracking and incomplete pruning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e32e2c51-3540-45c4-a8ea-f3c5ca12cea8?mode=deep",
+    "timestamp": "2026-01-26 05:38:51.914135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: prune_events()] [Version tracking] Does current_version increment at line 238 properly handle overflow when processing large numbers of versions, or could this cause events at wrapped-around versions to be incorrectly deleted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_575c76fe-6c2a-47b4-98eb-a0a61c4d5216?mode=deep",
+    "timestamp": "2026-01-26 05:39:10.031859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: get_events_by_version()] [Race condition] Can concurrent writes via put_events() and reads via get_events_by_version() for the same version cause partial/torn reads where only some events are visible, leading to state inconsistency across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10ac99ea-078e-4446-8062-7006bd50cee0?mode=deep",
+    "timestamp": "2026-01-26 05:39:28.618899",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events_multiple_versions()] [Concurrent batch] If multiple threads call put_events_multiple_versions() with overlapping version ranges, can this cause event index corruption in EventByKeySchema where sequence numbers collide or get overwritten? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ac677b1-4a9a-469f-9bc1-a9579d0fbdb7?mode=deep",
+    "timestamp": "2026-01-26 05:39:49.817245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events()] [Batch atomicity] Are the multiple batch.put operations at lines 159-169 and 182-184 atomic, or can a crash/interrupt between them leave EventSchema populated but EventByKeySchema/EventByVersionSchema partially updated, breaking event queries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eed0b75b-7d01-41fa-9ce3-59477ed3a174?mode=deep",
+    "timestamp": "2026-01-26 05:40:10.045031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: prune_event_indices()] [Concurrent pruning] Can concurrent prune_event_indices() calls for overlapping version ranges cause double-deletion attempts or leave orphaned entries in EventByKeySchema, leading to incorrect event lookups? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e1765c4-aa86-469d-abd1-0b0e7a5e7659?mode=deep",
+    "timestamp": "2026-01-26 05:40:31.580428",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: prune_events()] [Prune-write race] Can a race between prune_events() deleting events and put_events() writing new events at the same version cause state corruption where events are partially written then immediately deleted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a0ca0e9-daec-4937-ab69-305313dd09f2?mode=deep",
+    "timestamp": "2026-01-26 05:40:53.375030",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: latest_version()] [TOCTOU] Does latest_version() suffer from a time-of-check-time-of-use vulnerability where the returned version is immediately stale, allowing an attacker to cause incorrect version-based decisions in calling code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_47669c0f-1f78-4fb9-8b90-5f0408e20d45?mode=deep",
+    "timestamp": "2026-01-26 05:41:15.591483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: write_pruner_progress()] [Progress tracking race] Can concurrent write_pruner_progress() calls cause the EventPrunerProgress metadata to reflect an incorrect version, allowing events to be pruned that shouldn't be or vice versa? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff70ded4-2043-4db2-b920-e7b62a111934?mode=deep",
+    "timestamp": "2026-01-26 05:41:38.466007",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Struct: EventDb] [Shared state] Does the Arc<DB> shared reference at line 33 allow concurrent access without proper locking, enabling data races when multiple threads call put_events() or prune_events() simultaneously? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb929867-549b-4291-a738-56a42c65fcc6?mode=deep",
+    "timestamp": "2026-01-26 05:42:03.086166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: get_events_by_version()] [Ordering guarantee] Does the iteration from line 70-78 guarantee events are returned in the correct index order (0, 1, 2...), or can database-level reordering cause events to be returned out of sequence, breaking transaction execution replay? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66315c29-1e96-4ad8-ba7b-18b536643306?mode=deep",
+    "timestamp": "2026-01-26 05:42:26.328085",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: get_events_by_version()] [Incomplete events] Can the iterator at line 70-78 return an incomplete event set if events are still being written, causing validators to execute transactions with partial event data and produce different state roots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ff3b16a-be05-4fad-ab91-eab8987a5381?mode=deep",
+    "timestamp": "2026-01-26 05:42:50.243997",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events()] [Index ordering] Does the enumerate().try_for_each() at lines 154-170 guarantee events are inserted with sequential indices (0, 1, 2...), or can parallel iteration cause non-sequential indices that break event retrieval? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_368499ab-b34a-438c-a852-b711a1c72e96?mode=deep",
+    "timestamp": "2026-01-26 05:43:14.859246",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: expect_new_block_event()] [Event uniqueness] Can an attacker insert multiple NewBlockEvents at the same version through repeated put_events() calls, causing expect_new_block_event() to return the wrong event and break block metadata tracking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a644de7-2d13-49b2-86df-02a1d174dfe9?mode=deep",
+    "timestamp": "2026-01-26 05:43:41.519323",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: expect_new_block_event()] [Missing event handling] If get_events_by_version() returns events but none match new_block_event_key(), does the NotFound error properly prevent consensus from progressing, or can this cause validators to diverge? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d5984f0-3ee5-4ac0-add1-55e0ec0835c0?mode=deep",
+    "timestamp": "2026-01-26 05:44:07.773944",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events()] [Merkle accumulator bypass] Can an attacker set skip_index=true to bypass EventAccumulatorSchema updates at lines 172-185, preventing Merkle proofs from being generated and allowing event tampering without detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69bc7f90-446c-4a58-8e4c-688fda736c5c?mode=deep",
+    "timestamp": "2026-01-26 05:44:34.645500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events()] [Hash collision] If multiple events at the same version produce identical CryptoHash values at line 174, does the MerkleAccumulator properly handle this or can it cause Merkle tree corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_048b9fb4-843d-40b5-850b-3e46e4f7d81b?mode=deep",
+    "timestamp": "2026-01-26 05:45:01.852053",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events()] [Root hash discard] The MerkleAccumulator::append() at line 176 returns a root_hash that is immediately discarded - could this allow event accumulator state to diverge from the computed root, breaking Merkle proof verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f40b8ff-1b2e-4a70-9145-d2de64f531e0?mode=deep",
+    "timestamp": "2026-01-26 05:45:29.338010",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/ledger_db/event_db.rs] [Function: put_events()] [Position collision] Can the writes.into_iter() at line 182 insert Merkle nodes with duplicate positions, causing EventAccumulatorSchema to have multiple entries for the same (version, position) key and corrupting the tree structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_525c8030-8614-43aa-8b92-3b3efcefe8bb?mode=deep",
+    "timestamp": "2026-01-26 05:45:56.914881",
+    "report_generated": false
+  }
+]
