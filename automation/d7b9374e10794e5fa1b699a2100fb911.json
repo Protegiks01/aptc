@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: deserialize()] [Protocol vector deserialization] At line 563, the deserializer converts Vec<Protocol> to NetworkAddress. If an attacker provides a malicious Vec with invalid protocol ordering in serialized form, can they bypass the from_protocols() validation since deserialization happens after? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cecbf670-153d-482a-8fca-cc893cfeb70d?mode=deep",
+    "timestamp": "2026-01-26 01:25:05.997174",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: deserialize()] [Human-readable format inconsistency] Lines 554-556 use from_str() for human-readable formats while binary uses BCS. Can an attacker exploit differences between these parsers to create addresses that serialize to one form but deserialize to another, breaking cryptographic signatures over addresses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d37f9b0-25ec-463b-917c-84506dc61785?mode=deep",
+    "timestamp": "2026-01-26 01:25:18.758919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: serialize()] [Nested length encoding] The Wrapper struct at line 540 uses serde_bytes. Can deeply nested protocol vectors cause quadratic serialization complexity or stack overflow during recursive serialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_020b12e2-fadb-42b7-95f9-ad7946574ccb?mode=deep",
+    "timestamp": "2026-01-26 01:25:31.846327",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: deserialize()] [Error propagation] Line 564 chains multiple Result operations. If early operations succeed but later ones fail, can this leave the deserializer in an inconsistent state that affects subsequent operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5754bda-1297-4a93-8eb6-a1adc22598c3?mode=deep",
+    "timestamp": "2026-01-26 01:25:46.302106",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: find_noise_proto()] [Key extraction without validation] At lines 401-406, find_noise_proto() returns the first NoiseIK key found. If an address contains multiple NoiseIK protocols (which shouldn't happen but isn't explicitly prevented), can an attacker cause validators to use a different key than expected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_449d5051-2264-4295-b98e-3ab61f5961ec?mode=deep",
+    "timestamp": "2026-01-26 01:26:00.798336",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: rotate_noise_public_key()] [Key rotation race condition] At lines 408-422, the function mutates NoiseIK keys in place. If multiple threads access this during key rotation, can race conditions cause some validators to use old keys while others use new keys, breaking consensus connectivity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9b811aa-1d79-4cc0-b5dc-a9fad8243250?mode=deep",
+    "timestamp": "2026-01-26 01:26:16.100967",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: rotate_noise_public_key()] [Partial rotation failure] The rotation at lines 414-420 iterates through all protocols. If rotation fails partway through (e.g., due to panic or return), can this leave some protocols with new keys and others with old keys, creating an inconsistent address? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac547c38-63df-4556-a925-b6faa141a359?mode=deep",
+    "timestamp": "2026-01-26 01:26:32.501957",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: rotate_noise_public_key()] [Key replacement validation] The function replaces keys without validating the new key. Can an attacker provide an all-zero or otherwise invalid x25519 public key that breaks cryptographic operations after rotation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e24f258-7d15-4fcc-a884-78c5c373a99d?mode=deep",
+    "timestamp": "2026-01-26 01:26:50.682075",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: append_prod_protos()] [Protocol ordering violation] At lines 342-349, append_prod_protos() adds NoiseIK and Handshake without validating existing protocol stack. Can this create addresses with protocols in wrong order if called on already-complete addresses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89504c6f-f1f9-4a69-9573-b388552b8d43?mode=deep",
+    "timestamp": "2026-01-26 01:27:09.653122",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: parse_ip_tcp()] [Insufficient length check] At line 776, the function checks protos.len() < 2. Can an attacker provide exactly 2 protocols where the second is not TCP, causing a match failure at line 781-784 that returns None instead of an error, potentially hiding validation issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3834ad7-cf54-4f5e-b13b-e40c240a45ac?mode=deep",
+    "timestamp": "2026-01-26 01:27:30.017650",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: parse_dns_tcp()] [IP filter bypass] At lines 808-822, IpFilter matching happens during DNS resolution. Can an attacker register a DNS name that resolves to both IPv4 and IPv6, then exploit filter inconsistencies to connect validators to different IP versions than intended? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f2510f8-90fc-4bf9-acec-72e36fffef02?mode=deep",
+    "timestamp": "2026-01-26 01:27:51.424355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: parse_tcp()] [String conversion injection] At lines 824-840, IP addresses and DNS names are converted to strings. Can this conversion introduce additional special characters or formatting that causes issues in downstream TCP connection logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0dc75423-a496-4eb7-be6f-93a65525c160?mode=deep",
+    "timestamp": "2026-01-26 01:28:13.775766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: parse_noise_ik()] [Lifetime extension attack] At line 844-848, the function returns a reference to the PublicKey. Can attackers exploit lifetime issues where the reference outlives the NetworkAddress, causing use-after-free vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2908b453-b192-4c32-8981-9cd6164768ab?mode=deep",
+    "timestamp": "2026-01-26 01:28:37.404365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: parse_handshake()] [Last element assumption] At line 853-857, parse_handshake() uses protos.last(), assuming handshake is always last. Can attackers append additional protocols after handshake in ways that bypass validation but cause the wrong version to be extracted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8be63418-a3f6-4c1f-b958-28e7787f3b41?mode=deep",
+    "timestamp": "2026-01-26 01:29:02.533049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: parse_aptosnet_protos()] [Layer composition attack] At lines 863-893, the function chains multiple parser attempts with or_else(). Can an attacker craft an address that matches multiple parsers in unexpected ways, causing different validators to interpret the address differently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a95f5ec-3f68-4234-a523-0f48b9d7b909?mode=deep",
+    "timestamp": "2026-01-26 01:29:27.627973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: parse_memory()] [Test-only protocol in production] At line 762-769, parse_memory() is defined without cfg(test). Combined with the cfg!(test) runtime check at line 874, can attackers enable Memory protocols in production through configuration manipulation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59bf9434-9174-4572-9fd1-5105b75fbcd1?mode=deep",
+    "timestamp": "2026-01-26 01:29:53.796537",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: to_socket_addrs()] [DNS resolution TOCTOU] At lines 477-482, DNS resolution happens at call time. Can an attacker change DNS records between when a validator checks an address and when it actually connects, causing connections to malicious nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ddf4621-0806-494e-929d-7bf601494b61?mode=deep",
+    "timestamp": "2026-01-26 01:30:20.205510",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: to_socket_addrs()] [Empty result handling] Line 484 returns an empty iterator if parsing fails. Can this silent failure cause validators to skip connection attempts without logging, making network issues invisible? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfd92529-d5a3-4bca-90bc-58f06860c467?mode=deep",
+    "timestamp": "2026-01-26 01:30:47.229931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: to_socket_addrs()] [IP filter bypass during resolution] At line 479, IpFilter is applied after DNS resolution. Can an attacker exploit race conditions where DNS returns different IPs between the filter check and actual connection, bypassing the filter? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11e26f32-acba-44e1-b0b0-df91d593b613?mode=deep",
+    "timestamp": "2026-01-26 01:31:14.158440",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: to_socket_addrs()] [Multiple resolution results] DNS can return multiple IPs. Does the iterator at line 481 have an ordering guarantee, or can different validators connect to different IPs from the same DNS name, causing network partitioning? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3b65a28-a321-4bcc-8018-3b27f20dde09?mode=deep",
+    "timestamp": "2026-01-26 01:31:39.979366",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: Display::fmt() for NetworkAddress] [String formatting injection] At lines 516-521, protocols are formatted sequentially. Can special characters in DNS names or other protocols inject additional '/' delimiters that cause parsing ambiguity when the string is re-parsed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72c13f57-b44e-40dd-b3e2-749c40cfa32c?mode=deep",
+    "timestamp": "2026-01-26 01:32:04.900431",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: Display::fmt() for Protocol] [Key encoding failure handling] At lines 610-616, x25519 key encoding uses expect() claiming it's infallible. If encoding somehow fails, does this panic validators during logging or serialization, causing crash-based DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8025f514-b924-44d7-9345-2612f0846e8e?mode=deep",
+    "timestamp": "2026-01-26 01:32:31.287010",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: Display::fmt() for Protocol] [Formatting consistency] Different protocol types format differently (lines 603-618). Can inconsistent formatting cause string-based comparisons to fail even for semantically identical addresses? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_428e600a-bd17-42c6-aa61-5f17b505d0dc?mode=deep",
+    "timestamp": "2026-01-26 01:32:58.172842",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: TryFrom<Vec<Protocol>>] [Empty vector handling] At line 493, empty vectors return EmptyProtocolString error, but from_protocols() at line 272 accepts empty vectors. Can this inconsistency allow empty addresses to be created through one path but rejected through another? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1fb713d8-94de-4945-bf2a-870b6713c596?mode=deep",
+    "timestamp": "2026-01-26 01:33:24.737559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: From<Protocol>] [Single protocol addresses] At lines 501-505, a single Protocol can become a NetworkAddress. Can this bypass layer validation since from_protocols() is called but single-protocol addresses might not have proper layers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04796986-01fe-4a60-90ef-f8edea23d151?mode=deep",
+    "timestamp": "2026-01-26 01:33:52.156172",
+    "report_generated": false
+  }
+]
