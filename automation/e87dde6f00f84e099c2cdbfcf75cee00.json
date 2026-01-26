@@ -1,0 +1,38 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Impl: Both schemas] [Schema instance leak] Can creating multiple instances of pruners using different schema implementations cause resource leaks if the Schema trait doesn't properly clean up database connections or iterators? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58c596bc-e6de-492f-8e21-0a06b2d26521?mode=deep",
+    "timestamp": "2026-01-26 12:59:55.445195",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexSchema] [Rollback inconsistency] If the blockchain rolls back to an earlier version due to consensus fork, can stale progress stored in DbMetadataKey::StateMerkleShardPrunerProgress (line 22) become ahead of the current ledger version, causing the pruner to believe nodes are stale when they're actually current? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8a3c53f-8b16-45fe-8bb0-f495d3b07416?mode=deep",
+    "timestamp": "2026-01-26 13:00:07.904667",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key() StaleNodeIndexCrossEpochSchema] [Epoch rollback safety] During epoch boundary rollbacks, can DbMetadataKey::EpochEndingStateMerkleShardPrunerProgress (line 36) point to a future epoch that no longer exists, causing the epoch pruner to fail to initialize or delete wrong snapshot data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9a48a5d-cc8e-42f4-96e9-e2db84bf675d?mode=deep",
+    "timestamp": "2026-01-26 13:00:20.862887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Trait: StaleNodeIndexSchemaTrait] [Insufficient test coverage] Are there comprehensive tests verifying that StaleNodeIndexSchema and StaleNodeIndexCrossEpochSchema implementations produce non-overlapping metadata keys across all possible shard_id configurations, or can test gaps allow production bugs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b447f3f1-778e-4d17-ae44-79fa2abfcebb?mode=deep",
+    "timestamp": "2026-01-26 13:00:34.830137",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Function: progress_metadata_key()] [Fuzzing gap] Has progress_metadata_key() been fuzz-tested with extreme shard_id values (0, MAX, random) to ensure it never generates metadata keys that collide with system-reserved keys or cause database corruption? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6394bfb9-e746-439e-875d-a3c7c6755a9a?mode=deep",
+    "timestamp": "2026-01-26 13:00:48.861127",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pru\n\n### Citations\n\n**File:** storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs (L1-45)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::schema::{\n    db_metadata::DbMetadataKey, stale_node_index::StaleNodeIndexSchema,\n    stale_node_index_cross_epoch::StaleNodeIndexCrossEpochSchema,\n};\nuse aptos_jellyfish_merkle::StaleNodeIndex;\nuse aptos_schemadb::schema::{KeyCodec, Schema};\n\npub trait StaleNodeIndexSchemaTrait: Schema<Key = StaleNodeIndex>\nwhere\n    StaleNodeIndex: KeyCodec<Self>,\n{\n    fn progress_metadata_key(shard_id: Option<usize>) -> DbMetadataKey;\n    fn name() -> &'static str;\n}\n\nimpl StaleNodeIndexSchemaTrait for StaleNodeIndexSchema {\n    fn progress_metadata_key(shard_id: Option<usize>) -> DbMetadataKey {\n        if let Some(shard_id) = shard_id {\n            DbMetadataKey::StateMerkleShardPrunerProgress(shard_id)\n        } else {\n            DbMetadataKey::StateMerklePrunerProgress\n        }\n    }\n\n    fn name() -> &'static str {",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c154a1a-1472-4cde-99a0-4cbf7a7dda3c?mode=deep",
+    "timestamp": "2026-01-26 13:01:03.669752",
+    "report_generated": false
+  }
+]
