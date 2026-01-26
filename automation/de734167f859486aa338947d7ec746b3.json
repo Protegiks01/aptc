@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: NodeId::bump()] [Integer Overflow] Can an attacker craft a control flow graph with more than 65535 blocks to cause NodeId(u16) overflow in bump() at line 271, potentially wrapping around to NodeId(0) and corrupting the depth-first spanning tree structure, leading to incorrect loop detection and allowing malicious bytecode with infinite loops to pass verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a8d46a5-32a2-4c9f-a24f-92eb83d29b2d?mode=deep",
+    "timestamp": "2026-01-26 06:25:03.848740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Integer Overflow] In the DFS traversal starting at line 82, if next_node.bump() is called 65536 times due to a complex CFG, does the NodeId(u16) wrap to 0, causing collisions with the root_node and potentially allowing an attacker to create ambiguous node mappings that bypass loop reducibility checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_787e7391-a2aa-4728-97b8-73e545e54ee4?mode=deep",
+    "timestamp": "2026-01-26 06:25:16.804958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Memory Exhaustion] At lines 77-80, vectors are pre-allocated with num_blocks capacity, but if cfg.num_blocks() is artificially large (e.g., through crafted bytecode), can an attacker trigger OOM conditions during validator bytecode verification, causing validator crashes and affecting network liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c962c78f-887c-492f-bbc9-ad98ab9244af?mode=deep",
+    "timestamp": "2026-01-26 06:25:30.594825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Type Confusion] The cast at line 74 'cfg.num_blocks() as usize' assumes num_blocks fits in usize, but if cfg.num_blocks() returns a value > usize::MAX on 32-bit systems, can this cause silent truncation leading to undersized vector allocations and subsequent out-of-bounds access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4a4bd8a-776c-4714-98bc-e1fa6bc8e911?mode=deep",
+    "timestamp": "2026-01-26 06:25:44.486264",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [DFS Stack Overflow] The iterative DFS at lines 91-146 uses a Vec as a stack. Can an attacker craft deeply nested control flow (e.g., 100,000+ nested blocks) to cause stack vector to grow unbounded, exhausting memory and crashing validators during bytecode verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43a8d511-3361-494a-8cf8-eadf278d2305?mode=deep",
+    "timestamp": "2026-01-26 06:25:59.402254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Cycle Detection Bypass] When detecting back edges at line 118, the code checks for InProgress(to_node). If an attacker can create a CFG where Visit actions are processed in a specific order, can they create cyclic dependencies that are misclassified as cross edges (line 122), bypassing loop detection and allowing infinite loop bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a1064a6-31a2-483c-a91d-3c9e499e5271?mode=deep",
+    "timestamp": "2026-01-26 06:26:15.240974",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Back Edge Misclassification] At lines 118-119, back edges are detected when revisiting InProgress nodes. Can an attacker craft a CFG with multiple entry points or unreachable code that causes legitimate back edges to be missed, resulting in loops being classified as acyclic and bypassing Tarjan's reducibility check? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78b0ae92-cee1-435e-bb23-e5ebb23a1d36?mode=deep",
+    "timestamp": "2026-01-26 06:26:32.584233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Predecessor Edge Manipulation] At lines 122 and 131, pred_edges are added. If an attacker creates a CFG where the same edge is visited multiple times through different paths, can duplicate entries in preds[to_node] cause incorrect loop nesting calculations in downstream reducibility algorithms? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21b81629-7727-489d-a40a-176265547a12?mode=deep",
+    "timestamp": "2026-01-26 06:26:52.367794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Descendant Count Overflow] At line 107, descs[parent] is incremented by '1 + descs[node_id]'. If deeply nested CFG causes this sum to exceed u16::MAX (65535), does the addition overflow, wrap around, and produce incorrect descendant counts that break is_descendant() checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ec155c7-2f7a-462d-8c73-b03cceeabad9?mode=deep",
+    "timestamp": "2026-01-26 06:27:12.969322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopSummary::new()] [Descendant Count Race] The update at line 107 'descs[usize::from(parent)] += 1 + descs[usize::from(node_id)]' is not atomic. In a hypothetical concurrent verification scenario, can race conditions cause incorrect descendant counts leading to false negatives in loop detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf8378d8-bcee-4c49-aab1-d8210e08bffa?mode=deep",
+    "timestamp": "2026-01-26 06:27:35.782921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: is_descendant()] [Bounds Check Bypass] At line 162, the descendant check uses 'ancestor <= descendant && descendant <= ancestor + self.descs[ancestor as usize]'. If descs[ancestor] was corrupted to u16::MAX due to overflow, can this cause all nodes to be incorrectly classified as descendants, breaking loop reducibility verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a8af94d-9633-43dc-81b3-2a4799b49d86?mode=deep",
+    "timestamp": "2026-01-26 06:27:58.656522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: is_descendant()] [Integer Arithmetic Overflow] At line 162, 'ancestor + self.descs[ancestor as usize]' can overflow if ancestor is near u16::MAX. Does Rust's default checked arithmetic prevent this, or can overflow cause false positive descendant relationships that allow irreducible control flow graphs to pass verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06eb65c8-7de9-434a-8db2-c01837e64d86?mode=deep",
+    "timestamp": "2026-01-26 06:28:21.229902",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: is_descendant()] [Array Bounds Violation] At line 162, accessing 'self.descs[ancestor as usize]' assumes ancestor is a valid index. If NodeId is constructed from untrusted input exceeding self.descs.len(), can this cause out-of-bounds read leading to incorrect loop analysis or panic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b9e5a18-7790-4909-8514-80b1e85ad808?mode=deep",
+    "timestamp": "2026-01-26 06:28:45.611492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: is_descendant()] [Logic Error] The descendant check at line 162 assumes NodeIds are assigned in preorder. If an attacker can manipulate the DFS order (e.g., through CFG with specific successor orderings), can they create scenarios where non-descendants pass the range check, causing incorrect loop nesting analysis? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4c0f5ad-b6a0-4e15-80c2-e334fdeba7fd?mode=deep",
+    "timestamp": "2026-01-26 06:29:11.744001",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::containing_loop()] [Path Compression Corruption] At lines 219-221, path compression updates parent pointers. If the loop at lines 208-217 is interrupted or if multiple concurrent calls occur, can partially compressed paths lead to cycles in the parent structure, causing infinite loops in containing_loop()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1df6d2bf-bd7e-4971-8053-23fe6ea512c9?mode=deep",
+    "timestamp": "2026-01-26 06:29:38.558053",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::containing_loop()] [Infinite Loop] The loop at lines 208-217 terminates when 'parent == grandparent'. If path compression creates a cycle (e.g., A->B->C->A), can this condition never be met, causing containing_loop() to loop infinitely and hang bytecode verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d81ef1e5-6ef6-4a64-85bd-5608adeec1ac?mode=deep",
+    "timestamp": "2026-01-26 06:30:06.279995",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::containing_loop()] [Vector Growth DoS] At line 212, descendants vector grows in the loop. For maliciously crafted CFGs with long parent chains (e.g., linear chain of 100,000 nodes), can this vector grow unbounded, causing memory exhaustion during verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19988b87-4e14-4715-9eaf-cd663353c078?mode=deep",
+    "timestamp": "2026-01-26 06:30:34.766929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::containing_loop()] [Parent Chain Manipulation] At lines 200-201, parent and grandparent are fetched. If an attacker can craft bytecode where collapse_loop() creates specific parent relationships, can they force containing_loop() into pathological cases requiring O(n²) path compressions, causing validator slowdown? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68f97608-9fad-4a63-8109-75ff4da3e350?mode=deep",
+    "timestamp": "2026-01-26 06:31:04.656604",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::collapse_loop()] [Depth Overflow] At line 244, depth is incremented by 1. If an attacker creates nested loops exceeding u16::MAX (65535 levels), does depth overflow and wrap to 0, causing deeply nested loops to appear as shallow loops and bypassing nesting limit checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_806469f9-4678-40bd-ba8e-19ef7f8900dc?mode=deep",
+    "timestamp": "2026-01-26 06:31:35.417615",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::collapse_loop()] [Debug Assert Bypass] Lines 235 and 239 have debug_assert_eq! checks ensuring nodes are their own parents. In release builds with debug assertions disabled, can an attacker pass non-head nodes, causing parent pointers to be incorrectly set and corrupting the disjoint-set structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43496be3-31c3-495e-917e-1b00157dac79?mode=deep",
+    "timestamp": "2026-01-26 06:32:03.824643",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::collapse_loop()] [Max Depth Calculation Error] At line 241, depth is calculated as 'self.depth(*constituent).max(depth)'. If body contains nodes with artificially high depth values (from prior collapses), can this propagate incorrect nesting information, causing the verifier to accept bytecode with excessive loop nesting? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aab19a8c-459c-4037-a798-e77000916971?mode=deep",
+    "timestamp": "2026-01-26 06:32:31.980151",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: LoopPartition::collapse_loop()] [Empty Body Edge Case] The comment at lines 232-233 mentions empty body is allowed. If collapse_loop() is called repeatedly with empty bodies on the same head, does the depth increment without bound, eventually overflowing and corrupting nesting depth tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e3107c5-2262-439c-8301-a102372fd1df?mode=deep",
+    "timestamp": "2026-01-26 06:32:58.972788",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: block()] [Out-of-Bounds Access] At line 175, 'self.blocks[usize::from(l)]' accesses blocks vector without bounds checking. If a malicious caller constructs NodeId with value >= blocks.len(), does this panic or can it be exploited to read uninitialized memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65658c95-5d2f-4dbf-9801-19b81cd8f334?mode=deep",
+    "timestamp": "2026-01-26 06:33:26.318575",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: back_edges()] [Out-of-Bounds Access] At line 179, accessing 'self.backs[usize::from(l)]' without bounds validation. Can an attacker craft NodeId values that cause out-of-bounds reads, potentially leaking memory contents or causing verification crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f7b51c9-3c5b-4e2f-97b7-ae6e27af3344?mode=deep",
+    "timestamp": "2026-01-26 06:33:54.659062",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/loop_summary.rs] [Function: pred_edges()] [Out-of-Bounds Access] At line 183, similar unbounded access to preds vector. If NodeId is constructed from untrusted bytecode offsets, can this lead to out-of-bounds reads revealing sensitive validator memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f1a0dce-b165-42d8-872e-4cc89560c927?mode=deep",
+    "timestamp": "2026-01-26 06:34:23.739566",
+    "report_generated": false
+  }
+]
