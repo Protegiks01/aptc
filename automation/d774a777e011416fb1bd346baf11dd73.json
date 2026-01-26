@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_script()] [Version bypass] Can an attacker craft a malicious CompiledScript with script.version set to VERSION_5 or higher to completely bypass all signature verification checks, allowing arbitrary signatures including multiple return values or invalid signer orderings that could break transaction execution guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1cdb2bf-24a2-4151-b729-fdf58a9facaf?mode=deep",
+    "timestamp": "2026-01-26 01:15:12.583420",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_script()] [Version manipulation] Does the version check at line 40 properly validate that script.version is within the valid range (VERSION_1 to VERSION_MAX), or can an attacker set version to an arbitrary large value like u32::MAX to bypass verification while still being accepted by other VM components? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1b44ff7-27bf-413d-9a01-47bc8b1c36c5?mode=deep",
+    "timestamp": "2026-01-26 01:15:26.038985",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_module()] [Version bypass] For modules with version < VERSION_5, verify_module() returns Ok(()) without any checks - can an attacker downgrade a module's version field to VERSION_1-4 to bypass all entry function signature validation, allowing malicious entry points with invalid signatures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1be0a560-74f0-406d-b870-493786ba9481?mode=deep",
+    "timestamp": "2026-01-26 01:15:40.313148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_module()] [Entry function bypass] At line 64, the filter only checks fdef.is_entry - can an attacker mark non-entry functions with is_entry=false that are still accessible through other mechanisms, bypassing signature validation for functions that should be verified? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_688375e2-d996-40d2-a953-3230a565ff19?mode=deep",
+    "timestamp": "2026-01-26 01:15:54.709739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_main_signature_impl()] [Deprecated logic bypass] At line 130, deprecated_logic is only true when resolver.version() < VERSION_5 AND is_entry is true - can an attacker exploit the is_entry=false path to bypass legacy_script_signature_checks even on old version scripts, allowing invalid signer orderings? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c27a076-35a7-4eb1-a6e5-47a289ce7f3a?mode=deep",
+    "timestamp": "2026-01-26 01:16:10.411432",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_script()] [Index out of bounds] The parameters SignatureIndex is passed directly to verify_main_signature_impl() without bounds checking - can an attacker craft a script with parameters index exceeding the signature table size, causing a panic or memory corruption when resolver.signature_at() is called? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4afb004-63a9-4324-9f32-a85a519d5836?mode=deep",
+    "timestamp": "2026-01-26 01:16:27.373456",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_module_function_signature()] [Invalid signature indices] At lines 108-109, fhandle.parameters and fhandle.return_ are used without validation - can malformed bytecode contain invalid SignatureIndex values that bypass bounds checks elsewhere and cause undefined behavior during signature_at() access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_030bb1d0-188a-492f-bdee-96543394ee6f?mode=deep",
+    "timestamp": "2026-01-26 01:16:46.124630",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: legacy_script_signature_checks()] [Signature table manipulation] At line 155, resolver.signature_at(parameters_idx).0 accesses the signature table - can an attacker craft bytecode where parameters_idx points to a maliciously crafted signature with non-standard SignatureToken variants that bypass subsequent validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f5301fa-fdf3-4147-9071-1de868c01750?mode=deep",
+    "timestamp": "2026-01-26 01:17:06.275080",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: legacy_script_signature_checks()] [Signer bypass] At lines 163-166, VERSION_1 scripts allow S::Reference(S::Signer) while newer versions allow S::Signer - can an attacker exploit version-specific differences to inject signer references that bypass authentication checks in the VM, potentially executing transactions as arbitrary signers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ba434ce-03ff-4a1b-81a4-98c4dccaf810?mode=deep",
+    "timestamp": "2026-01-26 01:17:28.948989",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: legacy_script_signature_checks()] [Signer ordering violation] The skip_while at lines 165 and 170 stops at the first non-signer type - can an attacker craft a signature like [Signer, U64, Signer] where the second Signer is not detected, bypassing the 'all signers first' invariant and potentially corrupting transaction sender validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61bfa718-234c-481e-a118-ce0eb3dba0c9?mode=deep",
+    "timestamp": "2026-01-26 01:17:53.090375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: legacy_script_signature_checks()] [Type validation bypass] At lines 166 and 171, typ.is_valid_for_constant() validates non-signer arguments - can an attacker inject SignatureToken::Reference, SignatureToken::Struct, or SignatureToken::TypeParameter types after signers that pass is_valid_for_constant() due to version-specific bugs in that method? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b7b977c-bb8c-4f94-890a-17b5c62af79a?mode=deep",
+    "timestamp": "2026-01-26 01:18:18.275064",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: legacy_script_signature_checks()] [Mutable reference injection] Does is_valid_for_constant() properly reject SignatureToken::MutableReference types, or can an attacker pass mutable references as script arguments that could enable unauthorized state modifications bypassing Move's ownership model? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b831be2a-e0f0-40c9-99c0-26476fdc7f11?mode=deep",
+    "timestamp": "2026-01-26 01:18:44.990128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: legacy_script_signature_checks()] [Return type bypass] At line 173, has_valid_return_type only checks return_types.is_empty() - for VERSION_5+ modules that skip this check, can entry functions return references that violate Move's resource safety model, potentially leaking internal state or enabling use-after-free bugs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a31870cc-69f0-458e-9b93-976c06d1e8c2?mode=deep",
+    "timestamp": "2026-01-26 01:19:13.568862",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_main_signature_impl()] [Return validation inconsistency] Scripts pass return_idx as None (line 46) while modules pass Some(return_) (line 114) - can this inconsistency be exploited where custom check_signature implementations assume return_idx is always Some for modules, causing panics on unwrap()? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55eb2650-eb04-4063-b42d-74b4c7cdebe4?mode=deep",
+    "timestamp": "2026-01-26 01:19:43.275228",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: legacy_script_signature_checks()] [Vector return exploitation] Although return_types.is_empty() is checked, does this prevent VERSION_5+ entry functions from returning Vec<Signer> or Vec<Reference> types that could be used to exfiltrate privileged capabilities or memory references? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_981132ef-c9ab-45a8-bc96-9be7f9e9b0e7?mode=deep",
+    "timestamp": "2026-01-26 01:20:13.083062",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_main_signature_impl()] [Function pointer manipulation] The check_signature function pointer is passed without validation - can an attacker control the FnCheckScriptSignature pointer to point to malicious code or no_additional_script_signature_checks when strict validation is required? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_325a8790-1af9-4155-be61-314f48c78b14?mode=deep",
+    "timestamp": "2026-01-26 01:20:45.795125",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: no_additional_script_signature_checks()] [Validation bypass] This function returns Ok(()) without any checks - if used incorrectly as the check_signature parameter, does it completely bypass all adapter-specific validation, allowing invalid transaction types or gas configurations to execute? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a77c5c83-ba63-4372-ad06-35f3d3cabff7?mode=deep",
+    "timestamp": "2026-01-26 01:21:19.886918",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_main_signature_impl()] [Check ordering exploit] At line 135, check_signature is called AFTER legacy checks - can a malicious check_signature function rely on state modified by legacy_script_signature_checks, or can it bypass legacy checks by returning early errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb241f5a-7e9f-4588-b930-73a4113e459f?mode=deep",
+    "timestamp": "2026-01-26 01:21:54.401101",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_module()] [Integer overflow] At line 68, enumerate().filter().enumerate() casts idx to TableIndex with 'as TableIndex' - can an extremely large module with >u16::MAX entry functions cause integer truncation, creating FunctionDefinitionIndex with wrong values leading to verification of wrong functions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26338be4-f5dd-49a9-9def-5b07b9bda1e1?mode=deep",
+    "timestamp": "2026-01-26 01:22:27.554685",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_module_function_signature_by_name()] [Index casting overflow] At line 92, idx is cast 'as TableIndex' - if a module has function definitions beyond TableIndex capacity, can this truncation cause verification of a different function than intended, bypassing security checks on the actual target function? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffdac1ef-3b8a-4293-a6e5-bd12b32b0bf9?mode=deep",
+    "timestamp": "2026-01-26 01:22:59.939457",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_script()] [Error location spoofing] At line 48, errors are finished with Location::Script - can an attacker craft bytecode where error locations point to wrong script offsets, causing debuggers or validators to misidentify the vulnerability source and potentially accept malicious code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d194205e-944c-490a-b566-393a1e5fb844?mode=deep",
+    "timestamp": "2026-01-26 01:23:32.398652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_module_function_signature()] [Error index manipulation] At line 118, errors are annotated with at_index(IndexKind::FunctionDefinition, idx.0) - can idx.0 be manipulated to point to a different function definition, causing error attribution to the wrong function and bypassing security alerts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4073cd8-fb9c-49e9-988a-48cdadc1f82c?mode=deep",
+    "timestamp": "2026-01-26 01:24:05.497975",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_module_function_signature_by_name()] [Error suppression] If function lookup at line 82 fails for a name that should exist, the error message 'function not found' is generic - can this mask actual verification errors where a function exists but has a corrupted name field, bypassing signature validation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51b53f48-440e-47fb-886b-a3628af3cd51?mode=deep",
+    "timestamp": "2026-01-26 01:24:38.128849",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_module_function_signature_by_name()] [Module identity spoofing] At line 88, the error includes module.self_id() - can an attacker craft bytecode with a fake self_id that differs from the actual module address, causing verification errors to be ignored or attributed to a different module? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d0d7327-b527-494e-a164-033b2d95ec71?mode=deep",
+    "timestamp": "2026-01-26 01:25:07.935310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-bytecode-verifier/src/script_signature.rs] [Function: verify_module_function_signature()] [Self-ID inconsistency] The error at line 119 uses module.self_id() - if self_id doesn't match the actual deployment address, can verification succeed but execution fail, creating a state inconsistency where invalid modules are marked as verified? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_639a9e98-fa12-4c97-8a1b-dad4526406c4?mode=deep",
+    "timestamp": "2026-01-26 01:25:36.683571",
+    "report_generated": false
+  }
+]
