@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: process_ready_seq_num_based_transactions()] [Parking Lot Flooding] At lines 616-624, transactions beyond min_seq are added to parking_lot_index. Can attacker submit massive sequence number gaps to fill parking lot and cause memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa39ec42-9b92-459a-8a41-940b01511272?mode=deep",
+    "timestamp": "2026-01-26 01:09:30.233536",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: process_ready_seq_num_based_transactions()] [State Transition Race] At line 610, process_ready_transaction() is called in loop. Can concurrent commits cause sequence number to advance during loop, leading to incorrect ready state determination? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bd1ca9b-c57d-4679-9e9b-a097fbee6ce7?mode=deep",
+    "timestamp": "2026-01-26 01:09:43.532792",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: commit_transaction()] [Account Sequence Number Manipulation] At lines 679-684, new_account_seq_number is set to max(current, txn_seq + 1). Can Byzantine validator commit out-of-order transactions to cause sequence number to jump arbitrarily, rejecting legitimate user transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94e1dcef-7943-45c5-9466-65a752224e34?mode=deep",
+    "timestamp": "2026-01-26 01:09:57.084418",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: insert()] [Replay Protector Type Confusion] The code handles both ReplayProtector::SequenceNumber and ReplayProtector::Nonce differently. Can attacker exploit type confusion by submitting transactions that are processed as wrong type? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab037d40-2a26-42a4-926c-f44c8e2e172c?mode=deep",
+    "timestamp": "2026-01-26 01:10:10.985563",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: get_mempool_txn()] [Replay Protector Lookup] At lines 145-153, transactions are looked up by replay_protector. Can hash collisions in ReplayProtector enum cause transaction mismatches or overwrites? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ae2ef68-ebd8-4856-b90d-a51eb0c231bd?mode=deep",
+    "timestamp": "2026-01-26 01:10:26.103586",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: commit_transaction()] [Nonce Cleanup] At lines 691-706, Nonce-based transactions are only removed from mempool, not cleaned up like SequenceNumber transactions. Can this lead to unbounded growth of account_sequence_numbers HashMap for orderless transaction users? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ba7db51-359f-48dc-9cb5-b1ec1766101c?mode=deep",
+    "timestamp": "2026-01-26 01:10:41.061474",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: check_txn_ready()] [Nonce Always Ready] At lines 496-499, Nonce transactions are always considered ready. Can attacker exploit this by flooding mempool with Nonce transactions to consume priority_index and timeline_index capacity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85d423d0-84f7-4b23-9c64-2f20384fcf41?mode=deep",
+    "timestamp": "2026-01-26 01:11:00.032209",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: commit_transaction()] [Sequence Number vs Nonce Handling] At lines 678-690, SequenceNumber commits trigger cleanup and promotion, while Nonce commits (lines 691-706) only remove the specific transaction. Can this asymmetry be exploited to cause resource exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8f8da6e-b2ef-431d-9c1f-12d35647d466?mode=deep",
+    "timestamp": "2026-01-26 01:11:19.511930",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: index_remove()] [Panic During Removal] At lines 740-769, multiple indexes are removed sequentially. If unwrap_or_else() at line 748 panics, will earlier index removals be reverted or will mempool be left inconsistent? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_daebee6d-b1db-4369-913e-c8ed2cc5118e?mode=deep",
+    "timestamp": "2026-01-26 01:11:40.275504",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: index_remove()] [Hash Index Removal Failure] At line 756, hash_index.remove() is called. If the hash doesn't exist (due to earlier corruption), will this silently fail leaving size_bytes incorrectly calculated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85a53305-5d2c-4b12-8343-02d1a19f7d88?mode=deep",
+    "timestamp": "2026-01-26 01:12:02.919130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: index_remove()] [Size Bytes Underflow] At line 757, size_bytes is decremented. Can integer underflow occur if get_estimated_bytes() returns incorrect value or if transaction was inserted with different size estimate? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_602418c2-af99-4f33-a92c-5cff5020d843?mode=deep",
+    "timestamp": "2026-01-26 01:12:27.119721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: index_remove()] [Empty Transaction Cleanup] At lines 761-765, if txns.len() == 0, the account's data structures are removed. Can race condition cause this check to pass incorrectly while concurrent insertion is adding new transaction? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90c8ca83-697f-41e1-bebd-5e5d1593f9ff?mode=deep",
+    "timestamp": "2026-01-26 01:12:52.624209",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: process_ready_transaction()] [Priority Index Insertion] At line 558, priority_index.insert() is called. If this fails but timeline_index.insert() at line 567 succeeds, will transaction be in inconsistent state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb830bf2-89d7-4410-ba20-32cc3f173279?mode=deep",
+    "timestamp": "2026-01-26 01:13:18.505592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: process_ready_transaction()] [Timeline State Mismatch] At line 562, ready_for_mempool_broadcast checks if timeline_state == TimelineState::NotReady. Can concurrent state changes cause transaction to be inserted into timeline_index when it shouldn't be? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebff4daf-4b89-4626-8e5a-237dbfc75944?mode=deep",
+    "timestamp": "2026-01-26 01:13:46.155706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: process_ready_transaction()] [Parking Lot Removal Race] At line 591, parking_lot_index.remove() is called after promotion. If transaction was never in parking lot, does this cause issues? Can race allow transaction to be re-parked while being promoted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3965f39f-7bdd-4a57-b572-b25af74324f0?mode=deep",
+    "timestamp": "2026-01-26 01:14:14.143644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: insert()] [System TTL Index First] At line 348, system_ttl_index.insert() is called before expiration_time_index.insert(). If system_ttl_index insert succeeds but expiration_time_index fails, will transaction be in partial indexed state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_200a7690-3d22-452f-bf0e-57e0dfcf3ae3?mode=deep",
+    "timestamp": "2026-01-26 01:14:43.429934",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: process_ready_transaction()] [Timeline State Mutation] The code modifies txn.timeline_state but doesn't check previous state. Can transaction be promoted multiple times, causing duplicate entries in priority/timeline indexes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_175943ce-b38b-4f12-aec5-31cd1218b572?mode=deep",
+    "timestamp": "2026-01-26 01:15:12.255961",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: process_ready_transaction()] [Ready Flag Calculation] At line 556, ready_for_quorum_store checks if transaction is NOT in priority_index. Can this check give wrong result if priority_index.contains() has bugs or race conditions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca89eb6f-2c2a-4d3b-8026-b14176c81d13?mode=deep",
+    "timestamp": "2026-01-26 01:15:40.520515",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: check_txn_ready()] [Previous Transaction Check] At lines 486-493, code checks if prev_seq_num transaction is Ready. Can attacker exploit by submitting transaction with seq_num - 1 that is Ready but will be GC'd immediately, causing seq_num to incorrectly appear ready? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41a7a639-1966-47fe-ad9c-f22db4a53b7a?mode=deep",
+    "timestamp": "2026-01-26 01:16:08.007608",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: check_txn_ready()] [Zero Sequence Number Unreachable] At lines 480-483, code hits unreachable!() for seq_num == 0. Is this actually unreachable, or can attacker trigger this panic to crash mempool? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_271f328c-06a5-4553-8166-a619a2c38c9a?mode=deep",
+    "timestamp": "2026-01-26 01:16:36.648794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: gc()] [Timeline State Reset] At lines 972-974, after parking transaction, timeline_state is reset to NotReady. Can this cause timeline_index to have stale entries if timeline_index.remove() at line 971 fails? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e577dfb9-3e7a-4d30-91f3-3b1505a995d9?mode=deep",
+    "timestamp": "2026-01-26 01:17:03.544477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: check_is_full_after_eviction()] [Eviction Loop Starvation] At lines 426-447, parking_lot_index is popped until mempool is not full. Can attacker craft transactions that are never poppable from parking lot, preventing eviction and causing mempool to remain full? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6dd849ba-5730-4230-85da-614e6471b1d3?mode=deep",
+    "timestamp": "2026-01-26 01:17:32.110962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: check_is_full_after_eviction()] [Transaction Not Found Error] At line 445, code logs error if transaction not found during eviction. Can attacker cause this by manipulating parking_lot_index to reference non-existent transactions, preventing legitimate evictions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_112fbcbd-e303-4340-8d29-8f8bb05a4a8c?mode=deep",
+    "timestamp": "2026-01-26 01:17:59.741482",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: check_is_full_after_eviction()] [Eviction Only for Ready Transactions] At line 421, eviction only happens if check_txn_ready() returns true. Can attacker flood mempool with non-ready transactions that bypass eviction, causing permanent mempool saturation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b53f66f-0fb1-4d76-a9be-719f6b716af1?mode=deep",
+    "timestamp": "2026-01-26 01:18:29.353388",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/core_mempool/transaction_store.rs] [Function: check_is_full_after_eviction()] [Eviction Metrics Gaming] At lines 449-453, eviction counters are tracked. Can attacker trigger expensive eviction operations to cause performance degradation in monitoring systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7772465-9fb3-4011-a86a-99bce475a4c6?mode=deep",
+    "timestamp": "2026-01-26 01:18:59.815529",
+    "report_generated": false
+  }
+]
