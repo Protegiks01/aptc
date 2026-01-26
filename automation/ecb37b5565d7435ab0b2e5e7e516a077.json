@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: build_check_result()] [Integer overflow] Can an attacker manipulate the node to report u64::MAX for latest_timeouts_count, causing integer overflow when added to allowed_consensus_timeouts in line 69, potentially bypassing the timeout check and masking consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35143659-5ed2-47f6-8aaa-5db3d3a975e6?mode=deep",
+    "timestamp": "2026-01-26 15:24:14.560434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: build_check_result()] [Integer overflow] If previous_timeouts_count is close to u64::MAX and allowed_consensus_timeouts is non-zero, can the addition at line 69 overflow and wrap around, causing the comparison to incorrectly pass when it should fail, hiding consensus degradation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58423cd6-bff8-44eb-b341-17f2755a16ba?mode=deep",
+    "timestamp": "2026-01-26 15:24:27.390907",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: build_check_result()] [Underflow attack] Can an attacker cause latest_timeouts_count to be less than previous_timeouts_count (metric counter reset), potentially causing unexpected behavior or panic in the comparison logic, leading to checker failure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b41d0df9-b869-45ec-8f93-70a5bd65234e?mode=deep",
+    "timestamp": "2026-01-26 15:24:40.516329",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Config: allowed_consensus_timeouts] [Integer overflow] Can setting allowed_consensus_timeouts to u64::MAX effectively disable timeout checking by making the condition at line 69 always false, allowing unlimited timeout increases without detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1960779b-1954-4da8-a42b-7b2482fe5e44?mode=deep",
+    "timestamp": "2026-01-26 15:24:55.417447",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: build_check_result()] [Type safety] Does the u64 type provide sufficient range for cumulative timeout counts over long periods, or can legitimate long-running nodes hit u64::MAX causing counter wrapping and false positives? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_becd273a-7e66-4e39-8619-18d2001e3677?mode=deep",
+    "timestamp": "2026-01-26 15:25:10.003176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Constant: METRIC] [Metric name manipulation] Can a malicious node operator modify their metrics endpoint to report a fake 'aptos_consensus_timeout_count' metric with artificially low values to pass health checks while actually experiencing consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_799dae1f-834d-4145-bb47-3a81806f656f?mode=deep",
+    "timestamp": "2026-01-26 15:25:25.521507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: get_consensus_timeouts()] [Metric absence] If the aptos_consensus_timeout_count metric is missing (returns GetMetricResult with score 0), does the checker properly fail closed, or can nodes pass checks by simply not reporting this metric? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d10be1b4-ab6c-42f1-866a-46f33345323d?mode=deep",
+    "timestamp": "2026-01-26 15:25:41.803781",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: get_consensus_timeouts()] [Metric parsing] Can malformed metric values (e.g., negative numbers, NaN, infinity) in the Prometheus scrape data cause parsing errors that are silently ignored, allowing invalid nodes to pass checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffca41af-e5bb-4387-b827-fcc345c596cb?mode=deep",
+    "timestamp": "2026-01-26 15:26:00.478422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Metric consistency] Between first_scrape and second_scrape, can a Byzantine node dynamically change its metrics endpoint to return different metric formats or sources, causing inconsistent comparisons? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a31a7d5-0659-4933-9f82-f78d768c248d?mode=deep",
+    "timestamp": "2026-01-26 15:26:19.953003",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: get_consensus_timeouts()] [Label injection] Does get_metric() properly validate metric labels, or can attackers inject malicious labels to select different timeout counters and manipulate which value gets checked? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59283bd9-5020-44dc-83d6-c630c300eeb1?mode=deep",
+    "timestamp": "2026-01-26 15:26:40.495510",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Race condition] Between the tokio::time::sleep() at line 119 and second metrics scrape, can the node restart or reset its metrics, causing previous_timeouts_count > latest_timeouts_count and breaking the comparison logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63d011b4-f454-48cb-9b33-26b4c7ff2757?mode=deep",
+    "timestamp": "2026-01-26 15:27:01.970399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Timing attack] Can a malicious node detect the delay duration from check_delay() and synchronously adjust its timeout counter just before the second scrape to barely pass the allowed_consensus_timeouts threshold? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d18d19cf-dcdc-4f6b-a7f5-83e0b58d2cac?mode=deep",
+    "timestamp": "2026-01-26 15:27:25.010165",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Sleep duration] If check_delay() returns 0 or a very small duration, can both scrapes happen nearly simultaneously, capturing identical timeout values and always passing checks even on failing nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5406cb27-11db-44c0-8387-6c0334ca8843?mode=deep",
+    "timestamp": "2026-01-26 15:27:47.277207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Async cancellation] If the check() async function is cancelled between first_scrape and second_scrape, can partial state persist causing incorrect results on the next check invocation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c42294af-c066-4b71-9f4d-96c478357104?mode=deep",
+    "timestamp": "2026-01-26 15:28:09.891078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Time synchronization] If the target node's system clock is manipulated (time travel attack), can timeout metrics appear to increase slower than reality, bypassing detection of actual consensus degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82b90895-f53b-4564-b9c4-f184700d9a64?mode=deep",
+    "timestamp": "2026-01-26 15:28:33.193977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Error silencing] When first_scrape fails at lines 105-117, the function returns early with score 0, but does this allow repeatedly failing nodes to remain in validator sets if the 'required' config is false? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f17c0be2-d7cb-4392-af22-e9d3489eca9e?mode=deep",
+    "timestamp": "2026-01-26 15:28:56.886667",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Partial failure] If first_scrape succeeds but second_scrape fails at lines 121-133, does the checker properly handle this asymmetric failure, or does it allow nodes to pass by making the second scrape fail? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3159768c-1d15-4996-af3c-190d32ee7488?mode=deep",
+    "timestamp": "2026-01-26 15:29:20.665315",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Unwrap safety] The unwrap() calls at lines 150-151 on Option<u64> assume check_results is empty, but can race conditions or logic bugs cause unwrap() on None, leading to panic and checker crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_060398dc-7a85-45e2-87f3-a94437a7278c?mode=deep",
+    "timestamp": "2026-01-26 15:29:44.825260",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: get_consensus_timeouts()] [GetMetricResult handling] Does the GetMetricResult's unwrap() method at lines 139 and 142 properly populate check_results with errors, or can it silently fail allowing invalid metrics through? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d227bf2-a275-4c15-8332-f8377061fb47?mode=deep",
+    "timestamp": "2026-01-26 15:30:09.301307",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Function: check()] [Empty results] If both get_consensus_timeouts() calls fail and populate check_results, the function returns at line 146, but can an empty check_results vec pass through to build_check_result() causing unexpected behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_baec1125-0141-4eba-bef4-16622b5cf106?mode=deep",
+    "timestamp": "2026-01-26 15:30:33.700300",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Config: allowed_consensus_timeouts] [Misconfiguration] Can setting allowed_consensus_timeouts to 0 cause all nodes to fail checks on any timeout increase, creating false positives and excluding healthy validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_996ae330-ce97-4962-92bd-f2ac2cf01864?mode=deep",
+    "timestamp": "2026-01-26 15:30:56.922472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Config: allowed_consensus_timeouts] [Default value] The #[serde(default)] at line 35 uses u64's default (0), which might be too strict - can this cause operational issues where all nodes fail unnecessarily? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c9179e9-ed55-4c9a-bc3d-3a0e4034f5bb?mode=deep",
+    "timestamp": "2026-01-26 15:31:18.717577",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Config: common.required] [Bypass mechanism] If common.required is set to false in the get_provider! macro at line 101, can nodes completely skip consensus timeout validation and participate in the network without this critical check? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b700d71-c325-4154-95e2-4c12ee727c5e?mode=deep",
+    "timestamp": "2026-01-26 15:31:39.644765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Config: deny_unknown_fields] [Config injection] Does the #[serde(deny_unknown_fields)] at line 28 properly prevent config injection attacks where extra fields are added to change checker behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b18ef224-2452-4f19-9df0-4076c63584e3?mode=deep",
+    "timestamp": "2026-01-26 15:32:01.860109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/consensus_timeouts.rs] [Config: common] [Nested config] Can attackers manipulate the flattened CommonCheckerConfig fields to override critical settings like check_delay or required status? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba3493a2-8dd2-48bb-a028-cb9e6ca71d9e?mode=deep",
+    "timestamp": "2026-01-26 15:32:25.194310",
+    "report_generated": false
+  }
+]
