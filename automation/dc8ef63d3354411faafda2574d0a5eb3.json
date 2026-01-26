@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: is_resource_supported()] [Module address hardcoding] The function checks for '0x1::coin::' prefix - if governance upgrades the coin module to a different address, will this break all coin indexing until code update? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1200697-4c66-4c85-b6eb-992fa056b364?mode=deep",
+    "timestamp": "2026-01-26 05:06:02.080319",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: from_write_resource()] [Type string construction] Lines 215-220 manually construct the type string - can mismatches between this construction and Move's canonical type representation cause the indexer to miss coin resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38612f88-9908-46d3-a003-1eb5326f7bcf?mode=deep",
+    "timestamp": "2026-01-26 05:06:14.775921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: CoinInfoResource] [String memory] The name and symbol are unbounded Strings - can an attacker create coins with multi-megabyte names causing memory exhaustion when the indexer loads all coin metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e5175f9-0c4c-4b3a-9057-afd0453c55bd?mode=deep",
+    "timestamp": "2026-01-26 05:06:28.285186",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: CoinInfoType] [coin_type length] The coin_type String can be extremely long (generic type parameters) - can deeply nested generic types like 'Coin<Coin<Coin<...>>>' cause exponential memory usage or parsing DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59239989-87f5-4812-8f82-886b109690f8?mode=deep",
+    "timestamp": "2026-01-26 05:06:42.203105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: get_coin_type_trunc()] [Truncation allocation] Truncating to 5000 chars still requires allocating the full string first - can attackers flood the indexer with coins having multi-megabyte type names causing memory DoS before truncation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9faf5383-4158-4b99-99c1-22001087b636?mode=deep",
+    "timestamp": "2026-01-26 05:06:56.368937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: CoinStoreResource] [Balance vs events] The struct tracks both current balance (coin.value) and event handles - can discrepancies between balance and cumulative events (deposits - withdrawals) indicate indexer bugs or on-chain exploits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5dc6420f-30db-480f-a704-98525b0d616b?mode=deep",
+    "timestamp": "2026-01-26 05:07:11.809741",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: OptionalAggregatorResource] [Dual tracking] The struct has both aggregator (for table-based supply) and integer (for direct supply) - if both are populated with different values, which is authoritative, and can this duality be exploited? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ff5240b-d062-450e-99c5-432a3f1c813a?mode=deep",
+    "timestamp": "2026-01-26 05:07:27.983651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: get_supply()] [None semantics] Returning None from get_supply() is ambiguous - does it mean supply is not tracked, zero, or unknown? Can this ambiguity cause UI to display incorrect 'unlimited supply' for coins with zero supply? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ade7bba-cbc4-4e80-a9aa-001b7d05d05f?mode=deep",
+    "timestamp": "2026-01-26 05:07:45.996618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: to_hash()] [Hash collision resistance] If hash_str() produces 32-byte hashes, the birthday paradox suggests collisions after ~2^16 coins - is this acceptable for the number of expected coins on Aptos? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7c77812-39b2-4382-b08e-ee9f38eefc59?mode=deep",
+    "timestamp": "2026-01-26 05:08:04.954553",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: to_hash()] [Hash preimage attack] Can an attacker who knows the hash algorithm find two different coin_type strings that hash to the same value, then register one legitimately and use the other for phishing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0e88141-7f40-4d91-b835-9a0ee624b46b?mode=deep",
+    "timestamp": "2026-01-26 05:08:24.677555",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: EventGuidResource] [Compound key uniqueness] The struct uses (addr, creation_num) as a compound key for event identity - can two different accounts have events with the same creation_num, and does the indexer properly handle this? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6179fd5-e163-4e6b-8c6c-ec5de1f24787?mode=deep",
+    "timestamp": "2026-01-26 05:08:45.472987",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: get_name_trunc()] [Database index efficiency] If coin names are indexed in the database after truncation, can attackers create many coins with identical prefixes to degrade index performance on name lookups? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be307a93-176f-49d1-b329-64981fe32244?mode=deep",
+    "timestamp": "2026-01-26 05:09:07.515555",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: get_symbol_trunc()] [UI collision] Truncated 10-char symbols displayed in UIs - can attackers create scam coins with symbols like 'Bitcoin   ' (with trailing spaces) that truncate to 'Bitcoin', confusing users? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3a983f6-39bf-42c4-921d-5721b278e0b9?mode=deep",
+    "timestamp": "2026-01-26 05:09:30.473116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: CoinInfoResource] [Zero decimals] If decimals = 0, can arithmetic operations that assume decimals > 0 cause division by zero when normalizing amounts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c1e8099-3d90-4f3f-95df-2f3bd4dbcca7?mode=deep",
+    "timestamp": "2026-01-26 05:09:54.579523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: CoinInfoResource] [Negative decimals] The decimals field is i32 - if negative values are allowed, can they cause exponential growth when denormalizing amounts (amount * 10^(-decimals))? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f61172a5-2793-49e4-9de1-a87617b9339c?mode=deep",
+    "timestamp": "2026-01-26 05:10:19.708458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: Coin] [Zero balance] Does the indexer correctly handle CoinStore resources with value = 0, or can zero balances cause division-by-zero in percentage calculations or be incorrectly filtered out? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdefa4ab-99d8-4313-bb3c-3f0c747df026?mode=deep",
+    "timestamp": "2026-01-26 05:10:45.384534",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: IntegerResource] [Supply overflow] If a coin's supply exceeds BigDecimal's maximum representable value, does get_supply() return an error, saturate, or wrap around silently? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28398451-fb21-4ccf-bc42-829e349adb7d?mode=deep",
+    "timestamp": "2026-01-26 05:11:10.778906",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: from_resource()] [Version parameter usage] The txn_version parameter is only used in error messages - should it also be used for versioned parsing logic to handle breaking changes in coin resource formats across protocol upgrades? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f2dc000-6bed-4798-96a8-111acff6bffd?mode=deep",
+    "timestamp": "2026-01-26 05:11:37.007602",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: from_write_resource()] [Write ordering] The function doesn't track write ordering within a transaction - can reordering of CoinStore writes cause the indexer to process balance changes out of order? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72d13ef1-a161-45f9-a612-4600739a6c3c?mode=deep",
+    "timestamp": "2026-01-26 05:12:04.493494",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Derive: Serialize/Deserialize] [Circular references] If coin resource JSON contains circular references (possible with table handles), can deserialization loop infinitely or cause stack overflow? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4baa14d-1d85-45d8-9cdd-b468f75700a9?mode=deep",
+    "timestamp": "2026-01-26 05:12:31.573450",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: from_resource()] [JSON bomb] Can an attacker craft JSON with deeply nested objects or arrays that exponentially expand during deserialization, causing DoS via memory/CPU exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e72d19b6-318f-44fc-831f-6cde527a76d5?mode=deep",
+    "timestamp": "2026-01-26 05:12:56.763628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Macro: deserialize_from_string] [String escaping] When deserializing numeric strings, can special characters (NaN, Infinity, exponent notation) bypass validation and inject invalid BigDecimal values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aad9a076-abfd-4b90-aaf2-f46b4629a646?mode=deep",
+    "timestamp": "2026-01-26 05:13:21.389231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: CoinInfoResource] [Field addition] If future protocol upgrades add new fields to CoinInfo (e.g., max_supply), will the indexer silently ignore them causing incomplete coin metadata? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74d9832a-2506-44f0-b62b-f27415be99cb?mode=deep",
+    "timestamp": "2026-01-26 05:13:44.665988",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Struct: OptionalAggregatorResource] [Structure changes] The nested wrapper structure (OptionalAggregatorWrapperResource -> OptionalAggregatorResource) seems fragile - can Move framework changes break this without compile-time errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d2d8be7-cb77-448f-b6f0-c05108a628dd?mode=deep",
+    "timestamp": "2026-01-26 05:14:07.723477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/coin_models/coin_utils.rs] [Function: is_resource_supported()] [Version compatibility] Hardcoded type strings assume specific module structure - if the coin module is refactored in a protocol upgrade, will all historical coins become unsupported? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4406aacf-eafc-4a28-a673-a900a5762372?mode=deep",
+    "timestamp": "2026-01-26 05:14:30.446401",
+    "report_generated": false
+  }
+]
