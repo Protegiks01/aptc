@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/lib.rs] [Struct: IndexerGrpcFileCheckerConfig] [Input validation] Can an attacker provide empty strings for existing_bucket_name or new_bucket_name during configuration, causing the checker to access invalid or attacker-controlled buckets without validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e0bc69d-6fb3-4726-adeb-b63fe051a8c1?mode=deep",
+    "timestamp": "2026-01-26 08:18:56.531788",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/lib.rs] [Struct: IndexerGrpcFileCheckerConfig] [Integer overflow] Can an attacker set starting_version to u64::MAX, causing integer overflow when the version is incremented by 1000 in processor.rs line 94, potentially skipping critical transaction verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a049d0d9-a810-4112-af2e-71039d4b24c3?mode=deep",
+    "timestamp": "2026-01-26 08:19:09.107499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/lib.rs] [Function: run()] [Error handling] Does the .expect() call on line 37 expose sensitive error information that could leak bucket configurations or internal state to attackers monitoring logs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77ab5a60-8cbd-466e-b45c-a950547f6764?mode=deep",
+    "timestamp": "2026-01-26 08:19:22.236964",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/lib.rs] [Function: run()] [Panic-based DoS] Can an attacker trigger a panic in processor.run() that causes the entire file checker service to crash permanently via the .expect() call, creating loss of liveness for indexer verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4dba1a72-f37a-4ad5-8146-44e4a5833396?mode=deep",
+    "timestamp": "2026-01-26 08:19:35.739904",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/lib.rs] [Trait: RunnableConfig] [Authentication] Does the RunnableConfig implementation verify that the caller has proper credentials to access both bucket_name configurations before execution begins? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d21535f1-ac53-4bd6-b95b-d42707f7885e?mode=deep",
+    "timestamp": "2026-01-26 08:19:50.176033",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: init()] [Authentication bypass] Does Client::new() on line 120 properly authenticate with cloud storage, or can an unauthenticated attacker read arbitrary bucket data by manipulating environment credentials? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48c220f1-14b5-45fe-a917-4ccb3cced1c9?mode=deep",
+    "timestamp": "2026-01-26 08:20:05.670089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: init()] [Chain ID validation] Can an attacker bypass the chain_id validation on lines 135-140 by providing a malicious metadata.json file with matching but incorrect chain IDs in both buckets, causing wrong-chain data to be accepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be09d76a-023e-48ca-afe3-d10a15c736ca?mode=deep",
+    "timestamp": "2026-01-26 08:20:22.524729",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: init()] [TOCTOU vulnerability] Between downloading existing_metadata (line 123-127) and new_metadata (line 128-132), can an attacker modify the metadata files in the buckets, causing a time-of-check-time-of-use race condition? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78b52f31-9848-4487-b8ea-406a6b61c332?mode=deep",
+    "timestamp": "2026-01-26 08:20:39.893050",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: init()] [Deserialization attack] Can an attacker upload a maliciously crafted metadata.json with deeply nested JSON structures causing stack overflow or excessive memory allocation during serde_json deserialization on lines 123-132? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5392396e-2155-4392-bc74-853bcf37112c?mode=deep",
+    "timestamp": "2026-01-26 08:20:58.222700",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: init()] [Progress file manipulation] Can an attacker who gains write access to new_bucket_name upload a malicious progress file with file_checker_version set to 0, causing the checker to restart from genesis and waste resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6c1a289-4bf1-4b4a-b9c1-0f0e649dce20?mode=deep",
+    "timestamp": "2026-01-26 08:21:17.466179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: init()] [Integer underflow] If an attacker sets file_checker_version in the progress file to a value less than starting_version, does the system handle this gracefully or could it cause underflow in version calculations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5212f923-0f97-4640-bb4f-81c6bb52113d?mode=deep",
+    "timestamp": "2026-01-26 08:21:36.451105",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: init()] [Chain ID mismatch detection] The validation on lines 151-156 checks progress_file.file_checker_chain_id against existing_metadata.chain_id, but can an attacker provide a progress file with a different chain_id than new_metadata to cause confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d59f7c2a-4d8e-4429-9c7b-79ac3b527d86?mode=deep",
+    "timestamp": "2026-01-26 08:21:57.818123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Infinite loop DoS] Does the infinite loop starting at line 53 have any termination condition, or can it consume resources indefinitely if buckets are never updated? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_147b1bb5-12fe-471e-acc6-abfca72bebd4?mode=deep",
+    "timestamp": "2026-01-26 08:22:20.201172",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [File name generation] Can an attacker exploit FileEntry::build_key() on line 57 to generate malicious file names that access unintended bucket paths or cause directory traversal? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_627ce3bc-ed37-42e1-92d0-1e601c7eac60?mode=deep",
+    "timestamp": "2026-01-26 08:22:43.511868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Resource exhaustion] When downloading files on lines 58-60, is there any size limit validation? Can an attacker upload multi-gigabyte files causing memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b796b105-05c8-4395-b909-f3e8eec06995?mode=deep",
+    "timestamp": "2026-01-26 08:23:07.865155",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Race condition] Between checking if files exist (line 61) and downloading them (lines 58-60), can an attacker delete or modify files in the bucket, causing inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69c827bc-9c70-4d40-9afe-2257afd525d0?mode=deep",
+    "timestamp": "2026-01-26 08:23:30.824328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Asymmetric file availability] If existing_file exists but new_file doesn't (lines 61-75), the checker sleeps for 30 seconds. Can an attacker repeatedly create/delete new_file to cause indefinite delay in verification? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d1da736-54aa-49e9-9544-d6ea70647b79?mode=deep",
+    "timestamp": "2026-01-26 08:23:54.817686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Information leakage] Does logging the bucket_name and file_name on lines 67-71 expose sensitive infrastructure information that aids attackers in targeting specific buckets? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03d16841-8bf4-408f-af68-c459f8e46fb4?mode=deep",
+    "timestamp": "2026-01-26 08:24:17.926179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Byte comparison weakness] The byte-by-byte comparison on line 79 doesn't verify file structure - can an attacker provide corrupted but byte-identical files that will pass verification? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_443705e7-46cb-4ee5-b900-a3f496e68e18?mode=deep",
+    "timestamp": "2026-01-26 08:24:40.676211",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Panic-based DoS] When files differ (lines 79-86), the system panics after 120 seconds. Can a malicious indexer operator intentionally corrupt new_bucket files to cause permanent service failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c2af2b9-9e30-40eb-bac6-2a1d0fb9b05c?mode=deep",
+    "timestamp": "2026-01-26 08:25:03.127144",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Metrics manipulation] FILE_DIFF_COUNTER is incremented on line 82 before panicking - can an attacker trigger false alarms by temporarily modifying files during the comparison window? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ddbd336-676d-4c71-b3e7-5dcd2263d17c?mode=deep",
+    "timestamp": "2026-01-26 08:25:26.618582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Version increment logic] The hardcoded increment of 1000 on line 94 assumes files are stored every 1000 versions. Can an attacker exploit gaps in version numbering to skip verification of intermediate transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e5f66d4-da74-45e8-9a31-b2ebf53f737c?mode=deep",
+    "timestamp": "2026-01-26 08:25:51.733965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Integer overflow] When incrementing progress_file.file_checker_version by 1000 on line 94, can repeated additions cause u64 overflow near u64::MAX, wrapping to 0 and re-verifying old data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22e3fc9a-d682-4c66-8f3a-488eb847c5c8?mode=deep",
+    "timestamp": "2026-01-26 08:26:16.166316",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Timing attack] The progress file update check on line 97 uses elapsed time - can an attacker manipulate system time to prevent progress file updates, causing state loss on crash? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b310351-8f05-46ae-948e-465a912f3564?mode=deep",
+    "timestamp": "2026-01-26 08:26:42.262926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-file-checker/src/processor.rs] [Function: run()] [Progress file race condition] Between reading progress_file (line 54) and writing it (lines 103-112), can concurrent checker instances corrupt the progress state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_106e6f0f-f933-453f-bc84-8ebc55686e52?mode=deep",
+    "timestamp": "2026-01-26 08:27:08.774533",
+    "report_generated": false
+  }
+]
