@@ -1,0 +1,56 @@
+[
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Variant: GetStorageServerSummary] [Summary cache poisoning] Can rapidly requesting server summaries cause the server to constantly regenerate summary data, wasting CPU cycles and causing validator slowdown? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf760eb9-3523-4a87-b6a5-4bf549adc2c7?mode=deep",
+    "timestamp": "2026-01-26 02:15:00.584582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [All request types] [Per-request resource limits] Do all request types have consistent resource limits (memory, CPU, I/O), or can attackers identify request types with weak limits and focus attacks there? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3477a8c7-7704-48bc-bfcd-719d9ae2e094?mode=deep",
+    "timestamp": "2026-01-26 02:15:13.274008",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [All request types] [Amplification factor] Can small requests trigger disproportionately large responses or processing costs, allowing bandwidth or CPU amplification attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_903bd465-4d81-4a42-a2cf-6663440afc18?mode=deep",
+    "timestamp": "2026-01-26 02:15:26.220581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [All request types] [Request queueing] If the server queues requests before processing, can attackers fill the queue with expensive requests to block other peers from synchronizing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b11b9eca-b98d-4e21-b867-873d6b9247fe?mode=deep",
+    "timestamp": "2026-01-26 02:15:39.769953",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [All request types] [Concurrent request limit] Can a single Byzantine peer send hundreds of concurrent requests to monopolize server threads or connections, preventing other peers from accessing the service? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_189b90a3-84ba-4318-85a5-e2c42b85b9ac?mode=deep",
+    "timestamp": "2026-01-26 02:15:54.516622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Function: get_label() + use_compression] [Label suffix collision] Can the COMPRESSION_SUFFIX_LABEL (line 27) collide with legitimate request labels, causing metrics or logging confusion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07d65fa0-ee03-4a38-8d8e-51fa2f7daba7?mode=deep",
+    "timestamp": "2026-01-26 02:16:08.364267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [Function: get_label() + use_compression] [Metric cardinality explosion] Can attackers send requests with many different DataRequest variants combined with varying use_compression flags to create metric label combinations that exhaust monitoring system capacity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96b13d2e-e1d9-40c6-91ef-89d9db64177d?mode=deep",
+    "timestamp": "2026-01-26 02:16:25.009134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [All structs] [Clone implementation] Does the Clone derive allow requests to be duplicated in ways that could cause double-processing or state inconsistencies if the same request is handled multiple times? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3aaa747a-4a53-4cb2-8681-19e46f8565e2?mode=deep",
+    "timestamp": "2026-01-26 02:16:43.678076",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/types/src/requests.rs] [All structs] [Debug derive] Can Debug output of requests in logs accidentally leak sensitive information like proof versions or\n\n### Citations\n\n**File:** state-sync/storage-service/types/src/requests.rs (L1-464)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::COMPRESSION_SUFFIX_LABEL;\nuse aptos_types::transaction::Version;\nuse serde::{Deserialize, Serialize};\n\n/// A storage service request.\n#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]\npub struct StorageServiceRequest {\n    pub data_request: DataRequest, // The data to fetch from the storage service\n    pub use_compression: bool,     // Whether or not the client wishes data to be compressed\n}\n\nimpl StorageServiceRequest {\n    pub fn new(data_request: DataRequest, use_compression: bool) -> Self {\n        Self {\n            data_request,\n            use_compression,\n        }\n    }\n\n    /// Returns a summary label for the request\n    pub fn get_label(&self) -> String {\n        let mut label = self.data_request.get_label().to_string();\n        if self.use_compression {\n            label += COMPRESSION_SUFFIX_LABEL;\n        }\n        label\n    }\n}\n\n/// A single data request.\n#[derive(Clone, Debug, Deserialize, Eq, Hash, PartialEq, Serialize)]\npub enum DataRequest {\n    GetEpochEndingLedgerInfos(EpochEndingLedgerInfoRequest), // Fetches a list of epoch ending ledger infos\n    GetNewTransactionOutputsWithProof(NewTransactionOutputsWithProofRequest), // Optimistically fetches new transaction outputs\n    GetNewTransactionsWithProof(NewTransactionsWithProofRequest), // Optimistically fetches new transactions\n    GetNumberOfStatesAtVersion(Version), // Fetches the number of states at the specified version\n    GetServerProtocolVersion,            // Fetches the protocol version run by the server\n    GetStateValuesWithProof(StateValuesWithProofRequest), // Fetches a list of states with a proof\n    GetStorageServerSummary,             // Fetches a summary of the storage server state\n    GetTransactionOutputsWithProof(TransactionOutputsWithProofRequest), // Fetches a list of transaction outputs with a proof\n    GetTransactionsWithProof(TransactionsWithProofRequest), // Fetches a list of transactions with a proof\n    GetNewTransactionsOrOutputsWithProof(NewTransactionsOrOutputsWithProofRequest), // Optimistically fetches new transactions or outputs\n    GetTransactionsOrOutputsWithProof(TransactionsOrOutputsWithProofRequest), // Fetches a list of transactions or outputs with a proof\n    SubscribeTransactionOutputsWithProof(SubscribeTransactionOutputsWithProofRequest), // Subscribes to transaction outputs with a proof\n    SubscribeTransactionsOrOutputsWithProof(SubscribeTransactionsOrOutputsWithProofRequest), // Subscribes to transactions or outputs with a proof\n    SubscribeTransactionsWithProof(SubscribeTransactionsWithProofRequest), // Subscribes to transactions with a proof\n\n    // All the requests listed below are for transaction data v2 (i.e., transactions with auxiliary information).\n    // TODO: eventually we should deprecate all the old request types.\n    GetTransactionDataWithProof(GetTransactionDataWithProofRequest), // Fetches transaction data with a proof\n    GetNewTransactionDataWithProof(GetNewTransactionDataWithProofRequest), // Optimistically fetches new transaction data with a proof\n    SubscribeTransactionDataWithProof(SubscribeTransactionDataWithProofRequest), // Subscribes to transaction data with a proof\n}\n\nimpl DataRequest {\n    /// Returns a summary label for the request\n    pub fn get_label(&self) -> &'static str {\n        match self {\n            Self::GetEpochEndingLedgerInfos(_) =>",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_866889f5-06ed-4e31-8853-c5fc3e33332c?mode=deep",
+    "timestamp": "2026-01-26 02:17:02.951061",
+    "report_generated": false
+  }
+]
