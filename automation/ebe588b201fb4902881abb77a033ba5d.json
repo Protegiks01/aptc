@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Generic Type: D] [Weak hash acceptance] The type constraint D::OutputSize: IsGreaterOrEqual<DMinimumSize, Output = True> at line 104 only enforces 32-byte minimum - can an attacker instantiate HKDF with a 32-byte hash that has known collision or preimage vulnerabilities, compromising key derivation security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f5be4d7-76cd-4566-9a85-456c2abe5a24?mode=deep",
+    "timestamp": "2026-01-26 14:58:16.191099",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Constant: DMinimumSize] [SHA256 vs SHA1] While SHA1 is blocked by the 32-byte minimum at line 88, can an attacker use SHA256 or SHA3-256 with known length-extension weaknesses in contexts where HMAC doesn't fully mitigate those attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d99e426-51da-4b98-8ac1-b76e63e54012?mode=deep",
+    "timestamp": "2026-01-26 14:58:28.824156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Generic Type: D] [Hash function substitution] Is there runtime validation that the hash function D matches expected algorithms (SHA256/SHA512/SHA3-256), or can an attacker compile custom Aptos binaries with weak custom hash functions satisfying the type constraints but lacking security properties? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b42b36d4-0ec0-47ed-a387-d2e8fb1849b7?mode=deep",
+    "timestamp": "2026-01-26 14:58:41.777303",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_no_ikm_check()] [Hash state manipulation] At line 125, hkdf::Hkdf::<D>::extract() is called - can an attacker corrupt the hash function state D through malformed inputs causing non-deterministic output, breaking consensus when different validators derive different keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75ccdbc1-762c-40c0-8e4d-ccc40fca1f1b?mode=deep",
+    "timestamp": "2026-01-26 14:58:56.144464",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Hash collision exploitation] If the underlying hash function D experiences collision attacks, can an attacker find PRK and info values that collide, allowing them to derive the same output keys for different input contexts, compromising validator identity separation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e91b0a8-5b67-40eb-af7f-0083bbe0924a?mode=deep",
+    "timestamp": "2026-01-26 14:59:10.686109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Error suppression] When extract() returns Err(HkdfError::InvalidSeedLengthError) at line 119, is this error properly propagated and handled by callers, or can error suppression allow weak keys to be used in critical validator signing operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a24eadd-e3f2-4667-93ac-fb8dd58af96b?mode=deep",
+    "timestamp": "2026-01-26 14:59:26.135452",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Panic on large length] Does the vec![0u8; length] allocation at line 140 panic on very large length values instead of returning an error, potentially crashing validator nodes during key derivation and causing loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7423459c-8a62-4734-b731-2e9efda1733f?mode=deep",
+    "timestamp": "2026-01-26 14:59:41.890593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Error mapping loss] The map_err conversions at lines 139 and 143 may lose underlying error details - can this obscure root causes of key derivation failures during security incidents, hindering forensics after consensus failures or key compromise? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18385474-addd-4c36-b0d1-43cae3bcf2ac?mode=deep",
+    "timestamp": "2026-01-26 14:59:59.504886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Enum: HkdfError] [Insufficient error granularity] HkdfError only has 4 variants - does this provide enough detail to distinguish between attacker-induced errors vs legitimate failures, potentially allowing attackers to probe for vulnerabilities through error oracle attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58e6efd7-9ea2-4d07-b6a5-45fe824b5fcb?mode=deep",
+    "timestamp": "2026-01-26 15:00:18.329229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand()] [Error propagation order] If extract() succeeds at line 154 but expand() fails at line 155, is the intermediate PRK properly cleared from memory on the error path, or does it leak sensitive key material? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00f46ec9-ccd1-48f6-b75c-6feb7493055e?mode=deep",
+    "timestamp": "2026-01-26 15:00:37.722355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Key material in heap] The okm vector at line 140 allocates derived key material on the heap - is this properly zeroed after use, or can memory dumps from compromised validator nodes recover private keys even after they've been consumed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99d59fcd-0d41-4f77-a4a1-29dd4c516a9c?mode=deep",
+    "timestamp": "2026-01-26 15:00:57.590094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Timing side channel] Does the ikm.len() < MINIMUM_SEED_LENGTH comparison at line 118 execute in constant time, or can timing differences leak information about seed length to attackers monitoring validator node timing behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca006322-126c-4843-9683-004df2fb651f?mode=deep",
+    "timestamp": "2026-01-26 15:01:18.920703",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_no_ikm_check()] [PRK copy overhead] At line 126, arr.to_vec() creates a heap copy of the PRK - does this introduce additional memory locations where PRK remains uncleared, expanding the attack surface for memory scraping? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b703debd-e886-4262-9a17-a0452c46a860?mode=deep",
+    "timestamp": "2026-01-26 15:01:40.372621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Cache timing attacks] Can an attacker use cache timing side channels during the hkdf.expand() operation at line 141 to extract bits of the PRK or derived keys by observing cache access patterns on validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9ff2099-d4aa-49d9-982c-5565fa1c0b8c?mode=deep",
+    "timestamp": "2026-01-26 15:02:03.715408",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Branch prediction leakage] Do the error path branches (lines 119-120) leak timing information through branch prediction that could reveal seed characteristics to attackers with local access to validator hardware? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e9bd64d-d462-49fd-a85b-b69739e336ce?mode=deep",
+    "timestamp": "2026-01-26 15:02:27.485819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand()] [Master key derivation] When deriving hierarchical validator keys, can an attacker who compromises one derived key work backwards to recover the master seed due to insufficient PRK protection or weak expand operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb766af1-f103-43c5-98d5-321a88a9fd72?mode=deep",
+    "timestamp": "2026-01-26 15:02:52.026592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand_no_ikm()] [Noise protocol weakness] The extract_then_expand_no_ikm() function at line 165 is used for Noise protocol - can an attacker exploit the missing ikm to break forward secrecy in validator-to-validator encrypted channels, allowing decryption of past session traffic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b75edd7-ed24-4b20-a825-add55f775a58?mode=deep",
+    "timestamp": "2026-01-26 15:03:16.734418",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [DH key derivation] When deriving keys from Diffie-Hellman shared secrets as ikm, does extract() properly handle weak DH outputs (e.g., small subgroup elements) that could result in predictable PRKs compromising session security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c66a32d4-a652-4c26-9d98-ea0ae2d168de?mode=deep",
+    "timestamp": "2026-01-26 15:03:41.218211",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [BIP32-style derivation] The documentation mentions BIP32-like hierarchical derivation at line 50 - can an attacker exploit missing hardened derivation paths to compute child validator keys from parent keys without authorization? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_658579c2-022a-4f57-aef5-7cf5d9756943?mode=deep",
+    "timestamp": "2026-01-26 15:04:05.982683",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand()] [Entropy combination weakness] When combining multiple entropy sources as described at line 27, can an attacker who controls one entropy source (e.g., /dev/urandom on compromised systems) poison the final derived keys despite other sources having good entropy? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e199fbc-a7a9-4305-bdc1-90efee5594e8?mode=deep",
+    "timestamp": "2026-01-26 15:04:29.857975",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Struct: Hkdf] [Shared state corruption] The Hkdf struct at line 99 uses PhantomData - if multiple threads simultaneously call HKDF operations with shared underlying hash state, can race conditions in the digest crate cause non-deterministic outputs breaking consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb8b5931-5737-4747-8fdf-bf10a3309d59?mode=deep",
+    "timestamp": "2026-01-26 15:04:54.304499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Concurrent PRK usage] If the same PRK is used concurrently by multiple threads calling expand() with different info values, can race conditions in from_prk() or expand() cause output corruption or key material mixing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b750552-c960-48d3-834a-197c7bacf485?mode=deep",
+    "timestamp": "2026-01-26 15:05:17.820843",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Non-atomic seed read] If the ikm slice is backed by memory being concurrently modified, can TOCTOU (time-of-check-time-of-use) issues between the length check at line 118 and extract_no_ikm_check() call at line 121 cause security violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b985bc0-1631-46b0-af54-b824ad5f9c51?mode=deep",
+    "timestamp": "2026-01-26 15:05:39.922614",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand()] [PRK lifetime overlap] At line 154-155, the PRK lifetime spans two function calls - can concurrent memory allocation in other threads cause the PRK to be paged out to swap or written to disk on validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80acc4ea-0859-4c00-847c-95b2cceb44ac?mode=deep",
+    "timestamp": "2026-01-26 15:06:03.854534",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Generic Type: D] [Hash state races] Does the Clone constraint on D at line 101 properly deep-copy all hash state, or can shallow copying cause multiple HKDF instances to share mutable state leading to output corruption under concurrent use? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a819e68-11fd-4a3c-9ffc-b93d6e365fd0?mode=deep",
+    "timestamp": "2026-01-26 15:06:26.889736",
+    "report_generated": false
+  }
+]
