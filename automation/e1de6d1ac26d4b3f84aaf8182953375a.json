@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: hash_internal()] [Cache poisoning] Can an attacker exploit the RefCell-based c2p and p2c caches to poison parent-child relationships by triggering concurrent borrow_mut() calls, causing cache inconsistencies that lead to incorrect root hash calculations and potential state divergence across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de15aeed-2919-4c5f-a09b-6020d23f6de0?mode=deep",
+    "timestamp": "2026-01-26 08:40:40.023547",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: hash_internal()] [Race condition] In lines 65-71, does the two-step cache update (c2p.entry().or_insert_with() followed by p2c.insert()) create a race window where the caches can become inconsistent if multiple threads access simultaneously, potentially allowing validators to compute different Merkle roots for the same transaction set? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ef1c875-6071-44c7-a02d-e09c37ab279f?mode=deep",
+    "timestamp": "2026-01-26 08:40:53.109506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Struct: MockTransactionAccumulator] [Memory exhaustion] Since the c2p and p2c HashMap caches are unbounded and never cleared, can an attacker force repeated root hash calculations at different versions to cause unbounded memory growth, eventually exhausting validator memory and causing crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07ac33c9-5d0b-45f1-90fe-a41c9ad1fca4?mode=deep",
+    "timestamp": "2026-01-26 08:41:06.431561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: hash_internal()] [RefCell panic] Can simultaneous calls to hash_internal() from get_root_hash() and get_consistency_proof() trigger RefCell borrow conflicts causing panics at borrow_mut(), leading to validator crashes and potential liveness issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f589caa-6c18-4f79-9414-e1b964e874ab?mode=deep",
+    "timestamp": "2026-01-26 08:41:21.295886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: children()] [Cache inconsistency] In lines 91-94, if the p2c cache is corrupted or inconsistent with c2p cache, can this return incorrect children for a parent node, causing frozen_subtree_diff() to generate invalid consistency proofs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93e166b1-6145-4582-bb26-be17a13bb703?mode=deep",
+    "timestamp": "2026-01-26 08:41:36.431262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: hash_internal_inner()] [Hash collision] In lines 56-60, does the code properly validate that ACCUMULATOR_PLACEHOLDER_HASH never collides with legitimate computed hashes, or can an attacker craft leaf values that hash to ACCUMULATOR_PLACEHOLDER_HASH to create ambiguous tree structures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4311d31-01e7-46b6-9712-cb1fa0dcc8e0?mode=deep",
+    "timestamp": "2026-01-26 08:41:52.534630",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: hash_internal_inner()] [Placeholder abuse] Can an attacker exploit the unwrap_or(*ACCUMULATOR_PLACEHOLDER_HASH) logic at line 58 to create two different tree structures (one with actual right child, one with placeholder) that produce the same root hash through hash collision? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9ef61fe-5794-4a2e-ac65-2adc23abd02c?mode=deep",
+    "timestamp": "2026-01-26 08:42:09.378068",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: hash_internal()] [Hash collision caching] If two different Children pairs collide to the same hash value, will the c2p cache incorrectly map both to the same parent, causing the p2c cache to only store one mapping and lose information about the other? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7593de2-f29e-42ff-a66c-049642d6c47b?mode=deep",
+    "timestamp": "2026-01-26 08:42:28.439947",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: get_root_hash()] [Merkle tree manipulation] Can an attacker provide manipulated leaf hashes in from_leaves() that exploit weaknesses in TransactionAccumulatorHasher to create fraudulent root hashes that validate against legitimate consistency proofs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e527374f-b6b7-42b1-846a-8a68bc89a4d6?mode=deep",
+    "timestamp": "2026-01-26 08:42:47.546729",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: version()] [Integer overflow] At line 53, the calculation 'self.leaves.len() as u64 - 1' can underflow if leaves is empty (violating the assert at line 39), but can an attacker bypass the from_leaves() constructor to create an accumulator with empty leaves? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bc2efb1-6e7d-44fb-b283-65f5dca898eb?mode=deep",
+    "timestamp": "2026-01-26 08:43:07.067540",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: get_root_hash()] [Index out of bounds] At line 78, can version exceed self.version() despite the assert at line 77, causing leaves[0..=version as usize] to panic with out-of-bounds access if version is u64::MAX? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b937a47-af9a-4b4b-84e8-67039091753b?mode=deep",
+    "timestamp": "2026-01-26 08:43:28.647892",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: get_consistency_proof()] [Height overflow] At lines 156-158, can the height difference calculation 'self.height(new_root) - self.height(old_root)' overflow or underflow if an attacker provides manipulated root hashes with extreme heights? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f55c03da-6b57-4ebc-97b7-d6cc05f74d26?mode=deep",
+    "timestamp": "2026-01-26 08:43:50.398765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: frozen_subtree_diff()] [Height underflow] At line 243, does 'height_diff - 1' properly handle the case where height_diff is 0, or can this cause integer underflow leading to incorrect recursion depth? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fd5b2c0-31de-4781-8ef3-d060a0036321?mode=deep",
+    "timestamp": "2026-01-26 08:44:13.647716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: with_version()] [Version overflow] At line 49, can providing u64::MAX as version cause mock_txn_hashes() to overflow when computing '0..=version' range, potentially creating an invalid accumulator state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bee0bbc5-0afa-448a-bec8-5b8701cdf57f?mode=deep",
+    "timestamp": "2026-01-26 08:44:37.778464",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: get_consistency_proof()] [Proof forgery] Can an attacker manipulate start_version and end_version parameters to generate malicious consistency proofs that pass validation but represent incorrect state transitions, enabling state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2240f23-fcf5-4f23-9b17-e513225ebcb9?mode=deep",
+    "timestamp": "2026-01-26 08:45:00.676012",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: frozen_subtree_diff()] [Base case exploitation] At lines 200-205, when maybe_old_subtree is None, does unconditionally returning frozen_subtrees(new_subtree) allow an attacker to include malicious subtrees in the consistency proof? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d202352f-377d-4a8f-abb4-8c3fae84bd70?mode=deep",
+    "timestamp": "2026-01-26 08:45:22.931344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: frozen_subtree_diff()] [Same node bypass] At lines 210-213, when old_subtree == new_subtree, the function returns empty vec![], but can an attacker exploit this by crafting colliding hashes to skip validation of actually different subtrees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1d4532f-dbfb-4568-b261-f78a49a9bb61?mode=deep",
+    "timestamp": "2026-01-26 08:45:45.913881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: frozen_subtree_diff()] [Recursive depth attack] Can an attacker craft a deep tree structure that causes frozen_subtree_diff() to recurse excessively, leading to stack overflow and validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c709f766-4d6b-42ba-8365-7c5a71c41d10?mode=deep",
+    "timestamp": "2026-01-26 08:46:08.955604",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: get_consistency_proof()] [Version boundary] At line 150, can the assertion 'start_version <= Some(end_version)' be violated through Option::None comparison semantics, allowing invalid proof generation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53f76cea-d7fb-4362-b6df-d1611f90ef51?mode=deep",
+    "timestamp": "2026-01-26 08:46:32.272104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: frozen_subtree_diff()] [Children expectation] At lines 217-222, do the expect() calls properly prevent an attacker from providing leaf node hashes as old_subtree/new_subtree to bypass the 'two different leaf nodes' check? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d405b7f-c086-4e47-b1bb-a033ea9ba5cb?mode=deep",
+    "timestamp": "2026-01-26 08:46:55.610197",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: frozen_subtree_diff()] [Right child assumption] At lines 239-240, does the code correctly handle cases where maybe_right is None despite height_diff > 0, or will the expect() panic expose a DoS vector? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84daeeaf-eda5-4771-9542-c8630381492b?mode=deep",
+    "timestamp": "2026-01-26 08:47:20.088000",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: is_frozen()] [Frozen state manipulation] At lines 108-118, can an attacker provide a subtree_root that appears frozen (due to cache poisoning) but actually has incomplete right subtree, causing incorrect frozen subtree identification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59f70fd1-0ab6-4094-875c-9dedd3fd7f45?mode=deep",
+    "timestamp": "2026-01-26 08:47:44.795647",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: frozen_subtrees()] [Infinite recursion] At lines 122-135, if the children() cache returns circular references (left child points back to parent), can this cause infinite recursion and stack overflow? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4b9d65e-fced-4861-b836-f0404e43de2a?mode=deep",
+    "timestamp": "2026-01-26 08:48:10.915518",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: height()] [Height calculation] At lines 96-103, does the recursive height calculation properly prevent integer overflow when traversing extremely deep trees, or can this cause incorrect height values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_399ed0d2-d18f-4d02-abaf-aff98ecac0b1?mode=deep",
+    "timestamp": "2026-01-26 08:48:37.182763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/proof/accumulator/mock.rs] [Function: is_frozen()] [Right subtree check] At line 114, does checking 'self.is_frozen(right)' without first checking 'self.is_frozen(left)' create a logic error where incomplete left subtrees are incorrectly marked as frozen? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0c002cd-7bcb-498b-bab6-51faaf915640?mode=deep",
+    "timestamp": "2026-01-26 08:49:01.319584",
+    "report_generated": false
+  }
+]
