@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: InMemoryStorage] [Race condition] Can concurrent access to InMemoryStorage without Arc<RwLock<>> wrapping lead to data races when multiple threads call get() and set() simultaneously on validator nodes, potentially corrupting cryptographic key material and causing consensus failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad2f2520-0bc1-4242-a989-5b79bcf27c18?mode=deep",
+    "timestamp": "2026-01-26 13:34:11.624796",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Concurrent modification] Can a race condition occur when one thread reads via get() while another thread calls set() for the same key, resulting in torn reads of partial key material that could leak private key fragments? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5f8c1a9-f17c-4bea-9d47-29587b174c96?mode=deep",
+    "timestamp": "2026-01-26 13:34:24.234366",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [TOCTOU] Is there a time-of-check-time-of-use vulnerability where get() reads a key but the value is modified by concurrent set() before deserialization completes, leading to invalid cryptographic operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_902291f3-c8b8-4cbe-b42d-fb0556424fb1?mode=deep",
+    "timestamp": "2026-01-26 13:34:37.748268",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: data HashMap] [Data race] Can the underlying HashMap be corrupted through concurrent mutations without proper synchronization, causing validator safety data to become inconsistent and violating AptosBFT safety guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3df2c872-1de4-43eb-9427-12532111263a?mode=deep",
+    "timestamp": "2026-01-26 13:34:51.237581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: reset_and_clear()] [Race condition] Can reset_and_clear() be called concurrently with get() or set() operations, leading to use-after-free scenarios or accessing cleared data that causes validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce40e824-79c9-4735-bbdf-5ca109cd7aca?mode=deep",
+    "timestamp": "2026-01-26 13:35:06.126733",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: data HashMap] [Key exposure] Does storing cryptographic private keys as Vec<u8> in a standard HashMap leave them vulnerable to memory dumping attacks, allowing an attacker with process memory access to extract validator signing keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6c46a2a-75ae-475f-985b-e15faa504f42?mode=deep",
+    "timestamp": "2026-01-26 13:35:21.444346",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [No secure deletion] When cryptographic keys are updated or rotated, does the old Vec<u8> data remain in memory without zeroing, allowing memory forensics to recover historical validator private keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92a554c5-63f0-4509-80b2-d9159cfddb5d?mode=deep",
+    "timestamp": "2026-01-26 13:35:39.010139",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: InMemoryStorage] [Memory leaks] Can Rust's allocator leave copies of sensitive key material scattered across heap memory during HashMap resize operations, creating multiple copies of private keys that persist after validator key rotation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_618ecbbc-ad72-4654-9f3c-3288ef6e0400?mode=deep",
+    "timestamp": "2026-01-26 13:35:57.000993",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Key cloning] Does serde_json deserialization create additional copies of private key material in memory, multiplying the attack surface for memory extraction attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68adc9dc-9965-42cb-8bf1-ab1c0f3e0403?mode=deep",
+    "timestamp": "2026-01-26 13:36:16.051311",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [CryptoKVStorage trait] [Plaintext storage] Since CryptoKVStorage stores Ed25519PrivateKey directly without encryption, can an attacker with read access to process memory immediately extract all validator signing keys and forge consensus messages? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66cf7f1f-ca63-4e81-8633-332d3ee02730?mode=deep",
+    "timestamp": "2026-01-26 13:36:35.704649",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Type confusion] Can an attacker with write access craft malicious JSON that deserializes to an unexpected type due to DeserializeOwned being unconstrained, potentially causing type confusion when cryptographic keys are retrieved? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_293e32bc-ec47-4f1c-b89a-dadfd16b8cb2?mode=deep",
+    "timestamp": "2026-01-26 13:36:55.864098",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Serialization bomb] Can an attacker cause a DoS by storing a value that serializes to an extremely large JSON structure, exhausting memory when serde_json::to_vec() is called? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_357b4001-192c-4f9a-9f3b-c5ab2c59b791?mode=deep",
+    "timestamp": "2026-01-26 13:37:17.758725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Deserialization bomb] Can maliciously crafted JSON with deeply nested structures cause stack overflow during serde_json::from_slice(), crashing the validator node? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7952885-93f3-47fa-962a-6a1dff684a98?mode=deep",
+    "timestamp": "2026-01-26 13:37:40.120013",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Invalid UTF-8] If the stored Vec<u8> contains invalid UTF-8 sequences, can serde_json::from_slice() panic or exhibit undefined behavior when deserializing string-based types? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5d887d8-2de9-49fa-91bb-072c14468cff?mode=deep",
+    "timestamp": "2026-01-26 13:38:02.950844",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [JSON injection] Can an attacker inject control characters or escape sequences into key names that corrupt the JSON serialization format, causing subsequent get() operations to fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2443d7e6-c33c-4bb0-8a60-89ad9b724163?mode=deep",
+    "timestamp": "2026-01-26 13:38:26.821241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Integer overflow in deserialization] Can malicious JSON with extremely large integer values cause integer overflow when deserializing into smaller numeric types, corrupting validator state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d86e732-58fa-48db-8a2b-bb26cd41caf9?mode=deep",
+    "timestamp": "2026-01-26 13:38:51.502136",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: InMemoryStorage] [No permission checks] Since InMemoryStorage explicitly provides no permission checks, can any code with a mutable reference arbitrarily read or modify cryptographic keys including validator consensus keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56f4569d-72ef-46ca-8525-576173067433?mode=deep",
+    "timestamp": "2026-01-26 13:39:14.943744",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Unauthorized read] Can unprivileged components in the validator process call get() to extract Ed25519 private keys that should only be accessible to consensus safety-rules components? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ecbdc7d-e73f-4a3d-ac4d-ce8b2e296d30?mode=deep",
+    "timestamp": "2026-01-26 13:39:38.441702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Unauthorized write] Can malicious code overwrite critical validator safety data (like last voted round) stored in InMemoryStorage, causing double-signing violations and slashing penalties? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_974f0f81-017d-4517-9bb7-c54479cfdac2?mode=deep",
+    "timestamp": "2026-01-26 13:40:03.387862",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: reset_and_clear()] [Privilege escalation] Can the reset_and_clear() function be called by unauthorized components during testing, wiping all validator keys and safety state, causing loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d07fe2b1-1eb9-450e-bab9-8766892823b3?mode=deep",
+    "timestamp": "2026-01-26 13:40:29.592926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [No key validation] Does set() accept arbitrary string keys without validation, allowing attackers to overwrite critical keys by exploiting naming collisions (e.g., 'consensus_key' vs 'consensus_key ')? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6de6d72f-c429-4198-ab6f-84dae2de50f4?mode=deep",
+    "timestamp": "2026-01-26 13:40:56.155778",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Case sensitivity] Are key lookups case-sensitive? Can an attacker bypass key access by using different casing (e.g., 'ConsensusKey' vs 'consensuskey')? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c4db727-476b-41a0-97df-b29bb11894fa?mode=deep",
+    "timestamp": "2026-01-26 13:41:22.174687",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: set()] [Key collision] Can Unicode normalization issues cause different key strings to map to the same HashMap entry, allowing unintended overwrites of cryptographic material? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d8a1068-8c9b-4451-8887-1a819126aaac?mode=deep",
+    "timestamp": "2026-01-26 13:41:47.124569",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Function: get()] [Empty key] Does the code properly handle empty string keys (\\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ea289a5-eb91-46c7-9502-d4cae10ac8e1?mode=deep",
+    "timestamp": "2026-01-26 13:42:11.868474",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/in_memory.rs] [Struct: data HashMap] [Key enumeration] Can an attacker enumerate all keys stored in the HashMap to discover the structure of stored cryptographic material and identify high-value targets? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc915f7d-10ec-4f31-ab63-855ba0d0659b?mode=deep",
+    "timestamp": "2026-01-26 13:42:37.736642",
+    "report_generated": false
+  }
+]
