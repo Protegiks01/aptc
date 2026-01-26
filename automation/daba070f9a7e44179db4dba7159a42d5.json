@@ -1,0 +1,68 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Import: ark_groth16] [Groth16 implementation bugs] Are there any known vulnerabilities in ark_groth16's PreparedVerifyingKey or proof verification that could be exploited? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6bea2499-872f-4126-a372-7296378b1a0d?mode=deep",
+    "timestamp": "2026-01-26 03:47:17.883098",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Import: once_cell] [Lazy initialization bugs] Could bugs in once_cell's Lazy implementation cause double initialization or uninitialized reads of TEST_GROTH16_SETUP? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db38c0c6-128f-4776-a716-4d03445cb801?mode=deep",
+    "timestamp": "2026-01-26 03:47:31.517812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Import: rand] [RNG predictability] The rand crate version matters for reproducibility - if the version changes, will the seed_from_u64(999) produce different trapdoors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e556faf-3192-4c7b-ab1e-c5b58e0b469d?mode=deep",
+    "timestamp": "2026-01-26 03:47:45.887025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Import: poseidon_bn254] [Hash function changes] If poseidon_bn254::keyless::BYTES_PACKED_PER_SCALAR changes in a dependency update, will MAX_COMMITED_EPK_BYTES automatically update or cause version mismatch? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7257a145-7ece-4846-b3ab-b742fac82650?mode=deep",
+    "timestamp": "2026-01-26 03:48:00.672801",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Function: prepared_vk_for_testing()] [Naming ambiguity] The '_for_testing' suffix may not be clear enough - can production code accidentally use this test function? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4208f73-b925-47cb-8102-130414e93b1f?mode=deep",
+    "timestamp": "2026-01-26 03:48:16.740380",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Static: TEST_GROTH16_SETUP] [Test-only guards] Is there a #[cfg(test)] guard preventing TEST_GROTH16_SETUP from being compiled into production binaries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f84dc42-bf56-4cdf-907f-4ed7a3ff5f42?mode=deep",
+    "timestamp": "2026-01-26 03:48:33.985925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Function: prepared_vk_for_testing()] [Feature flag] Should this function be behind a 'testing' or 'fuzzing' feature flag to prevent accidental production usage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29522c73-c0b9-41a0-9b7e-c1acfdd59344?mode=deep",
+    "timestamp": "2026-01-26 03:48:53.155925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Static: TEST_GROTH16_SETUP] [Conditional compilation] Can attackers exploit differences between debug/release builds if TEST_GROTH16_SETUP behaves differently? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84c7d855-8f03-4684-b4cf-7c96104ce608?mode=deep",
+    "timestamp": "2026-01-26 03:49:15.384859",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Function: prepared_vk_for_testing()] [Expensive initialization] Parsing large decimal strings and performing elliptic curve operations - can attackers trigger repeated calls to cause CPU exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1adf5dad-b4a8-4b67-b9e3-10b37f25d6b0?mode=deep",
+    "timestamp": "2026-01-26 03:49:39.852260",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Static: TEST_GROTH16_SETUP] [First access latency] The Lazy initialization happens on first access - can attackers exploit this to cause latency spikes during critical transaction processing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7541d3c2-994b-46d0-949d-e9857381c654?mode=deep",
+    "timestamp": "2026-01-26 03:50:05.919196",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/circuit_constants.rs] [Function: g1\n\n### Citations\n\n**File:** types/src/keyless/circuit_constants.rs (L1-115)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\n//! These constants are from commit 125522b4b226f8ece3e3162cecfefe915d13bc30 of keyless-circuit.\n\nuse crate::keyless::{\n    bn254_circom::{g1_projective_str_to_affine, g2_projective_str_to_affine},\n    proof_simulation::{Groth16SimulatorBn254, Trapdoor},\n};\nuse aptos_crypto::poseidon_bn254;\nuse ark_bn254::Bn254;\nuse ark_groth16::{PreparedVerifyingKey, VerifyingKey};\nuse once_cell::sync::Lazy;\nuse rand::{prelude::StdRng, SeedableRng};\n\npub(crate) const MAX_AUD_VAL_BYTES: usize = 120;\npub(crate) const MAX_UID_KEY_BYTES: usize = 30;\npub(crate) const MAX_UID_VAL_BYTES: usize = 330;\npub(crate) const MAX_ISS_VAL_BYTES: u16 = 120;\npub(crate) const MAX_EXTRA_FIELD_BYTES: u16 = 350;\npub(crate) const MAX_JWT_HEADER_B64_BYTES: u32 = 300;\n\n/// This constant is not explicitly defined in the circom template, but only implicitly in the way\n/// we hash the EPK.\npub(crate) const MAX_COMMITED_EPK_BYTES: u16 =\n    3 * poseidon_bn254::keyless::BYTES_PACKED_PER_SCALAR as u16;\n\n/// This function uses the decimal uncompressed point serialization which is outputted by circom.\n/// https://github.com/aptos-labs/devnet-groth16-keys/commit/02e5675f46ce97f8b61a4638e7a0aaeaa4351f76\npub fn prepared_vk_for_testing() -> PreparedVerifyingKey<Bn254> {\n    // Convert the projective points to affine.\n    let alpha_g1 = g1_projective_str_to_affine(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb75d45c-cfdd-400a-b88f-677ea164b918?mode=deep",
+    "timestamp": "2026-01-26 03:50:32.950873",
+    "report_generated": false
+  }
+]
