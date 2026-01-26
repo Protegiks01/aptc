@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Enum: ZKP] [Type confusion] Does the single-variant enum ZKP provide any real type safety benefits over directly using Groth16Proof, or does it create a false sense of extensibility that could lead to unsafe assumptions when new proof types are added? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a699a735-739d-4eb0-a122-4b5306479117?mode=deep",
+    "timestamp": "2026-01-26 05:44:28.934996",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Enum: ZKP] [Pattern matching exhaustiveness] If a new ZKP variant (e.g., ZKP::PLONK or ZKP::STARKs) is added in the future, will all match statements throughout the codebase properly handle it, or could non-exhaustive matches cause silent failures in proof verification leading to unauthorized transaction acceptance? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44d49ec8-a1a7-45f2-aee7-0d882e50a653?mode=deep",
+    "timestamp": "2026-01-26 05:44:41.794059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Enum: ZKP] [Extensibility vulnerability] When adding new proof system variants to the ZKP enum, could attackers exploit the transition period where some validators recognize the new variant while others don't, causing consensus failures or double-spending through proof type confusion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_358a3cc1-fbff-4499-81c0-0a232a089661?mode=deep",
+    "timestamp": "2026-01-26 05:44:55.699830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Enum: ZKP] [Backward compatibility] If the ZKP enum is extended with new variants, does the BCS serialization format ensure backward compatibility, or could older nodes crash/reject valid transactions when encountering unknown proof types, causing network partition? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2447f1a6-3ac8-4ce1-81c5-ce567cacc3e6?mode=deep",
+    "timestamp": "2026-01-26 05:45:09.151782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Enum: ZKP] [Discriminant manipulation] Can an attacker craft a malicious BCS-serialized ZKP enum with an invalid discriminant value (not 0 for Groth16), bypassing pattern matching and causing undefined behavior or proof verification bypass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73ec276c-71e2-45e1-9894-0a3bd411e0f8?mode=deep",
+    "timestamp": "2026-01-26 05:45:24.047310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: Serialize/Deserialize] [Deserialization DoS] Does the derived Deserialize implementation for ZKP properly validate the discriminant byte, or can an attacker send malformed enum variants causing deserialization panics that crash validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2bae1cbb-d447-44c0-a5c4-ef4df5056d79?mode=deep",
+    "timestamp": "2026-01-26 05:45:39.964869",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: Serialize/Deserialize] [Size bounds] Is there any size limit enforced during BCS deserialization of ZKP enums, or can an attacker send extremely large serialized proofs that exhaust memory during deserialization before reaching gas limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32ed8948-afb0-4a96-b855-b3dd9962be4b?mode=deep",
+    "timestamp": "2026-01-26 05:45:57.103945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: Serialize/Deserialize] [Canonicalization] Does the BCS serialization of ZKP ensure canonical encoding, or can multiple different byte sequences deserialize to the same ZKP value, enabling transaction malleability attacks that bypass signature checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_747b0b87-49c8-4710-b3b2-b927dcd292dc?mode=deep",
+    "timestamp": "2026-01-26 05:46:16.109220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: CryptoHasher/BCSCryptoHash] [Hash collision] Could the derived CryptoHasher implementation for ZKP be vulnerable to hash collisions if an attacker finds two different Groth16Proof values that hash to the same value when wrapped in ZKP, enabling signature replay attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ea555b6-45aa-4580-a003-d1e837f379f6?mode=deep",
+    "timestamp": "2026-01-26 05:46:32.909042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: CryptoHasher/BCSCryptoHash] [Hash domain separation] Does the CryptoHasher implementation properly include the enum discriminant in the hash, or could an attacker create collisions between different proof types if additional variants are added in the future? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1c6ea2e-90eb-4b26-bb83-22defef11179?mode=deep",
+    "timestamp": "2026-01-26 05:46:55.098664",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Function: From<Groth16Proof> for ZKP] [Missing validation] Does the From<Groth16Proof> trait implementation at line 16-20 perform any validation on the input proof, or can arbitrary invalid Groth16Proof values be wrapped in ZKP and only fail validation later, bypassing early rejection logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44ede34d-fcee-4a55-af92-4a417dbf4bbf?mode=deep",
+    "timestamp": "2026-01-26 05:47:16.846605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Function: From<ZKP> for Groth16Proof] [Panic vulnerability] In the From<ZKP> implementation at line 22-27, does the match statement handle all possible ZKP variants properly, or could adding new variants cause this code to panic at runtime when unwrapping, leading to validator crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_495e1346-b52c-4d37-9f64-3f63fae75666?mode=deep",
+    "timestamp": "2026-01-26 05:47:39.724783",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Function: From<ZKP> for Groth16Proof] [Type safety loss] Does the infallible From<ZKP> conversion at line 22-27 create a type safety hole where code assumes all ZKP values can be converted to Groth16Proof, but this assumption breaks when new proof types are added? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f8ab04a-c7ad-4cf6-be0d-e79389d76e26?mode=deep",
+    "timestamp": "2026-01-26 05:48:02.935739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Function: From implementations] [Circular conversion] Could the bidirectional From implementations between ZKP and Groth16Proof enable unintended type confusion where an attacker repeatedly converts between types to trigger edge cases in validation logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28526314-6078-4351-be63-3319dd66466f?mode=deep",
+    "timestamp": "2026-01-26 05:48:27.964224",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: Copy/Clone] [Proof duplication] Does the Copy trait implementation on ZKP enum at line 9 enable unintended proof duplication or reuse across multiple transactions, potentially enabling replay attacks if proof verification doesn't properly bind to transaction context? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1bc8961-a978-4ced-acc0-854c7895fada?mode=deep",
+    "timestamp": "2026-01-26 05:48:54.289588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: Copy] [Memory safety] Given that ZKP derives Copy, could this lead to performance issues or memory exhaustion if large Groth16Proof structures (containing G1/G2 points) are inadvertently copied multiple times during verification? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21536dbe-2dd8-4eb4-afa2-8ea280328137?mode=deep",
+    "timestamp": "2026-01-26 05:49:21.435898",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: PartialEq/Eq] [Proof equality] Does the derived Eq implementation properly compare all fields of the wrapped Groth16Proof, or could structurally different but cryptographically equivalent proofs be treated as equal, enabling signature caching vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d225c39-fc54-4ce8-b693-5fd9d6542d4a?mode=deep",
+    "timestamp": "2026-01-26 05:49:49.380751",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: Hash] [HashMap collision attacks] Could the derived Hash implementation make collections of ZKP values vulnerable to algorithmic complexity attacks if an attacker finds proof values with the same hash, causing O(n) lookup degradation in HashMap-based caches? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9fbebe1f-5650-4588-a2c8-21660cad5cc1?mode=deep",
+    "timestamp": "2026-01-26 05:50:17.876983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: Eq/Hash] [Consistency] Do the Eq and Hash implementations maintain the required invariant that equal ZKP values must have equal hashes, or could subtle bugs in the derives create cache inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ee9d205-7a07-45f3-b973-9cf046dd7b55?mode=deep",
+    "timestamp": "2026-01-26 05:50:47.811628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Derive: Debug] [Information leakage] Does the derived Debug implementation at line 9 accidentally leak sensitive proof data through debug logs that could be exploited by attackers monitoring validator logs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40ffa842-881d-4b77-849d-64350aa92e92?mode=deep",
+    "timestamp": "2026-01-26 05:51:17.232308",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Feature: fuzzing] [Arbitrary trait] Does the conditional Arbitrary derive for fuzzing at line 11 generate valid Groth16Proof structures, or could it create invalid proofs that trigger panics during fuzzing that wouldn't be caught by regular testing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e7c8609-b6d9-479a-81b6-bdffcf67ff68?mode=deep",
+    "timestamp": "2026-01-26 05:51:47.041767",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Feature: fuzzing] [Fuzzing coverage] Does fuzzing with arbitrary ZKP values adequately test the proof verification logic in groth16_sig.rs, or could valid-looking but invalid proofs bypass verification due to insufficient fuzzing coverage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8d9fec1-522d-4937-ab7c-48d6c42fefb6?mode=deep",
+    "timestamp": "2026-01-26 05:52:17.717972",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Enum: ZKP] [Proof extraction] When ZKP is used in ZeroKnowledgeSig.proof field, does the extraction of the inner Groth16Proof properly validate that it's the correct variant before passing to verification, or could type confusion lead to verification bypass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a8383152-d29c-432e-985b-90c16cd9c0f6?mode=deep",
+    "timestamp": "2026-01-26 05:52:46.451969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Enum: ZKP] [Pattern match exhaustiveness] In verify_groth16_proof() which matches on ZKP::Groth16, does the match cover all future variants with proper error handling, or could adding new variants cause silent failures where proofs aren't verified? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca945a29-043f-42c8-9bd0-6d97d35e93b3?mode=deep",
+    "timestamp": "2026-01-26 05:53:14.551611",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/keyless/zkp_sig.rs] [Enum: ZKP] [Proof verification bypass] Could an attacker exploit the enum wrapper by crafting a transaction where the ZKP type doesn't match the expected proof system, causing the verification logic to skip validation entirely? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e958a042-293b-41e2-a618-29752953c751?mode=deep",
+    "timestamp": "2026-01-26 05:53:42.901405",
+    "report_generated": false
+  }
+]
