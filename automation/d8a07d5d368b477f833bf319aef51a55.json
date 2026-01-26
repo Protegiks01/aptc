@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_accumulator()] [Batch Write Gap] Lines 432-440 write accumulator nodes in one batch, and lines 442-466 write root hash mappings in another batch—can a crash between these writes leave the accumulator with nodes but no root hash mapping, causing queries to fail? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6dd3efdb-ba4a-4deb-9054-7f8a40a5f72c?mode=deep",
+    "timestamp": "2026-01-26 01:57:00.740628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_accumulator()] [Version Range Overflow] At line 443, all_versions is created with range first_version..first_version + num_txns—can integer overflow in this addition cause the range to wrap around, leading to root hashes being written for incorrect versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf4ccd1c-73ce-4213-ad36-7469b93fb9c3?mode=deep",
+    "timestamp": "2026-01-26 01:57:13.474949",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_accumulator()] [Parallel Collection Error] At lines 447-455, collect::<Result<Vec<_>>>() collects parallel results—if one parallel task fails after others succeed, can this leave some root hashes committed in the accumulator but not in the TransactionAccumulatorRootHashSchema? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61086823-a954-4b8a-a221-31ba60822e6b?mode=deep",
+    "timestamp": "2026-01-26 01:57:26.650465",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_accumulator()] [Min Len Parameter] At line 449, with_min_len(64) sets parallel chunk size—can tuning this parameter cause some versions to be processed serially while others in parallel, introducing timing-based inconsistencies? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44576682-9389-4c2e-a78b-7f426b5cfa26?mode=deep",
+    "timestamp": "2026-01-26 01:57:40.250706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_accumulator()] [Enumerate Index] At line 458, enumerate() provides index i, and at line 460, version = first_version + i as u64—can usize to u64 conversion issues on 32-bit systems cause incorrect version calculations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c4abd2e-3755-46ee-ab9f-e38fb046f430?mode=deep",
+    "timestamp": "2026-01-26 01:57:54.967782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_infos()] [Version Overflow] At line 512, version is calculated as first_version + i as u64—can this overflow for very large i values, causing transaction infos to be written at wrapped-around versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7a941e5-e6d6-455a-8609-4c0df3bb63bf?mode=deep",
+    "timestamp": "2026-01-26 01:58:10.281640",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_infos()] [Partial Write] Lines 508-516 iterate and write transaction infos sequentially—if put_transaction_info() fails midway through, can this leave some infos written but not all, creating a partial commit that doesn't match the transaction accumulator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4ac3bfe-97c0-433b-88d1-35646dca6a24?mode=deep",
+    "timestamp": "2026-01-26 01:58:27.535251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_transaction_infos()] [Batch Consistency] The entire batch is written at line 519—if the write_schemas() fails after some internal RocksDB operations complete, can this cause partial writes within the transaction_info_db? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8585e600-f96a-4b0b-86bd-45852866d916?mode=deep",
+    "timestamp": "2026-01-26 01:58:46.082846",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: post_commit()] [Version Calculation] At lines 612-614, num_txns is calculated as version + 1 - first_version—can integer overflow cause num_txns to wrap around, leading to incorrect COMMITTED_TXNS metrics and pruner misconfiguration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_616c0fe6-3d97-4f36-8926-c7bab341891b?mode=deep",
+    "timestamp": "2026-01-26 01:59:06.005981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: post_commit()] [Update Subscriber Race] At lines 618-624, update_sender.send() can fail—if this error occurs, should the commit be considered failed? Can lost update notifications cause downstream systems to miss committed transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c479e071-91fc-41fc-a303-3a532986cf65?mode=deep",
+    "timestamp": "2026-01-26 01:59:27.269550",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: post_commit()] [Pruner Activation Timing] At lines 628-632, pruners are activated with maybe_set_pruner_target_db_version(version)—can activating pruners immediately after commit cause them to prune data that indexers or readers haven't yet processed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94410c71-e59f-4510-bf03-f9cfa9afc8cd?mode=deep",
+    "timestamp": "2026-01-26 01:59:49.711461",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: post_commit()] [Indexer Chunk Mismatch] At lines 640-642, the condition checks if chunk.len() == num_txns—can this condition be false in legitimate scenarios, causing the indexer to re-fetch write sets from disk at lines 650-656, potentially seeing different data than what was committed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3bf1ca07-4f96-499b-93dc-4f32251c6b6d?mode=deep",
+    "timestamp": "2026-01-26 02:00:13.327873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: post_commit()] [Write Set Iteration] At lines 650-654, get_write_set_iter() and try_collect() retrieve write sets—can this fail if pruning starts immediately after the pruner activation at line 628-632, causing indexer errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2700838-fba2-4ec8-8003-cad0c672179b?mode=deep",
+    "timestamp": "2026-01-26 02:00:37.420946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: post_commit()] [Metrics Update Race] At lines 667-668, LEDGER_VERSION and NEXT_BLOCK_EPOCH metrics are updated—can these updates race with concurrent commits, causing metrics to report incorrect values that monitoring systems rely on? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c933d988-633c-4ccb-bbe5-20bf208ab148?mode=deep",
+    "timestamp": "2026-01-26 02:01:02.493700",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: post_commit()] [Ledger Info Update] At lines 662-665, set_latest_ledger_info() updates in-memory state—can this race with concurrent get_latest_ledger_info() calls, causing readers to see inconsistent ledger info during the update? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a0dda81-72c9-45f2-9eb9-75051a6f67d2?mode=deep",
+    "timestamp": "2026-01-26 02:01:28.209938",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: post_commit()] [Indexer Error Propagation] At line 648, indexer.index() is called—if indexing fails, does this cause the entire commit to fail and rollback, or does commit succeed with failed indexing, creating inconsistency between ledger and index? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e26fbba2-59fa-49a9-b118-4b297c0f6bc2?mode=deep",
+    "timestamp": "2026-01-26 02:01:54.353321",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: post_commit()] [State Sync Handover] At line 640, the condition checks chunk_opt.is_some()—in the state sync to consensus handover scenario, can this condition be mishandled, causing indexer to process transactions twice or not at all? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cb5ac6a-7f4b-46ee-a11c-c7ca1f8fc391?mode=deep",
+    "timestamp": "2026-01-26 02:02:20.846982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Cross-function: pre_commit_ledger() & commit_ledger()] [Interleaving Attack] Can an attacker call pre_commit_ledger() for version N, pre_commit_ledger() for version N+1, then commit_ledger() for N+1 before committing N, bypassing the sequential version constraint and corrupting the ledger? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c09bd7e3-eca0-4b1e-9538-a20e23089abc?mode=deep",
+    "timestamp": "2026-01-26 02:02:48.345831",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Cross-function: calculate_and_commit_ledger_and_state_kv() & post_commit()] [State Snapshot Timing] If calculate_and_commit_ledger_and_state_kv() at lines 263-322 completes but post_commit() at lines 603-673 fails to activate pruners, can this cause old state to be pruned incorrectly based on stale pruner target versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_072ecbc2-277a-4ddb-b30c-342e47add7f7?mode=deep",
+    "timestamp": "2026-01-26 02:03:16.367540",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Cross-function: commit_transaction_accumulator() & check_and_put_ledger_info()] [Root Hash Timing] If commit_transaction_accumulator() at line 422-469 calculates root hash but check_and_put_ledger_info() at line 557-560 fetches root hash before the TransactionAccumulatorRootHashSchema write completes, can this cause validation to fail incorrectly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ccaafff6-dbf3-4938-abf7-6e5a357da1d4?mode=deep",
+    "timestamp": "2026-01-26 02:03:45.211725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Cross-function: finalize_state_snapshot() & pre_commit_ledger()] [Version Collision] Can finalize_state_snapshot() at lines 125-241 write to a version that is concurrently being pre-committed by pre_commit_ledger(), causing conflicting writes to the same ledger version? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc41e0dd-0fc0-4dbe-9e79-8e0cfc399fe8?mode=deep",
+    "timestamp": "2026-01-26 02:04:14.707959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Cross-function: commit_state_kv_and_ledger_metadata() & commit_transaction_accumulator()] [Progress Marker Race] If commit_state_kv_and_ledger_metadata() writes LedgerCommitProgress at line 360-365 but commit_transaction_accumulator() hasn't completed, can queries see commit progress but find missing accumulator data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3e07965-584a-4efc-8bf2-41870eba6640?mode=deep",
+    "timestamp": "2026-01-26 02:04:44.303685",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: pre_commit_ledger()] [Error Return] If pre_commit_validation() at line 62 returns an error, does the buffered state remain in a partially updated state, or is it properly rolled back? Can repeated failures leave the buffered state corrupted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bfe7c51-feed-4847-bea4-aac7e84f30a3?mode=deep",
+    "timestamp": "2026-01-26 02:05:11.777837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_ledger()] [LedgerInfo Optional] At line 81-82 and 99-101, ledger_info_with_sigs is Option<&LedgerInfoWithSignatures>—can the None case be exploited to skip critical validations in check_and_put_ledger_info(), allowing commits without proper epoch and root hash verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4cdc62a3-f53c-47dd-9446-c4715841c6f8?mode=deep",
+    "timestamp": "2026-01-26 02:05:39.616931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_writer.rs] [Function: commit_events()] [Empty Events] If transaction_outputs at line 389 is empty, does the parallel iteration at lines 395-411 handle this gracefully, or can it cause division by zero or empty batch writes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59285ba4-f897-4fb5-85e8-ec0a47aeb746?mode=deep",
+    "timestamp": "2026-01-26 02:06:06.997055",
+    "report_generated": false
+  }
+]
