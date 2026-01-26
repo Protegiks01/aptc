@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: set_trusted_peers()] [Privilege escalation] Can a non-authorized entity call set_trusted_peers() to add malicious peers to the trusted set, bypassing authentication and allowing Byzantine peers into the validator set? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6c1ac29-2712-4b3e-ab40-e79dc643cfb7?mode=deep",
+    "timestamp": "2026-01-26 07:14:10.670048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: set_trusted_peers()] [Race condition] If set_trusted_peers() and get_trusted_peer_state() execute concurrently, can get_trusted_peer_state() return inconsistent data during the ArcSwap update window? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba78dda5-ae75-4a5e-9b6e-5b03d14ea273?mode=deep",
+    "timestamp": "2026-01-26 07:14:23.398882",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: set_trusted_peers()] [Atomicity] Does set_trusted_peers() update happen atomically with respect to connection validation logic, or can a peer be accepted/rejected based on stale trusted peer state during epoch transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50fd0df7-83d5-4bc5-a4be-8f2538f4685c?mode=deep",
+    "timestamp": "2026-01-26 07:14:37.178532",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: get_trusted_peer_state()] [TOCTOU] Between getting the trusted_peers ArcSwap reference and loading it, can set_trusted_peers() swap in a new set, causing validation based on stale trust data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cf2d7a3-24d2-4502-bd34-4229df8b80cd?mode=deep",
+    "timestamp": "2026-01-26 07:14:50.696090",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: get_trusted_peers()] [Deep clone performance] Does the double .clone() operation (load().clone().deref().clone()) on PeerSet cause performance issues that could be exploited for DoS by repeatedly querying trusted peers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd7ec000-06cb-46de-b8d2-ebd25f20586f?mode=deep",
+    "timestamp": "2026-01-26 07:15:05.407067",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: broadcast()] [Message dropping] When TrySendError::Full occurs, messages are silently dropped - can this cause applications to miss critical NewPeer/LostPeer events, leading to stale peer sets and failed consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5032509e-d4af-4801-82b4-cf54b315ad78?mode=deep",
+    "timestamp": "2026-01-26 07:15:20.776261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: broadcast()] [Notification order] If multiple threads call broadcast() concurrently, can NewPeer and LostPeer events for the same peer arrive out of order to subscribers, confusing connection state tracking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cab59e6f-f9e1-465c-b978-05faff0a3509?mode=deep",
+    "timestamp": "2026-01-26 07:15:37.420088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: broadcast()] [Index corruption] In the subscriber eviction logic using swap_remove(), if multiple evictions occur (to_del = [0, 3, 5]), does iterating and removing by index corrupt the vector and skip/double-remove subscribers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c01275a4-446d-4045-ae6a-77e4e904a508?mode=deep",
+    "timestamp": "2026-01-26 07:15:56.091604",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: broadcast()] [Resource exhaustion] Can an attacker flood the system with connection/disconnection events to fill up all subscriber channels (NOTIFICATION_BACKLOG), causing all legitimate notifications to be dropped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_976b7dde-16af-451e-818f-c8f5a5438e14?mode=deep",
+    "timestamp": "2026-01-26 07:16:15.602541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: broadcast()] [Lock contention] Does holding subscribers.lock() during broadcast to all subscribers create a contention bottleneck that can stall critical operations like insert_connection_metadata()? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d286cf3-9635-4ecb-a3f4-41f17eafc7a0?mode=deep",
+    "timestamp": "2026-01-26 07:16:36.550049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: subscribe()] [Race condition] Between releasing peers_and_metadata.read() lock and acquiring subscribers.lock(), can a new peer connect and not get sent as NewPeer to this subscriber? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa0f6151-b480-4019-bfab-ccbec0bf53df?mode=deep",
+    "timestamp": "2026-01-26 07:16:58.647699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: subscribe()] [Initial state overflow] If there are more than NOTIFICATION_BACKLOG (1000) connected peers during subscribe(), some peers won't be sent as NewPeer events - can this cause applications to have incomplete peer views? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41f79426-7db4-4e70-921f-07c5b6d4a159?mode=deep",
+    "timestamp": "2026-01-26 07:17:21.159328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: subscribe()] [Double notification] Can a peer that connects right after subscribe() reads peers_and_metadata but before listeners.push() receive two NewPeer events (one from initial send, one from broadcast)? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc21dad3-8d3d-44de-b091-28a44f3331b2?mode=deep",
+    "timestamp": "2026-01-26 07:17:44.893312",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: subscribe()] [Break on error] The 'break outer' on send error means some initial NewPeer events are skipped - can this cause partial peer state in the subscriber, breaking consensus participation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4645e29c-eb39-4068-a1b7-fe391be6a040?mode=deep",
+    "timestamp": "2026-01-26 07:18:08.751510",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: subscribe()] [Memory leak] If a subscriber never calls recv() on the receiver, does the sender in the subscribers vector accumulate events indefinitely, causing memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c5f3f14-2fde-4acb-bbe8-ca909c25496c?mode=deep",
+    "timestamp": "2026-01-26 07:18:33.658824",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: sort_peers_by_latency()] [NaN injection] Despite the assertion 'latency is never NaN', can a malicious peer provide monitoring metadata that results in NaN latency values (0.0/0.0), causing panic in partial_cmp? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82d26968-80fd-421c-a1bf-ed6cfe353778?mode=deep",
+    "timestamp": "2026-01-26 07:19:00.555401",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: sort_peers_by_latency()] [Cache staleness] Does sort_peers_by_latency() reading from cached_peers_and_metadata risk sorting based on outdated latency values, causing poor peer selection for time-critical consensus messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80a9c201-1034-4ea4-a2fa-b3ac2e4f86a8?mode=deep",
+    "timestamp": "2026-01-26 07:19:27.862652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: sort_peers_by_latency()] [Timing manipulation] Can a Byzantine peer manipulate its reported ping latency to always appear as the fastest peer, getting prioritized for all consensus messages and enabling targeted message delays? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b945400-be50-4cf1-8c51-2f0f6cffde44?mode=deep",
+    "timestamp": "2026-01-26 07:19:54.478684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: sort_peers_by_latency()] [Comparison stability] If two peers have identical latency values, does the unstable sort cause non-deterministic peer ordering across different nodes, breaking consensus assumptions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9472a030-0ccd-45ce-abc0-b528046110af?mode=deep",
+    "timestamp": "2026-01-26 07:20:20.591255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Struct: PeersAndMetadata] [Deadlock potential] Can acquiring subscribers.lock() while holding peers_and_metadata.write() (or vice versa in another code path) cause deadlock in the networking layer? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5191a278-d2f1-4c44-a433-0ffc814c905e?mode=deep",
+    "timestamp": "2026-01-26 07:20:45.615445",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Struct: PeersAndMetadata] [Lock duration] Do the write() locks in insert/remove/update functions hold the lock during the entire broadcast() operation, causing excessive lock contention that degrades network performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8eb5e0d4-424d-4680-988e-99ccd8abdaf7?mode=deep",
+    "timestamp": "2026-01-26 07:21:10.201726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Struct: PeersAndMetadata] [ArcSwap consistency] Can concurrent ArcSwap.store() calls on cached_peers_and_metadata or trusted_peers result in lost updates if one store overwrites another's changes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a394ca6-3580-49e5-a1bd-da172d06f2b4?mode=deep",
+    "timestamp": "2026-01-26 07:21:35.909849",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Struct: PeersAndMetadata] [Read-write race] Can a long-running read of peers_and_metadata starve writers trying to update connection metadata, preventing timely handling of peer disconnections? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ada09c7-a9ca-4cdc-9165-b96ba58bc414?mode=deep",
+    "timestamp": "2026-01-26 07:22:02.332400",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: get_metadata_for_peer()] [Error exposure] Does returning Error::UnexpectedError with detailed peer_network_id expose internal network topology information that could aid attackers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5d4fd26-6449-40c3-a137-2cc3609a11ed?mode=deep",
+    "timestamp": "2026-01-26 07:22:29.344535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/application/storage.rs] [Function: get_peer_metadata_for_network()] [Error handling] Can missing_network_metadata_error() be triggered by an attacker to cause repeated error logging and disk exhaustion via log files? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd0f3c3f-dd1a-497b-967a-9a37b850a16d?mode=deep",
+    "timestamp": "2026-01-26 07:22:55.323522",
+    "report_generated": false
+  }
+]
