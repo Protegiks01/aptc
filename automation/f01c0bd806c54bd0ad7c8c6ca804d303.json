@@ -1,0 +1,56 @@
+[
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/server/src/handler.rs] [Function: get_transactions_with_proof()] [Transaction range boundary] start_version to end_version range - if this spans across chunks or epochs, are transaction ordering and proof continuity guaranteed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_035c1d2a-587b-4f77-ad2b-9d88405c49f4?mode=deep",
+    "timestamp": "2026-01-26 23:15:20.582573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/server/src/handler.rs] [Cross-Function] [Handler lifecycle] Handler is cloned per request (line 48) - are there any non-Clone fields or resources that should be shared but get duplicated, causing resource leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70a2492c-0a00-4d91-9639-490d15e89c42?mode=deep",
+    "timestamp": "2026-01-26 23:15:32.919135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/server/src/handler.rs] [Cross-Function] [Error propagation] Errors converted from internal types at lines 196-202 - do error conversions properly preserve error context, or is debugging information lost? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6eacb17-0ecb-45ab-a230-fe8bd0b3f759?mode=deep",
+    "timestamp": "2026-01-26 23:15:45.894101",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/server/src/handler.rs] [Function: process_cachable_request()] [Timing measurement overhead] Three separate timing measurements (lines 187-193, 434-440, 447-453) - can timing instrumentation itself cause performance degradation under high load? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f87fb70-07e7-4854-9526-114e28546d22?mode=deep",
+    "timestamp": "2026-01-26 23:16:00.019428",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/server/src/handler.rs] [Function: handle_optimistic_fetch_request()] [Fetch request validation] OptimisticFetchRequest created without validating request content - can invalid requests be stored, and are they validated before processing later? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9206a1a-07c2-4a6a-b865-fb3b73e54ff4?mode=deep",
+    "timestamp": "2026-01-26 23:16:14.264702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/server/src/handler.rs] [Function: handle_subscription_request()] [Add request error path] When add_subscription_request fails (line 324), error handler called with both Error and SubscriptionRequest - can this double-free or cause use-after-free issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3a182ec-d826-4d0d-aa6c-e901460eb208?mode=deep",
+    "timestamp": "2026-01-26 23:16:29.841620",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/server/src/handler.rs] [Function: validate_and_handle_request()] [Request type dispatch] Match statement at lines 216-228 - is the match exhaustive for all DataRequest variants, or can new variants bypass validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b496e9a8-536c-4fd6-9020-2a84559655cd?mode=deep",
+    "timestamp": "2026-01-26 23:16:46.393398",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/server/src/handler.rs] [Function: get_number_of_states_at_version()] [State count integer overflow] Returned number_of_states at line 493 - if state count exceeds u64::MAX representation, can this cause incorrect synchronization decisions at client? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06d2f396-975d-4d87-a608-7f1bf0e5c471?mode=deep",
+    "timestamp": "2026-01-26 23:17:04.440401",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/state-sync/storage-service/server/src/handler.rs] [Function: get_state_value_chunk_with_proof()] [Chunk boundary alignment] start_index to end_index defines chunk - are boundaries validated to align with state tree structure, or can misalignment cause proof generation failures\n\n### Citations\n\n**File:** state-sync/storage-service/server/src/handler.rs (L1-641)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{\n    error::Error,\n    logging::{LogEntry, LogSchema},\n    metrics,\n    metrics::{\n        increment_counter, LRU_CACHE_HIT, LRU_CACHE_PROBE, OPTIMISTIC_FETCH_ADD, SUBSCRIPTION_ADD,\n        SUBSCRIPTION_FAILURE, SUBSCRIPTION_NEW_STREAM,\n    },\n    moderator::RequestModerator,\n    network::ResponseSender,\n    optimistic_fetch::OptimisticFetchRequest,\n    storage::StorageReaderInterface,\n    subscription::{SubscriptionRequest, SubscriptionStreamRequests},\n    utils,\n};\nuse aptos_config::{config::StorageServiceConfig, network_id::PeerNetworkId};\nuse aptos_logger::{debug, sample, sample::SampleRate, trace, warn};\nuse aptos_network::protocols::wire::handshake::v1::ProtocolId;\nuse aptos_storage_service_types::{\n    requests::{\n        DataRequest, EpochEndingLedgerInfoRequest, GetTransactionDataWithProofRequest,\n        StateValuesWithProofRequest, StorageServiceRequest, TransactionOutputsWithProofRequest,\n        TransactionsOrOutputsWithProofRequest, TransactionsWithProofRequest,\n    },\n    responses::{\n        DataResponse, ServerProtocolVersion, StorageServerSummary, StorageServiceResponse,\n    },\n    StorageServiceError,\n};\nuse aptos_time_service::TimeService;\nuse aptos_types::transaction::Version;\nuse arc_swap::ArcSwap;\nuse dashmap::{mapref::entry::Entry, DashMap};\nuse mini_moka::sync::Cache;\nuse std::{sync::Arc, time::Duration};\n\n/// Storage server constants\nconst ERROR_LOG_FREQUENCY_SECS: u64 = 5; // The frequency to log errors\nconst STORAGE_SERVER_VERSION: u64 = 1;\nconst SUMMARY_LOG_FREQUENCY_SECS: u64 = 5; // The frequency to log the storage server summary (secs)\n\n/// The `Handler` is the",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5050455b-33c1-4f0c-b512-ad6ed6d0b781?mode=deep",
+    "timestamp": "2026-01-26 23:17:23.011506",
+    "report_generated": false
+  }
+]
