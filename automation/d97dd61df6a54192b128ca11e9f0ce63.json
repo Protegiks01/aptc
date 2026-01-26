@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Trait: Ord for Spanned<T>] [Inconsistent semantics] Since Ord ignores location but the underlying Loc has Ord implemented, there's a semantic mismatch - could this cause confusion in code that tries to sort by location vs. value, potentially allowing malicious Move code to evade ordering-based security checks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6aa3827f-7093-4598-a31c-bfce37cf2f42?mode=deep",
+    "timestamp": "2026-01-26 02:47:40.146019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Trait: Display for Spanned<T>] [Information disclosure] The Display trait only shows value, not location - could this hide important security context in Move compiler error messages, making it harder to identify where vulnerabilities originate in the source code? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca15db51-888b-4151-a40a-37b077029b7a?mode=deep",
+    "timestamp": "2026-01-26 02:47:53.507640",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Trait: Debug for Spanned<T>] [Debug information leak] The Debug trait also only shows value - in security audits, is the lack of location information in debug output a problem? Could this prevent security researchers from tracing malicious code back to its source? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f5e043f-248f-4333-b588-4e85ec524a16?mode=deep",
+    "timestamp": "2026-01-26 02:48:06.909378",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Function: sp()] [Const function] The sp function is marked const, allowing it to be used in const contexts - could this be exploited to create invalid Spanned values at compile time that bypass runtime validation in the Move compiler? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0bffab43-312a-47a8-9282-805123bb0939?mode=deep",
+    "timestamp": "2026-01-26 02:48:22.162951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Macro: sp!] [Pattern matching safety] The sp! macro supports wildcards in pattern matching - could incorrect use of wildcards cause security-critical location or value data to be accidentally ignored, allowing malicious Move code patterns to bypass detection? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7fad76c-f045-49cd-8fe0-80c74463cc0b?mode=deep",
+    "timestamp": "2026-01-26 02:48:37.547079",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Macro: sp!] [Hygiene issues] Is the sp! macro properly hygienic? Could macro expansion in malicious Move code create ambiguous patterns that match unintended Spanned values, corrupting the compiler's understanding of code structure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3324d633-68e8-44e2-b48a-39435c503d05?mode=deep",
+    "timestamp": "2026-01-26 02:48:54.494162",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Trait: Serialize/Deserialize for Loc] [Invariant bypass] The Loc struct derives Serialize and Deserialize - can a malicious actor craft serialized data with start > end, bypassing the debug_assert in new() when deserializing? Could this inject invalid Locs into the Move compiler's state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a81ec398-7a64-428f-ba34-c0f25d8c2bff?mode=deep",
+    "timestamp": "2026-01-26 02:49:12.295602",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Trait: Serialize/Deserialize for Loc] [File hash manipulation] Can serialized Loc data be manipulated to point to arbitrary file_hash values, potentially causing the Move compiler to associate bytecode with wrong source files and hide malicious code origins? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9952014c-1878-4a1b-a4f4-99d0a80c67ad?mode=deep",
+    "timestamp": "2026-01-26 02:49:32.422093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Trait: Serialize/Deserialize for Loc] [Integer overflow in serialized data] Can serialized Loc data contain ByteIndex values that, when used in arithmetic operations, cause overflow? Could deserializing malicious Loc data trigger the overlaps_or_abuts overflow bug? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a90cad24-16ca-4ffe-be90-75099a76ba7f?mode=deep",
+    "timestamp": "2026-01-26 02:49:53.940866",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Trait: Serialize/Deserialize for Loc] [Denial of service] Can extremely large serialized Loc structures cause excessive memory allocation during deserialization, allowing an attacker to DoS the Move compiler by providing malicious source files with crafted location metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1eae8558-55f6-4a11-ac79-3cfd5fbb7704?mode=deep",
+    "timestamp": "2026-01-26 02:50:16.929134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Cross-function] [Overflow chain] Can an attacker chain the overlaps_or_abuts overflow (at u32::MAX) with try_merge to corrupt a Loc, then use subtract on the corrupted Loc to amplify the damage through underflow, creating a cascade of invalid Locs throughout the Move compiler? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_431bce09-434b-4a79-a7fd-774d40cfdf63?mode=deep",
+    "timestamp": "2026-01-26 02:50:40.131844",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Cross-function] [Invariant propagation] If an invalid Loc (start > end) is created through deserialization or release-mode bypass, and passed through contains, overlaps, try_merge, and subtract, does the invalidity propagate and amplify, eventually causing crashes or security bypasses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63d3516b-028f-4f58-9466-e1326dcd45f6?mode=deep",
+    "timestamp": "2026-01-26 02:51:05.856739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Cross-function] [File hash consistency] If different functions make different assumptions about file_hash validity, could an attacker exploit inconsistencies to create Locs that appear valid to some functions but invalid to others, bypassing security checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e1236a0-b706-4976-8e06-7abdb1e3225f?mode=deep",
+    "timestamp": "2026-01-26 02:51:31.552953",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Integration] [Error message manipulation] If invalid Locs are used in Move compiler error reporting, could an attacker craft source files that produce misleading error messages, causing developers to fix the wrong issues while leaving vulnerabilities undetected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13c781b7-b528-4b3a-9b36-e39453698888?mode=deep",
+    "timestamp": "2026-01-26 02:51:58.383828",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Integration] [Bytecode correlation] Does the Move compiler use Loc data to correlate bytecode with source code for security audits? Could corrupted Locs break this correlation, making it impossible to verify that compiled bytecode matches the source? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_998c8855-2b4e-4c93-8936-a5afdfc0327b?mode=deep",
+    "timestamp": "2026-01-26 02:52:25.969904",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Integration] [Source map poisoning] Are Locs used in source maps for debugging? Could invalid or malicious Locs corrupt source maps, causing debuggers to point to wrong locations and hide exploitation in Move contracts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a7a7a69-a935-4337-82f7-e0bdd1575a7e?mode=deep",
+    "timestamp": "2026-01-26 02:52:53.665738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Integration] [Security tool bypass] Do Move security analysis tools rely on accurate Loc information? Could an attacker exploit location corruption to evade static analysis, hiding vulnerabilities like reentrancy or integer overflow in Move contracts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_600186a8-73dd-49f9-aad4-472191ade810?mode=deep",
+    "timestamp": "2026-01-26 02:53:22.362960",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Concurrency] [Shared mutation] While Loc is Copy, if used in concurrent contexts with try_merge, could race conditions during mutation cause data races? Does the Move compiler use Locs in multi-threaded compilation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_743b5e4a-3110-4130-a7f8-206c9f012f76?mode=deep",
+    "timestamp": "2026-01-26 02:53:51.932816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Concurrency] [Spanned thread safety] Is Spanned<T> thread-safe for all T? If T contains interior mutability (Cell, RefCell), could concurrent access to Spanned<T> values violate memory safety? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cde2a638-5732-42ca-b657-f23de4d6ac3c?mode=deep",
+    "timestamp": "2026-01-26 02:54:21.175010",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Memory] [Slice indexing] When usize_range() is used to index into byte slices of source files, could invalid ranges (from overflow/underflow) cause out-of-bounds access and potential crashes or memory corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2838404-0146-4d3b-aede-ff401cd181ed?mode=deep",
+    "timestamp": "2026-01-26 02:54:49.827488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Memory] [Unbounded allocation] Can an attacker create Locs with massive ranges (0 to u32::MAX) that, when used to extract source code spans, cause excessive memory allocation and DoS of the Move compiler? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1c14543-cb89-4d20-89e9-20654c7b9505?mode=deep",
+    "timestamp": "2026-01-26 02:55:21.086616",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Edge case] [Zero-length locations] Are zero-length Locs (start == end) handled consistently across all functions? Could they cause division-by-zero, unexpected behavior, or bypass checks that assume non-empty ranges? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b69c84a0-6c14-4605-b537-869381e16eaf?mode=deep",
+    "timestamp": "2026-01-26 02:55:53.105536",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Edge case] [Maximum range span] What happens when a Loc spans the entire addressable space [0, u32::MAX]? Do any operations assume bounded ranges and fail with this edge case? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_102bfd84-6885-4681-a2af-9f80c937708f?mode=deep",
+    "timestamp": "2026-01-26 02:56:24.059782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Edge case] [Single byte locations] For Locs representing a single byte [n, n], do all comparison and overlap functions work correctly? Could off-by-one errors cause these to be handled incorrectly? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41ff4f07-439a-4ff6-bfb8-5a5643e4fab7?mode=deep",
+    "timestamp": "2026-01-26 02:56:56.991689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-ir/types/src/location.rs] [Generics] [Spanned<T> constraints] Are there sufficient trait bounds on T in Spanned<T>? Could T types without proper Clone, Copy, or other traits cause issues when Spanned is used in specific contexts in the Move compiler? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f459e967-5e35-415f-9b05-1fcf4697dc58?mode=deep",
+    "timestamp": "2026-01-26 02:57:28.037868",
+    "report_generated": false
+  }
+]
