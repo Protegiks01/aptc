@@ -1,0 +1,128 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Metrics Counter Overflow] Various counters (DUPLICATE_ASSET_URI_COUNT, SKIP_URI_COUNT, etc.) are incremented throughout - can attacker submit enough requests to overflow these counters, causing incorrect monitoring or integer wraparound? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddf951cf-94e2-45df-aa01-62e04a4f6fa8?mode=deep",
+    "timestamp": "2026-01-26 09:32:11.881494",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Metrics Label Injection] PARSE_URI_TYPE_COUNT and other metrics use labels from runtime data (e.g., 'other', 'blacklist') - can attacker inject arbitrary label values to pollute metrics cardinality and cause monitoring system DoS? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86c858e6-51e0-4a14-991d-f834af31bc80?mode=deep",
+    "timestamp": "2026-01-26 09:32:24.108912",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Success Counter Mismatch] PARSER_SUCCESSES_COUNT is incremented at line 373 even if retry limit was exceeded and asset marked as do_not_parse - does this inflate success metrics incorrectly? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd1179a1-22cb-45ce-94de-e303df31a578?mode=deep",
+    "timestamp": "2026-01-26 09:32:36.737973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: new()] [Asset Data ID Collision] Asset_data_id at line 39 is used for logging but not for database operations - if multiple assets share same ID (malicious or accidental), can this cause confusion in debugging or metrics correlation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab94aec8-903e-4902-bc94-348f00bb6183?mode=deep",
+    "timestamp": "2026-01-26 09:32:51.053146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: new()] [Pubsub Message Replay] The pubsub_message at line 37 is stored and logged but never validated - can attacker replay old messages to trigger reprocessing of already-handled URIs, causing resource waste? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6960723-8ad0-420d-ab74-a4810c829912?mode=deep",
+    "timestamp": "2026-01-26 09:33:05.011662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: new()] [Message Size Limitation] Pubsub_message, asset_data_id, and asset_uri are converted to owned Strings at lines 65-68 - can extremely large messages cause OOM during string allocation before any validation occurs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b305d494-480a-4f64-9d9e-d20ad9f56fd2?mode=deep",
+    "timestamp": "2026-01-26 09:33:19.519754",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: new()] [Empty Asset URI] If asset_uri is empty string, ParsedAssetUris::new() is called at line 59 - does this cause issues in later Url::parse() at line 103 or database unique constraints? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f40454a-e703-4527-b42c-8716631bea5b?mode=deep",
+    "timestamp": "2026-01-26 09:33:35.104630",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Null JSON Values] When raw_image_uri is None from JSON parsing at line 126-134, it's set in model at line 136 - can NULL database values cause issues in deduplication queries at lines 180-194 or break database constraints? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e0e65f8-57f5-45b9-a0cd-3e39d2dab9e3?mode=deep",
+    "timestamp": "2026-01-26 09:33:51.618742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Empty Raw Image URI] If JSONParser returns empty string (not None) for raw_image_uri, this passes through to URIParser at line 200-223 and deduplication - can empty string bypass validation and cause database query errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8ccb9e8-9eba-474e-99ca-4c938084500a?mode=deep",
+    "timestamp": "2026-01-26 09:34:09.130623",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [CDN URL Double Slash] When concatenating cdn_prefix with GCS path at line 158, if cdn_prefix ends with '/' and path starts with '/', result is '//path' which may be interpreted as protocol-relative URL - can this cause security issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_444cd27c-5871-487a-8f1b-1b7cd253ddb2?mode=deep",
+    "timestamp": "2026-01-26 09:34:27.722031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [CDN Path Traversal] The GCS paths returned by write_json_to_gcs() and write_image_to_gcs() are concatenated with cdn_prefix at lines 158, 264, 354 - if paths contain '..' can this create CDN URLs that reference unintended content? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f96cf32-8398-4903-bc38-15d97a831e8f?mode=deep",
+    "timestamp": "2026-01-26 09:34:46.625406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Missing CDN URL Validation] The constructed cdn URLs at lines 157-160, 263-266, 353-356 are stored directly without validation - can malformed URLs break NFT metadata rendering or cause XSS when displayed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5553b4ca-93c6-4dc3-95f8-c525b466029d?mode=deep",
+    "timestamp": "2026-01-26 09:35:06.457617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: new()] [Negative Max Retries] Max_num_retries is i32 at line 35 - if negative value is passed, can comparison at line 364 never succeed, allowing infinite retries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4232e6d-abf1-42eb-8a2b-3441807f986c?mode=deep",
+    "timestamp": "2026-01-26 09:35:26.774607",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: new()] [Zero Max Retries] If max_num_retries=0, does comparison at line 364 immediately mark everything as do_not_parse before any processing attempt, breaking crawler functionality? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7f6aaae-9a8f-44b8-bfa0-bc7f990a5cf0?mode=deep",
+    "timestamp": "2026-01-26 09:35:46.955103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Retry Count Type Mismatch] Retry counts in model may be different integer type than max_num_retries (i32) - can type conversion cause incorrect comparisons or overflow at line 364-366? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_981582c8-5e3e-4296-94c8-c23387bade52?mode=deep",
+    "timestamp": "2026-01-26 09:36:08.659541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Async Panic Propagation] The parse() method is async and calls multiple async operations (JSONParser.parse(), ImageOptimizer.optimize(), write_*_to_gcs()) - if any of these panic, does it poison the async runtime or leave worker in broken state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_358386d4-4a9a-43d6-b292-724fd56dac7e?mode=deep",
+    "timestamp": "2026-01-26 09:36:29.936631",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Timeout Missing] Async operations like JSONParser.parse() at line 127 and ImageOptimizer.optimize() at lines 230, 323 have no visible timeout - can attacker provide slow-responding URLs to cause workers to hang indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1a74016-670d-4dd9-9bca-4022a447d940?mode=deep",
+    "timestamp": "2026-01-26 09:36:51.873651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Cancellation Safety] If parse() async function is cancelled mid-execution, can this leave database in inconsistent state or cause resource leaks (unclosed connections, orphaned GCS uploads)? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf183fbd-1a02-4c29-a51d-0090d4f422de?mode=deep",
+    "timestamp": "2026-01-26 09:37:14.648445",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Async Database Deadlock] PooledConnection is held for entire async parse() duration - if two workers each hold a connection and wait for async I/O, can this cause database connection pool deadlock? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ae77308-5cee-427d-ab0f-88ddf0d6be20?mode=deep",
+    "timestamp": "2026-01-26 09:37:37.416629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [IPFS CID Manipulation] URIParser.parse() with ipfs_prefix at lines 113-122 converts IPFS URIs - can attacker provide invalid IPFS CIDs that get normalized differently by gateway vs. local validation, causing mismatch? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20a30ed0-5b44-4ab1-b733-19b8d8e37856?mode=deep",
+    "timestamp": "2026-01-26 09:38:01.076669",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [URI Scheme Downgrade] If asset_uri uses HTTPS but URIParser converts to HTTP ipfs gateway, can this enable MITM attacks or content manipulation during fetch? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6f209f1c-9155-47c2-bd06-d38ad2d46474?mode=deep",
+    "timestamp": "2026-01-26 09:38:26.267671",
+    "report_generated": false
+  }
+]
