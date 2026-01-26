@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Query injection] If the standardized address output is used in database queries without proper escaping, can malformed addresses containing SQL injection payloads (if stored before validation) compromise the indexer database? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_173347d3-4128-4985-927e-b321271d898b?mode=deep",
+    "timestamp": "2026-01-26 01:39:08.865973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Race condition] If multiple indexer threads call standardize_address() concurrently on the same address with different formats, can race conditions in database updates cause non-deterministic transaction indexing where some transactions are lost or duplicated? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e8e1601-43ab-4fea-a35c-6cb6d890afd2?mode=deep",
+    "timestamp": "2026-01-26 01:39:21.667777",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [State inconsistency] If the indexer crashes or restarts mid-processing, can partially standardized addresses be persisted to the database, leaving the indexer in an inconsistent state where some addresses are standardized and others aren't? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17778ccf-e2c6-4482-bc53-37b289ccf0aa?mode=deep",
+    "timestamp": "2026-01-26 01:39:34.951177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Saturating subtraction] At line 16, saturating_sub(1) is used but what if trimmed.len() is 0? This returns 0, causing trimmed[..0] which is valid but empty. However, if the intent was to check all-but-last character for zeros, this logic fails for single-character addresses. Can this misclassify '0xa' as special when it should validate preceding zeros? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecfb980e-23d5-4951-933b-b0d53c9bafe3?mode=deep",
+    "timestamp": "2026-01-26 01:39:48.620995",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Unchecked subtraction] At line 33, the expression 64 - trimmed.len() assumes trimmed.len() <= 64, but there's no explicit check. If validation is missing upstream and trimmed.len() is 65, this causes integer underflow on some platforms, potentially panicking the indexer process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03b664e3-18b5-4400-aa7f-b86a28bb998a?mode=deep",
+    "timestamp": "2026-01-26 01:40:03.172115",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Length calculation] If trimmed contains non-ASCII characters, does chars().count() differ from len() in bytes? Could this cause the ZEROS padding calculation to be incorrect, producing addresses that are too short or too long? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83722c46-1593-4ede-ae11-595e7a36c09b?mode=deep",
+    "timestamp": "2026-01-26 01:40:18.480648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Capacity overflow] At line 31, String::with_capacity(66) allocates for '0x' + 64 chars. If due to a bug, more than 66 characters are pushed (e.g., if trimmed.len() calculation is wrong), can this cause hidden reallocation or memory corruption? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e63492aa-6694-477e-bcb3-2d5c8a0d6305?mode=deep",
+    "timestamp": "2026-01-26 01:40:34.713715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Constant: ZEROS] [Hardcoded constant] The ZEROS constant at line 5 is hardcoded to 64 '0' characters. If Aptos address length changes in a protocol upgrade (e.g., to 128 bits), will this constant cause incorrect padding, breaking all indexed addresses post-upgrade? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2919bb10-730f-4d9b-936e-541ac5fd8995?mode=deep",
+    "timestamp": "2026-01-26 01:40:52.450945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Constant: ZEROS] [Magic number] The magic number 64 is used at line 33 without a named constant. If this needs to change, will developers update all occurrences consistently, or could partial updates cause address length mismatches across the indexer? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f615e1a-732b-48e8-846d-f099ffa1115b?mode=deep",
+    "timestamp": "2026-01-26 01:41:11.767510",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Constant: ZEROS] [Memory efficiency] The ZEROS constant is a &str slice compiled into the binary. For high-throughput indexers processing millions of addresses, are repeated slice operations on this constant optimized by the compiler, or could it cause cache misses affecting performance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4282d65b-f597-4f8c-a885-0dc38abae87b?mode=deep",
+    "timestamp": "2026-01-26 01:41:32.183304",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Prefix stripping] At line 12, strip_prefix('0x') uses unwrap_or(address) if prefix not found. Can an attacker provide 'x123abc' (missing '0') that gets processed as-is, potentially creating a 'xx123abc' address after adding '0x' prefix, corrupting indexer data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa86ada9-460d-4c08-b57d-475d2340004f?mode=deep",
+    "timestamp": "2026-01-26 01:41:53.567680",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Multiple prefixes] What if an attacker provides '0x0x1234'? After strip_prefix, trimmed becomes '0x1234'. Is this then treated as a valid address and padded incorrectly, or could the nested prefix cause validation confusion in downstream systems? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3919acce-6408-4437-9d22-56ad8f714f54?mode=deep",
+    "timestamp": "2026-01-26 01:42:16.088308",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Case-sensitive prefix] The strip_prefix checks for lowercase '0x'. Can an attacker provide '0X1234' (uppercase X) that bypasses prefix stripping, resulting in standardized address '0x0X1234' with double prefix corrupting indexer lookups? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bab5a6aa-c78b-4e11-9866-c9cf481ba88a?mode=deep",
+    "timestamp": "2026-01-26 01:42:39.777379",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Whitespace handling] Does the function trim whitespace? Can addresses like ' 0x1 ' or '0x1\\n' cause whitespace to be included in the standardized output '0x 0x1 ', breaking address matching in transaction filters? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88f3b4f5-5f7a-4bb6-80b8-ca9757b06d27?mode=deep",
+    "timestamp": "2026-01-26 01:43:03.324670",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Null terminator] If an address string contains null bytes (e.g., '0x1\\0evil'), does Rust's string handling include the null byte and everything after it in the standardized output, potentially causing buffer overreads in C-interop code? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba3c87f9-ad8d-438b-99e3-82e731e0f616?mode=deep",
+    "timestamp": "2026-01-26 01:43:28.494656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Filter evasion] If transaction filters are configured to block specific addresses, can an attacker submit transactions with addresses in various formats (short vs long, uppercase vs lowercase) that bypass filters because standardization happens after filtering logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05b4fa32-6bf5-467c-82cb-aa028e8636de?mode=deep",
+    "timestamp": "2026-01-26 01:43:53.516588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Performance bottleneck] Is standardize_address() called for every address in every transaction during indexing? For high-throughput blocks with thousands of transactions, can the string manipulation overhead cause indexer lag, resulting in delayed transaction filtering and missed fraud detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_536b73ac-16de-44b7-9cc6-112944d17674?mode=deep",
+    "timestamp": "2026-01-26 01:44:17.451968",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Error handling] The function returns String with no error indication. If standardization fails or produces invalid output, how does the indexer detect this? Can silently invalid addresses corrupt the indexed data without triggering alerts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27dad974-1aae-4052-a6ab-a07d8065f617?mode=deep",
+    "timestamp": "2026-01-26 01:44:40.632284",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Caching] Does the indexer cache standardized addresses to avoid recomputation? If not, can an attacker deliberately use high-frequency addresses in various formats to force repeated standardization, causing CPU exhaustion DoS? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_355d1b3f-c70e-46b2-a24f-d3bd3da4ab29?mode=deep",
+    "timestamp": "2026-01-26 01:45:05.145617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Concurrent access] If the transaction filter uses this function in a multi-threaded context without proper synchronization, can concurrent calls with the same address cause data races or memory corruption in the returned String objects? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4a00d40-52ea-4172-bd17-68d8d06c311a?mode=deep",
+    "timestamp": "2026-01-26 01:45:24.711290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Range boundary] The comment at line 14 says 'last byte is smaller than 0b10000' (16 decimal, 0x10 hex), but line 20 checks last_char <= 'f' (which is 15 decimal, 0x0f hex). Is there an off-by-one error where '0x10' should be special but isn't, or vice versa, causing address classification inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67d1b4b5-c97d-4b0f-89af-3491f51f7c34?mode=deep",
+    "timestamp": "2026-01-26 01:45:50.206207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Hex digit interpretation] For last_char check at line 20, does 'f' correctly represent 0x0f? Should it check against '10' (two characters) for value 0x10? Can this ambiguity cause addresses in range 0x10-0x1f to be incorrectly classified as special? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f01bccf0-0ce7-4aee-9b62-578aa9dd54cf?mode=deep",
+    "timestamp": "2026-01-26 01:46:15.070896",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Leading zeros validation] The check at line 17 validates all characters except last are '0', but what if trimmed is '000000...000g' (63 zeros + 'g')? The last_char is 'g' which is > 'f', so it's non-special. But should addresses with non-hex last character be rejected instead of standardized? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55233681-9835-4ad9-89ce-49ff754b2972?mode=deep",
+    "timestamp": "2026-01-26 01:46:40.198759",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Negative numbers] Hexadecimal can represent negative numbers with sign. If an attacker provides '-0x1', does strip_prefix fail leaving '-0x1', which then gets padded to '0x00...-0x1', creating malformed addresses in the indexer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4d13067-5008-440f-bdb8-f2838fd5b7c5?mode=deep",
+    "timestamp": "2026-01-26 01:47:05.785404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Octal/binary prefix] What if an attacker provides '0o777' (octal) or '0b1111' (binary)? These don't have '0x' prefix, so they pass through. Do they get zero-padded as-is, creating invalid address formats that break indexer queries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96f25f5e-17bc-453a-a3ed-f1e70420e65b?mode=deep",
+    "timestamp": "2026-01-26 01:47:30.497744",
+    "report_generated": false
+  }
+]
