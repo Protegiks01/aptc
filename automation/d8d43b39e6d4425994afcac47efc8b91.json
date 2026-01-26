@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [No retry limit] Does save_raw_file() implement exponential backoff with maximum retries, or can infinite retry loops on persistent GCS failures exhaust system resources? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f197a0b7-5626-44da-8af2-5e76d2e93cae?mode=deep",
+    "timestamp": "2026-01-26 02:04:05.419011",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [String-based error detection] The error handling on line 105 checks if err.contains('No such object: ') - can GCS error message format changes break this logic, causing file-not-found errors to be treated as fatal errors and trigger unwanted panics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02bc60b7-d1fb-4149-b916-8dbefc8ce919?mode=deep",
+    "timestamp": "2026-01-26 02:04:18.332122",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [Error message injection] Can an attacker craft object names that, when included in GCS error messages, inject the string 'No such object: ' to make actual errors appear as missing files and hide real failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_395d938c-a2a4-4815-a7da-6370f5886b4b?mode=deep",
+    "timestamp": "2026-01-26 02:04:31.829199",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [Information disclosure] Do the error messages in bail!() macros (lines 108, 112) expose sensitive information about GCS bucket structure, paths, or internal indexer state to logs that could aid attackers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85f38555-98d5-42ab-bae0-841196f91a08?mode=deep",
+    "timestamp": "2026-01-26 02:04:45.241376",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: is_initialized()] [Panic information leak] Do the panic messages (lines 82-84, 90) reveal sensitive bucket names, subdirectory paths, or internal configuration that could be exploited for reconnaissance? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_faa0c38b-fcba-4434-a467-d8025e99550b?mode=deep",
+    "timestamp": "2026-01-26 02:04:59.741488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Struct: GcsFileStore] [No synchronization] Is GcsFileStore Sync and Send safe for concurrent use across threads, or can concurrent calls to get_raw_file() and save_raw_file() create race conditions in the underlying GCS client? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1523d039-b420-4934-99a4-5af591f219a5?mode=deep",
+    "timestamp": "2026-01-26 02:05:15.489994",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [Write-write race] Can concurrent save_raw_file() calls to the same file_path create a race condition where writes interleave and corrupt data, especially since GCS writes may not be atomic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2331c9a-9be0-4313-9bfb-0860879aa7b7?mode=deep",
+    "timestamp": "2026-01-26 02:05:32.416214",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [Read-write race] Can a read via get_raw_file() occur concurrently with a write via save_raw_file() to the same path, returning partially written or corrupted data to the indexer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_464d8f33-3e9f-4d63-9d97-35cfdc6933e2?mode=deep",
+    "timestamp": "2026-01-26 02:05:50.709865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: is_initialized()] [Multiple initialization checks] Can concurrent is_initialized() calls with same bucket_sub_dir produce inconsistent results due to non-atomic list operations, causing race conditions in initialization logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cabb5cf0-eedd-462f-8df7-04d500f51986?mode=deep",
+    "timestamp": "2026-01-26 02:06:10.484684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Constant: JSON_FILE_TYPE] [Content-type mismatch] The code hardcodes content type as 'application/json' on line 12, but does save_raw_file() validate that data is actually valid JSON before uploading, or can non-JSON data be uploaded with incorrect content-type causing parsing failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81c08d9d-3535-4e99-b5d1-42ae903fdf0d?mode=deep",
+    "timestamp": "2026-01-26 02:06:31.615207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [Type confusion] Can non-JSON binary data be written via save_raw_file() with the JSON content-type, causing downstream consumers to treat binary data as JSON and trigger parsing vulnerabilities? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_784659df-e7d3-4204-8763-973de5dc5434?mode=deep",
+    "timestamp": "2026-01-26 02:06:52.433142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [Deserialization bypass] Does get_raw_file() perform any validation on the returned Vec<u8> data format, or can maliciously crafted files in GCS bypass expected schema validation in upstream code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91b2ad18-3b7c-4d0f-95c1-c61e05468f66?mode=deep",
+    "timestamp": "2026-01-26 02:07:14.997166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Insecure service account path] Can the service_account_path parameter accept arbitrary file paths including network paths or symlinks, allowing attackers to load credentials from unintended locations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_274209c5-d6f6-4797-b7d0-26ce7334bd0a?mode=deep",
+    "timestamp": "2026-01-26 02:07:38.272486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Missing bucket validation] Does new() validate that bucket_name follows GCS naming conventions and doesn't contain injection characters, or can malformed bucket names cause unexpected behavior in GCS API calls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7183dec-0e80-4ffe-8e9d-325fb8a02f83?mode=deep",
+    "timestamp": "2026-01-26 02:08:03.012128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Subdirectory validation missing] Can bucket_sub_dir contain absolute paths, parent directory references, or special characters that break the isolation guarantees when combined with file_path in get_path()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f485777b-033f-40a0-8a50-4ed92005a316?mode=deep",
+    "timestamp": "2026-01-26 02:08:28.929333",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Constant: SERVICE_ACCOUNT_ENV_VAR] [Environment variable collision] Can the SERVICE_ACCOUNT_ENV_VAR name collide with other environment variables used by the system or GCS client library, causing authentication confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff4394b4-cb49-47ea-ab05-d8070eec2280?mode=deep",
+    "timestamp": "2026-01-26 02:08:54.742506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: is_initialized()] [ListRequest manipulation] Can an attacker manipulate the max_results parameter (set to 1) or prefix to cause is_initialized() to return incorrect results about bucket state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ac3d88c-def0-423b-be92-24a317962077?mode=deep",
+    "timestamp": "2026-01-26 02:09:20.233468",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: is_initialized()] [Stream handling] Does the boxed().next().await pattern properly handle GCS stream errors and timeouts, or can streaming failures cause undefined behavior in initialization checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_504c6b80-940b-4275-b869-45422c6acd18?mode=deep",
+    "timestamp": "2026-01-26 02:09:46.450226",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [Object::create() failure modes] Does the code handle all failure modes of Object::create() including quota exceeded, permission denied, and transient failures with appropriate retry logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcfe54ac-cdd0-4110-9093-18622a0b962e?mode=deep",
+    "timestamp": "2026-01-26 02:10:10.618129",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [Object::download() edge cases] Can Object::download() return partial data or corrupted responses under network failures, and does the code detect and handle these cases? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6965012-d23e-4c54-927f-4bca015e00c3?mode=deep",
+    "timestamp": "2026-01-26 02:10:36.233553",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Excessive logging] Do the info!() calls on lines 32-34 and 41-44 log sensitive bucket names or paths that could be exploited for reconnaissance in production logs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3275fe6-d527-4b14-a932-32354a2cabd9?mode=deep",
+    "timestamp": "2026-01-26 02:11:00.708068",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [Trace logging exposure] Does the trace!() call on line 97-101 logging bucket names and paths create a security risk if trace logs are enabled in production? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5424beca-65f3-4d37-8000-d6d58a0410a1?mode=deep",
+    "timestamp": "2026-01-26 02:11:26.038157",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [Missing audit logs] Does save_raw_file() log successful writes for audit purposes, or can attackers perform unauthorized writes without detection? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72adf6ac-b4ab-44c7-ba6b-9b6d0a92bd37?mode=deep",
+    "timestamp": "2026-01-26 02:11:50.657267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [Async cancellation safety] If the Future returned by get_raw_file() is cancelled mid-execution, can this leave the GCS client in an inconsistent state or leak resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91cab33d-a50f-4574-a631-66c862b011d9?mode=deep",
+    "timestamp": "2026-01-26 02:12:14.784651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [Async error propagation] Does map_err(anyhow::Error::msg) properly preserve all error context from GCS operations, or can important error details be lost during async error handling? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7cbfcb57-a048-471e-bf38-f00a0bb6975c?mode=deep",
+    "timestamp": "2026-01-26 02:12:37.673549",
+    "report_generated": false
+  }
+]
