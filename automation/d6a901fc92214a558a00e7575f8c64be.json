@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Function: AbilitySet::into_u8()] [Serialization invariants] The into_u8() function at lines 262-264 directly returns the internal u8 - if AbilitySet invariants are violated elsewhere (e.g., via unsafe code), could this serialize invalid ability sets that corrupt on-chain state when stored in modules or resources? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddc2c7df-ca0c-4be8-bc2b-855d04f68c20?mode=deep",
+    "timestamp": "2026-01-26 00:36:59.056390",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Struct: AbilitySetIterator] [Iterator correctness] The AbilitySetIterator at lines 295-313 uses bit shifting (idx <<= 1) starting from 0x1 - can integer overflow in the idx field cause it to loop indefinitely or skip abilities, leading to incomplete ability checking in type validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96c55183-d5c4-4329-9b35-df0ca353ff4b?mode=deep",
+    "timestamp": "2026-01-26 00:37:12.107434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Function: AbilitySetIterator::next()] [Termination condition] The iterator checks idx <= 0x8 at line 304 - if idx overflows past 0x8 (e.g., to 0x10 after left shift), will the iterator terminate correctly, or could it continue iterating and return spurious abilities from undefined bits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_851c284b-4f0d-493f-8969-0f274c9c6799?mode=deep",
+    "timestamp": "2026-01-26 00:37:25.310394",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Function: AbilitySetIterator::next()] [Bit extraction] At line 305, the iterator extracts abilities using (self.set.0 & self.idx) then calls Ability::from_u8() - if the AND operation produces values like 0x0, will from_u8() return None correctly, or could this cause the iterator to yield invalid abilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6569979-37d6-4ab0-8d86-2e48e8cda419?mode=deep",
+    "timestamp": "2026-01-26 00:37:39.558111",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Trait: IntoIterator for AbilitySet] [Iterator initialization] The IntoIterator implementation at lines 315-325 starts with idx: 0x1 - if this initial value is wrong or if the set field is not properly copied, could iteration over ability sets produce incorrect results used in type checking? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8638b33-2a00-4369-a721-264173c6a5cc?mode=deep",
+    "timestamp": "2026-01-26 00:37:54.614619",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Function: AbilitySet::Display] [Format string injection] The Display implementation at lines 267-277 reduces ability names with format!() - if ability names contain special characters or if the reduce operation has bugs, could this produce misleading error messages that hide type safety violations from auditors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af711de0-1a75-4288-98e3-711fcdbefe2e?mode=deep",
+    "timestamp": "2026-01-26 00:38:09.964643",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Function: AbilitySet::Debug] [Debug output] The Debug implementation at lines 327-335 iterates over the ability set - if this iteration is incomplete or produces duplicates, could debugging output mislead developers about the actual abilities of a type, causing security bugs to be missed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1d9c27f-5f9f-485e-b21f-9d06bdbb51d3?mode=deep",
+    "timestamp": "2026-01-26 00:38:26.634889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Trait: BitOr<Ability> for AbilitySet] [Operator semantics] The BitOr implementation at lines 279-285 adds a single ability to a set - does this have the same semantics as the add() method, or could differences between these two APIs cause inconsistent ability set construction in different parts of the codebase? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a94a32f-94a8-4c71-9a8a-559b18fa7a23?mode=deep",
+    "timestamp": "2026-01-26 00:38:45.305908",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Trait: BitOr<AbilitySet> for AbilitySet] [Set union] The BitOr for two AbilitySets at lines 287-293 computes union - if this differs from the union() method semantics, could callers accidentally use the wrong operation and create ability sets that violate type constraints? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a975995-1ee6-4a35-a424-68a474b63cab?mode=deep",
+    "timestamp": "2026-01-26 00:39:05.623808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Constant: SIGNER] [Signer abilities] The SIGNER constant at line 117 has only Drop - if an attacker can copy or store a Signer value by exploiting VM bugs, could they escalate privileges by reusing signer capabilities across transactions or storing them in global storage? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d59297a-7a62-49a8-a1e4-af0f78633131?mode=deep",
+    "timestamp": "2026-01-26 00:39:27.205621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Constant: REFERENCES] [Reference abilities] REFERENCES at line 115 has Copy|Drop but not Store - if references are incorrectly stored in global storage due to ability checking bugs, could this cause memory safety violations or allow pointers to be persisted across transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ecda209-98ad-426e-b5ca-7beb353c7f08?mode=deep",
+    "timestamp": "2026-01-26 00:39:50.149497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Constant: VECTOR] [Vector abilities] The VECTOR constant at lines 119-120 defines Copy|Drop|Store - are these abilities correctly conditioned on the element type's abilities, or could vectors of non-copyable elements be copied, violating Move's linear type system and causing resource duplication? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af6e9c1a-cc55-4fd4-b817-cfd42124efe1?mode=deep",
+    "timestamp": "2026-01-26 00:40:13.985053",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Function: AbilitySet::is_empty()] [Empty set handling] The is_empty() check at lines 135-137 returns true when self.0 == 0 - are all functions that handle empty ability sets tested for edge cases, or could EMPTY sets cause division by zero, null pointer dereferences, or other bugs in type checking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9dc37e7c-efef-4b4c-bb89-3a83042b4dd8?mode=deep",
+    "timestamp": "2026-01-26 00:40:39.249717",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Constant: AbilitySet::EMPTY] [Zero value] EMPTY is defined as 0 at line 102 - if other code assumes ability sets are non-empty, could passing EMPTY cause assertions to fail, panics, or incorrect type checking that allows invalid bytecode to execute? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0344304c-7f27-49b7-b001-903ed5d4e9b7?mode=deep",
+    "timestamp": "2026-01-26 00:41:06.187104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Function: AbilitySet::iter()] [Iterator filtering] The iter() method at lines 139-141 filters abilities via has_ability() - if has_ability() has bugs or if filtering doesn't preserve order, could this cause non-deterministic type checking that differs across validators, leading to consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eaab15e8-a865-4df6-a798-003e9e884ed6?mode=deep",
+    "timestamp": "2026-01-26 00:41:33.303279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Derive: Serialize, Deserialize] [Serde safety] AbilitySet derives Serialize/Deserialize at line 85 - does Serde's automatic deserialization validate that the u8 value is a valid ability set, or could malicious serialized data bypass from_u8() validation and inject invalid ability sets into VM state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05708135-d6e6-4374-9c87-77af928d2a8b?mode=deep",
+    "timestamp": "2026-01-26 00:42:00.900487",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Derive: Arbitrary] [Fuzzing coverage] The Arbitrary implementation at lines 338-347 uses proptest::bits::u8::masked - does this correctly generate all valid ability sets for fuzzing, or could it miss edge cases that allow bugs to slip through testing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d65cd60-8c4e-4b2f-a7ee-32cfafcde433?mode=deep",
+    "timestamp": "2026-01-26 00:42:26.727589",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Global: Ability u8 representation] [ABI stability] The u8 values for abilities (Copy=0x1, Drop=0x2, Store=0x4, Key=0x8) form a wire format - if these values change in a protocol upgrade without proper migration, could on-chain modules with hardcoded ability bytes become incompatible, causing fund loss or state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9392ee85-ca9b-4eb3-a2ff-9d929c78109b?mode=deep",
+    "timestamp": "2026-01-26 00:42:53.561009",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Global: Ability enum ordering] [Determinism] Abilities are ordered Copy < Drop < Store < Key via derives at line 15 - if this ordering affects sorting or hashing in consensus-critical code, could non-deterministic ability set iteration cause validators to disagree on state roots? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_382ba859-5bf3-4eaf-832d-7e2cc1a081ee?mode=deep",
+    "timestamp": "2026-01-26 00:43:19.131095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Derive: Hash] [Hash collisions] AbilitySet derives Hash at line 85 - if the u8 representation allows hash collisions (e.g., different ability sets hashing to the same value), could this cause HashMap or HashSet bugs in type checking that allow type confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffa87d1a-40e6-49d5-9c9e-f1f885282323?mode=deep",
+    "timestamp": "2026-01-26 00:43:44.405028",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Integration: Move VM] [Bytecode validation] When the Move VM deserializes ability sets from bytecode using from_u8(), if validation is incomplete or can be bypassed, can an attacker deploy modules with invalid ability declarations that bypass type safety checks during execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c8edcbf-b825-4968-8b54-7416f284fb25?mode=deep",
+    "timestamp": "2026-01-26 00:44:09.917435",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Integration: Type checking] [Generic instantiation] When checking generic function or struct instantiations using polymorphic_abilities(), if the type arguments' abilities are incorrectly computed, could attackers instantiate Vec<Signer> or Option<Resource> with invalid abilities, breaking Move's resource safety model? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12bbbf2b-7eb5-44b3-bea8-c434295f5c0e?mode=deep",
+    "timestamp": "2026-01-26 00:44:37.023649",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Integration: Resource operations] [MoveTo/MoveFrom] For global storage operations that require the Key ability, if has_key() checks are bypassed or incorrectly implemented, could attackers store arbitrary types in global storage, causing state bloat or allowing unauthorized resource modification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55ca8b80-55c9-4beb-97ae-f2aeb7a0c76b?mode=deep",
+    "timestamp": "2026-01-26 00:45:05.595836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Integration: Copy operations] [CopyLoc/ReadRef] When copying values via CopyLoc or ReadRef, if has_copy() checks are missing or wrong, could non-copyable resources be duplicated, violating linear type invariants and enabling double-spending of tokens? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_401731e4-1859-491d-89ea-0bc6bc9008be?mode=deep",
+    "timestamp": "2026-01-26 00:45:35.603002",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-core/types/src/ability.rs] [Integration: Drop operations] [Pop/WriteRef] For drop operations that require the Drop ability, if has_drop() checks fail silently or are skipped, could non-droppable resources be leaked or improperly destroyed, causing permanent fund loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04b6b1c3-32af-4a37-988f-f3f7a7b8b6ee?mode=deep",
+    "timestamp": "2026-01-26 00:46:06.448147",
+    "report_generated": false
+  }
+]
