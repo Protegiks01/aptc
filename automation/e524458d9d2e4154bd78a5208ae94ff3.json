@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: check_params_args_types_vectors_need_freezeref()] [False Negative] At lines 1179-1195, the type comparison logic may return false for types that need freezing - can an attacker craft type pairs where t1 != t2 but the reference check doesn't detect mutability mismatch, bypassing FreezeRef insertion and violating reference safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0dcdb068-92e0-4623-bfd5-527c3fb1eeeb?mode=deep",
+    "timestamp": "2026-01-26 10:52:21.036038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: construct_inlined_call_expression()] [Partial Freeze] At lines 1196-1200, if all elements are false None is returned - can an attacker provide argument lists where only some elements need freezing but the check returns None, causing those elements to not be frozen and violating Move's reference safety guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3e7dfb3-e5b1-4ab9-aa29-b22dd2502e81?mode=deep",
+    "timestamp": "2026-01-26 10:52:33.909727",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_temporary()] [Index Out of Bounds] At line 1311, temporary index is compared to inlined_formal_params.len() - can an attacker provide bytecode with temporary indices exceeding the parameter count that bypass the bounds check, accessing invalid memory or causing undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_077ae4b2-d71e-4eec-9922-3fd7292e66c4?mode=deep",
+    "timestamp": "2026-01-26 10:52:47.389533",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_temporary()] [Function Type Abuse] At lines 1314-1322, lambda parameters used as temporaries trigger an error - can an attacker find edge cases where function-typed parameters are used as locals without triggering this check, allowing invalid operations on function values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec6cb1cf-787f-4b38-a89a-281beb25c136?mode=deep",
+    "timestamp": "2026-01-26 10:53:02.104341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_temporary()] [Type Instantiation] At lines 1323-1330, parameter types are instantiated for temporaries - can incorrect type instantiation at line 1324 cause the temporary to have a different type than expected, leading to type confusion in subsequent operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95cb4f64-107f-49f2-9a96-dc9c5327c679?mode=deep",
+    "timestamp": "2026-01-26 10:53:16.599155",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_temporary()] [Shadow Symbol Bypass] At line 1326-1330, shadow symbols are retrieved for temporaries - can an attacker create scenarios where the shadow_stack incorrectly returns None for a temporary that should be shadowed, causing incorrect variable resolution? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cf12686-5bb2-4ad3-91ca-f1c238c8dcae?mode=deep",
+    "timestamp": "2026-01-26 10:53:32.703427",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_temporary()] [Error Handling] At lines 1332-1342, out-of-bounds temporaries trigger a Bug diagnostic - can an attacker craft inline functions where this error is triggered but compilation continues, producing invalid bytecode that crashes the VM at runtime? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6eb4887c-252f-46a2-a71f-467435d6c3e9?mode=deep",
+    "timestamp": "2026-01-26 10:53:50.951696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: run_inlining()] [Call Graph Incompleteness] At lines 97-117, the call graph is built by visiting targets - can an attacker create inline functions that are called indirectly through function pointers or other mechanisms not captured by used_funs_with_uses(), causing incomplete call graph and missed inlining? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afffeefb-e76f-4f00-b9d8-597cafc60d5d?mode=deep",
+    "timestamp": "2026-01-26 10:54:09.970133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: run_inlining()] [Infinite Loop] At lines 105-116, targets are added to todo and visited_targets - can an attacker trigger a scenario where visited_targets.insert() returns false but the target is still added to call_graph, causing the while loop to run indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7b7b99b-7c37-41be-a5c6-fb0696c082f0?mode=deep",
+    "timestamp": "2026-01-26 10:54:31.082979",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: run_inlining()] [Target Insertion Race] At line 110, targets.entry() is called which may modify the targets map - can concurrent modification of targets during iteration cause inconsistent call graph construction leading to missed inline sites? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a014399-83af-4caf-9eb3-486c16d0dbc8?mode=deep",
+    "timestamp": "2026-01-26 10:54:53.441592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: targets_needing_inlining_in_order()] [Ordering Violation] At lines 223-326, targets are ordered bottom-up using postorder - can incorrect postorder implementation cause inline functions to be processed before their callees, resulting in incomplete inlining where nested inline calls are missed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_394a10ec-bff6-41bd-aa74-c7a8c5863da0?mode=deep",
+    "timestamp": "2026-01-26 10:55:15.161086",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: postorder()] [Stack Manipulation] At lines 330-362, a stack-based DFS is used for postorder - can malformed call graphs with unexpected node connections cause the stack to become corrupted, producing incorrect traversal order and breaking inlining dependencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76071518-03b3-4d5f-a1f1-5f56310ff94b?mode=deep",
+    "timestamp": "2026-01-26 10:55:38.838093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: lift_lambda_and_generate_spec_fun()] [Spec Mismatch] At lines 760-790, lifted lambdas are converted to spec functions - can the lifted function have different parameter counts or types than expected, causing assertion failures at line 1361 or incorrect spec function calls? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1620e74-9324-4093-a7aa-8e44fecb4602?mode=deep",
+    "timestamp": "2026-01-26 10:56:03.988088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_invoke()] [Closure Mask Corruption] At lines 1362-1376, the closure mask determines which parameters are captured vs free - can an attacker manipulate the mask to cause captured parameters to be treated as free or vice versa, leading to incorrect argument passing in spec function calls? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52fdec31-4139-4baa-b473-ba494597d097?mode=deep",
+    "timestamp": "2026-01-26 10:56:30.607459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_invoke()] [Spec vs Move Divergence] At lines 1378-1396, invoke expressions are rewritten to either spec or move function calls based on in_spec counter - can incorrect in_spec tracking cause spec functions to be called in move code or move functions in spec code, breaking the separation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6a1ea83-83e8-4dc6-9e66-1039a55e3cc1?mode=deep",
+    "timestamp": "2026-01-26 10:56:57.969070",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: lift_lambda_and_generate_spec_fun()] [Lifted Function Count] At line 779, the assertion checks that exactly one function is lifted - can an attacker craft lambda expressions that cause multiple or zero functions to be lifted, bypassing this assertion and causing undefined behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6cf8ebe-d5fe-4bbb-b29f-7f170d6dd6f5?mode=deep",
+    "timestamp": "2026-01-26 10:57:26.330112",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_invoke()] [Parameter Position Mismatch] At lines 1366-1376, parameter positions are used to index into captured and free arguments - can off-by-one errors or incorrect position mapping cause arguments to be passed to wrong parameters, producing incorrect results in spec verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3603aad-ef0f-44f8-8ea1-8395e6d8afef?mode=deep",
+    "timestamp": "2026-01-26 10:57:53.481796",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_pattern()] [Wildcard Pattern Bypass] At lines 1022-1025, wildcard patterns are created for underscore variables - can an attacker exploit wildcard pattern matching to skip necessary variable bindings, allowing uninitialized variables to be used in inlined code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07e49526-b683-4a93-82e9-c52222086d64?mode=deep",
+    "timestamp": "2026-01-26 10:58:21.378512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_pattern()] [Struct Pattern Instantiation] At lines 1465-1472, struct patterns have their struct_id instantiated - can incorrect struct_id instantiation cause pattern matching to succeed with wrong struct types, violating Move's type safety for resource types? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77e5cbcc-48da-45e2-b076-81149d6e8eea?mode=deep",
+    "timestamp": "2026-01-26 10:58:48.430121",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_pattern()] [Pattern Node Reuse] At line 1457, new_id_opt may be None causing old_id reuse - can node ID reuse cause multiple patterns to share the same node ID, leading to AST corruption and incorrect type information? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ea123fe-eb75-4c9b-b0e1-9aed7a27b00f?mode=deep",
+    "timestamp": "2026-01-26 10:59:16.165656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: make_lambda_pattern_a_tuple()] [Pattern Wrapping] At lines 1206-1217, non-tuple patterns are wrapped in singleton tuples - can this wrapping cause type mismatches when the wrapped pattern is later matched against non-tuple arguments? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e95142a-0877-437a-8c99-db6e080962d0?mode=deep",
+    "timestamp": "2026-01-26 10:59:43.620591",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_pattern()] [Error Pattern Handling] At line 1475, Error patterns return None - can Error patterns in critical positions cause pattern rewriting to fail silently, allowing malformed patterns to remain in the AST? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3137a72a-1c9d-452a-8884-b2f47cb01362?mode=deep",
+    "timestamp": "2026-01-26 11:00:13.211958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: rewrite_node_id()] [Location Tracking] At line 1297, node location is updated with inlined_from() - can incorrect location tracking cause error messages to point to wrong source locations, making debugging impossible for users? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_121f65b0-b381-4b52-b818-3c5842ca5c87?mode=deep",
+    "timestamp": "2026-01-26 11:00:40.360123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: construct_inlined_call_expression()] [Node ID Creation] At lines 1064, 1130, new node IDs are created - can excessive node ID creation exhaust the node ID space or cause ID collisions leading to AST corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d319af8-4334-4a67-bbd5-c3b3b15ad3e3?mode=deep",
+    "timestamp": "2026-01-26 11:01:06.754147",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/env_pipeline/inliner.rs] [Function: parameter_list_to_pattern()] [Node Location Mixing] At line 1038, function_loc is combined with call_site_loc using inlined_from - can incorrect location mixing cause source mappings to become corrupted, breaking debugger support? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8da39645-d700-4d4a-b681-f071c84a87f7?mode=deep",
+    "timestamp": "2026-01-26 11:01:32.030374",
+    "report_generated": false
+  }
+]
