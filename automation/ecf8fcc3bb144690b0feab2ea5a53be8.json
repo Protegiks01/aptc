@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [Integer Overflow] Can an attacker provide a start_version near u64::MAX and a large num_transactions causing integer overflow in line 79 (start_version + idx as u64), leading to incorrect version calculations and database corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31ec9a98-9c39-4d12-ab0e-bbfdc197d190?mode=deep",
+    "timestamp": "2026-01-26 21:16:42.795719",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [Data Consistency] If transaction_db returns a transaction but txn_info_iter.next() returns None due to database inconsistency, does the error at line 82-87 properly prevent partial backup data from being used, or can an attacker exploit this to create incomplete backups? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5bd34c4f-51a1-4822-a8cb-a8c219b20da6?mode=deep",
+    "timestamp": "2026-01-26 21:16:55.595958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [State Corruption] Can concurrent database writes corrupt the iterators created at lines 57-76, causing event_vec_iter, write_set_iter, or persisted_aux_info_iter to return mismatched data for a given version, breaking transaction integrity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ddc0b3aa-cd1c-4732-810c-3694487750c4?mode=deep",
+    "timestamp": "2026-01-26 21:17:09.564033",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [Resource Exhaustion] If num_transactions is set to u64::MAX, can an attacker trigger memory exhaustion by forcing all five iterators (txn_iter, txn_info_iter, event_vec_iter, write_set_iter, persisted_aux_info_iter) to load massive amounts of data simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_717df211-e229-4bbd-bcc4-f93311c2362f?mode=deep",
+    "timestamp": "2026-01-26 21:17:23.166622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [Iterator Synchronization] Are the five parallel iterators (lines 57-76) guaranteed to be synchronized, or can a race condition cause them to return data from different database snapshots, leading to inconsistent transaction bundles? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff610d43-7318-4ff1-bdff-69fecbb4ce5d?mode=deep",
+    "timestamp": "2026-01-26 21:17:37.861127",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [Panic Safety] If any of the .next() calls (lines 82, 88, 94, 100) panic instead of returning an error, can this leave the backup in a partially completed state that corrupts subsequent restore operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f58a559-bd72-49dd-96c5-d0b230e90c9d?mode=deep",
+    "timestamp": "2026-01-26 21:17:53.835190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [Version Gaps] Can an attacker exploit transaction version gaps in the database to cause the NotFound errors at lines 83-105 to fire inconsistently, allowing selective omission of transactions from backups? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80587077-18f6-4a37-b45f-55d97df6e839?mode=deep",
+    "timestamp": "2026-01-26 21:18:10.727334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [Metric Manipulation] Does the BACKUP_TXN_VERSION metric update at line 106 leak information about backup progress that could be exploited to time attacks during backup operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2f1b821-3df2-438c-b9c1-ff4ab5a6286b?mode=deep",
+    "timestamp": "2026-01-26 21:18:30.066303",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [Error Propagation] If one iterator returns an error mid-stream after successful items, does the enumerate().map() pattern properly clean up resources, or can this leak memory during large backup operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92d7ac98-e61a-4d18-a6fb-d6eaa9d079c1?mode=deep",
+    "timestamp": "2026-01-26 21:18:49.947357",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_iter()] [Access Control] Is there any validation that the caller is authorized to read transactions from start_version, or can any code path trigger this function to leak historical transaction data including private state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_519da0df-5ccf-47ae-b860-65b442a4312c?mode=deep",
+    "timestamp": "2026-01-26 21:19:13.233760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_range_proof()] [Integer Overflow] At line 125, can setting first_version to 0 and last_version to u64::MAX cause integer overflow in 'last_version - first_version + 1', potentially wrapping to 0 or 1 and returning an invalid proof? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fabe1c52-6e2d-4af7-899b-2941ea78a212?mode=deep",
+    "timestamp": "2026-01-26 21:19:35.512297",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_range_proof()] [Epoch Mismatch] Does line 127 correctly handle epoch boundaries? If last_version is the last transaction of an epoch, can an attacker exploit this to get a proof signed by the wrong epoch's validator set? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e5fb978-889d-4516-9eeb-bd5d753ee48f?mode=deep",
+    "timestamp": "2026-01-26 21:20:00.096608",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_range_proof()] [Proof Forgery] Can the accumulator_proof at lines 129-136 be manipulated if an attacker provides a last_version that doesn't exist in the database, causing get_epoch() to return an incorrect epoch? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d414560-8c5c-4e57-9d6b-3c04dfe31fd2?mode=deep",
+    "timestamp": "2026-01-26 21:20:25.815568",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_range_proof()] [Validation Bypass] The ensure! check at lines 119-124 validates the range order, but does it prevent last_version from exceeding the current ledger version, allowing proofs for non-existent future transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aae1f42b-d736-411f-a0bb-057e9344ba43?mode=deep",
+    "timestamp": "2026-01-26 21:20:52.146356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_range_proof()] [LedgerInfo Inconsistency] If get_latest_ledger_info_in_epoch() at line 128 returns a stale LedgerInfo from cache while the epoch has already progressed, can this create proof inconsistencies that break restore validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2b4db59-22bb-4ec6-b514-014d166e12d4?mode=deep",
+    "timestamp": "2026-01-26 21:21:19.347099",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_range_proof()] [Range Boundary] Can an attacker set first_version == last_version to get a proof for a single transaction, and is num_transactions correctly calculated as 1 in this edge case? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d60480a-4eba-4cfe-960f-b046de9d81c1?mode=deep",
+    "timestamp": "2026-01-26 21:21:48.539420",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_transaction_range_proof()] [Signature Validation] Does the returned LedgerInfoWithSignatures contain properly validated signatures, or can an attacker exploit a race condition during epoch transitions to get an unsigned or partially signed LedgerInfo? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0f3e997-9cc1-4665-93c4-0502578e7e61?mode=deep",
+    "timestamp": "2026-01-26 21:22:17.377325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_state_item_count()] [Version Validation] Does line 142 validate that the requested version exists in the database, or can an attacker query future/non-existent versions to learn about planned state transitions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c454fe8-f459-4d95-a278-4c3c4968750f?mode=deep",
+    "timestamp": "2026-01-26 21:22:48.661177",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_state_item_count()] [Count Manipulation] Can the value_count returned by state_store.get_value_count() be manipulated through concurrent state updates, causing backup size calculations to be incorrect? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42ec4cde-bdd4-454b-82f3-b9e04106c881?mode=deep",
+    "timestamp": "2026-01-26 21:23:17.362300",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_state_item_count()] [Resource Enumeration] Does this function leak sensitive information about the total number of state items at a given version that could be used to fingerprint account activity patterns? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26c2b4ed-480e-44e4-af81-a46500ab3103?mode=deep",
+    "timestamp": "2026-01-26 21:23:45.902781",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_state_item_iter()] [Bounds Validation] At line 149, if start_idx is set beyond the actual state item count, does the iterator handle this gracefully, or can it cause out-of-bounds access in the underlying storage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7954a930-78fd-4944-ba18-9639a4d57dd9?mode=deep",
+    "timestamp": "2026-01-26 21:24:15.167289",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_state_item_iter()] [Integer Overflow] Can setting start_idx to usize::MAX and limit to usize::MAX cause integer overflow at line 159 in 'start_idx + idx', corrupting the BACKUP_STATE_SNAPSHOT_LEAF_IDX metric? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3a8f381-55b6-4926-99b6-ef3562895ce1?mode=deep",
+    "timestamp": "2026-01-26 21:24:43.336955",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_state_item_iter()] [Version Consistency] If the version parameter points to an uncommitted state version, can the iterator return partial or inconsistent state data that would corrupt a restored database? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0e965a5-3128-4b21-a683-04314f1ebd4e?mode=deep",
+    "timestamp": "2026-01-26 21:25:10.986427",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_state_item_iter()] [Take Limit] Does the .take(limit) at line 155 properly bound the iteration, or can an attacker set limit to usize::MAX and exhaust memory by loading the entire state tree? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f01c493-8d6f-49da-ad97-ca16ced4d212?mode=deep",
+    "timestamp": "2026-01-26 21:25:37.187091",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/backup/backup_handler.rs] [Function: get_state_item_iter()] [Concurrent Modification] Can concurrent state updates during iteration cause the iterator to skip items or return duplicate items, breaking the atomicity guarantee needed for consistent backups? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c9d4e81-c1c7-4f30-8018-e62fbae0c462?mode=deep",
+    "timestamp": "2026-01-26 21:26:04.634476",
+    "report_generated": false
+  }
+]
