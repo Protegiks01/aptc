@@ -1,0 +1,32 @@
+[
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Test: Deterministic keys] Are test environments using deterministic key generation that could accidentally be deployed to production? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c754e51-3719-4187-95a9-d106fc777b96?mode=deep",
+    "timestamp": "2026-01-26 12:35:53.864429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Test: Mock KVStorage] Do mock KVStorage implementations used in tests have different security properties than production implementations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afb59541-fd6c-4d80-b791-07534d841a95?mode=deep",
+    "timestamp": "2026-01-26 12:36:06.487068",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Audit: Key operation logging] Are all key operations (create, rotate, export, sign) logged for security auditing without logging sensitive key material? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0990a348-2750-4ba7-84d9-0d740c8c4004?mode=deep",
+    "timestamp": "2026-01-26 12:36:19.333097",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Audit: Access tracking] Is there tracking of which code components access which keys, enabling detection of unauthorized access? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cb54db5-0820-42e2-b6b2-14244b0c248e?mode=deep",
+    "timestamp": "2026-01-26 12:36:33.572200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-\n\n### Citations\n\n**File:** secure/storage/src/crypto_kv_storage.rs (L1-126)\n```rust\n// Copyright © Aptos Foundation\n// Parts of the project are originally copyright © Meta Platforms, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{CryptoStorage, Error, KVStorage, PublicKeyResponse};\nuse aptos_crypto::{\n    ed25519::{Ed25519PrivateKey, Ed25519PublicKey, Ed25519Signature},\n    hash::CryptoHash,\n    PrivateKey, SigningKey, Uniform,\n};\nuse rand::{rngs::OsRng, Rng, SeedableRng};\nuse serde::ser::Serialize;\n\n/// CryptoKVStorage offers a CryptoStorage implementation by extending a key value store (KVStorage)\n/// to create and manage cryptographic keys. This is useful for providing a simple CryptoStorage\n/// implementation based upon an existing KVStorage engine (e.g. for test purposes).\npub trait CryptoKVStorage: KVStorage {}\n\nimpl<T: CryptoKVStorage> CryptoStorage for T {\n    fn create_key(&mut self, name: &str) -> Result<Ed25519PublicKey, Error> {\n        // Generate and store the new named key pair\n        let (private_key, public_key) = new_ed25519_key_pair();\n        self.import_private_key(name, private_key)?;\n        Ok(public_key)\n    }\n\n    fn export_private_key(&self, name: &str) -> Result<Ed25519PrivateKey, Error> {\n        self.get(name).map(|v| v.value)\n    }\n\n    fn export_private_key_for_version(\n        &self,\n        name: &str,\n        version: Ed25519PublicKey,\n    ) -> Result<Ed25519PrivateKey, Error> {\n        let current_private_key = self.export_private_key(name)?;\n        if current_private_key.public_key().eq(&version) {\n            return Ok(current_private_key);\n        }\n\n        match self.export_private_key(&get_previous_version_name(name)) {\n            Ok(previous_private_key) => {\n                if previous_private_key.public_key().eq(&version) {\n                    Ok(previous_private_key)\n                } else {\n                    Err(Error::KeyVersionNotFound(name.into(), version.to_string()))\n                }\n            },\n            Err(Error::KeyNotSet(_)) => {\n                Err(Error::KeyVersionNotFound(name.into(), version.to_string()))\n            },\n            Err(e) => Err(e),\n        }\n    }\n\n    fn import_private_key(&mut self, name: &str, key: Ed25519PrivateKey) -> Result<(), Error> {\n        self.set(name, key)\n    }\n\n    fn get_public_key(&self, name: &str) -> Result<PublicKeyResponse, Error> {\n        let response = self.get(name)?;\n        let key: Ed25519PrivateKey = response.value;\n\n        Ok(PublicKeyResponse {\n            last_update: response.last_update,\n            public_key: key.public_key(),\n        })\n    }\n\n    fn get_public_key_previous_version(&self, name: &str) -> Result<Ed25519PublicKey, Error> {\n        match self.export_private_key(&get_previous_version_name(name)) {\n            Ok(previous_private_key) => Ok(previous_private_key.public_key()),\n            Err(Error::KeyNotSet(_)) => Err(Error::KeyVersionNotFound(\n                name.into(),",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c431c10f-a91e-4c7b-95b5-df4590b29c26?mode=deep",
+    "timestamp": "2026-01-26 12:36:48.162891",
+    "report_generated": false
+  }
+]
