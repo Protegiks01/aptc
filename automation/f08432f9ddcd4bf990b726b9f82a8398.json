@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: extract_private_key()] [Private Key Memory Exposure] Lines 92-101 parse and return private keys as Option<Ed25519PrivateKey> - are these private keys properly zeroized from memory after use, or can they be recovered from heap/stack memory through memory dumps or cold boot attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e3c4acb-aafe-4bd4-9b0c-dc7bf2667d55?mode=deep",
+    "timestamp": "2026-01-26 23:30:39.615483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: extract_private_key()] [Private Key File Permission Check] Line 98 reads from new_private_key_file without validating file permissions - can an attacker with read access to a world-readable private key file exploit rotation to gain account control before the legitimate user notices? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0dbccd28-bb21-42b7-8e71-460ed11dbc6f?mode=deep",
+    "timestamp": "2026-01-26 23:30:52.278450",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: extract_private_key()] [Private Key Encoding Confusion] Line 94 uses encoding parameter for parsing - can an attacker exploit encoding type confusion (hex vs base64) to cause the function to parse attacker-controlled bytes as a private key when the user intended to load a different key? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fde708f-f1e1-4c4e-9ef9-97cfe9cc8148?mode=deep",
+    "timestamp": "2026-01-26 23:31:05.806565",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Current Private Key Unwrap] Line 225 calls current_private_key.unwrap() assuming it exists when current_derivation_path is None - can this panic if invariants are violated, causing DoS during rotation and potentially locking users out of accounts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78df498a-2c93-419b-b26b-1cc0a04dbe0e?mode=deep",
+    "timestamp": "2026-01-26 23:31:19.583094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [New Private Key Clone Leakage] Lines 242-244 clone new_private_key multiple times - does each clone create a new memory allocation that persists after rotation, multiplying the attack surface for private key extraction from memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a78c00f-d54a-4320-87c4-c35250260fb8?mode=deep",
+    "timestamp": "2026-01-26 23:31:34.181808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Software Key Signature Side Channel] Line 226 performs sign_arbitrary_message() in software - can timing side channels or power analysis during ECDSA signing leak private key bits, enabling eventual full key recovery after multiple rotations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_525f192a-a9eb-4040-bfef-8316634707fc?mode=deep",
+    "timestamp": "2026-01-26 23:31:49.479876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Rotation Message Cloning Attack] Line 216 clones rotation_msg for hardware wallet signing - can memory analysis reveal multiple copies of the challenge message, enabling offline signature grinding attacks if the message structure has low entropy? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9aa5bb9-9e3e-41df-b4fc-05667280bbe3?mode=deep",
+    "timestamp": "2026-01-26 23:32:06.800335",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Signature Format Validation] Lines 222 and 239 call .to_bytes() on signatures without validating signature format - can malformed signatures with incorrect lengths or padding bypass on-chain validation and enable authentication bypass? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dcbb6b2c-7e52-4a32-8907-ba06e96fec1a?mode=deep",
+    "timestamp": "2026-01-26 23:32:26.207604",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Dual Signature Atomicity] The two signatures (current key at line 211-227, new key at line 228-245) are generated non-atomically - can an attacker who compromises one key but not the other exploit the time window to perform partial rotation attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_869a922f-e25e-45d2-adc8-73510c674994?mode=deep",
+    "timestamp": "2026-01-26 23:32:45.959187",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Signature Malleability] Ed25519 signatures from lines 226 and 244 may be vulnerable to signature malleability - can an attacker modify the signature (e.g., flipping S value) to create a different but valid signature, enabling signature replay with modified metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed93524c-58ba-45dd-a933-567232700a8e?mode=deep",
+    "timestamp": "2026-01-26 23:33:07.419782",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Cross-Scheme Signature Confusion] Lines 254-257 hardcode scheme as 0 but signatures could be from multi-ed25519 keys - can this scheme mismatch be exploited to bypass threshold signature verification or enable quorum bypass attacks in multisig rotations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da373765-3897-44e4-a449-bda6677c234d?mode=deep",
+    "timestamp": "2026-01-26 23:33:29.328820",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Profile Name Empty Check Bypass] Line 120 checks new_profile_name.is_empty() but line 292 uses .unwrap() assuming Some - can an attacker exploit the gap between Option<String> that is Some(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d189ee7-1999-4607-9583-2690ce9198c1?mode=deep",
+    "timestamp": "2026-01-26 23:33:53.102757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Profile Name Collision Attack] Lines 130-136 check if profile already exists using contains_key, but what if an attacker performs concurrent rotations with the same profile name, causing a TOCTOU race where both operations think the profile doesn't exist and both write simultaneously? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_427b56a6-3e38-4061-82c8-fa32d7c89fc8?mode=deep",
+    "timestamp": "2026-01-26 23:34:17.235918",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Config Load Race Condition] Line 127 loads config for validation, then line 296 loads it again for modification - can an attacker modify the config file between these two loads to bypass the profile existence check and overwrite existing profiles? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b44e74d-6b57-410c-aea4-90ef9ada94ac?mode=deep",
+    "timestamp": "2026-01-26 23:34:42.061812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Profile None Initialization] Lines 297-299 initialize profiles as Some(BTreeMap::new()) if None - can concurrent operations create race conditions where multiple threads all see None and all create new BTreeMaps, losing existing profile data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d47fc09b-cec9-485f-8b52-778cb43c8f60?mode=deep",
+    "timestamp": "2026-01-26 23:35:07.560148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [BTreeMap Insert Without Lock] Line 318 performs insert on shared config without any synchronization - in a multi-threaded CLI scenario, can concurrent rotations corrupt the BTreeMap internal structure, causing profile data loss or crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eaf8b6e7-a41a-4c41-9130-2656ee0d7f10?mode=deep",
+    "timestamp": "2026-01-26 23:35:32.311420",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Config Save Partial Write] Line 319 calls config.save() which may fail partially through filesystem I/O - can a power failure or disk full condition during save result in a corrupted config file that makes all accounts inaccessible? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8747f660-2755-471b-b373-275355e103c0?mode=deep",
+    "timestamp": "2026-01-26 23:35:57.058343",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Skip Profile Flag Inconsistency] Line 282 checks skip_saving_profile but the NewProfileOptions group (lines 77-86) ensures either skip or profile name is set - can the required=true validation be bypassed through direct API calls, leading to rotation without profile saving? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f349e822-213e-4a31-ab83-7a88170f75c2?mode=deep",
+    "timestamp": "2026-01-26 23:36:22.094972",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Profile Config Partial Clone] Line 302-308 creates new_profile_config by selectively copying fields - can missing or incorrectly copied fields (like faucet_url, gas_options) cause the new profile to behave differently than expected, enabling configuration-based attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe490fa6-a315-4e9c-b89a-97146d2eed17?mode=deep",
+    "timestamp": "2026-01-26 23:36:48.291739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Derivation Path Persistence Attack] Line 306 stores new_derivation_path in profile - if the Ledger device is lost or reset after rotation, can an attacker who gains access to the config file use the stored derivation path information to perform targeted attacks on seed phrase recovery? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e2e7d87-d6ad-4690-ba2e-51d0faa5d5ef?mode=deep",
+    "timestamp": "2026-01-26 23:37:14.155985",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Transaction Options Reuse] Lines 251-263 call submit_transaction using self.txn_options which may contain cached values - can stale gas prices, sequence numbers, or expiration times in reused options cause transactions to fail or be vulnerable to front-running? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37910a5a-54c0-4438-8abc-7c03d53bf2e1?mode=deep",
+    "timestamp": "2026-01-26 23:37:37.991695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Gas Estimation Attack] The submit_transaction call doesn't show explicit gas configuration - can an attacker cause the rotation transaction to run out of gas mid-execution, leaving the account in an inconsistent state where on-chain rotation partially succeeded? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52e248b8-2869-4220-95af-a8537f63dc8e?mode=deep",
+    "timestamp": "2026-01-26 23:38:02.866456",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Transaction Serialization to JSON] Lines 266-268 serialize transaction to JSON for display - can malicious transaction data with non-UTF8 characters or control sequences exploit terminal emulators to inject commands when transaction summary is displayed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80214f41-7730-460f-9d0e-079791b6d57c?mode=deep",
+    "timestamp": "2026-01-26 23:38:23.926108",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Error Message Information Leakage] Line 268 prints full transaction summary via eprintln which may contain sensitive data - can private keys, signatures, or internal addresses leak through verbose error messages if transaction fails? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42156e38-3dbe-4562-b54d-5cb2e2dccaf8?mode=deep",
+    "timestamp": "2026-01-26 23:38:46.054854",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/account/key_rotation.rs] [Function: execute()] [Transaction Success Field Manipulation] Lines 270-280 trust txn_summary.success from the API response - can a malicious or compromised REST endpoint return success: true for a failed transaction, causing the CLI to save a new profile for an account that wasn't actually rotated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bda8e605-b16c-4da5-98b4-c2bb562448f8?mode=deep",
+    "timestamp": "2026-01-26 23:39:07.241652",
+    "report_generated": false
+  }
+]
