@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Unsupported metric types] Lines 57-60 silently ignore unsupported metric types with a comment 'Do nothing'. Can an attacker exploit newly added Prometheus metric types (SUMMARY, UNTYPED) to bypass metric collection and hide malicious validator behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6167b84-7881-4ce6-94d4-11d4c0f558e8?mode=deep",
+    "timestamp": "2026-01-26 22:41:47.107981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Label cardinality explosion] Can an attacker generate metrics with extremely high label cardinality (thousands of unique label combinations) that cause the HashMap at line 25 to grow to gigabytes in size, exhausting validator memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35866572-221c-4d87-9121-01259e23074c?mode=deep",
+    "timestamp": "2026-01-26 22:41:59.988715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: flatten_metric_with_labels()] [String concatenation DoS] The string operations at lines 105-111 create temporary Vec and String allocations. Can an attacker trigger excessive allocations by providing metrics with hundreds of labels, causing memory pressure and GC pauses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee50ed95-e065-4bb9-b05e-e3f025556e8d?mode=deep",
+    "timestamp": "2026-01-26 22:42:13.950410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Writer buffer overflow] If the writer buffer passed at line 24 has a fixed size and serde_json attempts to write more data than available at line 67, can this cause a write error that's not properly handled, leaving metrics partially written? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1df845fb-dc7b-4501-8af5-806378e1106f?mode=deep",
+    "timestamp": "2026-01-26 22:42:27.758191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: flatten_metric_with_labels()] [Metric name length limits] Is there a maximum length validation for the flattened metric name at line 119? Can an attacker create metrics with hundreds of labels that produce extremely long names, causing buffer overflows in downstream systems? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b35b7df-c95d-4283-8bd1-d6b88246fc84?mode=deep",
+    "timestamp": "2026-01-26 22:42:42.496354",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Malformed MetricFamily] Does the function validate that metric_family.get_name() at line 29 returns a valid, non-empty string, or can null/empty metric names cause panics or invalid JSON keys? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97835ec4-caa0-4713-bb20-4831c1d63f7d?mode=deep",
+    "timestamp": "2026-01-26 22:42:59.552423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Metric type mismatch] Can an attacker provide a MetricFamily where get_field_type() returns COUNTER but the actual metric data is a GAUGE, causing the wrong getter to be called at line 36 and potentially panicking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_847867a5-dd4f-4e35-954e-5b58765422b3?mode=deep",
+    "timestamp": "2026-01-26 22:43:17.770726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: flatten_metric_with_labels()] [LabelPair validation] Does get_value() at line 108 properly validate label values, or can malformed protobuf data cause panics when accessing label pairs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bdd9f49-3eb8-4cb5-aee7-e9c2acce8ece?mode=deep",
+    "timestamp": "2026-01-26 22:43:37.424839",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Negative metric values] Can counter or gauge values be negative (lines 36, 42), and if so, does this violate Prometheus semantics and cause monitoring systems to reject the metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d13c462-762f-4507-9455-0ce36e157348?mode=deep",
+    "timestamp": "2026-01-26 22:43:58.646868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Writer error propagation] At line 67, write_all() can return an io::Error. Is this error properly propagated through the '?' operator, or can write failures be silently ignored in some code paths? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89a72192-0600-4f6b-91fd-799c1b5b06ce?mode=deep",
+    "timestamp": "2026-01-26 22:44:21.221509",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Partial write handling] If writer.write_all() at line 67 fails midway through writing the JSON string, is the writer left in a consistent state, or can partial data corrupt subsequent metric responses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb1e434f-8418-4156-98e6-b419e7b213ec?mode=deep",
+    "timestamp": "2026-01-26 22:44:44.696928",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Error logging side-effects] The error log at line 70 uses format! which allocates. Can repeated serialization failures cause secondary memory exhaustion from log buffer allocation during error handling? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e298cc92-077e-4d4b-ad2f-1ead2c95ea0a?mode=deep",
+    "timestamp": "2026-01-26 22:45:09.306288",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Metrics endpoint authentication] Does the inspection service properly authenticate requests to the JSON metrics endpoint, or can unauthorized actors query validator metrics to gather intelligence for targeted attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6246148c-4a95-452f-8299-9658524ad8b5?mode=deep",
+    "timestamp": "2026-01-26 22:45:35.116311",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: format_type()] [Content-Type mismatch] The format_type() method at line 77 returns CONTENT_TYPE_JSON, but if the actual encoding fails and empty data is written, can clients misinterpret the response as valid JSON? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22a0fab4-1c8b-47af-bd4a-ed15f4896254?mode=deep",
+    "timestamp": "2026-01-26 22:46:00.539664",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Consensus metric manipulation] Can an attacker manipulate consensus-related metrics (round numbers, view changes, validator votes) before they're encoded, causing monitoring systems to false-alarm or miss actual consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_092ddc4c-a7f0-4023-b8b9-49a0c541beba?mode=deep",
+    "timestamp": "2026-01-26 22:46:26.326048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: flatten_metric_with_labels()] [Metric name collision with system metrics] Can flattening create names that collide with critical Aptos system metrics (aptos_consensus_*, aptos_state_sync_*), causing legitimate metrics to be overwritten and hiding validator issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_858c110e-3908-4067-b0ae-b646b903a6b9?mode=deep",
+    "timestamp": "2026-01-26 22:46:51.840959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Timestamp handling] Line 19 mentions timestamps are ignored. Can this cause monitoring systems to misinterpret when metrics were collected, leading to incorrect alerting or stale data being treated as current? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4cafe2a5-5769-4ff3-b149-15954e014a8c?mode=deep",
+    "timestamp": "2026-01-26 22:47:19.718900",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [HISTOGRAM bucket loss] HISTOGRAM metrics at line 45 only export count/sum but not bucket boundaries. Can this prevent accurate latency percentile calculation needed to detect consensus performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8dcb5e6-6a57-479e-9769-37e475591655?mode=deep",
+    "timestamp": "2026-01-26 22:47:48.069743",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Metric metadata loss] The encoding process strips metric help text, type information, and units. Can this loss of metadata cause operators to misinterpret critical validator health metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81cd133b-08eb-4244-9fb3-557427d9cb24?mode=deep",
+    "timestamp": "2026-01-26 22:48:15.850042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: flatten_metric_with_labels()] [Label ordering non-determinism] The iterator at line 105-108 may not have deterministic ordering. Can different label orderings for the same metric create duplicate entries in the HashMap, wasting memory and confusing monitoring systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c270530-237e-4b6c-87d4-5641f022fc71?mode=deep",
+    "timestamp": "2026-01-26 22:48:41.055677",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: flatten_metric_with_labels()] [Reserved character conflicts] If label values contain periods ('.'), the join at line 111 creates ambiguous metric names. Can 'metric.label1.value.with.dots' be confused with a metric that has multiple labels? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b633271a-9740-444b-a631-8350e7ade3ff?mode=deep",
+    "timestamp": "2026-01-26 22:49:06.405537",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Format string injection] When constructing histogram metric names at lines 49 and 53 using format!, can user-controlled name values cause format string injection if name contains '{}' or other format specifiers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d0afc3c-6a5e-4acb-bad9-bfbaaed7dbb7?mode=deep",
+    "timestamp": "2026-01-26 22:49:30.559387",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: flatten_metric_with_labels()] [String allocation efficiency] The function creates multiple temporary String and Vec allocations (lines 99, 105, 111). For high-cardinality metrics called frequently, can this cause heap fragmentation and performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1021a03-1db4-4c02-86c4-45f011521228?mode=deep",
+    "timestamp": "2026-01-26 22:49:55.662187",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [HashMap resize thrashing] As the HashMap at line 25 grows, it performs rehashing. Can an attacker trigger worst-case resize behavior with adversarial metric counts that cause repeated rehashing and CPU spikes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7dbec08-35e1-4a13-aaff-38630d201324?mode=deep",
+    "timestamp": "2026-01-26 22:50:21.203279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-inspection-service/src/server/json_encoder.rs] [Function: encode()] [Drop order safety] When the function returns, are the HashMap and temporary strings properly dropped, or can panic during encoding (lines 36-55) cause memory leaks via incomplete cleanup? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e14869dd-748f-431c-8ea9-cefe4b445677?mode=deep",
+    "timestamp": "2026-01-26 22:50:46.555386",
+    "report_generated": false
+  }
+]
