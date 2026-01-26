@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: new()] [Integer Overflow] Can an attacker provide entry_points with weights that sum to usize::MAX, causing integer overflow in the total_weight calculation at line 30, leading to incorrect random selection probabilities or panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d61b1d3-0632-4da0-b6b3-74fc615ac8fc?mode=deep",
+    "timestamp": "2026-01-26 11:39:47.832429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: new()] [Integer Overflow] If multiple entry_points have extremely large weights (e.g., usize::MAX/2), does the sum() operation at line 30 wrap around silently in release mode, breaking the weighted selection invariant? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee76818a-5aba-4aff-a0a2-b4c662614880?mode=deep",
+    "timestamp": "2026-01-26 11:40:00.567684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: new()] [DoS via Resource Exhaustion] Can an attacker pass an extremely large Vec of entry_points to new(), causing excessive memory allocation in Arc::new() at line 33, leading to OOM and node crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba6496b6-9037-412a-a927-8118ec4f3f94?mode=deep",
+    "timestamp": "2026-01-26 11:40:14.122035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: new()] [Invalid State] If all weights in entry_points are zero, total_weight becomes 0 at line 30. Does this cause division by zero or modulo by zero in pick_random() at line 44? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f952b0b4-7cb4-4f20-b8f7-6c4bd30b58f4?mode=deep",
+    "timestamp": "2026-01-26 11:40:28.455836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: new()] [Logic Error] Can an attacker provide an empty entry_points Vec, making total_weight = 0 and causing undefined behavior in subsequent pick_random() calls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc48eef9-1e99-4d89-bffc-0f523ac91357?mode=deep",
+    "timestamp": "2026-01-26 11:40:43.387984",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: pick_random()] [Panic/DoS] At line 44, if total_weight is 0, does rng.gen_range(0, 0) panic or return undefined values, allowing an attacker to crash the transaction generator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15469a5f-550f-48a8-8954-5847e7ee29e1?mode=deep",
+    "timestamp": "2026-01-26 11:40:58.957289",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: pick_random()] [Logic Error] If entry_points.len() == 1 but total_weight > 1, line 45 sets picked = 0, but the loop at lines 48-52 may skip the only entry if weight < total_weight, reaching unreachable!() at line 54? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_674f6af9-15b2-4828-9749-13b91bc930e1?mode=deep",
+    "timestamp": "2026-01-26 11:41:15.288384",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: pick_random()] [Integer Underflow] In the loop at line 52 where picked -= *weight, can picked underflow if weight values are manipulated, causing incorrect index selection or infinite loops? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c765446b-f9fc-4e2a-9441-4a7024e4a4cd?mode=deep",
+    "timestamp": "2026-01-26 11:41:33.626865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: pick_random()] [Off-by-One Error] Does the comparison picked < *weight at line 49 correctly handle edge cases where picked == weight - 1, potentially causing biased selection toward early entries? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_141774e3-bda9-4d4a-be43-09577c7fdc7f?mode=deep",
+    "timestamp": "2026-01-26 11:41:52.585921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: pick_random()] [RNG Manipulation] Can an attacker who controls the StdRng seed predict or manipulate the gen_range() output at line 44 to always select specific entry points, bypassing randomization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5143287-c7d0-4b9d-b885-658d498d852d?mode=deep",
+    "timestamp": "2026-01-26 11:42:12.330689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: pick_random()] [Panic Safety] The unreachable!() macro at line 54 should never execute, but if weight accounting is incorrect, this panics the entire node. Can an attacker trigger this through malformed entry_points? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d62167af-d107-4d6d-b4a1-28ee5c6f68f2?mode=deep",
+    "timestamp": "2026-01-26 11:42:33.422708",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: pick_random()] [Bias in Selection] Does the weight selection algorithm at lines 48-52 produce uniformly distributed results, or can rounding errors cause certain entry points to be selected more/less frequently than their weights suggest? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8f8d411-dac4-4a6d-9856-4c6559845e89?mode=deep",
+    "timestamp": "2026-01-26 11:42:55.340037",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: initialize_package()] [Unbounded Loop] At line 69, the loop iterates over all entry_points without bounds checking. Can an attacker provide thousands of entry_points to cause excessive computation or transaction creation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_233c9542-6f70-4b17-99f5-042ed8ac7ace?mode=deep",
+    "timestamp": "2026-01-26 11:43:18.158516",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: initialize_package()] [Transaction Replay] Does initialize_package() at lines 60-81 verify that initialization transactions haven't already been submitted? Can an attacker replay initialization to reset state or drain funds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_59ffc9f6-53d4-40ab-ba92-112bb72b7dd6?mode=deep",
+    "timestamp": "2026-01-26 11:43:40.508153",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: initialize_package()] [Payload Injection] At line 71, create_payload() is called with user-controlled package and rng. Can an attacker inject malicious payloads through entry_point.initialize_entry_point() to execute arbitrary code? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48457dbc-5d31-460e-972f-79911a0ece70?mode=deep",
+    "timestamp": "2026-01-26 11:44:02.440508",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: initialize_package()] [Publisher Address Exposure] At line 75, publisher.address() is passed to create_payload(). Can this leak sensitive publisher information or allow address-based attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11acfa7b-94d7-4f2f-824f-b8a4afa3cc7b?mode=deep",
+    "timestamp": "2026-01-26 11:44:25.287886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: initialize_package()] [Missing Signature Verification] At line 77, transactions are signed with publisher account. Are sequence numbers and gas limits properly validated to prevent replay or gas manipulation attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1507202c-e0de-45f6-8efa-aea2f72dc51b?mode=deep",
+    "timestamp": "2026-01-26 11:44:47.796727",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: initialize_package()] [Resource Exhaustion] If many entry_points require initialization, the result Vec at line 67 could grow unbounded. Can this cause memory exhaustion before transactions are submitted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36fc6f66-3135-4370-95ac-f03d0e62d29c?mode=deep",
+    "timestamp": "2026-01-26 11:45:09.479889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: initialize_package()] [State Inconsistency] If initialize_entry_point() returns Some for some entries and None for others, can this create incomplete initialization states where some modules are initialized but others aren't? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5486220-d318-4090-ae76-78afb3a72c44?mode=deep",
+    "timestamp": "2026-01-26 11:45:32.002764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: create_generator_fn()] [Panic on Unwrap] At line 126, .await.unwrap() panics if transaction execution fails. Can an attacker cause transaction failures during account creation to crash the entire generator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24de862f-b788-4d3e-ae89-b8f0d466464e?mode=deep",
+    "timestamp": "2026-01-26 11:45:52.507491",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: create_generator_fn()] [Fund Draining] At lines 98-104, approve_funds() is called with (num * max_gas * gas_price). Can an attacker set num to usize::MAX to drain all root account funds? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c9e2039-b605-4126-8f09-ae1ae3e43d6f?mode=deep",
+    "timestamp": "2026-01-26 11:46:13.951870",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: create_generator_fn()] [Integer Overflow] At line 100, the multiplication (num as u64) * max_gas * gas_price could overflow. Does this silently wrap or panic, allowing fund approval bypass? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af8ad2dd-d99f-4aa9-aed0-f2f7a3cb1747?mode=deep",
+    "timestamp": "2026-01-26 11:46:35.640983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: create_generator_fn()] [Race Condition] Between approve_funds() at line 98 and execute_transactions() at line 111, can another transaction drain approved funds, causing account creation to fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da29875d-c8a7-46db-8d1a-dfdc539c93ec?mode=deep",
+    "timestamp": "2026-01-26 11:46:56.832898",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: create_generator_fn()] [RNG State Sharing] The same rng is passed to LocalAccount::generate() at line 108 in a loop. Can this create predictable or duplicate accounts if RNG state isn't properly advanced? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d88a495b-e869-4c69-bf69-3a5c08b8549b?mode=deep",
+    "timestamp": "2026-01-26 11:47:18.141392",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/transaction-generator-lib/src/entry_points.rs] [Function: create_generator_fn()] [Account Collision] At line 108, multiple LocalAccount::generate(rng) calls could theoretically generate duplicate addresses if RNG is weak. Are collisions checked? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b60e132-20f2-418c-8d6b-1e78dfd5f4eb?mode=deep",
+    "timestamp": "2026-01-26 11:47:40.543622",
+    "report_generated": false
+  }
+]
