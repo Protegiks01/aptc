@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Value Encoding] [Version Compatibility] If the Vote or TimeoutCertificate struct definitions change between Aptos versions, can decode_value() return old-format bytes that fail deserialization on upgraded validators, causing total loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ee11c2f-206d-49bf-aac6-ca10f2be1363?mode=deep",
+    "timestamp": "2026-01-26 14:42:55.302279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Value Encoding] [Canonical Encoding] Does BCS guarantee canonical encoding for Vote structures, or can two semantically identical votes have different byte representations, causing validators to disagree on LastVote state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8762717a-b333-40c5-9143-41a0ccb07632?mode=deep",
+    "timestamp": "2026-01-26 14:43:08.120263",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Value Encoding] [Padding Attack] Can an attacker append extra padding bytes to a valid BCS-encoded vote that still deserializes correctly but causes hash mismatches or signature verification failures in safety rule checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8510919c-5a0f-43f6-871d-ecc62867011b?mode=deep",
+    "timestamp": "2026-01-26 14:43:21.483996",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Value Encoding] [Endianness] If validators run on different CPU architectures, can endianness issues in BCS serialization cause LastVote data to deserialize to incorrect round numbers or block hashes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58d46a65-0f58-4eb8-98f3-f355ba188942?mode=deep",
+    "timestamp": "2026-01-26 14:43:35.276686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Schema Design] [Key-Value Integrity] Can an attacker exploit the lack of cryptographic binding between SingleEntryKey and its value to swap vote data between keys, causing LastVote to point to timeout certificate bytes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_034566c0-839c-48dc-a3c7-012f30838d09?mode=deep",
+    "timestamp": "2026-01-26 14:43:50.126173",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Schema Design] [Single Entry Assumption] Does the 'single entry' semantic guarantee that only one row exists per key, or can database corruption create duplicate LastVote entries that cause ambiguity during reads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48ecfdf2-7dbe-40e5-8abb-a9f051f14f11?mode=deep",
+    "timestamp": "2026-01-26 14:44:06.038876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Schema Design] [Deletion Semantics] When delete_last_vote_msg() is called, does it create a tombstone that could be misinterpreted as 'never voted' vs 'vote deleted', potentially enabling safety violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84e9a3f4-241e-4be9-9772-dfcc834e5f3f?mode=deep",
+    "timestamp": "2026-01-26 14:44:24.263417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Schema Design] [Column Family Isolation] Can cross-column-family attacks where an attacker corrupts the BLOCK_CF or QC_CF indirectly corrupt single_entry data through shared RocksDB resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36f172fb-fc55-4755-97f0-d9639a2f3729?mode=deep",
+    "timestamp": "2026-01-26 14:44:42.526763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Recovery] [Cold Start] When a validator starts with an empty database, does the absence of LastVote entry return None or cause decode_key() to fail, and can this be exploited to bypass first-vote safety checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6b6d279-84e4-4b6f-a245-098a26d4422c?mode=deep",
+    "timestamp": "2026-01-26 14:45:01.645201",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Recovery] [Partial Recovery] If get_data() successfully retrieves Highest2ChainTimeoutCert but LastVote read fails, can the partial recovery state cause validators to make progress without safety constraints? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5289eec-201d-495c-af33-5cfd62200e52?mode=deep",
+    "timestamp": "2026-01-26 14:45:21.386823",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Recovery] [Rollback Attack] Can an attacker with filesystem access replace the ConsensusDB directory with an older backup, causing validators to load stale LastVote data and potentially violate already-committed votes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f31dbf4d-315b-430b-8d99-d2a7c8280a78?mode=deep",
+    "timestamp": "2026-01-26 14:45:42.621686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Recovery] [Migration] If schema changes require migrating from u8 keys to larger enum types, can the migration process corrupt LastVote data or leave validators with incompatible database formats? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f814db6-7800-4798-b2e9-f86b9cc64b26?mode=deep",
+    "timestamp": "2026-01-26 14:46:04.670892",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Function: decode_key] [Lifetime Safety] Does the mutable borrow of data in 'let key = data.read_u8()?' interact correctly with the ensure_slice_len_eq lifetime, or can use-after-free occur if the slice is modified concurrently? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6b643ba-4cb7-4a95-8200-fd8241e08966?mode=deep",
+    "timestamp": "2026-01-26 14:46:28.424881",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Function: encode_value] [Clone Semantics] Since Vec<u8> clone is explicit, can custom allocators or memory hooks cause the clone to produce a shallow copy that shares data with the original, enabling concurrent modification bugs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6ae990f-386a-4519-9bc6-4935ce4ab11b?mode=deep",
+    "timestamp": "2026-01-26 14:46:52.632403",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Function: decode_value] [Slice Conversion] Does to_vec() always create a new allocation, or can it optimize to return a reference in some cases, potentially causing lifetime issues in consensus code that expects owned data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc772ee5-d4ea-49cd-8505-a0188148c49f?mode=deep",
+    "timestamp": "2026-01-26 14:47:17.568016",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Dependencies] [byteorder Safety] Can the ReadBytesExt trait from byteorder introduce undefined behavior if the data slice is incorrectly sized or contains invalid UTF-8, even though ensure_slice_len_eq should prevent this? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_621970dc-2e46-4c9e-a26e-adaea528b53c?mode=deep",
+    "timestamp": "2026-01-26 14:47:44.825793",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Type Safety] [u8 Limitation] Since SingleEntryKey uses u8 representation, can future expansion beyond 256 entry types cause silent wraparound bugs where new entries collide with LastVote or Highest2ChainTimeoutCert? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88907515-824d-4edd-8454-06d26ed24c5c?mode=deep",
+    "timestamp": "2026-01-26 14:48:11.827039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Type Safety] [size_of::<u8>] [Platform Dependency] Is size_of::<u8>() guaranteed to be 1 on all platforms, or could exotic architectures cause ensure_slice_len_eq to reject valid keys? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae9c008d-8c55-424a-ba50-375e4094db71?mode=deep",
+    "timestamp": "2026-01-26 14:48:38.986025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Numeric Conversion] [ToPrimitive Edge Cases] Can ToPrimitive::to_u8() return Some(0) for an invalid enum variant in debug vs release builds, causing inconsistent behavior between development and production? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_672802a6-98ce-4373-8a9c-686377ee9616?mode=deep",
+    "timestamp": "2026-01-26 14:49:07.082324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Resource Usage] [Value Size] Can storing very large timeout certificates (with maximum validator set signatures) cause decode_value() to exceed memory limits and trigger OOM-kills during consensus recovery? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ea743cd-f355-4eb4-a07c-dc9470b76527?mode=deep",
+    "timestamp": "2026-01-26 14:49:34.840156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Resource Usage] [Read Amplification] Can repeated reads of LastVote during high-frequency voting cause RocksDB read amplification issues that degrade consensus performance below liveness thresholds? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77c0b127-acb7-4f3e-ac0f-d4ac3398440f?mode=deep",
+    "timestamp": "2026-01-26 14:50:03.084771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Resource Usage] [Write Amplification] Can frequent save_vote() calls during active consensus trigger RocksDB write stalls that delay vote persistence and create windows for equivocation attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ad5fac0-4bf4-4821-8f91-6d59fe562533?mode=deep",
+    "timestamp": "2026-01-26 14:50:31.218889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Integration] [SafetyRules Dependency] If SafetyRules assumes LastVote deserialization always succeeds but decode_value() can return arbitrary corrupted bytes, can this cause panics in safety-critical consensus paths? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e101369-5a10-40d0-b6ad-86b83726c6da?mode=deep",
+    "timestamp": "2026-01-26 14:50:59.960906",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Integration] [Epoch Manager Interaction] During epoch changes when both save_vote() and save_highest_2chain_timeout_certificate() are called, can race conditions in schema writes cause epoch transition failures that halt consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9175dcd-00ba-4cd9-8061-defbfcba4cb2?mode=deep",
+    "timestamp": "2026-01-26 14:51:27.823525",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/consensusdb/schema/single_entry/mod.rs] [Integration] [Checkpoint Restore] When ConsensusDB is restored from a checkpoint, can stale LastVote data from the checkpoint contradict the current blockchain state and enable double-voting on forked chains? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea733f33-cdbe-4e18-86a0-8f1017b38a80?mode=deep",
+    "timestamp": "2026-01-26 14:51:52.841900",
+    "report_generated": false
+  }
+]
