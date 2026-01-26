@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Zero timeout edge case] If run_after() is called with a timeout of Duration::from_secs(0), the deadline equals 'now' - does the comparison at line 38 (deadline > time_limit) correctly handle this edge case, or could a zero timeout task be incorrectly deferred when time_limit == now? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77969f31-eb9a-4c1a-a027-2f2b121850e5?mode=deep",
+    "timestamp": "2026-01-26 10:45:03.038310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: sleep()] [Zero sleep duration] If sleep(Duration::from_secs(0)) is called, inner.now remains unchanged - does this violate the TimeService contract comment at lines 31-36 which guarantees time increases by at least the sleep duration, even for zero? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2d44e4a-d3e3-4714-ba4f-2c03c0171fdf?mode=deep",
+    "timestamp": "2026-01-26 10:45:15.660662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Deadline equals time_limit] At line 38, the comparison is 'deadline > time_limit' - for the boundary case where deadline exactly equals time_limit, the task executes immediately - is this the correct behavior, or should it be 'deadline >= time_limit' to defer tasks at the boundary? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19a4ecd3-158a-4329-b5d3-0e4e045cb662?mode=deep",
+    "timestamp": "2026-01-26 10:45:28.479272",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Empty pending vector] If update_auto_advance_limit() is called when the pending vector is empty, the loop at lines 117-124 does nothing - but could the time_limit still be incremented at line 113, creating a state where time_limit advances without any tasks executing, breaking test expectations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_869bdd69-afef-42af-b1dd-00662689b97a?mode=deep",
+    "timestamp": "2026-01-26 10:45:43.075033",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: new()] [Initial state consistency] The new() constructor initializes now and time_limit both to Duration::from_secs(0) - does this mean any task scheduled with run_after() will immediately execute since deadline (0 + timeout) > time_limit (0) will be true for any positive timeout? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab083536-c8d2-4aed-9747-1c9c9cfc2bb9?mode=deep",
+    "timestamp": "2026-01-26 10:45:57.627364",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Struct: SimulatedTimeServiceInner] [Invariant violation: now <= max] The code clamps inner.now to inner.max in multiple places (lines 53-55, 71-73) - but are there any code paths where inner.now could be set without clamping, violating the implicit invariant that now should never exceed max? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cc90460-ba38-476e-abd6-17c77e99e81e?mode=deep",
+    "timestamp": "2026-01-26 10:46:12.807847",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Invariant violation: time monotonicity] At line 52, inner.now is set to deadline - but if deadline < inner.now (due to race conditions or bugs), could time move backwards, violating the fundamental time service invariant of monotonically increasing time? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9aa97806-3e03-4dbc-a6a6-036a0473284b?mode=deep",
+    "timestamp": "2026-01-26 10:46:27.860306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Invariant: time_limit monotonicity] The time_limit is incremented at line 113 via '+=' - but what if the 'time' parameter is negative (using checked_sub or wrapping)? Could this cause time_limit to decrease, breaking the expectation that time always moves forward? (Note: Duration cannot be negative in Rust, but this checks for logic errors) (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5495086-0b30-46ab-a35b-c674e0ff1f86?mode=deep",
+    "timestamp": "2026-01-26 10:46:45.047772",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Struct: SimulatedTimeServiceInner] [Invariant: pending task deadlines] The pending vector stores tasks with their deadlines - is there any invariant enforced that all deadlines in pending should be > time_limit? Could tasks with deadline <= time_limit be incorrectly added to pending? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d375ee30-0fc3-490c-8668-ab1ee0f84bc0?mode=deep",
+    "timestamp": "2026-01-26 10:47:02.799608",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [ScheduledTask ownership] The run_after() function takes ownership of 'Box<dyn ScheduledTask>' at line 34 - if the task is moved into the pending vector but never executed (e.g., if time never advances), could this lead to resource leaks, particularly if the ScheduledTask holds file handles or other resources? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6db09263-1234-4c05-9630-b009a35a12e2?mode=deep",
+    "timestamp": "2026-01-26 10:47:21.449588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Mutable self requirement] The update_auto_advance_limit() function at line 111 takes '&mut self' even though it only locks the inner Mutex - is this unnecessary mutability requirement a hint that the function was intended to have different behavior, potentially indicating a design bug? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2aed0b9-75a2-4f0f-9caf-9b02d7dca6d0?mode=deep",
+    "timestamp": "2026-01-26 10:47:37.768239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Trait implementation: TimeService] [Async trait violation] The TimeService trait uses #[async_trait] but SimulatedTimeService's run_after() doesn't actually spawn tasks asynchronously - instead it uses block_on() at line 57 - could this synchronous execution cause deadlocks or unexpected blocking in async contexts where the time service is used? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07cea1a8-3a67-4741-a501-1eefe0eb3426?mode=deep",
+    "timestamp": "2026-01-26 10:47:55.254865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Overall design] [False security confidence] If the SimulatedTimeService has bugs that cause non-deterministic task execution or time advancement, could this mask critical consensus timing bugs during testing, leading to false confidence in the security of consensus timeout handling and round progression logic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b35830c8-b44e-416d-b49b-60c005c3ec83?mode=deep",
+    "timestamp": "2026-01-26 10:48:14.092429",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Overall design] [Test flakiness] Given the potential for race conditions in run_after(), sleep(), and update_auto_advance_limit(), could non-deterministic test failures cause developers to disable or ignore failing consensus tests, potentially missing real Byzantine fault scenarios? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2dfe765-714f-4538-8e81-0d767b6cc948?mode=deep",
+    "timestamp": "2026-01-26 10:48:31.590617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Incorrect timeout testing] Since the AbortHandle returned at line 60 doesn't actually abort anything, could tests for consensus timeout abort behavior be incorrectly passing, giving false confidence that timeout cancellation works correctly in production? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75f8fc00-06e6-4a04-b49b-a0b9034faecc?mode=deep",
+    "timestamp": "2026-01-26 10:48:50.589247",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Determinism requirement] Byzantine fault-tolerant consensus requires deterministic behavior across all validators - if the SimulatedTimeService is used to test consensus determinism but itself has non-deterministic task execution order, could this lead to missing non-determinism bugs that only surface in production? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f6e93f5-84a0-44d2-afb6-b13eac187eed?mode=deep",
+    "timestamp": "2026-01-26 10:49:09.963262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Nested block_on context] At line 57, futures::executor::block_on() is called while potentially already inside a tokio runtime context (since consensus tests likely use tokio) - could this cause a panic with 'cannot block on the current thread's runtime' or create executor context confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_721bac13-fe01-40ad-9eb8-0f8f6150b459?mode=deep",
+    "timestamp": "2026-01-26 10:49:30.440571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: sleep()] [Async function without await points] The sleep() function is marked 'async' at line 67 but contains no await points - it just manipulates state synchronously - does this violate async function conventions and could it cause unexpected behavior in async contexts expecting yielding? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f763063c-cb32-48b6-b864-e315a6933266?mode=deep",
+    "timestamp": "2026-01-26 10:49:51.854582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Holding lock across await] At line 127, task.run() is called via block_on() while holding the mutex lock - if the task internally tries to await other futures, could this violate Rust async conventions about not holding locks across await points, even though block_on() technically doesn't await? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_240b95fa-97c2-4cb4-acac-b5f4a960e328?mode=deep",
+    "timestamp": "2026-01-26 10:50:10.532345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Semantic mismatch with ClockTimeService] The real ClockTimeService spawns tasks on an executor and uses tokio::sleep, but SimulatedTimeService executes tasks synchronously via block_on() - could this semantic difference cause tests to pass with the mock but fail in production due to different concurrency characteristics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d3d2987-b8e9-4f2a-ad5b-51dc9f407f9d?mode=deep",
+    "timestamp": "2026-01-26 10:50:29.848416",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [AbortHandle behavior divergence] The mock returns a non-functional AbortHandle at lines 59-60, but the real ClockTimeService returns a functional one - could this cause tests to incorrectly assume abort behavior works when it doesn't in the mock, missing bugs in abort handling logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d8ecd37-0e2b-4920-b283-60c4b4a2fb26?mode=deep",
+    "timestamp": "2026-01-26 10:50:49.220977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Duration::MAX handling] If a task is scheduled with timeout = Duration::MAX, the addition 'now + timeout' at line 37 might saturate rather than overflow (Rust's Duration addition saturates) - does the code correctly handle this saturated value, or could it cause the deadline to be treated as effectively infinite? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e29e4b19-1f14-4e68-9e9a-d8375a8e076d?mode=deep",
+    "timestamp": "2026-01-26 10:51:10.271612",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: sleep()] [Saturating addition semantics] At line 70, 'inner.now += t' uses saturating addition for Duration - if inner.now is already near Duration::MAX, adding any positive duration will saturate at MAX - could this cause all subsequent time comparisons to behave incorrectly as time appears to stop advancing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f8ca930-3809-425c-ac09-fe406bde6bfe?mode=deep",
+    "timestamp": "2026-01-26 10:51:30.819640",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: update_auto_advance_limit()] [Time limit saturation] At line 113, 'inner.time_limit += time' could saturate at Duration::MAX - if time_limit saturates, would all pending tasks suddenly become executable since their deadlines would all be <= saturated time_limit? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4fd6e4a0-fd15-48f9-a560-0101c6818bfc?mode=deep",
+    "timestamp": "2026-01-26 10:51:53.275620",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/util/mock_time_service.rs] [Function: run_after()] [Debug logging race condition] Lines 39-44 and 47-51 log time values using .as_millis() - but since these logs happen after reading values but before updating state, could the logs show inconsistent state in multithreaded scenarios, making debugging harder? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_090a4289-e6b3-41f8-8a18-d9f0da60c166?mode=deep",
+    "timestamp": "2026-01-26 10:52:15.800048",
+    "report_generated": false
+  }
+]
