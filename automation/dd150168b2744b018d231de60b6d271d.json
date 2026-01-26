@@ -1,0 +1,104 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Bytecode: Unconditional Branch] [Branch(offset) Target Validation] Tests use Branch(0), Branch(1), etc. but don't validate what happens if branch targets point to invalid instruction boundaries (middle of multi-byte instruction encoding). Can this cause desynchronization between CFG structure and actual bytecode execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ed93c5a-0f54-414f-87c1-be4f37855c9f?mode=deep",
+    "timestamp": "2026-01-26 05:24:45.494815",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Bytecode: Return Instruction] [Multiple Return Paths] Tests only have one Ret instruction. Can bytecode with multiple Ret instructions in different blocks cause CFG inconsistencies if some Ret paths are not properly marked as terminators, enabling execution to continue past function end? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffee3c5c-55cf-4d55-84aa-cfb2635d3e47?mode=deep",
+    "timestamp": "2026-01-26 05:24:57.761693",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Bytecode: Abort Instruction] [Missing Abort Testing] Tests don't include Abort instructions which are also unconditional branches. Can bytecode with Abort create CFG patterns that aren't properly tested, potentially bypassing validation of exception handling semantics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_928ae18a-d9ac-4b00-9733-2919dfa08748?mode=deep",
+    "timestamp": "2026-01-26 05:25:11.269594",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Debug: Display Method] [Information Disclosure] The cfg.display() calls output CFG structure to console. In production environments, could verbose debug output leak sensitive information about bytecode structure that helps attackers craft bypass exploits? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a10f020d-0952-4d7a-8a03-59ecd058c418?mode=deep",
+    "timestamp": "2026-01-26 05:25:24.670962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Test Coverage: Missing Negative Tests] [Invalid Bytecode Acceptance] All three tests use well-formed bytecode. Are there negative tests validating that VMControlFlowGraph::new() rejects malformed bytecode (invalid instructions, bad branch targets)? Without these, can attackers deploy invalid bytecode that crashes the verifier? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8815e1b2-5c77-43a2-b72d-b53c4e056ddf?mode=deep",
+    "timestamp": "2026-01-26 05:25:39.085160",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Test Coverage: Complex Control Flow] [Switch-Case Patterns] Tests only cover simple if-else and loop patterns. Can more complex patterns (switch-case style with multiple sequential conditionals) expose CFG construction bugs not caught by current tests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c34ef07-31f6-444d-a1ad-b6318a2258c1?mode=deep",
+    "timestamp": "2026-01-26 05:25:54.329652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Test Coverage: Error Handling] [Panic Safety] None of the tests validate error handling or panic recovery. If VMControlFlowGraph::new() panics on malformed input (instead of returning error), could this cause validator node crashes when processing malicious bytecode? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ad884a6-06bb-4881-8ac0-7ac79f6220bb?mode=deep",
+    "timestamp": "2026-01-26 05:26:11.322816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Performance: Construction Time] [Quadratic Complexity Attack] If CFG construction has O(n²) complexity for n instructions, can attackers deploy bytecode with maximum-size functions to cause verification timeouts, preventing new code deployment and effectively DoS'ing the contract deployment system? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0aaa9c1d-85e2-4a8f-9bbe-296d36ed1046?mode=deep",
+    "timestamp": "2026-01-26 05:26:28.795707",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Performance: Memory Usage] [Memory Exhaustion via Complex CFG] Can attackers craft bytecode with maximum branching factor (every instruction has multiple successors) to cause the blocks Map and loop_heads Map to consume excessive memory, leading to OOM crashes in validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09aad155-e459-4326-96e5-665cdfaee59f?mode=deep",
+    "timestamp": "2026-01-26 05:26:47.582519",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Determinism: Block Ordering] [Traversal Order Consistency] The tests verify specific traversal orders (vec![0,2,3], vec![0,2,4,5,6]). If different validators produce different traversal orders due to HashMap non-determinism (the code uses IndexMap to avoid this), could this cause validators to disagree on bytecode validity, leading to consensus failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18c670a4-9d80-439a-ae6c-550e039c2196?mode=deep",
+    "timestamp": "2026-01-26 05:27:07.106983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Determinism: Loop Head Selection] [Non-Deterministic Loop Analysis] If loop head identification is non-deterministic (depends on hash map iteration order or other randomness), could validators disagree on whether a CFG is reducible, causing some to accept and others to reject the same bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8791543c-e550-49e6-b23a-104d40ba9d35?mode=deep",
+    "timestamp": "2026-01-26 05:27:27.183166",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Security Invariant: CFG Completeness] [Missing Blocks in Analysis] If VMControlFlowGraph construction silently skips blocks (due to bugs in block_ids collection or blocks Map construction), could malicious bytecode contain unanalyzed code paths that execute without verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee2cf2b3-e9a1-414c-9d20-df42bc60d84b?mode=deep",
+    "timestamp": "2026-01-26 05:27:48.820142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Security Invariant: Back Edge Completeness] [Undetected Loops] If the loop detection algorithm misses some back edges (due to bugs in the exploration algorithm), could bytecode with undetected infinite loops pass verification and hang validators during execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3d6bd32-c4c7-406c-90c0-9a7f9a4b1d99?mode=deep",
+    "timestamp": "2026-01-26 05:28:11.371933",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Security Invariant: Successor Correctness] [Incorrect Successor Lists] If BasicBlock.successors contains wrong block IDs (due to bugs in Bytecode::get_successors()), could this cause type checking and liveness analysis to miss security violations, enabling arbitrary code execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50d6f6b6-41ef-440c-bb92-c4a4bb6e6d52?mode=deep",
+    "timestamp": "2026-01-26 05:28:34.297339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Move Security: Resource Linearity] [Resource Drop on Loop Exit] Move resources must be explicitly consumed. Can attackers craft loops in the CFG where resources are created in one iteration but not properly consumed before loop exit, violating resource linearity and enabling resource duplication attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e2edb49-a00a-4cc1-b8cb-60f3c77dc175?mode=deep",
+    "timestamp": "2026-01-26 05:28:57.767865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Move Security: Borrow Safety] [Reference Invalidation via Control Flow] Move enforces borrow checker rules. Can complex control flow patterns in the CFG (like the nested loops tested) create scenarios where mutable borrows are not properly tracked across block boundaries, enabling multiple mutable references to the same resource? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc589d5f-233a-4073-bb4b-c9255de2f122?mode=deep",
+    "timestamp": "2026-01-26 05:29:21.826775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-binary-format/src/unit_tests/control_flow_graph_tests.rs] [Move Security: Ability Constraints] [Ability Propagation Across Blocks] Move types have abilities (Copy, Drop, Store, Key). Can control flow patterns cause ability constraint checking to fail, allowing types without Drop ability to be implicitly dropped at block boundaries, violating Move's type system guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfb713fe-9f41-417f-9538-74537b3a251a?mode=deep",
+    "timestamp": "2026-01-26 05:29:47.866605",
+    "report_generated": false
+  }
+]
