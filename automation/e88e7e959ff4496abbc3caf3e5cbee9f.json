@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Feature Flag Bypass] The abort_unless_arithmetics_enabled_for_structure macro at line 30 checks feature flags, but it only aborts with MOVE_ABORT_CODE_NOT_IMPLEMENTED - can an attacker exploit transaction replay or caching mechanisms to submit a transaction when BLS12_381_STRUCTURES is enabled, then replay it after the flag is disabled, bypassing the feature gate? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1b508cf-c027-4529-bcdb-c8cad27530be?mode=deep",
+    "timestamp": "2026-01-26 13:02:46.536992",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Partial Feature Enabling] The feature_flag_from_structure function maps structures to either BLS12_381_STRUCTURES or BN254_STRUCTURES flags - if an attacker can craft a transaction that performs addition when only one flag is enabled, can they exploit the fallthrough to None at line 268 to bypass feature checks and access disabled functionality? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6afeecd-6b45-4147-8847-8a1dd0fe6572?mode=deep",
+    "timestamp": "2026-01-26 13:02:58.816079",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Race Condition in Feature Check] The macro abort_unless_feature_flag_enabled reads feature flags from context.get_feature_flags().is_enabled(flag) - if feature flags can be modified mid-transaction through governance, can an attacker trigger a TOCTOU vulnerability where the flag check passes but the flag is disabled before the actual addition executes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77ff21b7-2eea-4f24-b59e-c0bff9fe5c1b?mode=deep",
+    "timestamp": "2026-01-26 13:03:11.588254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Default Structure Handling] If structure_from_ty_arg returns None (invalid type tag), it falls through to the _ => Err(...) case at lines 101-103, but this happens AFTER the abort_unless_arithmetics_enabled_for_structure check at line 30 - can this ordering be exploited to perform partial validation that leaks information about whether feature flags are enabled? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf85cd57-384d-4894-b517-c320bccc60a7?mode=deep",
+    "timestamp": "2026-01-26 13:03:26.335506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Macro Hygiene] The ark_binary_op_internal macro at line 32 expands with variables like handle_1, handle_2, element_1, element_2 - if the macro is called in a scope where these variable names already exist, can shadowing or name collision cause the wrong variables to be used in the addition operation, mixing elements from different operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7a2cddd-b586-4d84-8b29-d07702fe1980?mode=deep",
+    "timestamp": "2026-01-26 13:03:39.901670",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Macro Panic Safety] The safely_pop_arg macro can return an error, but the safe_borrow_element macro calls .ok_or_else(abort_invariant_violated) which invokes a function returning PartialVMError - if this error propagation path has a panic, does it properly unwind without leaving the AlgebraContext in an inconsistent state with partially-constructed elements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_913155fa-7cf2-44bc-a866-4d3a65e673e0?mode=deep",
+    "timestamp": "2026-01-26 13:03:54.691428",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Macro Side Effects] The store_element macro at line 23 mutates context.bytes_used and context.objs in a specific order - if the Vec::push at line 249 panics due to allocation failure, does the bytes_used update at line 247 get rolled back, or does this leave the context with inflated bytes_used accounting that incorrectly triggers E_TOO_MUCH_MEMORY_USED on subsequent operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c79271b8-d150-49ba-91eb-67ea2bd2fdca?mode=deep",
+    "timestamp": "2026-01-26 13:04:10.435462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Macro Type Inference] The ark_binary_op_internal macro uses generic types $ark_typ and $ark_func - when expanded 11 times for different structures (BLS12381Fr, BN254G1, etc.), can incorrect type inference cause the compiler to monomorphize multiple addition operations into the same code path, allowing type confusion between structurally similar but semantically different types? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a67ccf77-f396-414f-b895-c022ff68d895?mode=deep",
+    "timestamp": "2026-01-26 13:04:27.752181",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Assertion Failure] The assert_eq!(1, ty_args.len()) at line 28 is an assertion that panics on failure rather than returning a SafeNativeError - can an attacker trigger this panic in a production validator by passing zero or multiple type arguments, causing the validator process to crash and lose liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8572b6a4-2acc-443f-a779-dccf13b3cfe0?mode=deep",
+    "timestamp": "2026-01-26 13:04:45.739289",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Uncaught Panic from Arkworks] The arkworks library functions element_1.add(element_2) and element_1.mul(element_2) are called without panic handlers - can malformed curve points or field elements trigger panics in the arkworks arithmetic implementations (e.g., invalid Montgomery form, unnormalized projective coordinates), crashing validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b0da2ad-f00a-4015-b17f-0862da53441c?mode=deep",
+    "timestamp": "2026-01-26 13:05:04.891275",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Error Code Confusion] The function returns MOVE_ABORT_CODE_NOT_IMPLEMENTED (0x0C_0001) for unsupported structures at lines 101-103 - but this error code semantically means 'not implemented' rather than 'invalid input', potentially confusing error handling logic in calling code that might retry or escalate incorrectly? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f0cb591-4654-409a-bca0-b8a82cbf8b1c?mode=deep",
+    "timestamp": "2026-01-26 13:05:24.924113",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Partial Operation State] If the addition operation succeeds but store_element fails with E_TOO_MUCH_MEMORY_USED, the input elements have been read and the result computed but not stored - does this leave the AlgebraContext in a partially-modified state where subsequent operations see inconsistent handle mappings? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50826ef4-e727-40bf-89d0-f7aba7db31fa?mode=deep",
+    "timestamp": "2026-01-26 13:05:45.502286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Downcast Failure] The safe_borrow_element macro uses downcast_ref which can fail if the stored element's type doesn't match $ark_typ - but this calls abort_invariant_violated which triggers UNKNOWN_INVARIANT_VIOLATION_ERROR, a critical system error that could be exploited to identify handle corruption or force validator restarts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a23854c-d2c4-4fa8-89a2-2d0a73be4454?mode=deep",
+    "timestamp": "2026-01-26 13:06:07.395005",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Concurrent Context Access] The AlgebraContext is accessed via context.extensions().get::<AlgebraContext>() for reading and context.extensions_mut().get_mut::<AlgebraContext>() for writing - are these accesses properly synchronized, or can concurrent native function calls race on the same context, causing one thread to read handles while another modifies the objs vector? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32705ba1-0145-4440-821e-e33adcf9c92f?mode=deep",
+    "timestamp": "2026-01-26 13:06:29.123273",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Handle Race] If two concurrent add_internal calls execute for the same transaction, can they race on store_element to get sequential handle values (e.g., handles 5 and 6), but have one thread's element stored to index 6 while the other thread returns handle 5, causing cross-contamination where handle 5 points to the wrong element type? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_971a7228-2200-43b7-80d5-bf13a4a90eba?mode=deep",
+    "timestamp": "2026-01-26 13:06:52.008450",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Session Reset Race] The AlgebraContext.start() method resets bytes_used and objs when a new session begins - can a race between session reset and an ongoing add_internal operation cause the context to be cleared while handles are still being read, leading to out-of-bounds access when safe_borrow_element tries to access a recently-cleared objs vector? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2dc627c-1786-4fec-a3de-a46fa80fd554?mode=deep",
+    "timestamp": "2026-01-26 13:07:16.808117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Rc Aliasing] The safe_borrow_element macro clones the Rc<dyn Any> pointer at line 229, creating shared references to elements - if concurrent operations modify the AlgebraContext while these Rc references exist, can the underlying elements be deallocated while still referenced, creating dangling pointers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2631a0e-7d68-4483-9db9-ebaefc45fb19?mode=deep",
+    "timestamp": "2026-01-26 13:07:41.456321",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Handle Conversion Overflow] When converting handles from u64 to usize at line 17-18 with 'as usize', if the Rust target is 32-bit or 16-bit (theoretical but possible in embedded validators), can handles > usize::MAX wrap around, causing handle 0x1_0000_0000 to become handle 0 and access the first element instead of triggering an out-of-bounds error? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a831cd5c-2cd7-4def-b12b-8c9bf23b7970?mode=deep",
+    "timestamp": "2026-01-26 13:08:06.590916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Memory Accounting Overflow] The store_element macro calculates new_size = context.bytes_used + std::mem::size_of_val(&$obj) - can an attacker craft a sequence of operations that causes bytes_used to approach usize::MAX, then trigger integer overflow in this addition, wrapping to a small value that bypasses the MEMORY_LIMIT_IN_BYTES check? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67823597-6d3a-4876-978e-2908bc639055?mode=deep",
+    "timestamp": "2026-01-26 13:08:31.266270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Handle Index Cast] When new_handle is created as target_vec.len() (a usize) and then cast to u64 with 'as u64' at line 24 of ark_binary_op_internal, can this cast overflow if more than u64::MAX elements are stored, causing handle value to wrap and collide with existing handles? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68f896bf-6ebe-4ee7-ba49-e70b223c185f?mode=deep",
+    "timestamp": "2026-01-26 13:08:57.429317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Gas Cost Overflow] The context.charge($gas)? calls at line 21 accumulate gas costs in the transaction - for operations like BLS12381G2 addition (119106 units) and Fq12 multiplication (183380 units), can an attacker craft transactions with thousands of these operations to overflow the total gas counter, wrapping to low values and executing expensive operations cheaply? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03fa58b5-adcb-4403-8872-2df3657d566e?mode=deep",
+    "timestamp": "2026-01-26 13:09:23.346699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [BLS12381 Fr/Fq Confusion] BLS12381Fr (scalar field) and BLS12381Fq (base field) have different moduli but similar arkworks types - can an attacker exploit handle reuse or type confusion to perform Fr arithmetic on Fq elements or vice versa, producing results that are valid in one field but invalid in another, breaking discrete log assumptions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad2029fa-d399-4de6-ae5d-f38271b37bd3?mode=deep",
+    "timestamp": "2026-01-26 13:09:50.283306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [BN254 Field Mixing] The BN254 curve has three field types (BN254Fr, BN254Fq, BN254Fq12) with different moduli - can an attacker create handles to Fr elements but pass BN254Fq type arguments to add_internal, causing field operations to be performed with wrong modular reduction and producing cryptographically invalid results? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7218eaa6-5dae-4adb-8b45-3ebbb59818c0?mode=deep",
+    "timestamp": "2026-01-26 13:10:15.691446",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [G1/G2 Coordinate Confusion] BLS12381G1 uses base field Fq while BLS12381G2 uses extension field Fq2 - if an attacker provides G1 point handles with a G2 type argument, can the downcast_ref at line 230 of safe_borrow_element fail gracefully, or does it succeed with a bitwise reinterpretation that treats Fq coordinates as Fq2 coordinates, creating invalid G2 points? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5b6e116-8d89-47b1-8814-29b7f854a2d4?mode=deep",
+    "timestamp": "2026-01-26 13:10:42.799679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/framework/src/natives/cryptography/algebra/arithmetics/add.rs] [Function: add_internal()] [Gt Representation Mismatch] BLS12381Gt and BN254Gt are both represented as Fq12 elements but for different curves with different defining equations - can handle confusion allow adding BLS12381 Gt element to BN254 Gt element, producing an Fq12 result that is neither a valid BLS12381 Gt nor BN254 Gt element? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8236509-4592-416e-8b8a-eebfc25e83a6?mode=deep",
+    "timestamp": "2026-01-26 13:11:08.301604",
+    "report_generated": false
+  }
+]
