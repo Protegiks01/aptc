@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Division by zero] In the sequential TPS averaging calculation at lines 149-154, if all seq_measurements[i] runs fail or return empty vectors, can the division `seq_sum / seq_measurements[i].len()` cause a panic that crashes the benchmark, potentially masking consensus performance issues or allowing DoS on benchmark infrastructure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c6be32f-b4f8-4e99-a1f2-a175374439ed?mode=deep",
+    "timestamp": "2026-01-26 04:11:45.010341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Division by zero] In the parallel TPS averaging calculation at lines 159-164, if par_measurements[i] contains no valid measurements due to execution failures, does the division `par_sum / par_measurements[i].len()` panic without error handling, potentially hiding critical Block-STM execution bugs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_753a9077-d1fc-47a5-9d7c-e5d5ca3625a0?mode=deep",
+    "timestamp": "2026-01-26 04:11:57.901760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Division by zero] At line 166, the speedup calculation `par_tps / seq_tps` could divide by zero if seq_tps remains 1 from initialization (line 146) but sequential run failed - can this cause a panic that prevents accurate performance regression detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9cb9435-da44-47ca-9e80-2d6de1f5370f?mode=deep",
+    "timestamp": "2026-01-26 04:12:11.599599",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: execute()] [Division by zero] At line 195, does `sum / par_tps.len()` properly handle the case where par_tps is empty due to all benchmark runs failing, or will this panic and hide execution engine failures that could indicate gas metering bugs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3bf54d3-74f0-4e83-b3fb-f7f35acc4d15?mode=deep",
+    "timestamp": "2026-01-26 04:12:25.446199",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Integer overflow] In the sum calculation at lines 149-152 for sequential TPS, can accumulated measurements cause integer overflow in `seq_sum += m` if block sizes are extremely large (e.g., 50000 from line 95) with very high TPS values, leading to incorrect average calculations and misleading performance data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_706b2ef0-70b0-4165-920f-020fa0f7a85b?mode=deep",
+    "timestamp": "2026-01-26 04:12:40.245208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Integer overflow] Similarly at lines 159-162 for parallel TPS sum, can `par_sum += m` overflow with extreme parameters (num_accounts=200000, block_size=50000), potentially causing wrapped-around averages that report artificially low TPS and trigger false performance alarms? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b07f513-d9cd-48bc-8d15-ee6b281e30bd?mode=deep",
+    "timestamp": "2026-01-26 04:12:56.383672",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: execute()] [Integer overflow] At line 194, can the sum operation `par_tps.iter().sum()` overflow when benchmarking with extremely high num_blocks (configurable via CLI) multiplied by high per-block TPS, causing incorrect average TPS reporting that masks consensus throughput degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d2b0993-335a-4948-876f-7e58262e9648?mode=deep",
+    "timestamp": "2026-01-26 04:13:14.400419",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Integer overflow] Can the multiplication in the nested loops (lines 113-134) over block_sizes and num_accounts vectors cause excessive iterations (e.g., 3 block_sizes × 10 num_accounts = 30 runs × num_runs) leading to vector capacity overflow in par_measurements/seq_measurements allocations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_002257e2-fcd2-478d-ae66-6e3ca14a44fc?mode=deep",
+    "timestamp": "2026-01-26 04:13:34.233557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Out-of-bounds access] The index variable `i` at line 138 is manually tracked and incremented at line 169, but is it guaranteed to correctly synchronize with the nested loop structure at lines 139-140? Can a logic error cause `seq_measurements[i]` or `par_measurements[i]` to access out-of-bounds indices leading to panic and benchmark crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0faa5268-b4d2-4a22-a7ae-f6ef7ce0da9a?mode=deep",
+    "timestamp": "2026-01-26 04:13:54.421730",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Index synchronization] If the nested loops at lines 113-134 execute N iterations to populate measurements but the reporting loops at lines 139-170 iterate M times where M≠N due to a logic error, can this cause index mismatch resulting in panic or silent data corruption in TPS reporting? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3cf7c8b-1ea5-46b8-8cb6-4673e3c7551c?mode=deep",
+    "timestamp": "2026-01-26 04:14:17.957042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Vector mutation] Between lines 129-133 where measurement vectors are populated via push(), and lines 139-170 where they're indexed, is there any concurrent access or mutation that could cause race conditions in multi-threaded environments, leading to inconsistent benchmark results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc9d7c09-29fd-4f59-a944-55b190265ef8?mode=deep",
+    "timestamp": "2026-01-26 04:14:39.853072",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Sorting side effects] At lines 129-130, the sorting of par_tps and seq_tps vectors before pushing to measurements - does this sorting affect the correctness of median/percentile calculations, and could malicious input cause the sort to behave unexpectedly with NaN or extreme values? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6725ea90-fcdd-4311-8ded-5f120ebe469a?mode=deep",
+    "timestamp": "2026-01-26 04:14:59.791883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Struct: ParamSweepOpt] [Integer overflow] At line 37, num_accounts is a Vec<usize> with default [200000] - can an attacker supply extremely large values via --num_accounts that cause memory exhaustion when TransactionBencher allocates account states, potentially DoSing benchmark infrastructure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da13a357-ae2c-45ec-9ee3-639e439da974?mode=deep",
+    "timestamp": "2026-01-26 04:15:20.291997",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Struct: ParamSweepOpt] [Integer overflow] At line 40, block_sizes accepts unbounded Vec<usize> - can malicious values like [u64::MAX] cause integer overflow in transaction generation at line 98 where P2PTransferGen is initialized with (1_000, 1_000_000) range, leading to undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b7a4d4a-5c6c-4743-8480-3e358087ad74?mode=deep",
+    "timestamp": "2026-01-26 04:15:41.269996",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Struct: ParamSweepOpt] [Logic bomb] At lines 43-47, skip_parallel and skip_sequential flags could both be true - while there's an assertion at lines 108-111 preventing this, can an attacker bypass this by exploiting the clap parsing or providing conflicting configurations that pass the assertion but cause logic errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31587a38-34c5-4387-a91b-33d040ce88c7?mode=deep",
+    "timestamp": "2026-01-26 04:15:58.306986",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Struct: ParamSweepOpt] [Resource exhaustion] At lines 49-52, num_warmups and num_runs with defaults of 2 and 10 - can an attacker specify enormous values (e.g., --num_warmups 1000000 --num_runs 1000000) to cause the benchmark to run indefinitely, consuming resources and preventing legitimate performance testing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fde06af0-6e10-4b92-8e61-b7d632372a1d?mode=deep",
+    "timestamp": "2026-01-26 04:16:16.194852",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Struct: ExecuteOpt] [Memory exhaustion] At line 61, num_accounts defaults to 100000 - can an attacker set this to usize::MAX causing the TransactionBencher at line 177 to attempt allocating massive account state, leading to OOM crashes that prevent performance regression detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9c4e64d-edb5-44c3-bc49-f24cfcfc9f40?mode=deep",
+    "timestamp": "2026-01-26 04:16:33.840924",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Struct: ExecuteOpt] [Resource exhaustion] At lines 67-71, block_size (default 10000) and num_blocks (default 15) multiplication could exceed memory limits - can values like --block_size 1000000 --num_blocks 100000 cause the benchmark to allocate gigabytes of transaction data, crashing the process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ca19f10-c63e-49c7-8a11-d369c2c007b9?mode=deep",
+    "timestamp": "2026-01-26 04:16:53.002954",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Struct: ExecuteOpt] [Configuration conflict] At line 79, remote_executor_addresses conflicts with num_executor_shards - but is this conflict properly enforced at runtime, or can a logic error allow both to be set, causing undefined behavior in the blockstm_benchmark call at line 179? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a31ba2df-8c82-48a7-903b-bcd2cd97b416?mode=deep",
+    "timestamp": "2026-01-26 04:17:12.306247",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Struct: ExecuteOpt] [Network address validation] At line 80, remote_executor_addresses accepts Vec<SocketAddr> - are these addresses validated to prevent connections to malicious endpoints that could provide fake benchmark results, manipulating performance data used for capacity planning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa5837d1-2df8-4bbb-8be6-e84f80130bf9?mode=deep",
+    "timestamp": "2026-01-26 04:17:32.179742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Struct: ExecuteOpt] [Type confusion] At line 86, maybe_block_gas_limit accepts Option<u64> - if an attacker provides 0 or 1 as gas limit, can this cause division by zero or infinite loops in gas calculation logic, potentially hanging the benchmark indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edc49d8f-700c-4417-9496-e1304af92705?mode=deep",
+    "timestamp": "2026-01-26 04:17:54.305684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Transaction generation] At line 98, TransactionBencher is initialized with P2PTransferGen using proptest strategy any_with with range (1_000, 1_000_000) - can this range be exploited to generate transactions that bypass gas metering or cause execution engine panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e64f17f1-d0fc-440b-bee7-4b73bb50d6ae?mode=deep",
+    "timestamp": "2026-01-26 04:18:16.744257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Determinism] The P2PTransferGen at line 98 uses proptest's any_with - is this deterministic across runs, or could non-determinism in transaction generation cause inconsistent benchmark results that hide real performance regressions in Block-STM? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdc41803-03b6-497a-b632-3234d1a1b539?mode=deep",
+    "timestamp": "2026-01-26 04:18:37.966621",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: execute()] [Transaction generation] At line 177, a separate TransactionBencher instance is created - is there any shared state with the param_sweep bencher that could cause interference if both commands are run concurrently in the same process? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79616072-0a91-464b-add9-1822db33dcdc?mode=deep",
+    "timestamp": "2026-01-26 04:19:00.260786",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-transaction-benchmarks/src/main.rs] [Function: param_sweep()] [Benchmark manipulation] At line 115, blockstm_benchmark is called with user-controlled parameters - can an attacker craft inputs that cause the benchmark to report artificially high TPS (e.g., by exploiting no_conflict_txn flag) leading to incorrect capacity planning decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78f77741-385e-481f-86b3-89ea71e93be3?mode=deep",
+    "timestamp": "2026-01-26 04:19:24.545382",
+    "report_generated": false
+  }
+]
