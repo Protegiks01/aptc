@@ -1,0 +1,140 @@
+[
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Documentation mismatch] The documentation states keys should only be moved out once, but the implementation allows unlimited cloning - does this documentation mismatch cause developers to incorrectly assume key hygiene guarantees exist, leading to insecure key handling in other parts of the validator codebase? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2453653f-16a1-487c-a6d7-118b2597fc67?mode=deep",
+    "timestamp": "2026-01-26 06:19:40.441130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: private_key()] [Byzantine validator exploitation] Can a Byzantine validator repeatedly call private_key() to extract multiple copies of their consensus key, distribute these to multiple processes, and then use them to sign conflicting votes or proposals at the same round, violating AptosBFT safety rules and enabling double-spending attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95c5ba4a-ed58-40d6-b5d5-cd3edb3aa8b8?mode=deep",
+    "timestamp": "2026-01-26 06:19:52.948556",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Configuration injection] If ConfigKey instances can be deserialized from external configuration files, can an attacker with file system access replace validator configuration files with malicious ConfigKey instances containing attacker-controlled private keys, enabling complete takeover of validator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a997a121-4454-4c6a-b4cb-bded9056864b?mode=deep",
+    "timestamp": "2026-01-26 06:20:06.033160",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [Consensus state corruption] If clone() is called during a consensus critical section (voting, block proposal, QC formation), can the serialization/deserialization introduce delays that cause the validator to fall behind, miss rounds, or produce inconsistent votes that are rejected by peers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd35d6a3-87ff-48ec-84ea-1beb9533d5cf?mode=deep",
+    "timestamp": "2026-01-26 06:20:20.147077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: from_encoded_string()] [Key injection attack] Can an attacker intercept validator configuration loading and inject malicious encoded key strings that pass CryptoMaterialError validation but contain backdoored keys where the attacker knows the corresponding private key, enabling impersonation attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8372adb4-779c-4920-9eee-c442356080e8?mode=deep",
+    "timestamp": "2026-01-26 06:20:34.350825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Network identity confusion] If the same ConfigKey is used for both consensus signing and network identity, can attackers exploit the clonable nature to create multiple network identities with valid signatures, performing Sybil attacks or confusing peer-to-peer validator discovery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a16788b8-6817-44dd-996a-c29fcedd4d48?mode=deep",
+    "timestamp": "2026-01-26 06:20:49.767008",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: public_key()] [Public key caching] The public key is derived on every call without caching - can this repeated derivation introduce performance bottlenecks during signature verification-heavy operations, causing validators to lag behind in processing blocks and reducing network throughput? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e52a0f0-ae97-4d80-93c3-ac0e253435f2?mode=deep",
+    "timestamp": "2026-01-26 06:21:05.923009",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: eq()] [Configuration validation bypass] During validator configuration validation, if key equality checks fail due to serialization errors, can this cause validators to incorrectly accept duplicate keys from multiple validators, reducing effective Byzantine fault tolerance below the 1/3 threshold? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ccf5a3d-1f1d-49a8-8e21-8e97b7f70435?mode=deep",
+    "timestamp": "2026-01-26 06:21:23.944424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [Atomic operations] The clone operation is not atomic - can partial clones occur if the process is killed mid-clone during validator restart or crash recovery, resulting in corrupted key material that prevents validators from restarting and reduces the active validator set? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29e27c35-f23b-4aea-8d96-98b17b2cbeb1?mode=deep",
+    "timestamp": "2026-01-26 06:21:42.954926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Key backup security] Since ConfigKey is serializable and clonable, can validator operators create backups of config files containing private keys, which are then stored insecurely (unencrypted cloud storage, version control), enabling theft of validator keys by external attackers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21eb6cb8-9739-44f3-98f9-4eff1b1320c5?mode=deep",
+    "timestamp": "2026-01-26 06:22:02.001964",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: default()] [Test-to-production leak] The test-only Default implementation generates predictable keys - can compilation with test features enabled accidentally leak into production builds, causing validators to start with known test keys that attackers can exploit for network takeover? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0545adb-241e-480d-986c-b5f0be71ae0c?mode=deep",
+    "timestamp": "2026-01-26 06:22:23.261696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: private_key()] [Key material lifetime] The extracted private key's lifetime is not bounded - can long-lived private key copies remain in memory across epoch transitions, allowing attackers who compromise a validator in epoch N+1 to extract keys from epoch N and forge historical signatures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e31f5881-0145-4945-b3ff-8f36f756d4b9?mode=deep",
+    "timestamp": "2026-01-26 06:22:45.453089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [BCS version compatibility] If BCS serialization format versions differ between validators, can this cause ConfigKey clones to be incompatible across validator software versions, preventing validators from upgrading and fragmenting the network during protocol upgrades? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebaf5e2a-b455-4d8e-97ce-c5d86958732b?mode=deep",
+    "timestamp": "2026-01-26 06:23:08.529838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Generic constraints escape] The generic type T has trait bounds, but can unsafe code elsewhere in the codebase bypass these constraints and construct ConfigKey instances with invalid key types, bypassing cryptographic validation and enabling signature forgery? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76409f25-e6ad-4be2-a583-b483d5a1d1f7?mode=deep",
+    "timestamp": "2026-01-26 06:23:32.656927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: from_encoded_string()] [Format string vulnerabilities] Does the encoded string parsing properly handle all possible string encodings (UTF-8, hex, base64), or can specially crafted strings cause buffer overflows, format string vulnerabilities, or other memory corruption when parsing validator keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c26c308-c32c-4e50-9736-a45181761724?mode=deep",
+    "timestamp": "2026-01-26 06:23:57.248624",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: public_key()] [Derived key consistency] If multiple ConfigKey instances are created from the same private key bytes, do they all derive identical public keys, or can non-deterministic derivation cause the same validator to be seen as multiple different validators, breaking quorum calculations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d060e791-eda5-4e81-b32a-7a39387129ad?mode=deep",
+    "timestamp": "2026-01-26 06:24:23.067297",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: eq()] [Timing attack surface] The equality comparison serializes keys and compares bytes - can an attacker measure timing differences during configuration updates to determine if two validators share the same key material, enabling targeted attacks on key sharing arrangements? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39d5730a-b480-4251-a135-6b4c67981b15?mode=deep",
+    "timestamp": "2026-01-26 06:24:49.655898",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Immutability guarantee] ConfigKey stores the key as an immutable field, but can unsafe code or internal mutability patterns (Cell, RefCell) bypass this immutability, allowing in-place modification of validator keys during consensus operations and breaking signature consistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12452cbf-4e3e-4ffd-ae71-dae03b8b2d7d?mode=deep",
+    "timestamp": "2026-01-26 06:25:17.392899",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [Side channel leakage] The BCS serialization process may have data-dependent execution paths - can side-channel attacks (timing, power, cache) on the clone() operation leak private key bits during validator key rotation or configuration updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e11dc135-0571-403e-ad80-a2ca0f8785a3?mode=deep",
+    "timestamp": "2026-01-26 06:25:44.823822",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: new()] [Ownership semantics] The constructor takes ownership of the private key - can the original key still be accessed elsewhere after constructing ConfigKey, leading to multiple owners of the same private key material and violating the 'move out once' key hygiene goal? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9bb9f0e7-60d5-45e0-ad56-18d78356e3f7?mode=deep",
+    "timestamp": "2026-01-26 06:26:12.130971",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Serde deserialization attack] The Deserialize implementation uses custom bounds - can an attacker craft malicious serialized data that exploits vulnerabilities in serde's deserialization logic to inject arbitrary code or data into ConfigKey instances during configuration loading? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab23d361-3c53-43cd-87df-2746e02f1db8?mode=deep",
+    "timestamp": "2026-01-26 06:26:39.795573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: private_key()] [Consensus key leakage] When extracting keys for consensus operations, are the extracted keys properly tracked and scoped to prevent them from being persisted to disk, included in crash dumps, or transmitted over unencrypted channels where they could be intercepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df8aac44-6ba4-4fc3-8a87-b5a733544fd2?mode=deep",
+    "timestamp": "2026-01-26 06:27:05.990632",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [Memory allocation attack] The serialization allocates new byte vectors - can an attacker trigger repeated clone operations to exhaust memory, causing OOM panics in validators during critical consensus operations and reducing the active validator set below Byzantine fault tolerance thresholds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc1d1d60-e74e-4ed7-890c-df935d3f3024?mode=deep",
+    "timestamp": "2026-01-26 06:27:30.321847",
+    "report_generated": false
+  }
+]
