@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: enqueue_for_ledger_update()] [State divergence] Can a malicious validator enqueue chunks with crafted PartialStateComputeResult that causes latest_state to diverge from latest_state_summary and latest_txn_accumulator, leading to state root mismatch across validators and consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2e3dd14-830e-42d7-ae78-b19658888cf7?mode=deep",
+    "timestamp": "2026-01-26 01:55:58.583101",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: save_ledger_update_output()] [Atomicity violation] If save_ledger_update_output() fails after updating latest_state_summary but before updating latest_txn_accumulator, does this create inconsistent state between the three critical fields (latest_state, latest_state_summary, latest_txn_accumulator) that could cause validators to produce different state commitments? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6aef6a72-6ccc-4fc8-9713-5b3c9cb2ae8e?mode=deep",
+    "timestamp": "2026-01-26 01:56:10.879243",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: next_chunk_to_update_ledger()] [Race condition] Can concurrent calls to next_chunk_to_update_ledger() by multiple threads cause the same chunk to be taken twice via the Option::take() pattern, leading to duplicate ledger updates and state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84bb1fb8-303a-4765-a852-d6b793197418?mode=deep",
+    "timestamp": "2026-01-26 01:56:23.678974",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Struct: ChunkCommitQueue] [State desynchronization] Since latest_state is updated in enqueue_for_ledger_update() but latest_state_summary and latest_txn_accumulator are updated later in save_ledger_update_output(), can a crash or error between these stages cause permanent state divergence requiring hardfork? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5757918-66f7-4892-b4d9-ec119c51e391?mode=deep",
+    "timestamp": "2026-01-26 01:56:36.793311",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: save_ledger_update_output()] [Double-spending] If ensure_state_checkpoint_output() or ensure_ledger_update_output() can be bypassed or return forged data, could an attacker commit invalid state_summary or transaction_accumulator values that enable double-spending attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_153fd6e5-92de-4483-b5b6-381261407fc9?mode=deep",
+    "timestamp": "2026-01-26 01:56:50.581864",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: next_chunk_to_commit()] [Verification bypass] Since ChunkResultVerifier is only stored in ChunkToUpdateLedger but verification is never explicitly called before commit, can chunks bypass verification entirely and commit invalid transactions to the ledger? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d24168f8-e2ac-4511-8f2f-5422915d301a?mode=deep",
+    "timestamp": "2026-01-26 01:57:05.205652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: enqueue_for_ledger_update()] [Version gap attack] If enqueue_for_ledger_update() accepts chunks with non-sequential versions, can an attacker create gaps in the version sequence that cause expecting_version() to skip transactions and enable replay attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3eb9c2c-9135-45b5-ae22-7ad49439803c?mode=deep",
+    "timestamp": "2026-01-26 01:57:21.271917",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: dequeue_committed()] [Reorg vulnerability] If dequeue_committed() is called but the chunk was never actually persisted to disk due to storage failure, does the queue state advance while the database remains behind, causing state divergence on restart? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5461f43-42f0-4202-9e7d-f569ce77cd3a?mode=deep",
+    "timestamp": "2026-01-26 01:57:38.995311",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Struct: ChunkToUpdateLedger] [Chunk verifier manipulation] Can the chunk_verifier field be replaced with a malicious verifier implementation that always returns success, allowing invalid chunks to pass verification and corrupt blockchain state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c60b8f0f-8dd6-44df-a82a-3ff1b11bb4c8?mode=deep",
+    "timestamp": "2026-01-26 01:57:56.960939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: save_ledger_update_output()] [Accumulator forgery] If the transaction_accumulator in ExecutedChunk.output can be manipulated to contain fraudulent transaction hashes, can validators with < 1/3 Byzantine nodes commit conflicting transaction histories? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2dbd573-00db-4b8e-8351-ab42093fb85d?mode=deep",
+    "timestamp": "2026-01-26 01:58:16.522181",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: next_chunk_to_update_ledger()] [Double processing] Can next_chunk_to_update_ledger() be called twice on the same chunk before save_ledger_update_output() is called, allowing the same chunk to be processed twice with different accumulator/summary states causing state fork? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb3f27cd-7e59-48f6-b907-3b4f072c476b?mode=deep",
+    "timestamp": "2026-01-26 01:58:35.787846",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: save_ledger_update_output()] [Queue ordering violation] Can save_ledger_update_output() be called with chunks out-of-order relative to next_chunk_to_update_ledger() calls, causing chunks to be moved to to_commit queue in wrong sequence and breaking version ordering? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4657cd68-f3aa-4ac6-89f0-54d870fecd43?mode=deep",
+    "timestamp": "2026-01-26 01:58:56.105833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: next_chunk_to_commit()] [Premature commit] Can next_chunk_to_commit() be called before save_ledger_update_output() completes for a chunk, allowing commits with unverified or incomplete ledger updates that corrupt state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_895ee81e-3bd9-4378-bc42-745ff32847a0?mode=deep",
+    "timestamp": "2026-01-26 01:59:17.206217",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: dequeue_committed()] [Skip commit attack] Can dequeue_committed() be called multiple times to skip chunks in to_commit queue without actually committing them, causing transaction loss and fund freezing? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f5dc66f-88fa-4a65-84a9-1f342ba41f11?mode=deep",
+    "timestamp": "2026-01-26 01:59:39.626920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Struct: ChunkCommitQueue] [Pipeline bypass] Can chunks be added directly to to_commit queue without going through to_update_ledger, bypassing ledger update stage and committing chunks with invalid accumulator/summary? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e352383-118b-4ab2-b833-504c56f1f763?mode=deep",
+    "timestamp": "2026-01-26 02:00:02.165075",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Struct: ChunkCommitQueue] [Missing synchronization] Since ChunkCommitQueue has no internal locks or synchronization primitives, can concurrent access from multiple executor threads cause data races on latest_state, to_commit, or to_update_ledger fields? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e97dbca2-a3c4-4b4e-8bc3-5c1c10a83dc1?mode=deep",
+    "timestamp": "2026-01-26 02:00:26.150513",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: enqueue_for_ledger_update()] [State update race] Can concurrent enqueue_for_ledger_update() calls interleave latest_state updates with queue operations, causing latest_state to reflect a different version than the last chunk in to_update_ledger? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_525e9a41-3dcb-447c-aa48-e2658c72c8cd?mode=deep",
+    "timestamp": "2026-01-26 02:00:50.557773",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: save_ledger_update_output()] [TOCTOU vulnerability] Between checking to_update_ledger.front().unwrap().is_none() and calling pop_front(), can another thread modify the queue causing time-of-check-time-of-use race condition? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc91f497-1741-42ae-9342-5b3f461f9131?mode=deep",
+    "timestamp": "2026-01-26 02:01:15.405917",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: latest_state()] [Stale read] Can latest_state() return stale data if called concurrently with enqueue_for_ledger_update() that's updating latest_state, causing validators to execute against wrong base state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4aa17a8-d57d-4320-8fc8-3dc91e713157?mode=deep",
+    "timestamp": "2026-01-26 02:01:41.254797",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: expecting_version()] [Version race] Can expecting_version() return incorrect version if called during enqueue_for_ledger_update() while latest_state.next_version() is being computed, causing version conflicts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0a32a37-6c69-4e85-a333-b6a9d0ac1ec3?mode=deep",
+    "timestamp": "2026-01-26 02:02:07.518040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: next_chunk_to_update_ledger()] [Clone race] Can cloning latest_state_summary and latest_txn_accumulator race with updates in save_ledger_update_output(), returning inconsistent snapshot of queue state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_458e7296-82da-470f-a27f-90baeb786390?mode=deep",
+    "timestamp": "2026-01-26 02:02:33.786028",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: is_empty()] [ABA problem] Can is_empty() check pass, then chunks be added/removed/added again before the result is used, causing incorrect assumptions about queue state in caller code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1e455d2-93e3-48e6-9c7f-13a7c7ed66f3?mode=deep",
+    "timestamp": "2026-01-26 02:02:59.551310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Struct: ChunkCommitQueue] [Non-atomic multi-field update] Since save_ledger_update_output() updates latest_state_summary, latest_txn_accumulator, pops to_update_ledger and pushes to_commit in separate steps, can crashes mid-update leave queues in inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_216c18fd-9624-43d8-95f1-96cb625b269a?mode=deep",
+    "timestamp": "2026-01-26 02:03:26.634308",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: save_ledger_update_output()] [Panic on ensure failure] If ensure_state_checkpoint_output() or ensure_ledger_update_output() returns error after latest_state_summary is partially updated, does the error handling properly rollback all state changes or leave queue corrupted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f11959a0-cc3d-4b1d-b5dd-a3a38df792ac?mode=deep",
+    "timestamp": "2026-01-26 02:03:54.161483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor/src/chunk_executor/chunk_commit_queue.rs] [Function: next_chunk_to_update_ledger()] [Option unwrap panic] Can the ok_or_else() checks be bypassed if to_update_ledger contains an unexpected None value at the front, causing panic and validator crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5ae3748b-6e58-473d-89d6-b5c3fbcc9bd2?mode=deep",
+    "timestamp": "2026-01-26 02:04:20.805564",
+    "report_generated": false
+  }
+]
