@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: handle_message()] [Unsolicited responses] No tracking of pending requests - can a coordinator flood the receiver with unsolicited responses for keys that were never requested, causing unnecessary set_state_value() processing and potential memory/CPU exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_317387de-2810-44f3-8a92-52ac0060efcb?mode=deep",
+    "timestamp": "2026-01-26 23:42:16.047120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: set_state_value()] [Cache poisoning] Line 48 sets state_value without any validation of the value's integrity, size, or authenticity - can a malicious coordinator provide crafted StateValues that cause downstream Move VM execution errors or state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2680dd2b-7979-423e-b327-d89917b9f4fa?mode=deep",
+    "timestamp": "2026-01-26 23:42:28.859830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: handle_message()] [State injection] Lines 269-270 iterate through all responses and call set_state_value() for each - can a Byzantine coordinator inject arbitrary (StateKey, StateValue) pairs for keys that don't exist in actual blockchain state, causing validators to execute with phantom state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31ff9100-af66-40c3-973e-535515551dde?mode=deep",
+    "timestamp": "2026-01-26 23:42:42.057647",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: init_for_block()] [State persistence] Line 119 replaces entire state_view with new RemoteStateView - if malicious state was cached in the previous block, is there any validation or sanitization before the new block starts, or can corrupted state affect initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37240b42-542b-4cf3-8141-1eef18855124?mode=deep",
+    "timestamp": "2026-01-26 23:42:55.965081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: get_state_value()] [Cached stale state] Lines 58-66 return cached values without checking freshness or version - if state was cached from a previous block and init_for_block() wasn't called properly, can transactions read stale state causing execution divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a23b453-a4e3-4a4d-9723-528b9e1bc0c9?mode=deep",
+    "timestamp": "2026-01-26 23:43:10.689130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: insert_state_key()] [Premature insertion] Line 52-54 inserts keys with RemoteStateValue::waiting() before any validation - can an attacker cause keys to be inserted for non-existent state, and if responses never arrive, will these entries remain in the cache forever consuming memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de4251c2-5fcb-4a78-b385-ed7ebea00150?mode=deep",
+    "timestamp": "2026-01-26 23:43:24.527088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Struct: RemoteStateView] [Unbounded growth] The DashMap on line 30 has no size limits - can an attacker trigger fetches for millions of unique StateKeys causing unbounded memory growth until the validator OOMs and crashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ed42414-48c8-49d1-9e59-ca5e58acc1b2?mode=deep",
+    "timestamp": "2026-01-26 23:43:42.197910",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: init_for_block()] [Memory leak] Line 119 replaces the entire state_view dropping the old DashMap - if RemoteStateValue entries have threads blocked on get_value(), are these threads leaked when the Arc is dropped, and can repeated block executions cause thread/memory leaks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57ccd823-02b2-4f9f-a320-2e1e6896263c?mode=deep",
+    "timestamp": "2026-01-26 23:44:00.794588",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: insert_keys_and_fetch_values()] [Request amplification] Lines 133-144 clone all state_keys and iterate twice - can providing massive state_keys vectors cause memory doubling and excessive allocations leading to memory pressure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b560f54-6161-4f3e-8e3e-ea92ccc22b85?mode=deep",
+    "timestamp": "2026-01-26 23:44:21.014802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Constant: REMOTE_STATE_KEY_BATCH_SIZE] [Batch size] Line 27 hardcodes batch size to 200 with no upper bound on total state_keys - can an attacker provide 1 million keys creating 5000 concurrent thread pool tasks and exhausting all threads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_536157c7-abef-4e39-a21e-25b0078ae5ac?mode=deep",
+    "timestamp": "2026-01-26 23:44:42.884213",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: new() RemoteStateViewClient] [Thread pool sizing] Lines 85-89 create thread pool with num_cpus::get() threads - can this consume all available CPU cores preventing other critical validator components from executing, causing consensus timeouts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0907106f-5340-4c89-bccb-7baa1c38a6db?mode=deep",
+    "timestamp": "2026-01-26 23:45:05.449470",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: handle_message()] [Message queue] The kv_rx channel on line 234 appears unbounded - can a malicious coordinator flood messages faster than they can be processed causing unbounded memory growth in the channel buffer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6c0be39-0c0b-4180-b15e-3ab93e138d7a?mode=deep",
+    "timestamp": "2026-01-26 23:45:28.667957",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: send_state_value_request()] [Channel flooding] Line 179 sends messages on command_tx without checking channel capacity - can rapid state_key requests overflow the outbound channel buffer causing memory exhaustion or message loss? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc427e80-6009-4a9f-b59f-26550ac4b795?mode=deep",
+    "timestamp": "2026-01-26 23:45:53.109669",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: send_state_value_request()] [Shard confusion] Line 177 includes shard_id in RemoteKVRequest but there's no validation that responses match the requesting shard - can a coordinator send responses from shard 0 to shard 1 causing validators to execute with state from wrong shards? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78155610-d0b9-4e2d-a8b8-05858b1707a3?mode=deep",
+    "timestamp": "2026-01-26 23:46:18.173226",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: handle_message()] [Missing shard check] Lines 243-272 process messages without verifying the implicit shard_id in RemoteKVResponse matches self.shard_id - can cross-shard response pollution cause state mixing and non-deterministic execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f327fdb9-ab67-46c9-9c7e-32cd7522e19c?mode=deep",
+    "timestamp": "2026-01-26 23:46:44.374278",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Struct: RemoteStateViewClient] [Shard isolation] Multiple RemoteStateViewClient instances exist for different shards sharing network controller - is there any isolation preventing shard 0 from receiving shard 1's messages, or can message routing errors cause shard state contamination? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3fd6de6-fe69-48d9-9e54-9cb67966811a?mode=deep",
+    "timestamp": "2026-01-26 23:47:10.588115",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: get_state_value()] [Non-deterministic timing] Lines 190-193 and 196-203 show different code paths (prefetch_wait vs non_prefetch_wait) based on cache presence - can timing differences or race conditions cause some validators to take different paths reading different state values breaking deterministic execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a31abb2-d3d1-4c1c-93e6-ce348648b67c?mode=deep",
+    "timestamp": "2026-01-26 23:47:38.703355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: handle_message()] [Message ordering] Line 234 processes messages in channel order, but network delays can cause messages to arrive out of order - can response ordering non-determinism cause validators to process state updates differently leading to divergent state roots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee50ad61-1e24-487c-bf25-03d29ad4ca74?mode=deep",
+    "timestamp": "2026-01-26 23:48:07.625274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: insert_keys_and_fetch_values()] [Parallel request timing] Lines 139-144 spawn parallel tasks for batched requests - can different validators have different task scheduling causing them to send requests in different orders, and if coordinator responses depend on request order, will this break determinism? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14e2f2a7-28d9-42a7-8ae2-530acaa7226e?mode=deep",
+    "timestamp": "2026-01-26 23:48:38.225785",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: pre_fetch_state_values()] [Async prefetch races] Lines 162-169 conditionally spawn async work - can the sync_insert_keys flag cause some validators to have different timing for when keys become available, leading to different transaction execution order in parallel executor? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_664409dc-f7b2-423e-bf72-a3df4fe1b732?mode=deep",
+    "timestamp": "2026-01-26 23:49:08.650696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: get_state_value()] [Cache hit timing] Line 188 checks cache with read lock - if validator A's request completes before check and validator B's completes after, they take different code paths - can this cause them to observe state at different versions violating snapshot isolation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f282deca-26ec-4b35-9ed3-fba807e3bd40?mode=deep",
+    "timestamp": "2026-01-26 23:49:38.992163",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: init_for_block()] [Missing synchronization] Line 119 writes new RemoteStateView but doesn't wait for pending network operations from previous block to complete - can in-flight responses from block N arrive and call set_state_value() on block N+1's state causing corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b27c4a3-8911-4373-80d1-c70be4050dad?mode=deep",
+    "timestamp": "2026-01-26 23:50:07.902267",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: init_for_block()] [Thread synchronization] Line 123 calls pre_fetch_state_values() which spawns async work, but doesn't wait for completion - can block execution start before prefetching completes, defeating the purpose and causing performance degradation or timeouts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a3aac2c-4775-413a-978f-a9128d6587e4?mode=deep",
+    "timestamp": "2026-01-26 23:50:39.279468",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Function: new() RemoteStateViewClient] [Startup race] Lines 96-114 create state_view, spawn receiver thread, and return - can get_state_value() be called before the receiver thread is fully initialized, causing indefinite blocking on the first state access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5968ddb1-eba4-4cd4-8045-ae9dd02b6a9e?mode=deep",
+    "timestamp": "2026-01-26 23:51:10.040347",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/execution/executor-service/src/remote_state_view.rs] [Struct: RemoteStateViewClient] [Cleanup on drop] The _join_handle on line 75 is never explicitly joined - when RemoteStateViewClient is dropped, does the receiver thread exit cleanly, or can it be orphaned continuing to process old messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fd28451-7a8f-4302-8c9b-8722200c36e5?mode=deep",
+    "timestamp": "2026-01-26 23:51:41.397672",
+    "report_generated": false
+  }
+]
