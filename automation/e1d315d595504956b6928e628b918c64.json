@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_inactive_share_from_write_table_item()] [Missing mapping] Lines 120-131 attempt to get pool_address from inactive_pool_to_staking_pool mapping, falling back to database query - can race conditions cause the mapping to be incomplete, forcing expensive DB lookups that slow the indexer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99703473-0a6a-4332-bf6d-cd54540d975f?mode=deep",
+    "timestamp": "2026-01-26 08:37:02.350672",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_inactive_share_from_write_table_item()] [Stale mapping] If inactive_pool_to_staking_pool mapping is built from current transaction but references pools from older transactions, could stale mappings cause incorrect pool_address associations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbf39a7e-fa94-41dc-8ce7-5d600d9b4132?mode=deep",
+    "timestamp": "2026-01-26 08:37:14.837835",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_inactive_share_from_delete_table_item()] [Mapping inconsistency] Lines 204-225 use fallback database query when mapping lookup fails - could divergence between in-memory mappings and database state cause balance tracking inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9546e0d5-fd37-47c8-aa9c-0a10f73d2ef9?mode=deep",
+    "timestamp": "2026-01-26 08:37:27.620936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [Mapping order dependency] Lines 326-350 build mappings in first pass, then use them in second pass - if WriteSetChanges are processed out of order, could mappings be incomplete when needed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d26ebda-184c-4773-b7bc-149e64b5acf2?mode=deep",
+    "timestamp": "2026-01-26 08:37:41.177116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [HashMap overwrites] Lines 334, 340, 347 use .extend() which overwrites duplicate keys - if multiple delegation pools share table handles, could later entries silently overwrite earlier ones causing data loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73731ee4-89d2-4a5f-96e0-64d6f22a4429?mode=deep",
+    "timestamp": "2026-01-26 08:37:55.560850",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_staking_pool_from_inactive_share_handle()] [Database staleness] Lines 305-306 query database for staking pool address, but what if the database hasn't been updated yet with latest transaction? Could stale reads return wrong pool addresses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fbe3c551-d2b3-47dc-8012-45518be2bb96?mode=deep",
+    "timestamp": "2026-01-26 08:38:10.828178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_active_pool_to_staking_pool_mapping()] [Single pool assumption] Lines 243-258 return HashMap with single entry - if a transaction affects multiple delegation pools, could mappings be incomplete? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49257d16-5723-4d89-94e6-ed7a9ff24da3?mode=deep",
+    "timestamp": "2026-01-26 08:38:26.875326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_inactive_pool_to_staking_pool_mapping()] [Single pool assumption] Lines 262-277 return single-entry HashMap - does this correctly handle transactions that update multiple pools simultaneously? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aeae60fe-4d46-4df3-aa5b-6373ca1920ac?mode=deep",
+    "timestamp": "2026-01-26 08:38:44.686061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_staking_pool_from_inactive_share_handle()] [Race condition] Lines 303-310 retry query with sleep delays, but if concurrent transactions are being processed, could one thread read stale data while another is still writing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f703295-a92a-479f-95cb-a8875c096daf?mode=deep",
+    "timestamp": "2026-01-26 08:39:01.964061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_staking_pool_from_inactive_share_handle()] [Deadlock potential] The function acquires mutable database connection at line 299 - if multiple threads call this simultaneously, could lock contention cause deadlocks or severe performance degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bf7b98c-bdf2-44b5-953a-9a756f9c4f77?mode=deep",
+    "timestamp": "2026-01-26 08:39:20.446069",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: CurrentDelegatorBalanceQuery::get_by_inactive_share_handle()] [SQL injection] Line 419 uses parent_table_handle in diesel filter - is the input properly sanitized, or could malicious table_handle values inject SQL? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3c1cbc3-87b4-4ee1-af77-69a82bab1358?mode=deep",
+    "timestamp": "2026-01-26 08:39:39.420069",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_staking_pool_from_inactive_share_handle()] [Retry timing attack] Lines 303-310 use fixed QUERY_RETRY_DELAY_MS - can attackers exploit predictable retry timing to cause systematic query failures by timing database operations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17e4423e-685b-4294-90d2-138343a0e63d?mode=deep",
+    "timestamp": "2026-01-26 08:39:59.234078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [Non-atomic processing] Lines 317-410 process multiple WriteSetChanges in sequence - if the indexer crashes mid-processing, could partial state be committed to database causing inconsistent delegator balances? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1a4cf62-a2b3-45f1-9e85-d57b44ca7dbf?mode=deep",
+    "timestamp": "2026-01-26 08:40:20.862052",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [Connection reuse] The conn parameter is passed to multiple nested functions - can connection state corruption in one call affect subsequent calls, causing cascading failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68223c56-448f-4190-be4d-911413820325?mode=deep",
+    "timestamp": "2026-01-26 08:40:43.437218",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: CurrentDelegatorBalanceQuery::get_by_inactive_share_handle()] [First result assumption] Line 420 uses .first() which returns first matching row - if database has duplicate entries, could inconsistent results be returned? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6f45d22-2592-4490-ab9a-46f695de84d8?mode=deep",
+    "timestamp": "2026-01-26 08:41:06.303206",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [Transaction type limitation] Line 326 only processes UserTransaction types - are GenesisTransaction, BlockMetadataTransaction, or StateCheckpointTransaction types ignored, potentially missing critical balance updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac77dff8-6e2c-408a-9140-7f95e78c78a3?mode=deep",
+    "timestamp": "2026-01-26 08:41:29.676484",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [Version extraction] Line 327 extracts txn_version from user_txn.info.version - is integer overflow checked when casting u64 to i64, or could large version numbers cause negative values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1b080b2d-3ec8-45d8-85d1-eabfaa7bc08b?mode=deep",
+    "timestamp": "2026-01-26 08:41:52.929083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [Duplicate version handling] Line 353 reuses txn_version from outer scope - if transaction processing is called multiple times with same version, could duplicate primary keys cause database constraint violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_455f7cda-8eaf-490c-a5d4-8ff1cd79ab3a?mode=deep",
+    "timestamp": "2026-01-26 08:42:16.327361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [WriteSetChange ordering] Lines 328-350 assume WriteResource changes appear before WriteTableItem changes - if ordering is violated, could mappings be incomplete when processing table items? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a93c962-4b3f-4381-a4cd-4ca5cad191a7?mode=deep",
+    "timestamp": "2026-01-26 08:42:40.679309",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [Change type filtering] Lines 354-396 only handle DeleteTableItem and WriteTableItem - are WriteResource, DeleteResource, WriteModule changes ignored, potentially missing balance-affecting events? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba3190e9-47fd-4f13-a223-1c58adf68e00?mode=deep",
+    "timestamp": "2026-01-26 08:43:04.735234",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [HashMap key collision] Lines 398-405 insert into current_delegator_balances HashMap using (delegator_address, pool_address, pool_type) as key - if same delegator has multiple balance updates in one transaction, are only latest changes kept, potentially losing intermediate states? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_522ca783-fa5d-4994-ad5e-fd4e9f829d98?mode=deep",
+    "timestamp": "2026-01-26 08:43:28.518830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [Empty result handling] Function returns empty HashMap if no UserTransaction - should caller validate non-empty result, or could empty returns be misinterpreted as successful processing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26874cd6-55ee-48b4-ae31-8d5473788213?mode=deep",
+    "timestamp": "2026-01-26 08:43:50.583287",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: from_transaction()] [Resource leak] Multiple nested loops and function calls at lines 328-407 - are database connections properly released if early return or panic occurs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65cbe29c-1082-4127-ad54-fd0046d86976?mode=deep",
+    "timestamp": "2026-01-26 08:44:12.779457",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_active_share_from_write_table_item()] [Address normalization] Line 67 calls standardize_address on write_table_item.handle - does standardization handle all valid Move address formats, or could some addresses fail to normalize causing lookup failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b6a1a6a-15dd-45d2-922c-7d94f69e96e2?mode=deep",
+    "timestamp": "2026-01-26 08:44:34.364732",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/delegator_balances.rs] [Function: get_active_share_from_write_table_item()] [Key extraction] Line 71 extracts key as delegator_address - does this properly handle cases where key is not an address (e.g., struct or vector), potentially causing type confusion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95296200-ac3f-48ec-a036-44617baa7c7e?mode=deep",
+    "timestamp": "2026-01-26 08:44:55.201091",
+    "report_generated": false
+  }
+]
