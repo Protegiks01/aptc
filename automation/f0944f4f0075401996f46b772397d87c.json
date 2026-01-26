@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: get_state()] [Arc Clone Cost] Does cloning the Arc<HotState> at line 51 increment refcount safely across threads, or can rapid concurrent calls to get_state() create temporary refcount spikes that affect hot_state dropper behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_790e8497-e39b-4a3b-94d8-5af46fe5ebf0?mode=deep",
+    "timestamp": "2026-01-26 23:35:25.337547",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: new_empty_with_config()] [Initialization Memory] Does initializing HotState with Arc::new() at line 30 and StateSummary with Arc::new(Mutex::new()) at line 31 create proper memory ordering barriers for safe cross-thread access, or can early readers see partially initialized state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d9f6b7b-9586-4346-bed1-9b9ca16359e7?mode=deep",
+    "timestamp": "2026-01-26 23:35:37.676988",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Struct: PersistedState] [Arc Overhead] Does wrapping both hot_state and summary in Arc at lines 17-18 create unnecessary reference counting overhead, especially since Clone is implemented at line 15 and may lead to excessive Arc clones in hot paths? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d020261-5971-4314-a3c0-78605329c9b7?mode=deep",
+    "timestamp": "2026-01-26 23:35:50.598634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: set()] [Version Validation] Does set() verify that the incoming StateWithSummary has matching state.next_version() == summary.next_version() before destructuring at line 55, or can mismatched versions be persisted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eefd3b13-2ebc-4d2a-b479-75ea7b4fc912?mode=deep",
+    "timestamp": "2026-01-26 23:36:04.109233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: set()] [Version Monotonicity] Does set() enforce that the new persisted.version is strictly greater than the current version, or can an attacker cause version rollback by calling set() with an older StateWithSummary, corrupting state history? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a90afa7b-d8b0-4d44-8951-d803c15202b5?mode=deep",
+    "timestamp": "2026-01-26 23:36:18.732083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: get_state_summary()] [Version Race] Can a race between get_state_summary() at line 42 and set() at line 63 cause the returned summary version to be inconsistent with the hot_state version returned by get_state()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70593433-374a-4203-94bc-e05adc81cb91?mode=deep",
+    "timestamp": "2026-01-26 23:36:33.678673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: hack_reset()] [Version Consistency] Does hack_reset() ensure state_with_summary passed at line 69 has internally consistent versions before destructuring, or can it accept corrupted StateWithSummary with mismatched versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ac744d0-b433-46f3-a632-4fba3e83de17?mode=deep",
+    "timestamp": "2026-01-26 23:36:50.791454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: get_state()] [Version Synchronization] Can get_state() at line 50-52 return a (HotStateView, State) tuple where the HotStateView reflects version N+1 but State is at version N due to async commit timing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5185f45a-7c11-4fdc-83b7-00f9857a9302?mode=deep",
+    "timestamp": "2026-01-26 23:37:08.091867",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: set()] [Queue Backlog] Does enqueue_commit() at line 65 block if the HotState commit queue is full, and can this cause set() caller to block indefinitely, freezing state snapshot commits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c55b317-dc82-4668-a98d-d770f95ed6ef?mode=deep",
+    "timestamp": "2026-01-26 23:37:26.596879",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: set()] [Queue Ordering] Can out-of-order commits occur if multiple threads call set() concurrently and their enqueue_commit() calls are processed in different order than summary updates, violating version ordering? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b521568-65e0-41fe-99a9-0c436b091f95?mode=deep",
+    "timestamp": "2026-01-26 23:37:46.532329",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: set()] [Commit Failure] If the async HotState committer thread panics or is killed, does enqueue_commit() at line 65 detect this and return an error, or does it silently enqueue states that will never be committed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61e68dc9-bdf4-4251-8ab5-c7a478d9125b?mode=deep",
+    "timestamp": "2026-01-26 23:38:06.200082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: set()] [Channel Disconnect] Can the SyncSender::send() inside enqueue_commit() fail with channel disconnected error if HotState committer thread has exited, and does the expect() at line 146 in hot_state.rs cause panic propagation to set() caller? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8055dc62-41e0-4212-81c5-7c2e74daf879?mode=deep",
+    "timestamp": "2026-01-26 23:38:28.301661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: set()] [Queue Saturation] Does the MAX_HOT_STATE_COMMIT_BACKLOG=10 limit in hot_state.rs create backpressure on set() calls, and can this cause state snapshot commits to fail during high throughput periods? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3bf1c8b-da1c-4975-bb47-7c4d6641ad0c?mode=deep",
+    "timestamp": "2026-01-26 23:38:50.392650",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Struct: PersistedState] [Reference Cycle] Do any Arc references in hot_state (line 17) create circular references with State objects in the commit queue, preventing proper drop and causing memory leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf3011fa-2b9d-40d1-b113-040959701be4?mode=deep",
+    "timestamp": "2026-01-26 23:39:13.114049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: Clone impl] [Deep Clone Semantics] Does the derive(Clone) at line 15 create shallow clones sharing the same Arc<HotState> and Arc<Mutex<StateSummary>>, and can this lead to unexpected shared mutation when code assumes independent copies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c1f88e1-3b9f-4171-8c2f-f0a3aa986711?mode=deep",
+    "timestamp": "2026-01-26 23:39:36.637382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Struct: PersistedState] [Drop Behavior] When PersistedState is dropped, are pending commits in hot_state's queue properly completed or are they aborted, potentially losing state updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d67a180b-fca1-4c7b-895a-561852e1dfff?mode=deep",
+    "timestamp": "2026-01-26 23:40:00.203713",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: get_state()] [Arc Leak] Does get_state() returning Arc<dyn HotStateView> at line 51 prevent HotStateBase from being dropped while execution is using the view, and can long-running execution prevent state garbage collection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_adff9a70-37d2-4c94-928f-4c1455f0027f?mode=deep",
+    "timestamp": "2026-01-26 23:40:25.395629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: get_state_summary()] [Panic Propagation] Can SUBTREE_DROPPER.wait_for_backlog_drop() at line 40 panic if the dropper thread has panicked, propagating panic to execution pipeline and halting block processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da88cd27-73c9-490e-8413-363ecbaedf8e?mode=deep",
+    "timestamp": "2026-01-26 23:40:51.167467",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: set()] [Error Swallowing] Does enqueue_commit() at line 65 silently ignore errors from the async committer thread, allowing state corruption to go undetected until later access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89b32b6d-a274-4531-b7f1-d81027036da1?mode=deep",
+    "timestamp": "2026-01-26 23:41:16.877334",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: get_state_summary()] [Timer Panic] Can the timer creation at line 36 panic if metrics collection fails, and does this prevent state summary retrieval causing execution pipeline failure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4678ae89-af47-4711-978b-5ed8c8c9503f?mode=deep",
+    "timestamp": "2026-01-26 23:41:42.925986",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: hack_reset()] [Silent Corruption] Does hack_reset() validate that the state_with_summary at line 69 is not corrupted before applying it, or can corrupted state be silently persisted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa6934b4-8765-4736-ba49-a6d025a52b68?mode=deep",
+    "timestamp": "2026-01-26 23:42:09.353982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Struct: PersistedState] [Invariant Checking] Are there any runtime assertions checking that hot_state and summary versions remain synchronized, or can they silently diverge without detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ad8fc57-a48f-4558-b82c-b1113aaed5a5?mode=deep",
+    "timestamp": "2026-01-26 23:42:37.201438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: set()] [Double-Write] Can two threads simultaneously call set() with different StateWithSummary objects for the same version, causing one summary update to overwrite the other at line 63 while both enqueue commits proceed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e1aa74f-cad9-49b9-aa64-672142414ca3?mode=deep",
+    "timestamp": "2026-01-26 23:43:04.032304",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Function: get_state()] [Torn Read] Can get_state() at line 51 observe partially committed state where hot_state.get_committed() returns State that's inconsistent with the concurrently updated summary? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa73d030-cdf5-4ca6-9ba9-1a1c633c36f0?mode=deep",
+    "timestamp": "2026-01-26 23:43:31.489486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/persisted_state.rs] [Struct: PersistedState] [Send/Sync Safety] Is PersistedState properly Send+Sync despite containing Arc<HotState> which has internal mutability via async committer thread? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_719528f7-bd65-4148-a8e5-2467571a115d?mode=deep",
+    "timestamp": "2026-01-26 23:43:58.729768",
+    "report_generated": false
+  }
+]
