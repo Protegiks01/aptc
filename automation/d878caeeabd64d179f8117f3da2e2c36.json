@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: new()] [Private key exposure] In the TpsChecker constructor, the mint key from coin_source_args is validated but not sanitized - can an attacker inject a malicious private key that gets logged or leaked through error messages, potentially exposing the root minting authority? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de56a9f3-bd06-4c3c-bb33-787dfac8c5d4?mode=deep",
+    "timestamp": "2026-01-26 01:50:26.429643",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Struct: TpsCheckerConfig] [Cryptographic key leakage] The coin_source_args field containing Ed25519PrivateKey is marked for CLI/file input - does the deserialization process properly zero out key material from memory after use, or can keys be recovered from heap dumps or swap files? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c55c37c-6d8e-4466-94ee-857b532061f4?mode=deep",
+    "timestamp": "2026-01-26 01:50:39.272665",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: new()] [Key validation bypass] The constructor only checks if get_private_key() returns Ok but doesn't validate the key's cryptographic properties - can an attacker supply a weak, malformed, or all-zeros private key that passes validation but enables unlimited minting when used? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8eb69744-8f48-4ba7-b0ac-3b8c76605040?mode=deep",
+    "timestamp": "2026-01-26 01:50:52.498838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Struct: CoinSourceArgs] [Key injection attack] Since coin_source_args is flattened in serde deserialization, can an attacker exploit JSON/YAML parsing to inject multiple private keys or override the intended minting key with a compromised one? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_baeb65f4-ffb7-4d90-8ffc-9c8963c6563f?mode=deep",
+    "timestamp": "2026-01-26 01:51:07.117041",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Key reuse vulnerability] The same coin_source_args private key is used repeatedly across multiple transaction emissions - does this create a timing attack surface where key operations can be observed to extract the private key through side channels? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3aca519e-520b-47fa-b989-cdae1e398fe5?mode=deep",
+    "timestamp": "2026-01-26 01:51:21.831049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Chain ID mismatch attack] The code comments claim baseline and target have same chain ID, but no explicit verification occurs - can an attacker return a different chain_id from the target node API to trick the checker into minting coins on the wrong network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41dabc01-2904-4438-b200-b5787728f8b9?mode=deep",
+    "timestamp": "2026-01-26 01:51:37.262470",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Chain ID manipulation] The chain_id is obtained from target_api_index_provider.provide() without cryptographic verification - can a man-in-the-middle attacker intercept this API call and substitute a malicious chain ID to redirect minting operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5d13f9d-d59d-4c57-abc8-dfdca466924f?mode=deep",
+    "timestamp": "2026-01-26 01:51:53.817375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Cross-chain replay attack] Since the chain_id validation is only a comment assumption, can an attacker replay TPS check transactions from testnet to mainnet or vice versa, potentially minting unlimited coins on production chains? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df0af78c-2ab6-49f1-8c9e-e24f658411d1?mode=deep",
+    "timestamp": "2026-01-26 01:52:12.103875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Chain ID spoofing] The ChainId::new() constructor takes a raw u8 without validation - can an attacker supply an invalid chain ID (e.g., 0, 255, or non-existent chain) that bypasses safety checks in downstream transaction emission? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2754560f-8c5a-42fe-8844-84f551bef4c8?mode=deep",
+    "timestamp": "2026-01-26 01:52:31.619330",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [TPS inflation attack] The emit_transactions_with_cluster() function returns stats that include rate.submitted and rate.committed - can a malicious target node artificially inflate these values by accepting but not executing transactions to pass TPS requirements? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16d438f6-7de2-43e5-84e9-d5a60db9dc13?mode=deep",
+    "timestamp": "2026-01-26 01:52:52.686561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Transaction replay vulnerability] The transaction emitter mints and sends transactions using the same coin source repeatedly - are nonces/sequence numbers properly incremented, or can an attacker replay minted transactions to drain the source account? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0045f594-7de5-4af5-a672-2e655b21b2c3?mode=deep",
+    "timestamp": "2026-01-26 01:53:14.841562",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Double-spending in TPS test] If the target node is Byzantine, can it accept the same transaction multiple times in its committed count while only processing it once, artificially boosting TPS metrics to pass validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc340a5d-ef18-49a8-aed2-94c0db907fb3?mode=deep",
+    "timestamp": "2026-01-26 01:53:37.405712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Unlimited minting vulnerability] The transaction emitter uses coin_source_args to mint coins for TPS testing - are there rate limits or caps on minting, or can a compromised checker mint unlimited APT tokens during extended TPS evaluations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35a576b4-afd1-4cb8-82b5-98d84cc4c8f2?mode=deep",
+    "timestamp": "2026-01-26 01:54:01.680626",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Transaction censorship bypass] Can a malicious target node selectively process only the checker's transactions while censoring user transactions, achieving high TPS in testing but low TPS in production? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6f47244-1b95-44d5-b1a6-6a7b5872049f?mode=deep",
+    "timestamp": "2026-01-26 01:54:27.149027",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Float to integer overflow] The rate.submitted and rate.committed are f64 values cast to u64 in comparisons and error messages - can extremely large float values (e.g., f64::MAX) cause integer overflow when cast, bypassing TPS validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93716989-4443-4e19-afba-0245c6b7d0ad?mode=deep",
+    "timestamp": "2026-01-26 01:54:53.180719",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Minimum TPS bypass via underflow] The comparison 'rate.submitted < (self.config.minimum_tps as f64)' uses implicit casting - can an attacker set minimum_tps to 0 or cause underflow conditions to bypass TPS requirements entirely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bce4c03-6dfe-4875-9f69-0b5be8090e13?mode=deep",
+    "timestamp": "2026-01-26 01:55:20.217931",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [Negative TPS injection] Since rate values are f64, can a malicious stats implementation return negative values for rate.submitted or rate.committed that pass validation checks due to incorrect comparison logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d852d24a-b8f5-43c1-a51c-66dbec028e97?mode=deep",
+    "timestamp": "2026-01-26 01:55:48.412851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [NaN/Infinity TPS bypass] Can the stats.rate() function return NaN or Infinity values that bypass all comparison checks (since NaN != NaN and Infinity comparisons behave unexpectedly), allowing any node to pass TPS validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f007673e-bf5a-4d7b-891e-39bdb819b245?mode=deep",
+    "timestamp": "2026-01-26 01:56:16.953998",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Struct: TpsCheckerConfig] [repeat_target_count overflow] The repeat_target_count (usize) is used to duplicate target URLs - can an attacker set this to usize::MAX causing memory exhaustion when creating the targets vector, leading to DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60b6b624-467f-4237-958e-24b924428c29?mode=deep",
+    "timestamp": "2026-01-26 01:56:45.058622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Struct: TpsCheckerConfig] [deny_unknown_fields bypass] The config uses #[serde(deny_unknown_fields)] but nested structures might not - can an attacker inject malicious configuration fields into emit_config or coin_source_args that override security settings? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc6f8de0-ba20-4075-af6e-b49a9d579273?mode=deep",
+    "timestamp": "2026-01-26 01:57:12.583098",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Struct: TpsCheckerConfig] [minimum_tps validation] The minimum_tps field (u64) has no bounds checking - can an attacker set it to 0 or u64::MAX to either disable validation or cause integer overflow in comparisons? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63788f2f-f7bc-4b2e-9d37-b48ab9ba64d7?mode=deep",
+    "timestamp": "2026-01-26 01:57:41.471856",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: default_repeat_target_count()] [Default value exploitation] The default repeat_target_count is 1, but can this be overridden at runtime to 0, causing empty target vectors and bypassing all TPS checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa3e8cd7-8ea6-4c3c-ad49-1afce400fc32?mode=deep",
+    "timestamp": "2026-01-26 01:58:09.715701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Struct: EmitArgs] [Flattened config injection] emit_config and emit_workload_configs are flattened via serde - can an attacker inject overlapping field names that override critical security parameters like gas limits or transaction counts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a96695b9-d745-4aa0-b3c9-8bc70a9935d1?mode=deep",
+    "timestamp": "2026-01-26 01:58:39.165362",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: new()] [Constructor bypass] The new() constructor only validates the private key exists but doesn't check if other config fields are valid - can an attacker create a TpsChecker with malformed emit_config that crashes during check()? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93d2da99-9625-4a5f-825f-b8ebdf60b40d?mode=deep",
+    "timestamp": "2026-01-26 01:59:07.037992",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/node-checker/src/checker/tps.rs] [Function: check()] [URL injection attack] The target_url is built using client.build_path('/').unwrap() - can an attacker manipulate the base URL in the provider to inject malicious URLs (e.g., 'javascript:', 'file://') that bypass validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46eada87-2729-40dc-ab31-e09025a5b7e5?mode=deep",
+    "timestamp": "2026-01-26 01:59:35.013401",
+    "report_generated": false
+  }
+]
