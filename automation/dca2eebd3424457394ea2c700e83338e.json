@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Authentication Bypass] When receiver equals self.author (line 79), the message bypasses normal network validation and signature checking - can a Byzantine validator exploit this to send unauthenticated messages to itself and create conflicting consensus states? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a583f2b-fc90-4b0c-ab48-8fc7d8a7dcf5?mode=deep",
+    "timestamp": "2026-01-26 05:10:39.011047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Timeout Manipulation] The self-message path uses tokio::time::timeout on the oneshot receiver (line 84) - can an attacker deliberately delay response processing to trigger timeouts selectively, causing inconsistent message delivery between self-messages and network messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5058cc09-448d-4a5b-9a9e-cf9b9541434a?mode=deep",
+    "timestamp": "2026-01-26 05:10:51.193396",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Race Condition] The self-messaging creates Event::RpcRequest with self.author as both sender and peer_id (line 82) - can concurrent self-messages race with network messages to cause message reordering or duplicate processing that breaks consensus ordering guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0637c89d-2fc7-4db8-9a53-ea51e0d79325?mode=deep",
+    "timestamp": "2026-01-26 05:11:03.889092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Resource Exhaustion] The spawn_blocking for deserialization (line 86) creates unbounded blocking threads - can a malicious validator flood self-messages with large payloads to exhaust thread pool resources and cause denial of service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9ad2358-584f-4ab1-a6d7-f4b6b2886593?mode=deep",
+    "timestamp": "2026-01-26 05:11:16.972035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Error Handling Inconsistency] Self-messages bail with generic 'self rpc failed' (line 89) while network RPCs propagate specific errors - can this error handling difference leak timing information or cause Byzantine validators to behave inconsistently during timeout scenarios? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b8cfbdd-9eec-426f-b28e-0aed210ad7de?mode=deep",
+    "timestamp": "2026-01-26 05:11:30.943856",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Deserialization Attack] The protocol.from_bytes() call in spawn_blocking (line 86) has no size limits - can an attacker craft malicious self-messages with exponential deserialization complexity (e.g., deeply nested structures) to cause CPU exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0efeed02-2738-4f02-b224-bc11b30366fb?mode=deep",
+    "timestamp": "2026-01-26 05:11:45.984926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Channel Saturation] The self_sender channel is cloned and sent to (line 83) - can rapid self-message sending saturate the channel buffer, blocking other critical consensus messages and causing liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d093cf3f-c7bf-48c4-bc7f-5cdd8b5ad1e7?mode=deep",
+    "timestamp": "2026-01-26 05:12:01.473371",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Protocol Validation Bypass] Protocol ID is taken from RPC[0] array (line 81) without validation - can this fixed protocol assumption be exploited if multiple protocols are added, allowing messages to bypass protocol-specific validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9d050fa-3fcf-48a2-ae07-ea07a6351dbe?mode=deep",
+    "timestamp": "2026-01-26 05:12:18.371090",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Oneshot Channel Leak] If timeout occurs before oneshot receiver responds (line 84), the response_sender may still complete - can this lead to memory leaks or dropped responses that accumulate over time during network instability? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35b8ede9-17d6-4024-8c1b-67776fda2d17?mode=deep",
+    "timestamp": "2026-01-26 05:12:35.247641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: send_rb_rpc()] [Async Task Panics] The spawn_blocking task could panic during deserialization (line 86) - are panics properly propagated, or can they cause silent message drops that break consensus safety guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b37bbe7-daee-4901-a3a8-c9efb552a51e?mode=deep",
+    "timestamp": "2026-01-26 05:12:53.750431",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [Panic on Misconfiguration] The function panics if network setup is incorrect (line 175) - can an attacker manipulate network configuration during initialization to cause validator node crashes and prevent network participation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7104ab9e-10c5-4b37-9a3f-46d6eb338ed8?mode=deep",
+    "timestamp": "2026-01-26 05:13:12.166204",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [Network ID Validation] Only NetworkId::Validator is accepted (line 173) - can an attacker exploit other network IDs (public, VFN) to bypass JWK consensus validation if network configuration is compromised? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cfa9b22-646a-49dc-9c79-a87ba4d7cf50?mode=deep",
+    "timestamp": "2026-01-26 05:13:31.854354",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [Channel Size] The rpc_tx channel has hardcoded size of 10 (line 169) - can Byzantine validators flood with valid RPC requests to fill this small buffer, causing legitimate messages to be dropped and breaking liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b28f4f8-12ce-426a-9200-f0ed994f9f1d?mode=deep",
+    "timestamp": "2026-01-26 05:13:52.341374",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [Stream Selection Order] select_all and select combine network events and self_receiver (lines 180-181) - does the stream selection provide fair scheduling, or can one stream starve the other causing message processing delays? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3961e0da-2e68-461d-b2b9-89323ec5d73e?mode=deep",
+    "timestamp": "2026-01-26 05:14:13.338552",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [Network Count Validation] The check for network_and_events.values().len() != 1 (line 172) assumes exactly one network - can multiple validator networks exist simultaneously and bypass this check to create split-brain scenarios? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3097e0e2-468d-407a-987b-22922ca0af78?mode=deep",
+    "timestamp": "2026-01-26 05:14:35.515907",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [FIFO Queue Policy] The QueueStyle::FIFO policy (line 169) provides no priority mechanism - can low-priority messages block high-priority consensus-critical messages during high load, affecting safety or liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78f5fb11-f5be-41e5-bbe4-620aad5419f0?mode=deep",
+    "timestamp": "2026-01-26 05:14:58.244532",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [None Capacity Limit] The channel has None as max capacity (line 169) - what prevents unbounded memory growth if messages are produced faster than consumed, potentially causing OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02c7ee72-68ac-4789-8fb4-26cf5a891997?mode=deep",
+    "timestamp": "2026-01-26 05:15:21.937356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [Event Stream Fusion] The network_events stream is fused (line 180) - can stream termination on one network cause the entire event processing to halt, breaking consensus participation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f516bde7-37a2-4f66-bcab-8e1e4ce44b51?mode=deep",
+    "timestamp": "2026-01-26 05:15:46.960095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [Self Receiver Integration] The self_receiver is combined with network events via select - can messages from self_receiver bypass network-level rate limiting or authentication that network events receive? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34add31a-8d29-4278-bc65-62f3ae5fe8e4?mode=deep",
+    "timestamp": "2026-01-26 05:16:11.580511",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::new()] [Network Service Mutation] The network_service_events is consumed by into_network_and_events() (line 171) - can partial initialization failure leave the network in an inconsistent state without proper rollback? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8de0535b-3bcc-402a-82af-e15b66d2d6fc?mode=deep",
+    "timestamp": "2026-01-26 05:16:37.883255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::start()] [Message Filtering] All non-RpcRequest events are ignored (lines 205-207) - can attackers exploit this by sending DirectSend messages or other event types that should trigger security responses but are silently dropped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62643aaf-024a-453b-872b-a4a04b74eeaf?mode=deep",
+    "timestamp": "2026-01-26 05:17:05.212411",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::start()] [Sender Validation] The peer_id from Event::RpcRequest is used directly without validation (line 191) - can a malicious network peer spoof the peer_id to impersonate authorized validators in JWK consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_701343cb-36fd-4f4d-9dff-2b9ecde0c384?mode=deep",
+    "timestamp": "2026-01-26 05:17:31.346069",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::start()] [Channel Push Error] Errors from rpc_tx.push are only logged with warn! (lines 201-203) - can channel saturation cause critical consensus messages to be dropped silently without alerting the validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cbc33601-3edc-4fe2-a167-0dbc5172e91c?mode=deep",
+    "timestamp": "2026-01-26 05:17:57.907961",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::start()] [Message Loop Termination] The while loop terminates if all_events returns None (line 189) - can network disconnection or stream closure cause permanent exit from message processing without recovery mechanism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_903b50cc-c9b0-4b75-81c8-557c2760d8f0?mode=deep",
+    "timestamp": "2026-01-26 05:18:23.915783",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/network.rs] [Function: NetworkTask::start()] [Duplicate peer_id] Both peer_id and sender are set to the same value (lines 191, 194) in the tuple push (line 201) - is this duplication intentional, or can it cause confusion in downstream processing that expects different values? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d10cd6f2-1684-4b60-9dd0-d61d532099ef?mode=deep",
+    "timestamp": "2026-01-26 05:18:48.700000",
+    "report_generated": false
+  }
+]
