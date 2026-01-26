@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: new_mempool_notifier_listener_pair()] [Integer overflow] Can an attacker pass u64::MAX or extremely large values for max_pending_mempool_notifications causing integer overflow when cast to usize on line 54, potentially creating unbounded channel capacity leading to memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_899a519c-735d-43f8-9e99-07a6bedb616e?mode=deep",
+    "timestamp": "2026-01-26 23:31:35.532570",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: new_mempool_notifier_listener_pair()] [Resource exhaustion] Can a malicious state sync component create multiple notifier/listener pairs with max_pending_mempool_notifications set to billions, exhausting node memory through channel buffer allocation before any notifications are sent? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_048b4c47-6814-4407-91b2-88deea0deb27?mode=deep",
+    "timestamp": "2026-01-26 23:31:48.248225",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Race condition] When notification_sender.clone() is called on line 106, can concurrent calls to notify_new_commit() create race conditions where notifications are sent out-of-order, causing mempool to process committed transactions in wrong sequence leading to state inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_465b6ee5-13bc-4ee6-a582-44b677d1eee9?mode=deep",
+    "timestamp": "2026-01-26 23:32:01.645381",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Channel blocking] If mempool stops consuming notifications but doesn't close the channel, can state sync become permanently blocked on line 107 waiting for send() to complete, causing total loss of liveness for the entire blockchain? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75eed187-bd72-43fd-b38a-0a73f8bcc441?mode=deep",
+    "timestamp": "2026-01-26 23:32:15.194808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Notification loss] When send() fails on line 108 and returns CommitNotificationError, are committed transactions permanently lost from mempool's view, potentially allowing double-spending if mempool still has those transactions in its pool? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0790d4b-6f8c-419d-99d7-582af4bdb4ca?mode=deep",
+    "timestamp": "2026-01-26 23:32:29.893325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Async cancellation] If the Future returned by notify_new_commit() is dropped/cancelled while send().await is pending on line 107, can this create a partial notification state where some validators received the notification but others didn't, causing network partition? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40801802-9a10-4298-b725-b1116598769b?mode=deep",
+    "timestamp": "2026-01-26 23:32:45.505405",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Clone safety] Does cloning notification_sender on line 106 before send() create a scenario where the original sender is dropped but the cloned sender continues, potentially sending stale notifications after state sync has moved to new epoch? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5b06509-81d1-47e3-a380-1d1fc2e3f2e6?mode=deep",
+    "timestamp": "2026-01-26 23:33:02.901843",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Struct: MempoolNotifier] [Channel lifecycle] Can the notification_sender channel be closed while MempoolNotifier instances still exist, causing silent failures where state sync thinks it's notifying mempool but notifications are being dropped, leading to stale mempool state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d1a5e46-dee3-4660-8a58-904a3cb80f8e?mode=deep",
+    "timestamp": "2026-01-26 23:33:22.322287",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Transaction filtering bypass] The filter_map on lines 84-94 only extracts UserTransaction variants - can an attacker craft a malicious Transaction variant that looks like UserTransaction but contains BlockMetadata or GenesisTransaction data, bypassing mempool's transaction validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bfdf939a-8a3b-41e9-b8ea-6b023e8ceb87?mode=deep",
+    "timestamp": "2026-01-26 23:33:42.567850",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Incomplete filtering] Line 92 silently drops non-user transactions with None - can this cause critical system transactions (BlockMetadata, StateCheckpoint) to never notify mempool, leading to inconsistent transaction accounting and potential fund loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_035e26e3-6b4c-46c3-aa7b-0f5abc6dd7aa?mode=deep",
+    "timestamp": "2026-01-26 23:34:04.325163",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Sender extraction] When signed_txn.sender() is called on line 88, can a malicious UserTransaction have a forged sender address that differs from the actual signature's public key, causing mempool to remove wrong transactions from its pool? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e484c52-48ae-4b72-8510-3022bb382b18?mode=deep",
+    "timestamp": "2026-01-26 23:34:26.208637",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Replay protector extraction] Does signed_txn.replay_protector() on line 89 properly validate sequence numbers, or can an attacker commit a transaction with sequence number u64::MAX causing integer overflow when mempool processes subsequent transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_414cc961-f0d9-41d4-b582-41d071d6d4dd?mode=deep",
+    "timestamp": "2026-01-26 23:34:49.125252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Use case parsing] The parse_use_case() call on line 90 - can an attacker manipulate transaction metadata to return an incorrect UseCaseKey, causing mempool to miscategorize committed transactions and violate use-case-based prioritization invariants? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f58587cf-6ca3-4e7a-8fd3-ac5f047dfe1b?mode=deep",
+    "timestamp": "2026-01-26 23:35:12.846668",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Iterator side effects] The iter() on line 85 creates references to transactions - can modifications to the original transactions vector during iteration cause use-after-free or double-borrow panics leading to consensus node crash? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_377c5146-b352-42ef-a111-7e6c256dca15?mode=deep",
+    "timestamp": "2026-01-26 23:35:38.806507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Empty transaction list] If transactions vector is empty on line 84, does sending an empty user_transactions vec to mempool on line 99 cause mempool to incorrectly update its timestamp without removing any transactions, breaking temporal ordering assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61eb6b66-e813-4a89-a532-4b678d1eca94?mode=deep",
+    "timestamp": "2026-01-26 23:36:04.822122",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Collection allocation] The collect() on line 94 allocates a new Vec - can an attacker send massive transaction lists causing OOM during collection, crashing the validator node and causing liveness failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d567df71-b4da-4608-b465-c936773d2955?mode=deep",
+    "timestamp": "2026-01-26 23:36:32.205561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Timestamp manipulation] The block_timestamp_usecs parameter on line 82 is u64 - can a malicious validator propose a block with timestamp set to u64::MAX, causing integer overflow in mempool's time-based eviction logic and preventing transaction expiration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4be270b2-54b4-4426-85f0-7bc8c14a22cb?mode=deep",
+    "timestamp": "2026-01-26 23:36:59.238560",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Timestamp ordering] Are there checks ensuring block_timestamp_usecs increases monotonically across commits? Can an attacker send notifications with decreasing timestamps causing mempool to process blocks out-of-order and violate transaction ordering guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dea1782a-3482-4fa3-96d7-8cd9543761fa?mode=deep",
+    "timestamp": "2026-01-26 23:37:28.235263",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Timestamp zero] If block_timestamp_usecs is 0 (as used in tests on line 211), does mempool incorrectly treat this as genesis block and reset its entire transaction pool, causing legitimate pending transactions to be dropped? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1b44a3d-77d9-4456-9c1f-63d76db0827a?mode=deep",
+    "timestamp": "2026-01-26 23:37:56.598761",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Timestamp granularity] With microsecond precision (usecs), can an attacker exploit timestamp collisions by committing multiple blocks at the same microsecond, causing mempool to only process the first notification and ignore subsequent ones at same timestamp? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eaa4fa42-884a-479c-8030-7ec754f0bc75?mode=deep",
+    "timestamp": "2026-01-26 23:38:26.000553",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Error propagation] When CommitNotificationError is returned on line 110, does the caller retry the notification or permanently lose those committed transactions, potentially causing permanent state divergence between mempool and consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0602d0fc-d98c-4c67-a7b3-18200100b638?mode=deep",
+    "timestamp": "2026-01-26 23:38:54.560234",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Enum: Error] [Error information leak] The CommitNotificationError on line 27 includes the full error string - can this leak sensitive information about validator internals or channel state to unauthorized observers monitoring state sync logs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e368e2d7-e8d3-4c36-890b-a8950148c52e?mode=deep",
+    "timestamp": "2026-01-26 23:39:21.388598",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Enum: Error] [TimeoutWaitingForMempool] The TimeoutWaitingForMempool error on line 29 is defined but never constructed in the code - is there missing timeout logic that should prevent notify_new_commit() from blocking forever on slow mempool? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81f4f622-c7f9-458e-a656-4b1cfc620218?mode=deep",
+    "timestamp": "2026-01-26 23:39:48.654233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Enum: Error] [UnexpectedErrorEncountered] Line 31 defines UnexpectedErrorEncountered but it's never used - are there unhandled error paths in async operations that should be caught and reported, potentially masking critical failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97f63ac5-d336-4324-b255-a1aaa22dda32?mode=deep",
+    "timestamp": "2026-01-26 23:40:17.804096",
+    "report_generated": false
+  },
+  {
+    "question": "[File: state-sync/inter-component/mempool-notifications/src/lib.rs] [Function: notify_new_commit()] [Partial failure] If send() fails after user_transactions have been extracted but before notification is sent (lines 84-108), is there cleanup logic to prevent memory leaks from the allocated CommittedTransaction vector? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_970d1ba3-bb28-41a8-be41-2ac23bfbb771?mode=deep",
+    "timestamp": "2026-01-26 23:40:44.846520",
+    "report_generated": false
+  }
+]
