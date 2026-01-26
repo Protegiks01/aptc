@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Struct: ShellSafeName] [Regex bypass] Can an attacker craft names with Unicode normalization tricks (e.g., homoglyphs, zero-width characters) that pass the PATTERN regex but execute malicious commands when passed to shell adapters, leading to remote code execution on backup nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aacea618-be5d-470c-8d1e-7e4aa3821a76?mode=deep",
+    "timestamp": "2026-01-26 14:34:04.176973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Function: ShellSafeName::sanitize()] [Command injection] Does the regex pattern \\\\A[a-zA-Z0-9][a-zA-Z0-9._-]{2,126}\\\\z properly prevent all shell metacharacters, or can attackers use edge cases like '..', './', or '--' sequences to escape backup directories and overwrite critical system files? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4216630-7192-4d59-88d0-b63969ec9605?mode=deep",
+    "timestamp": "2026-01-26 14:34:16.904501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Struct: ShellSafeName] [Length validation bypass] The pattern enforces {2,126} characters after the first, meaning total length 3-127 bytes. Can attackers exploit maximum length names (127 chars) to cause buffer overflows in downstream command adapters or file system operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b3db0c6-a483-4f34-83f1-420be19b4c0c?mode=deep",
+    "timestamp": "2026-01-26 14:34:30.595866",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Function: ShellSafeName::try_from()] [Race condition] Between sanitize() validation at line 66 and actual usage, can an attacker exploit TOCTOU (time-of-check-time-of-use) race conditions by modifying the underlying String after validation but before shell command execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2e1b86c-1bd3-4cff-83db-0c6a41fcd769?mode=deep",
+    "timestamp": "2026-01-26 14:34:44.029118",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Const: ShellSafeName::PATTERN] [Regex DoS] Can an attacker provide carefully crafted input strings that cause catastrophic backtracking in the Regex engine, leading to denial of service during backup operations and preventing disaster recovery? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ee9d50b-d0d9-4120-9659-ef8d882d02d2?mode=deep",
+    "timestamp": "2026-01-26 14:34:58.796854",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Function: ShellSafeName::from_str()] [Memory exhaustion] Does from_str() properly validate input length BEFORE allocating String memory, or can attackers trigger OOM by sending gigabyte-sized strings that are rejected only after allocation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_853cde11-9552-4120-b49f-65ce0ff0a0be?mode=deep",
+    "timestamp": "2026-01-26 14:35:14.401451",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Impl: Deref for ShellSafeName] [Unauthorized access] The Deref implementation at line 78-84 exposes the inner String directly - can attackers exploit this to bypass validation by obtaining mutable references and modifying the inner string after construction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75157185-8db9-491e-ae26-8b974a42007e?mode=deep",
+    "timestamp": "2026-01-26 14:35:32.021816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Static: Lazy<Regex>] [Initialization race] The Lazy::new() at line 56 initializes the regex pattern - can concurrent calls to sanitize() during node startup cause race conditions where the regex is used before full initialization, accepting invalid names? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4df2fbec-e94a-4afa-a7f4-0d24a7bf0241?mode=deep",
+    "timestamp": "2026-01-26 14:35:50.824132",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Struct: ShellSafeName] [Case sensitivity exploit] The pattern allows both uppercase and lowercase, but file systems may be case-insensitive (Windows, macOS) - can attackers create collisions between 'Backup' and 'backup' to overwrite legitimate backups? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7df6a19e-53da-4ad1-895e-fa93c1e35182?mode=deep",
+    "timestamp": "2026-01-26 14:36:10.519240",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Function: ShellSafeName::sanitize()] [Special name collision] Does sanitize() reject reserved file system names like 'CON', 'PRN', 'AUX', 'NUL' on Windows, or can these cause backup operations to fail or write to special devices? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_186cd3ee-3b43-4f94-9181-2bd3a2a88bf7?mode=deep",
+    "timestamp": "2026-01-26 14:36:31.080446",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Function: TextLine::new()] [Newline injection] The validation at line 111 checks for \\\\n and \\\\r, but does it handle all Unicode line separators (U+2028, U+2029, U+0085) that could break metadata file parsing and cause state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b228779f-8a24-4a48-99ca-09c1eb6826b2?mode=deep",
+    "timestamp": "2026-01-26 14:36:52.334410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Struct: TextLine] [Metadata corruption] After validation, line 113 appends '\\\\n' to every TextLine - can attackers exploit metadata files with missing or double newlines to cause parsing errors during restore, leading to permanent data loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4253665a-b0f5-433e-9796-bd74651748b6?mode=deep",
+    "timestamp": "2026-01-26 14:37:14.108119",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Function: TextLine::new()] [NULL byte injection] Does the validation reject NULL bytes (\\\\0) that could truncate metadata entries in C-based file system operations, causing incomplete backup manifests and unrecoverable state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a6eb69a-a252-4c30-9e60-80fd99001e51?mode=deep",
+    "timestamp": "2026-01-26 14:37:37.114255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Impl: AsRef<str> for TextLine] [Memory disclosure] The AsRef implementation at line 118 returns the string INCLUDING the appended newline - can this cause off-by-one errors in consumers that don't expect trailing newlines, leaking adjacent memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_522e2cee-6934-4af8-a0dd-ac0681f6df49?mode=deep",
+    "timestamp": "2026-01-26 14:38:01.014445",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Struct: TextLine] [UTF-8 validation bypass] Does TextLine::new() validate that the input is valid UTF-8, or can attackers inject invalid UTF-8 sequences that cause panics in downstream string operations during restore? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c671de06-30e3-4fe3-99e4-2f0a135fb491?mode=deep",
+    "timestamp": "2026-01-26 14:38:24.058942",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Function: TextLine::new()] [Control character injection] Beyond newlines, are other control characters (tabs, backspace, escape sequences) validated? Can these manipulate terminal output during backup/restore operations to hide malicious activity? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b663b3d6-8a05-4ee1-b3e9-02ef22462915?mode=deep",
+    "timestamp": "2026-01-26 14:38:44.247202",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Struct: TextLine] [Length limit missing] Unlike ShellSafeName (127 char limit), TextLine has no explicit length limit - can attackers create gigabyte-sized metadata lines causing memory exhaustion during list_metadata_files()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07b43f47-6277-40d9-94be-e04acd4dbc20?mode=deep",
+    "timestamp": "2026-01-26 14:39:09.291140",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Trait method: BackupStorage::create_backup()] [Name collision attack] If multiple concurrent backup operations call create_backup() with the same name, does the implementation guarantee atomicity, or can race conditions cause backup files to intermix, corrupting both backups? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1a03649-4aa8-4048-8f55-d37966f2ea2c?mode=deep",
+    "timestamp": "2026-01-26 14:39:34.202074",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Trait method: BackupStorage::create_backup()] [Resource exhaustion] Can an attacker repeatedly call create_backup() with different names to create unlimited directories/buckets, exhausting storage space and preventing legitimate backups needed for disaster recovery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0c9fd29-dc98-4ccd-a1f9-5706f81c365d?mode=deep",
+    "timestamp": "2026-01-26 14:39:59.677088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Trait method: BackupStorage::create_backup()] [BackupHandle manipulation] The returned BackupHandle is a String with no validation - can attackers manipulate this handle in subsequent create_for_write() calls to write files outside the backup directory via path traversal? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8bf2409-bcde-4a7b-a27a-37ab108d6ad5?mode=deep",
+    "timestamp": "2026-01-26 14:40:25.224413",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Type alias: BackupHandle] [Handle reuse vulnerability] Are BackupHandles unique per backup, or can an attacker reuse a handle from a previous backup to overwrite or corrupt archived historical data, breaking blockchain immutability guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a88d607-0d3a-405c-8496-0fe08e954552?mode=deep",
+    "timestamp": "2026-01-26 14:40:49.963306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Trait method: BackupStorage::create_backup()] [Incomplete backup cleanup] If create_backup() partially succeeds but fails during directory creation, are partial directories cleaned up, or do they accumulate causing storage leaks and potential name collision attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7095d31e-bcd8-4e8c-9196-47fe74269167?mode=deep",
+    "timestamp": "2026-01-26 14:41:10.920283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Trait method: BackupStorage::create_for_write()] [Path traversal] The backup_handle parameter is untrusted input from create_backup() - can attackers craft handles like '../../../etc/passwd' to write arbitrary files outside the backup directory, achieving code execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78a13a92-c8fb-4e15-8268-b5fffee9321d?mode=deep",
+    "timestamp": "2026-01-26 14:41:34.881937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Trait method: BackupStorage::create_for_write()] [FileHandle forgery] The returned FileHandle is stored in manifests and used for restoration - can attackers forge FileHandles pointing to sensitive files (private keys, wallet files) to exfiltrate data during restore operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63b2dd7e-6146-4092-95d3-8716b0e7afa4?mode=deep",
+    "timestamp": "2026-01-26 14:41:59.410274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/storage/mod.rs] [Trait method: BackupStorage::create_for_write()] [AsyncWrite safety] The returned AsyncWrite is Send + Unpin - can concurrent writes to the same file handle cause interleaved data corruption, making backups unrestorable and causing permanent state loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52231724-17f6-463d-aa99-f37401209cd6?mode=deep",
+    "timestamp": "2026-01-26 14:42:25.344027",
+    "report_generated": false
+  }
+]
