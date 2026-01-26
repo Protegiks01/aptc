@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: check_ready()] [Layout Cache Poisoning] When num_cached_layouts exceeds max_layout_cache_size triggering flush_layout_cache() (lines 179-181), can stale layout references in module cache cause type layout mismatches during parallel execution, leading to incorrect resource access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f0be5ea-3ae0-43f4-8671-40b76c9c362c?mode=deep",
+    "timestamp": "2026-01-26 07:01:45.809500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: check_ready()] [Partial Flush] Does flush_layout_cache() (line 180) only flush layouts while keeping modules cached? Can this create inconsistencies where cached modules reference cleared layout entries, causing null pointer dereferences or use-after-free bugs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e35b605-d1fb-46d1-8d24-a9fb638a713c?mode=deep",
+    "timestamp": "2026-01-26 07:01:58.412361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: check_ready()] [Layout Overflow] Can num_cached_layouts() return a value that overflows when cast to i64 (line 178), reporting negative metrics while actual layout cache grows unbounded until memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de8481fe-979e-4886-8290-8ab594faf76e?mode=deep",
+    "timestamp": "2026-01-26 07:02:11.340627",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: check_ready()] [Generic Layout Attack] Does the layout cache store only non-generic layouts as the metric name suggests (GLOBAL_LAYOUT_CACHE_NUM_NON_ENTRIES)? Can attackers exploit generic layouts that aren't counted to bypass cache size limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8a3fec7-941c-4bb7-b7d8-6cbef44313c3?mode=deep",
+    "timestamp": "2026-01-26 07:02:24.772259",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: try_lock_inner()] [Lock Failure Fallback] When try_lock() fails (line 220), the code falls back to AptosModuleCacheManagerGuard::None with empty caches (lines 225-228). Can this create state divergence where some validators use hot cached modules while others use cold empty caches, producing different execution results? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8313f32c-5fd0-4607-883f-13cac243c73c?mode=deep",
+    "timestamp": "2026-01-26 07:02:38.840358",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: try_lock_inner()] [Alert Bypass] The alert_or_println! macro (line 221) only prints in testing mode but uses alert! in production. Can an attacker trigger repeated lock failures to spam critical alerts, desensitizing operators to real attacks hidden in alert noise? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff5902f6-f9cf-49a5-8852-0a97cb204614?mode=deep",
+    "timestamp": "2026-01-26 07:02:54.090523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: try_lock_inner()] [Race Window] Between acquiring storage_environment (line 212-213) and calling check_ready (line 217), can the underlying state_view change causing environment to become stale, leading to modules being verified against wrong verifier configs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc50e422-6713-47f2-a18e-5f0931ec9b73?mode=deep",
+    "timestamp": "2026-01-26 07:03:10.179920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: try_lock_inner()] [Determinism Break] When lock acquisition fails, different validators may get None vs Guard results. Can this non-determinism in cache state cause validators to compute different state roots for the same block, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1e08a5c-a7b0-46ca-a60d-347e9605ec8c?mode=deep",
+    "timestamp": "2026-01-26 07:03:27.411955",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: try_lock_inner()] [Poison Lock] If the Mutex is poisoned due to a panic in check_ready(), does try_lock() handle the PoisonError properly or could it return None incorrectly, forcing all subsequent executions to use empty caches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc2bdd1e-e320-4f02-97f3-97cb31716bc4?mode=deep",
+    "timestamp": "2026-01-26 07:03:46.051668",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: try_lock()] [Cold Start Attack] When prefetch_framework_code is enabled (line 246) but framework loading fails (lines 247-250), can an attacker exploit the error handling to prevent framework from ever being cached, forcing validators to repeatedly load from storage and degrading performance? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35c37d1b-c8cc-4a71-8ec9-941ac895171e?mode=deep",
+    "timestamp": "2026-01-26 07:04:05.609110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: try_lock()] [Cache Timing Attack] The check guard.module_cache().num_modules() == 0 (line 246) only prefetches when cache is empty. Can attackers insert a single dummy module to bypass prefetching, causing cold cache performance on critical framework code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f0f9460-d60f-4e98-b0ed-04570d8605b0?mode=deep",
+    "timestamp": "2026-01-26 07:04:26.383476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: try_lock()] [Error Conversion] When prefetch_aptos_framework fails, the error is converted to VMError then VMStatus (lines 247-250). Does this conversion lose critical error details that could help diagnose malicious module tampering in storage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fbf0cf20-b362-43ff-a770-1df199051d98?mode=deep",
+    "timestamp": "2026-01-26 07:04:47.911180",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: try_lock()] [TOCTOU Race] Between checking num_modules() == 0 (line 246) and calling prefetch_aptos_framework (line 247), can another thread populate the cache, causing duplicate prefetch attempts or race conditions in module insertion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37294b4e-d04e-4997-85a1-9c0df5c3fbc1?mode=deep",
+    "timestamp": "2026-01-26 07:05:10.858313",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: prefetch_aptos_framework()] [Framework Tampering] When loading transaction_validation module (lines 357-368), the fuzzing build uses unmetered_get_module_skip_verification which bypasses verification. Can attackers exploit fuzzing mode to inject malicious framework code that executes with system privileges? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb54960c-ef97-459d-bb75-9261fbbc31d4?mode=deep",
+    "timestamp": "2026-01-26 07:05:34.905329",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: prefetch_aptos_framework()] [Verification Bypass] In non-fuzzing mode, unmetered_get_eagerly_verified_module is used (lines 363-367), but can attackers manipulate the AccountAddress::ONE address or ident_str! macro to load different modules that aren't properly verified? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62b63412-2399-40a9-a3f6-f1dec460c455?mode=deep",
+    "timestamp": "2026-01-26 07:05:58.424565",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: prefetch_aptos_framework()] [Transitive Closure Attack] The comment states transitive closure will be verified and cached (lines 351-354), but if an attacker plants a malicious module in the dependency tree of transaction_validation, will it be eagerly loaded into cache without proper validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e706fca-2f27-4c5a-a405-30118e0f7b75?mode=deep",
+    "timestamp": "2026-01-26 07:06:23.088667",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: prefetch_aptos_framework()] [Error Masking] When module loading fails, a PanicError with CodeInvariantError is returned (lines 360, 366). Can repeated failures be used to DoS the validator by triggering panic conditions that force node restarts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5f341ad-8179-4170-a578-14af57e08999?mode=deep",
+    "timestamp": "2026-01-26 07:06:49.099270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: prefetch_aptos_framework()] [Cache Insertion Race] Between draining verified_module_code_iter (line 374) and calling insert_verified (lines 375-377), can concurrent threads access module_cache_mut() causing race conditions in module insertion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_def46b74-ed25-4410-8dc1-a7ae2fba738c?mode=deep",
+    "timestamp": "2026-01-26 07:07:16.200277",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: prefetch_aptos_framework()] [Framework Absence] When maybe_loaded.is_some() check (line 371) returns false (framework doesn't exist), the function silently succeeds (line 379). Can attackers delete framework from storage to force validators to execute without cached framework, causing performance degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9272ee5-373d-4f43-9095-14d468dd759e?mode=deep",
+    "timestamp": "2026-01-26 07:07:44.653397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: prefetch_aptos_framework()] [Iterator Exhaustion] Does into_verified_module_code_iter() (line 374) properly handle cases where iterator returns duplicates or cycles? Could malformed iterators cause infinite loops or excessive memory allocation during insertion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_554e9c74-905a-47ac-b6ad-eeeafe873f73?mode=deep",
+    "timestamp": "2026-01-26 07:08:13.405310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: environment()] [Panic on None] The environment() method expects environment to always be set (lines 279-282), but can race conditions or early guard drops cause environment to be None when accessed, triggering unexpected panics that crash validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f26fbfc8-f575-48fd-a109-b4224295c76c?mode=deep",
+    "timestamp": "2026-01-26 07:08:41.117258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: environment()] [Stale Environment] When returning environment reference in None variant (line 283), this environment was created at lock acquisition time. Can it become stale if state_view changes, causing execution with outdated verifier config? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffe4722a-c14b-42d8-a921-bc787c5c63d9?mode=deep",
+    "timestamp": "2026-01-26 07:09:08.964585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: module_cache()] [Immutable Reference Safety] The module_cache() method returns immutable reference (lines 287-296). Can multiple threads hold these references while another thread calls module_cache_mut() to flush, causing use-after-free of cached modules? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_170c4100-0900-4116-ae51-1fbbe862d0c0?mode=deep",
+    "timestamp": "2026-01-26 07:09:35.185375",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: module_cache_mut()] [Concurrent Mutation] When module_cache_mut() is called (lines 298-307), can concurrent threads mutate the cache simultaneously if multiple guards exist in None variant, causing race conditions in cache insertion/deletion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9a8b9bd-75c8-420a-ae85-17c4fbaf97d9?mode=deep",
+    "timestamp": "2026-01-26 07:10:01.962480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/code_cache_global_manager.rs] [Function: module_cache_mut()] [Flush During Execution] If module_cache_mut().flush() is called while transactions are executing and holding module references, can this invalidate live module pointers causing use-after-free vulnerabilities? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3185bc4-4c2b-4a4d-a12d-9b038ae8fc23?mode=deep",
+    "timestamp": "2026-01-26 07:10:29.519113",
+    "report_generated": false
+  }
+]
