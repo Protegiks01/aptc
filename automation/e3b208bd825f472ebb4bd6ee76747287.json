@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Struct: ReadyServerArgs] [Port exhaustion] Can an attacker set ready_server_listen_port to privileged ports (<1024) or already-in-use ports causing the ready server to fail startup and preventing testnet initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_446280c1-58e2-4748-a03b-ed5472d096f6?mode=deep",
+    "timestamp": "2026-01-26 09:43:45.767779",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Struct: ReadyServerArgs] [Port collision] Does the default port 8070 conflict with other services in the localnet, and can an attacker exploit port binding races to hijack the ready server endpoint? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_407e915a-fc0e-4d47-a872-4034c0b06299?mode=deep",
+    "timestamp": "2026-01-26 09:43:58.273481",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: run_ready_server()] [Network binding vulnerability] Can an attacker manipulate the bind_to Ipv4Addr parameter to bind the server to a public interface (0.0.0.0) instead of localhost, exposing internal health status to external attackers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44fa5e03-3cc5-46ac-a7d9-a6afab5fdca1?mode=deep",
+    "timestamp": "2026-01-26 09:44:11.194798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: run_ready_server()] [Socket binding race] Is there a race condition between checking port availability and binding to SocketAddrV4 that could allow an attacker to bind to the same port first, causing denial of service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a21316d-d679-4fe2-8c0e-40da662e2b7a?mode=deep",
+    "timestamp": "2026-01-26 09:44:25.537887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Struct: ReadyServerManager] [Health checker injection] Can an attacker inject malicious HealthChecker instances into the health_checkers HashSet during construction, causing the server to check attacker-controlled endpoints? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a86af06-d971-4120-9cde-9446b10f54dd?mode=deep",
+    "timestamp": "2026-01-26 09:44:39.960615",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: new()] [Unvalidated health checkers] Does new() validate that health_checkers contains only legitimate local testnet services, or can an attacker pass arbitrary URLs pointing to external malicious servers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4c354f9-fe82-4e32-93d5-84ec9549f2a6?mode=deep",
+    "timestamp": "2026-01-26 09:44:55.120225",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Struct: HealthCheckers] [State mutation] Since HealthCheckers is Clone and contains a HashSet, can concurrent cloning and modification lead to race conditions where health checkers are added/removed during checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75139c67-de90-48f0-b4d9-a4f5fab70a1a?mode=deep",
+    "timestamp": "2026-01-26 09:45:11.671676",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Health checker manipulation] Can an attacker modify the health_checkers HashSet after server startup but before health checks execute, causing incorrect ready status reporting? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe818c75-c684-44d7-a907-aa6538416646?mode=deep",
+    "timestamp": "2026-01-26 09:45:28.987720",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Timeout DoS] The timeout is hardcoded to 3 seconds per health checker - can an attacker add hundreds of slow-responding health checkers to cause the root handler to take minutes to respond, leading to API timeout DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d20b6e6e-40e1-4d14-9bb9-3a2540267d51?mode=deep",
+    "timestamp": "2026-01-26 09:45:48.052715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Resource exhaustion] Does the root() handler have any limit on concurrent health check operations? Can an attacker send multiple simultaneous requests causing unbounded parallel health checks and CPU/memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fc36e68-bf45-4188-86d0-ca79c0d6dcd2?mode=deep",
+    "timestamp": "2026-01-26 09:46:07.855094",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Timeout bypass] If health_checker.check() hangs indefinitely despite the 3-second timeout, can this cause goroutine/task leaks accumulating over multiple requests and eventually crashing the server? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04d72156-9375-4638-b57c-4b95b745eece?mode=deep",
+    "timestamp": "2026-01-26 09:46:26.967875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Sequential checking] Since health checks are done sequentially in a for loop, can an attacker exploit this to cause O(n*3s) response times where n is number of checkers, making the API unusable? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64e88a7e-4628-4908-b45b-6bbcc4bf8397?mode=deep",
+    "timestamp": "2026-01-26 09:46:47.898684",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Timeout accumulation] With N health checkers each taking 3 seconds on timeout, can total response time reach 3*N seconds, causing upstream timeouts and cascading failures in dependent services? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e997195f-9226-4bd5-a79e-2eb8ef9e2bca?mode=deep",
+    "timestamp": "2026-01-26 09:47:09.397861",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Race condition on vectors] The ready and not_ready vectors are built without synchronization - can concurrent requests to root() cause data races if the health_checkers set is modified during iteration? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3b22690-5867-459f-acb6-17ec20a56694?mode=deep",
+    "timestamp": "2026-01-26 09:47:31.256438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Struct: ReadyServerManager] [Clone safety] ReadyServerManager derives Clone - can concurrent clones of health_checkers HashSet lead to use-after-free or double-free vulnerabilities if underlying HealthChecker instances are not thread-safe? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_244bb4da-fe27-4d0b-a1ca-516e5bd4e63a?mode=deep",
+    "timestamp": "2026-01-26 09:47:53.773923",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Concurrent health checks] If multiple HTTP requests hit root() simultaneously, are health checks properly isolated or can they interfere with each other's network connections leading to false negatives? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5fc8537-50a5-4be6-89e5-288f176a7193?mode=deep",
+    "timestamp": "2026-01-26 09:48:17.902113",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: run_ready_server()] [Server shutdown race] Is there a race condition between server startup and shutdown where the server could exit unexpectedly without proper cleanup of open health check connections? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e78afddd-d4fd-4894-abbc-290e02f1026e?mode=deep",
+    "timestamp": "2026-01-26 09:48:40.516480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Service enumeration] Does the ReadyData response expose all internal service names and endpoints through the ready/not_ready vectors, allowing attackers to map the internal network topology? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6953c09-df7f-4ab4-bdd1-c28dbe713d4b?mode=deep",
+    "timestamp": "2026-01-26 09:49:02.417952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Struct: ReadyData] [Information leakage] Since ReadyData serializes HealthChecker instances which contain URLs and connection strings, can this leak sensitive database credentials, API keys, or internal IP addresses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e0c428e-21eb-4e93-a57e-8f1a41633125?mode=deep",
+    "timestamp": "2026-01-26 09:49:23.803648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Error message leakage] When health checks fail, are detailed error messages from health_checker.check() exposed in the response, potentially revealing version information, stack traces, or system paths? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50dc09ba-fe71-48a3-99b5-159a6c5627a4?mode=deep",
+    "timestamp": "2026-01-26 09:49:45.927191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Timing attack] Can an attacker use response timing differences to determine which specific services are down, enabling targeted attacks on the weakest components? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed28a777-fc34-4d46-8e58-28a0694da6e4?mode=deep",
+    "timestamp": "2026-01-26 09:50:06.563081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: run_ready_server()] [Unexpected exit error] Line 96 returns an error if the server exits unexpectedly - but is this error properly propagated and handled, or does it silently fail leaving the testnet in an inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02466372-687b-41a0-98af-32640eccfbcd?mode=deep",
+    "timestamp": "2026-01-26 09:50:29.091735",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Panic on serialization] If Json(ReadyData) serialization panics due to malformed HealthChecker data, can this crash the entire ready server and prevent all health checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88861f62-2d33-4ea4-a0e2-7085552313de?mode=deep",
+    "timestamp": "2026-01-26 09:50:50.436149",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Unhandled timeout errors] The timeout match uses wildcard pattern for errors - does this silently ignore critical errors like network failures, making services appear not_ready when they're actually unreachable? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29d27c18-d227-49f5-b8ed-8eecd4669937?mode=deep",
+    "timestamp": "2026-01-26 09:51:11.148091",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos/src/node/local_testnet/ready_server.rs] [Function: root()] [Error swallowing] By catching all errors with _ pattern, can critical failures like out-of-memory or stack overflow be hidden, causing mysterious service outages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bc5cf0c-11e3-4da4-8907-b2c4765691a5?mode=deep",
+    "timestamp": "2026-01-26 09:51:32.945699",
+    "report_generated": false
+  }
+]
