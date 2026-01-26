@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Handler exhaustion] If a handler's channel buffer fills up, does send() block or return error? Can an attacker target specific message types to fill handler buffers, causing either blocking (DoS) or panics from failed sends? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c3fc77e-3712-4a41-87d9-c0ec43a137a0?mode=deep",
+    "timestamp": "2026-01-26 13:05:18.028223",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Message type collision] Are MessageType values globally unique? Can two different subsystems register handlers for the same message_type, causing messages to be routed to the wrong handler and potentially leaking sensitive data or causing type confusion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9f7da9e-d252-4cc9-b9a2-069ce72bc321?mode=deep",
+    "timestamp": "2026-01-26 13:05:30.786247",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Handler deregistration] If a handler is removed from inbound_handlers while messages are in flight, those messages will be dropped with only an error log - can this cause critical consensus messages to be lost during epoch transitions or reconfigurations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fed7d62-336b-43f0-ad36-83170698a10b?mode=deep",
+    "timestamp": "2026-01-26 13:05:43.860039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Replay attack] The implementation has no nonce, timestamp, or sequence number checking - can an attacker capture valid consensus messages (votes, proposals) and replay them later to disrupt consensus rounds or cause validators to process duplicate messages? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6587a7e-aed2-4a2d-bd49-d4b435d1a17a?mode=deep",
+    "timestamp": "2026-01-26 13:05:58.345809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Message ordering] Messages are processed asynchronously via channels - is there any ordering guarantee? Can out-of-order delivery of consensus messages (e.g., votes arriving before the proposal) cause safety violations or require complex buffering logic in handlers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8e829a9-3370-467f-950a-b8473c53d389?mode=deep",
+    "timestamp": "2026-01-26 13:06:12.711301",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: send_message()] [Send ordering] Multiple send_message() calls on the same client - are they guaranteed to arrive in order at the remote server? Can reordering of consensus messages break protocol assumptions about message sequencing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_93fa069a-37aa-40cf-ac20-596676406c13?mode=deep",
+    "timestamp": "2026-01-26 13:06:28.393958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Duplicate detection] There's no deduplication mechanism - can an attacker send duplicate messages to cause handlers to process the same message multiple times, potentially causing vote double-counting or duplicate transaction execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f22f34e1-a083-43e3-99c5-fc33e3553f0c?mode=deep",
+    "timestamp": "2026-01-26 13:06:44.745150",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: get_channel()] [Connection pooling] Each GRPCNetworkMessageServiceClientWrapper creates a single channel - are multiple clients created for the same remote peer? Can this cause connection exhaustion or inconsistent connection state across different message types? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_881983e8-2453-493f-a3cc-59b9655c7ca7?mode=deep",
+    "timestamp": "2026-01-26 13:07:03.315630",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: get_channel()] [Lazy connection timing] connect_lazy() doesn't establish connection immediately - can this cause unpredictable latency on first message sends, and does this affect time-sensitive consensus message delivery in AptosBFT? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5348de1c-7b8f-43d0-8246-35f7ac51daa1?mode=deep",
+    "timestamp": "2026-01-26 13:07:23.021434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: send_message()] [Retry mechanism] The TODO comment mentions retry with exponential backoff is missing - without retries, can transient network failures cause critical consensus messages to be permanently lost, breaking liveness assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c30d621-7705-4f35-878e-74bd68738e78?mode=deep",
+    "timestamp": "2026-01-26 13:07:44.158389",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: start_async()] [Server binding race] The server binds to server_addr but there's no confirmation it succeeded - can port conflicts or permission issues cause silent startup failures where the server appears running but isn't accepting connections? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94660507-8d78-42fd-8a28-f8f5fd8488b9?mode=deep",
+    "timestamp": "2026-01-26 13:08:06.164600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: start_async()] [Reflection service exposure] The tonic_reflection service is added - does this expose internal service definitions to attackers, allowing them to discover available message types and craft targeted attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_704d2d47-c1b7-4a5f-a549-f2a90e5ca430?mode=deep",
+    "timestamp": "2026-01-26 13:08:30.167310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: start_async()] [Timeout configuration] The timeout is applied at server level via .timeout() - does this mean all requests share the same deadline? Can long-running handler processing of one message cause timeouts for unrelated concurrent messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0396c390-04f7-47df-950b-984e89a51480?mode=deep",
+    "timestamp": "2026-01-26 13:08:54.961647",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: send_message()] [Client timeout] There's no timeout configuration on client side - can unresponsive remote servers cause send_message() to hang indefinitely, blocking the sending validator and affecting consensus participation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0fec12a4-2d43-4e53-885f-37166f59cd88?mode=deep",
+    "timestamp": "2026-01-26 13:09:21.470803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: start_async()] [Timeout value manipulation] The rpc_timeout_ms is passed as parameter without validation - can misconfiguration with very low timeouts cause legitimate messages to be rejected, or very high timeouts allow slowloris-style attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e15d48a-3b80-4290-9cf5-c672d88b0435?mode=deep",
+    "timestamp": "2026-01-26 13:09:47.953146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Handler timeout] If a handler takes too long to process messages from its channel, does the gRPC timeout trigger while the handler is still working, causing partial message processing and state inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2fb7767-4c9f-44dd-ae29-b067e8402c55?mode=deep",
+    "timestamp": "2026-01-26 13:10:14.729348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Metrics manipulation] The NETWORK_HANDLER_TIMER tracks message processing but only for messages that match handlers - can an attacker send messages to non-existent handlers to evade monitoring and perform reconnaissance without detection? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e28ccb7b-61d1-4713-a55e-b654adf366c7?mode=deep",
+    "timestamp": "2026-01-26 13:10:42.271073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Timer scope] The _timer starts but includes handler lookup and send() - if send() blocks or panics, does the timer still get recorded? Can this cause misleading metrics that hide performance issues or attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_455ed32b-cc56-4d33-841b-82143de8e4c1?mode=deep",
+    "timestamp": "2026-01-26 13:11:10.398812",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: simple_msg_exchange()] [Self-address exposure] The self_addr is included in metrics labels - does this expose internal node addressing information that could help attackers map the validator network topology? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c61960c-1918-454a-b51d-c97f0f2773aa?mode=deep",
+    "timestamp": "2026-01-26 13:11:39.772110",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: start()] [Server ownership] The start() method consumes self - can this prevent proper cleanup or shutdown procedures if the server needs to be restarted during epoch transitions or reconfigurations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4335be41-6016-40b7-8ecf-bd308efa7789?mode=deep",
+    "timestamp": "2026-01-26 13:12:08.378240",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: start()] [Runtime dependency] The server is spawned on the provided runtime - what happens if that runtime is shut down while the server is still running? Can this cause undefined behavior or resource leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6508406a-723f-4f89-9b65-e5b9edd4c490?mode=deep",
+    "timestamp": "2026-01-26 13:12:36.544344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: start_async()] [Shutdown signal] The server_shutdown_rx is a oneshot channel - what happens if the sender is dropped without sending? Does await.ok() just ignore the error and never shutdown, creating a zombie server? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ab6e158-0857-4248-ad2a-3cbdd9ef4ee5?mode=deep",
+    "timestamp": "2026-01-26 13:13:04.373138",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Function: new()] [Shared state] The inbound_handlers Arc<Mutex<HashMap>> is shared - can multiple server instances be created sharing the same handlers? What prevents handler routing conflicts or message duplication? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1feda0fb-1c93-4d64-85e1-1f8cac6eca46?mode=deep",
+    "timestamp": "2026-01-26 13:13:32.311351",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Struct: Message] [Message data integrity] Message::new() wraps raw bytes without validation - can specially crafted byte sequences exploit vulnerabilities in the Message type's internal representation or cause issues when deserialized by handlers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d00bafc-0940-4083-bb7e-057032962a98?mode=deep",
+    "timestamp": "2026-01-26 13:14:00.512179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/net/src/grpc_network_service/mod.rs] [Struct: MessageType] [Type validation] MessageType::new() wraps a string without validation - can invalid or malicious message type strings (e.g., very long strings, special characters, null bytes) cause issues in HashMap lookups or handler routing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fac85c43-e830-45e5-8524-3f081bc87f4d?mode=deep",
+    "timestamp": "2026-01-26 13:14:27.170405",
+    "report_generated": false
+  }
+]
