@@ -1,0 +1,50 @@
+[
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/values/function_values_impl.rs] [Error: Custom serde errors] [Error propagation] Do serde custom errors properly propagate through the call stack, or can they be silently swallowed causing silent corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6a29c59-7239-4714-a584-4fa484000694?mode=deep",
+    "timestamp": "2026-01-26 01:18:01.931951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/values/function_values_impl.rs] [Error: Panic unwinding] [Unwind safety] If panic unwinding occurs during serialization/deserialization, can this leave data structures in inconsistent states? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88d461b7-e442-4463-bf35-62c73618d712?mode=deep",
+    "timestamp": "2026-01-26 01:18:14.483722",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/values/function_values_impl.rs] [Gas: Serialization cost] [Unbounded cost] Can large closure serializations consume unbounded gas without proper metering, enabling DoS attacks through expensive operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53128e89-50b9-47ab-9233-20fea65205ea?mode=deep",
+    "timestamp": "2026-01-26 01:18:27.448868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/values/function_values_impl.rs] [Gas: Deserialization cost] [Quadratic complexity] Can deserialization at lines 181-192 exhibit quadratic complexity with nested closures, causing excessive gas consumption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c35945a9-1c9b-4337-ba6d-afc0ff16c657?mode=deep",
+    "timestamp": "2026-01-26 01:18:40.928490",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/values/function_values_impl.rs] [Gas: to_canonical_string()] [Expensive formatting] Can to_canonical_string() formatting operations consume excessive gas when called with complex type arguments during error handling? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ebb50ff-b22b-4371-98e2-0d99f2206d54?mode=deep",
+    "timestamp": "2026-01-26 01:18:55.681291",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/values/function_values_impl.rs] [Gas: Clone operations] [Hidden costs] Can clone_dyn() implementations have hidden expensive operations not reflected in gas metering, enabling gas estimation attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc1c9316-76a8-4383-a107-74e48c2ae5d2?mode=deep",
+    "timestamp": "2026-01-26 01:19:09.817220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/values/function_values_impl.rs] [VM: Function execution] [Signature mismatch] Can closures be executed with arguments that don't match the composed signature from into_call_data(), causing VM crashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee2420b8-231c-45e4-ae75-db21be7eea98?mode=deep",
+    "timestamp": "2026-01-26 01:19:25.858647",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/third_party/move/move-vm/types/src/values/function_values_impl.rs] [VM: Resource safety] [Resource duplication] Can captured Move resources be accessed multiple\n\n### Citations\n\n**File:** third_party/move/move-vm/types/src/values/function_values_impl.rs (L1-317)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::values::{DeserializationSeed, SerializationReadyValue, VMValueCast, Value};\nuse better_any::Tid;\nuse move_binary_format::errors::{PartialVMError, PartialVMResult};\nuse move_core_types::{\n    function::{ClosureMask, FUNCTION_DATA_SERIALIZATION_FORMAT_V1},\n    identifier::Identifier,\n    language_storage::{ModuleId, TypeTag},\n    value::MoveTypeLayout,\n    vm_status::StatusCode,\n};\nuse serde::{\n    de::Error as DeError,\n    ser::{Error, SerializeSeq},\n    Deserialize, Serialize,\n};\nuse std::{\n    cmp::Ordering,\n    fmt,\n    fmt::{Debug, Display, Formatter},\n};\n\n/// A trait describing a function which can be executed. If this is a generic\n/// function, the type instantiation is part of this.\n/// The value system is agnostic about how this is implemented in the runtime.\n/// The `FunctionValueExtension` trait describes how to construct and\n/// deconstruct instances for serialization.\npub trait AbstractFunction: for<'a> Tid<'a> {\n    fn closure_mask(&self) -> ClosureMask;\n    fn cmp_dyn(&self, other: &dyn AbstractFunction) -> PartialVMResult<Ordering>;\n    fn clone_dyn(&self) -> PartialVMResult<Box<dyn AbstractFunction>>;\n    fn to_canonical_string(&self) -> String;\n}\n\n/// A closure, consisting of an abstract function descriptor and the captured arguments.\n#[allow(clippy::box_collection)]\npub struct Closure(\n    pub(crate) Box<dyn AbstractFunction>,\n    pub(crate) Box<Vec<Value>>,\n);\n\n/// The representation of a function in storage.\n#[derive(Serialize, Deserialize, Clone, PartialEq, Eq)]\npub struct SerializedFunctionData {\n    pub format_version: u16,\n    pub module_id: ModuleId,\n    pub fun_id: Identifier,\n    pub ty_args: Vec<TypeTag>,\n    pub mask: ClosureMask,\n    /// The layouts used for deserialization of the captured arguments\n    /// are stored so one can verify type consistency at\n    /// resolution time. It also allows to serialize an unresolved\n    /// closure, making unused closure data cheap in round trips.\n    pub captured_layouts: Vec<MoveTypeLayout>,\n}\n\nimpl Closure {\n    pub fn pack(fun: Box<dyn AbstractFunction>, captured: impl IntoIterator<Item = Value>) -> Self {\n        Self(fun, Box::new(captured.into_iter().collect()))\n    }\n\n    pub fn unpack(self) -> (Box<dyn AbstractFunction>, impl Iterator<Item = Value>) {\n        let Self(fun, captured) = self;\n        (fun, captured.into_iter())\n    }\n\n    pub fn into_call_data(\n        self,\n        args: Vec<Value>,\n    ) -> PartialVMResult<(Box<dyn AbstractFunction>, Vec<Value>)> {\n        let (fun, captured) = self.unpack();\n        if let Some(all_args) = fun.closure_mask().compose(captured, args) {\n            Ok((fun, all_args))\n        } else {\n            Err(\n                PartialVMError::new(StatusCode::UNKNOWN_INVARIANT_VIOLATION_ERROR)\n                    .with_message(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f66c67f9-f06f-4ea0-a12b-45d94d919467?mode=deep",
+    "timestamp": "2026-01-26 01:19:43.825904",
+    "report_generated": false
+  }
+]
