@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: new()] [State inconsistency] Can a race condition between get_or_initialize_subpruner_progress reading and the immediate prune call cause the pruner to skip pruning critical versions if metadata_progress advances between these operations, leading to accumulator nodes that should be pruned remaining in the database? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fbfbcdea-33b0-49be-bed1-fb425dd98f5e?mode=deep",
+    "timestamp": "2026-01-26 03:31:33.396860",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: new()] [Integer overflow] If metadata_progress is set to u64::MAX, can the immediate prune(progress, metadata_progress) call trigger integer overflow in the pruning logic when calculating version ranges, potentially causing the pruner to delete incorrect accumulator nodes or corrupt the Merkle tree? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bccf764a-6de9-407d-a201-baabe58b0c8b?mode=deep",
+    "timestamp": "2026-01-26 03:31:46.013629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: new()] [Progress initialization] If get_or_initialize_subpruner_progress fails to atomically initialize progress and another thread concurrently modifies TransactionAccumulatorPrunerProgress, can this cause the pruner to initialize with inconsistent state leading to double-pruning or skipped versions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1347359-31b2-4b06-b4ce-db7dced43ac8?mode=deep",
+    "timestamp": "2026-01-26 03:31:59.352408",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: new()] [Catch-up pruning] During the catching up phase where prune(progress, metadata_progress) is called, if metadata_progress is significantly ahead (e.g., millions of versions), can this cause the pruner to run out of memory or timeout, leaving the pruner in a partially initialized state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e14a426-c72d-486f-9d30-80f7be4c5fb7?mode=deep",
+    "timestamp": "2026-01-26 03:32:15.006340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: new()] [Error recovery] If the catch-up prune operation fails after partially pruning accumulator nodes, does the constructor properly propagate the error, or can it leave the database in an inconsistent state with some nodes deleted but progress not updated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c11b7ca-8d46-45ca-94b7-a6c3e78dd420?mode=deep",
+    "timestamp": "2026-01-26 03:32:29.637920",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: new()] [Progress rollback] If the initial prune(progress, metadata_progress) succeeds but the TransactionAccumulatorPruner object fails to be returned due to a subsequent error, are the pruned accumulator nodes recoverable, or does this create permanent data loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c200320a-d889-4c45-95d4-54a907fb33e2?mode=deep",
+    "timestamp": "2026-01-26 03:32:45.272748",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: new()] [Version bounds] Can an attacker who controls ledger_db_raw() return a malicious progress value that is greater than metadata_progress, causing the prune operation to use inverted version ranges (begin > end) and potentially delete future accumulator nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37618bea-6b4f-4e6b-bfff-256c92c4a36d?mode=deep",
+    "timestamp": "2026-01-26 03:33:02.411570",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Atomicity violation] If TransactionAccumulatorDb::prune() succeeds but the metadata update (DbMetadataKey::TransactionAccumulatorPrunerProgress) fails, can this cause the pruner to re-prune already deleted versions on the next invocation, potentially causing errors or inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9fa6db00-dfb6-4870-bd38-82301218213e?mode=deep",
+    "timestamp": "2026-01-26 03:33:21.271644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Batch corruption] If an attacker can cause SchemaBatch operations to be reordered or partially applied, can they manipulate the order of delete operations and metadata updates to create a state where progress indicates versions are pruned but accumulator nodes still exist? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edda0b3e-c375-4af4-871d-d2e23c9a963a?mode=deep",
+    "timestamp": "2026-01-26 03:33:40.867446",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Version validation] Does prune() validate that target_version > current_progress before calling TransactionAccumulatorDb::prune(), or can passing equal or reversed values cause the pruning algorithm to malfunction and delete incorrect tree nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43f833d8-91dd-43e7-8813-10cf3dd47a95?mode=deep",
+    "timestamp": "2026-01-26 03:34:01.806469",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Database write failure] If write_schemas() fails after the batch has been prepared with delete operations and progress update, does the function properly propagate the error, or can retry logic cause duplicate deletion attempts that corrupt the accumulator tree structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce0afc9d-fbaa-4f04-9edb-c8374115cd8e?mode=deep",
+    "timestamp": "2026-01-26 03:34:23.067363",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Progress tracking] Can concurrent calls to prune() from different threads cause the metadata progress to be updated out-of-order, resulting in progress regressing backwards and causing already-pruned versions to be considered unpruned? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32cfb3b2-fce0-4cb7-84fd-2b8859dae77e?mode=deep",
+    "timestamp": "2026-01-26 03:34:46.198568",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Integer wraparound] If current_progress is close to u64::MAX and the pruning range calculation involves addition, can integer wraparound cause the pruner to calculate an incorrect version range spanning from maximum values to zero? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81c1ec0b-fc08-4ab2-9437-29c1ae494e4d?mode=deep",
+    "timestamp": "2026-01-26 03:35:10.452304",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune() calling TransactionAccumulatorDb::prune()] [Algorithm correctness] In the pruning algorithm that only processes odd versions and uses find_first_ancestor_that_is_a_left_child, can an off-by-one error in version boundaries cause the pruner to miss deleting critical accumulator nodes, leaving orphaned nodes that consume storage and break Merkle proofs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32210327-31bd-4c81-b342-539d20c4ae86?mode=deep",
+    "timestamp": "2026-01-26 03:35:35.362701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune() calling TransactionAccumulatorDb::prune()] [Position calculation] Can malformed version numbers cause find_first_ancestor_that_is_a_left_child() to calculate invalid Position values due to trailing_ones() overflow, leading to deletion of wrong accumulator nodes and corrupting the Merkle tree? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2089f1f3-ae27-4f2c-8f08-a3a16b8fdb66?mode=deep",
+    "timestamp": "2026-01-26 03:36:02.004547",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune() calling TransactionAccumulatorDb::prune()] [Tree traversal] In the while loop that traverses from first_ancestor_that_is_a_left_child down to leaf nodes, can an infinite loop occur if Position::right_child() calculations result in the same position due to bit manipulation errors, causing the pruner to hang? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad8878a2-35d2-4054-ab1d-3576ac3a21d9?mode=deep",
+    "timestamp": "2026-01-26 03:36:28.655809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune() calling TransactionAccumulatorDb::prune()] [Root hash deletion] Does the pruning algorithm properly handle the deletion of TransactionAccumulatorRootHashSchema entries for all versions in [begin, end), or can race conditions cause root hashes to be deleted before other nodes verify against them, breaking proof verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e64d95d8-388a-462c-9fb1-6567e4e8b0d5?mode=deep",
+    "timestamp": "2026-01-26 03:36:56.341666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune() calling TransactionAccumulatorDb::prune()] [Even version handling] The algorithm skips even versions assuming they'll be pruned when processing version+1, but can this assumption fail at version boundaries (e.g., when target_version is even), leaving unpruned even-versioned nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f92c934-5a80-4aea-8f20-11da91463633?mode=deep",
+    "timestamp": "2026-01-26 03:37:25.225484",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune() calling TransactionAccumulatorDb::prune()] [Left child assertion] The code asserts !first_ancestor_that_is_a_left_child.is_leaf(), but can edge cases with version=0 or version=1 violate this assertion and cause a panic, leading to pruner crashes and loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ec5173c-a1c4-45bd-8f36-d50648031b6f?mode=deep",
+    "timestamp": "2026-01-26 03:37:54.321726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Parallel sub-pruner race] Since TransactionAccumulatorPruner runs in parallel with other sub-pruners via rayon::par_iter(), can race conditions between pruners accessing shared LedgerDb resources cause one pruner's write_schemas() to conflict with another's, leading to partial commits or data corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1913e1e0-90fc-4e6b-99c7-fb58c77b9940?mode=deep",
+    "timestamp": "2026-01-26 03:38:24.516077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Progress synchronization] Can the parallel execution of sub-pruners cause TransactionAccumulatorPrunerProgress to be updated before other dependent pruners complete, creating inconsistent states where accumulator nodes are deleted but transactions referencing them still exist? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5bb43546-07d2-46f8-bc81-4e056be4bc37?mode=deep",
+    "timestamp": "2026-01-26 03:38:53.890030",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Arc<LedgerDb> contention] Multiple sub-pruners hold Arc<LedgerDb> and call write_schemas() concurrently - can this cause RocksDB write contention or lock conflicts that result in some pruning operations silently failing or being delayed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9b0c151-0ab0-4503-a369-42ac7b22efa1?mode=deep",
+    "timestamp": "2026-01-26 03:39:22.123196",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Batch isolation] Are SchemaBatch operations from different sub-pruners properly isolated, or can one pruner's batch modifications leak into another pruner's batch through shared references, causing unintended deletions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7164afd5-0a54-487d-ba4b-9805b4d04813?mode=deep",
+    "timestamp": "2026-01-26 03:39:49.496227",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Partial failure recovery] If TransactionAccumulatorDb::prune() partially populates the batch but then returns an error, does the function properly discard the entire batch, or can partial delete operations remain in the batch and be committed later? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a843aeed-555a-4d97-b793-a2e76a2ffbc1?mode=deep",
+    "timestamp": "2026-01-26 03:40:17.616596",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Error propagation] If batch.put() for DbMetadataValue::Version fails, does the error propagate correctly to prevent write_schemas() from committing a batch with deletions but no progress update? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7e45cc3-dbfa-4094-9604-069eeff396f2?mode=deep",
+    "timestamp": "2026-01-26 03:40:44.560369",
+    "report_generated": false
+  }
+]
