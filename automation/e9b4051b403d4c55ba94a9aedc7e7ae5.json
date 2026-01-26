@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Non-deterministic results] Are there any edge cases where dlog() could return different results on different validator nodes for identical inputs, causing validators to derive different consensus keys and creating permanent chain splits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d05181c-d4c5-4e03-8cde-b926ae3041e4?mode=deep",
+    "timestamp": "2026-01-26 13:43:14.815109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Byzantine amplification] Can a Byzantine validator with corrupted baby_table poison their own dlog() results in a way that amplifies their influence in the final aggregated DKG outcome, violating the 1/3 Byzantine tolerance assumption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ffa72ccb-25be-4f59-9623-19c4f5b48260?mode=deep",
+    "timestamp": "2026-01-26 13:43:27.146438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog_vec()] [Partial validator exclusion] If dlog_vec() fails for a subset of chunks but succeeds for others across different validators, can this create a situation where only certain validators successfully complete DKG, enabling validator set manipulation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9ebd1f1-8d01-452a-9e21-90cfaa4436be?mode=deep",
+    "timestamp": "2026-01-26 13:43:39.914796",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Boundary condition] When the discrete log equals exactly range_limit - 1 (the maximum valid value), does the algorithm correctly find it or is there an off-by-one error in the loop bounds (line 35) that causes it to be missed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_490f51c8-4eab-4f0c-b622-48b58ab658b4?mode=deep",
+    "timestamp": "2026-01-26 13:43:54.593873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Baby step boundary] If the discrete log is exactly m-1 (where m = baby_table.len()), does it get correctly found in the first giant step iteration or could there be boundary issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c26d780c-5943-4c66-a09f-f019a2209dfa?mode=deep",
+    "timestamp": "2026-01-26 13:44:08.420424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Giant step calculation] The giant step multiplier G_neg_m = G * -ScalarField::from(m) uses negation - are there edge cases with scalar field arithmetic where -m could overflow or behave unexpectedly on certain curves? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c13ef545-1ba5-4f82-8815-e75cc573fe1a?mode=deep",
+    "timestamp": "2026-01-26 13:44:23.542332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Gamma accumulation] The line gamma += G_neg_m (line 43) accumulates giant steps - can numerical errors accumulate over many iterations causing gamma to drift and miss the correct match in baby_table? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c3c6fda-62f0-47e7-b296-d95427c77347?mode=deep",
+    "timestamp": "2026-01-26 13:44:39.306492",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Zero discrete log] When the discrete log is 0 (i.e., H = identity), should the algorithm return Some(0) immediately or does it need to find the identity in baby_table - what if identity is not in the table? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53d05c2c-bd18-408a-8342-dbf07eea7c1e?mode=deep",
+    "timestamp": "2026-01-26 13:44:56.005642",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Table size mismatch] If range_limit is much smaller than baby_table.len() * sqrt(range_limit) (optimal BSGS configuration), does this cause the algorithm to search inefficiently or produce incorrect results? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0d932c8-bd72-4b0a-a887-388822febf5d?mode=deep",
+    "timestamp": "2026-01-26 13:45:14.549417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Large range limit] If range_limit approaches u32::MAX, can the computation of n (line 29) or loop iterations (line 35) cause performance degradation severe enough to DoS validators during DKG? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6bc5c06-0d48-4ffd-88d4-b0bf9aba506a?mode=deep",
+    "timestamp": "2026-01-26 13:45:34.873402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Curve order mismatch] If the curve order is smaller than range_limit, discrete logs can wrap around - does the code handle this or will it search beyond the curve order causing infinite loops or incorrect results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3760025-5f61-4e89-a03e-2a5578736b1e?mode=deep",
+    "timestamp": "2026-01-26 13:45:54.611985",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Subgroup order] If G generates a subgroup of order less than range_limit, will dlog() correctly identify when H is not in the subgroup generated by G, or will it incorrectly return None for solvable discrete logs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c6a56d32-f7d6-4c19-9cc3-0fb19d405312?mode=deep",
+    "timestamp": "2026-01-26 13:46:15.827701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Cofactor attack] On curves with non-trivial cofactors, can an attacker provide H with a different cofactor component than G, causing discrete log computation to fail or return incorrect results that corrupt DKG? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_145455be-8af9-47ba-a812-cee5ffa04414?mode=deep",
+    "timestamp": "2026-01-26 13:46:36.926817",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Prime subgroup validation] Does the code verify that G is a generator of the prime-order subgroup, or can an attacker use a generator of a composite-order subgroup to create weak discrete logs exploitable during DKG? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c11b6350-ed62-42ec-bd7d-a9f9a3371c6d?mode=deep",
+    "timestamp": "2026-01-26 13:46:59.852708",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Scalar field overflow] When converting u32 values to ScalarField (line 31), can overflow occur if the scalar field has smaller order than 2^32, causing silent wrap-around and incorrect G_neg_m values? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e451532-ba8b-44d4-832b-1c6308e5e818?mode=deep",
+    "timestamp": "2026-01-26 13:47:23.782740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Shared table access] If baby_table is shared across multiple threads (Arc<HashMap>), are there race conditions where concurrent modifications during DKG could cause dlog() to see inconsistent table state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_282659ac-1d3d-414e-b74a-3e282d01b74a?mode=deep",
+    "timestamp": "2026-01-26 13:47:47.744514",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Reference lifetime] Since baby_table is passed by reference (&HashMap), can the table be deallocated while dlog() is executing if called from async context, causing use-after-free? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c11e703-a44a-46d7-9775-a867221a4c3b?mode=deep",
+    "timestamp": "2026-01-26 13:48:11.698890",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog_vec()] [Parallel execution] If multiple validators call dlog_vec() concurrently on the same baby_table, can HashMap contention cause performance degradation or non-deterministic timing that reveals information about discrete logs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28eb6a6d-f0b3-4453-a24b-0089230dd212?mode=deep",
+    "timestamp": "2026-01-26 13:48:36.433644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Async context] If dlog() is called from an async function, can the loop (lines 35-44) block the executor for too long, causing validator responsiveness issues during DKG? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de491949-4953-43f7-8f0a-59a63b5d68a2?mode=deep",
+    "timestamp": "2026-01-26 13:49:00.923728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Compressed point encoding] Does serialize_compressed() produce canonical encodings, or can multiple byte representations map to the same curve point, allowing baby_table pollution with duplicate entries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e42a5d2c-5bc7-472a-81e1-80a66873132b?mode=deep",
+    "timestamp": "2026-01-26 13:49:26.411294",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Encoding malleability] Can an attacker craft points that serialize differently but are cryptographically equivalent, causing baby_table lookups to fail even for valid discrete logs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f543fd0-64df-4f2a-9d82-09329c465a8f?mode=deep",
+    "timestamp": "2026-01-26 13:49:52.793776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Buffer comparison] The HashMap uses Vec<u8> keys (line 39) - are byte-wise equality checks sufficient or could there be canonicalization issues where equivalent points have different byte representations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c6167ea-575e-4503-9db7-4850e579b620?mode=deep",
+    "timestamp": "2026-01-26 13:50:19.699373",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Compressed size validation] Does compressed_size() return consistent values across different point values, or can certain special points have different compressed sizes causing buffer mismatches? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_406d4cef-35cb-4744-8bf4-be7214ed63c9?mode=deep",
+    "timestamp": "2026-01-26 13:50:46.158749",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Parameter consistency] The function assumes baby_table, G, and range_limit are all consistent with PublicParameters, but is there validation preventing attackers from mixing parameters from different DKG instances? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c061de7-c71a-4841-b2be-f584a9e6745d?mode=deep",
+    "timestamp": "2026-01-26 13:51:13.595745",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/dlog/bsgs.rs] [Function: dlog()] [Cross-epoch attacks] Can an attacker reuse baby_tables from previous DKG epochs with different parameters to cause discrete log failures in the current epoch, preventing validator set updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d96b0557-6a38-469c-b70a-99bf28d314b8?mode=deep",
+    "timestamp": "2026-01-26 13:51:40.446821",
+    "report_generated": false
+  }
+]
