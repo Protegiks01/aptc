@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: DnsName::validate()] [Input validation bypass] Can an attacker craft a DNS name exactly at the 255-byte boundary with special Unicode normalization that expands beyond MAX_DNS_NAME_SIZE after processing, bypassing the length check and causing buffer overflows in downstream DNS resolution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b29cb5b7-be59-4e5f-a546-3fa37cc5864a?mode=deep",
+    "timestamp": "2026-01-26 00:38:40.832865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: DnsName::validate()] [Character encoding attack] Does the ASCII validation at line 675 properly handle all Unicode normalization forms (NFC, NFD, NFKC, NFKD), or can an attacker use visually similar non-ASCII characters that pass validation but resolve to different domains, enabling DNS spoofing attacks against validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_449587fb-bb74-4ce8-9ba2-49ba14ee0e40?mode=deep",
+    "timestamp": "2026-01-26 00:38:54.517133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: DnsName::validate()] [Path traversal] While the code checks for forward slashes at line 673, can an attacker inject encoded forward slashes (%2F) or backslashes that bypass this check but later get decoded by DNS resolvers, potentially causing protocol parsing confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12d0555d-8ed1-402a-a12a-15e33bb52f3f?mode=deep",
+    "timestamp": "2026-01-26 00:39:08.553340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: DnsName::validate()] [Homograph attack] The ASCII-only restriction at line 675 prevents Unicode, but can attackers use ASCII homograph attacks (e.g., 'rn' vs 'm', '0' vs 'O') in DNS names to impersonate legitimate validators and redirect validator traffic to malicious nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4739dddc-e50d-41d4-8807-a4c0f3479cad?mode=deep",
+    "timestamp": "2026-01-26 00:39:23.239401",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: DnsName::validate()] [Empty label attack] Does the validation check for empty labels within the DNS name (e.g., 'example..com' or '.example.com'), or can attackers craft malformed DNS names that cause resolution failures and validator connection DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2398bc6c-360d-4a32-8977-8bf396dde6f8?mode=deep",
+    "timestamp": "2026-01-26 00:39:39.082408",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: DnsName::validate()] [Label length overflow] RFC 2181 specifies each DNS label must be ≤63 bytes, but the validation only checks total length at line 671. Can an attacker provide a DNS name with a single 200-byte label that crashes DNS resolvers used by validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4329d832-8b1c-4257-882e-40eadf1a5786?mode=deep",
+    "timestamp": "2026-01-26 00:39:56.371256",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: DnsName::validate()] [Null byte injection] Does the ASCII validation prevent embedded null bytes (\\0) in DNS names that could terminate strings early in C-based DNS libraries, potentially causing validators to connect to different hosts than intended? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7274f0d-59d0-410e-92a1-6d4eea2fa805?mode=deep",
+    "timestamp": "2026-01-26 00:40:15.570579",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: DnsName::validate()] [Trailing dot confusion] Can an attacker register both 'example.com' and 'example.com.' (with trailing dot) as separate validators, causing routing confusion since DNS treats these as equivalent but string comparison treats them as different? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f4f252ca-c25c-42fe-bb7e-268ccefeab31?mode=deep",
+    "timestamp": "2026-01-26 00:40:38.182644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: Protocol::parse()] [Integer overflow] When parsing TCP/Memory port numbers at lines 642-643, can an attacker provide a string that parses to a valid u16 but wraps around (e.g., '65536' parsed as '0'), causing validators to bind to privileged ports or connect to wrong ports? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36cb80f5-88c7-44f4-9b79-2efc39a4dd69?mode=deep",
+    "timestamp": "2026-01-26 00:41:01.897571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: Protocol::parse()] [Cryptographic key injection] At line 644-646, when parsing NoiseIK public keys, can an attacker inject a malformed x25519 key that passes initial validation but fails during actual cryptographic operations, causing handshake failures and preventing validator connectivity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3eea0422-09e2-439a-93b7-3413d929d2a9?mode=deep",
+    "timestamp": "2026-01-26 00:41:27.280067",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: Protocol::parse()] [Type confusion] Can an attacker craft protocol strings with ambiguous types (e.g., '/ip4/dns/example.com') that cause the parser at lines 636-649 to misinterpret protocol layers, leading to incorrect connection attempts or protocol stack violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35d3a129-e60b-48ac-aa4c-c144d20454ca?mode=deep",
+    "timestamp": "2026-01-26 00:41:54.523104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: Protocol::parse()] [Resource exhaustion] Does the parse_one() function at line 622-629 have limits on input length? Can an attacker provide extremely long numeric strings that consume excessive CPU during parsing, causing validator DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c90ce4d-dce0-4afa-aabe-36b0f58480ba?mode=deep",
+    "timestamp": "2026-01-26 00:42:21.134261",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: Protocol::parse()] [Version number overflow] At line 647, handshake version is parsed as u8. Can an attacker provide version '256' or higher that wraps to 0, causing version mismatch and preventing new validators from joining the network? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9fa0c640-7c55-4386-a83e-953e8a1c0944?mode=deep",
+    "timestamp": "2026-01-26 00:42:48.969126",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_str()] [Protocol injection] At line 448, the function splits on '/' without limiting the number of protocols. Can an attacker inject hundreds of duplicate protocols (e.g., '/ip4/1.1.1.1/tcp/80/tcp/81/tcp/82...') to exhaust memory or cause quadratic parsing complexity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64d4ddf6-47c0-4638-9bc7-3947be615ca0?mode=deep",
+    "timestamp": "2026-01-26 00:43:17.837206",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_str()] [Empty segment handling] Lines 457-460 allow empty segments from duplicate slashes. Can an attacker craft '////ip4/1.1.1.1///tcp//80' with multiple empty segments to bypass validation logic that assumes normalized input? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_accca78b-1309-4914-aa31-4bee72f53360?mode=deep",
+    "timestamp": "2026-01-26 00:43:48.343759",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_str()] [Trailing slash confusion] The code allows trailing slashes at line 458. Can this cause inconsistencies where '/ip4/1.1.1.1/tcp/80' and '/ip4/1.1.1.1/tcp/80/' are treated as different addresses in some contexts but equivalent in others, breaking validator identity checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a3b7cca-8fef-44a2-8d22-851a5c6dee63?mode=deep",
+    "timestamp": "2026-01-26 00:44:21.064107",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_str()] [UTF-8 validation] Before checking is_empty() at line 443, does the function validate that the input is valid UTF-8? Can attackers provide invalid UTF-8 sequences that cause panics in the split('/') operation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ead07fca-ee17-44af-a127-f88bcbbdaec8?mode=deep",
+    "timestamp": "2026-01-26 00:44:54.233539",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_protocols()] [Layer ordering bypass] The validation at lines 264-310 checks layer ordering, but can an attacker craft a protocol sequence that satisfies each individual check while violating the overall ordering invariant (e.g., by exploiting the Memory protocol special case at line 279)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dcae2185-5a02-4ad4-9599-84446d0eaa5e?mode=deep",
+    "timestamp": "2026-01-26 00:45:26.857403",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_protocols()] [Empty protocol acceptance] Lines 271-272 allow empty protocol vectors. Can validators advertise empty NetworkAddresses that pass validation but cause connection failures, effectively removing validators from the network without detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_479cfa68-777a-4aa2-ace1-63805746c12a?mode=deep",
+    "timestamp": "2026-01-26 00:45:57.468017",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_protocols()] [Session layer bypass] The session layer validation at line 293 allows empty session layers (allow_empty=true). Can an attacker advertise addresses without NoiseIK, bypassing authentication and allowing unauthenticated connections to validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9109a9f-fdba-41d6-83c2-f211b9a5daa9?mode=deep",
+    "timestamp": "2026-01-26 00:46:27.806747",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_protocols()] [Handshake layer bypass] Similarly at line 301, empty handshake layers are allowed. Can validators communicate without handshake version negotiation, potentially using incompatible protocol versions that cause consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9df253a4-7383-4236-bd64-71320e8eca39?mode=deep",
+    "timestamp": "2026-01-26 00:46:57.551023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_protocols()] [Memory protocol abuse] Lines 279-287 give special treatment to Memory protocol, skipping transport layer validation. Can attackers abuse this in production by somehow enabling test features, bypassing normal network security? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b92f06ae-b776-4501-9573-03ea63cda197?mode=deep",
+    "timestamp": "2026-01-26 00:47:28.332822",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: is_network_layer()] [Protocol classification error] At lines 224-237, Memory protocol is included in network layer with a cfg!(test) comment that says 'true' is correct. Does this mean Memory addresses are accepted in production, allowing test-only protocols in the live network? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e339f1e-1658-4e08-8e5f-78f54b6b69ff?mode=deep",
+    "timestamp": "2026-01-26 00:47:58.990320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: from_protocols()] [Redundant layer detection] Line 309 checks for redundant layers after handshake, but what if an attacker provides duplicate protocols within the same layer (e.g., two NoiseIK protocols with different keys)? Does earlier validation catch this? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc2038c5-febb-496a-976f-6de6535cc75c?mode=deep",
+    "timestamp": "2026-01-26 00:48:28.228679",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/network_address/mod.rs] [Function: serialize()] [BCS length prefix manipulation] At line 542, BCS serialization includes a length prefix. Can an attacker manipulate this length prefix in serialized data to cause the deserializer to read beyond buffer boundaries, potentially leaking validator memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fadb8c2e-21a3-47a9-aa50-555129b96acc?mode=deep",
+    "timestamp": "2026-01-26 00:48:56.519899",
+    "report_generated": false
+  }
+]
