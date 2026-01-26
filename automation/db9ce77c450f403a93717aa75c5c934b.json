@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Channel race condition] Can a race condition occur where multiple threads send CommitMessage::Data messages simultaneously through state_merkle_batch_receiver, causing commits to be processed out-of-order and leading to state root inconsistencies across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed902887-8c13-4dff-9cab-647fae17be5d?mode=deep",
+    "timestamp": "2026-01-26 04:33:01.466794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Error handling] The CommitMessage::Sync handler uses unwrap() when sending finish notification - can an attacker cause the receiver to be dropped prematurely, triggering a panic that crashes the state committer thread and halts all state persistence, causing permanent loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df5fb4c8-f484-4813-b4d4-41bc59c9ca2f?mode=deep",
+    "timestamp": "2026-01-26 04:33:14.106255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Channel poisoning] If the state_merkle_batch_receiver channel is closed unexpectedly before CommitMessage::Exit is sent, can this cause the run() loop to exit silently without committing pending state batches, leading to permanent state divergence between validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_583caf02-f13f-45f6-9784-a3d0c1763a55?mode=deep",
+    "timestamp": "2026-01-26 04:33:27.804609",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Message ordering] Can an attacker manipulate the ordering of CommitMessage::Data messages in the channel to commit state snapshots with non-monotonically increasing versions, breaking the version consistency invariant and causing state tree corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60c8c75e-4274-4bdc-92b0-8ab65d992be3?mode=deep",
+    "timestamp": "2026-01-26 04:33:41.258718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Sync message attack] Can a malicious component flood the channel with CommitMessage::Sync messages to delay or prevent CommitMessage::Data processing, causing state commits to fall behind and eventually triggering memory exhaustion or validator timeout? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d49d7d6-6632-4091-964b-8e5bb3b1e5b5?mode=deep",
+    "timestamp": "2026-01-26 04:33:55.824807",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Exit message bypass] If CommitMessage::Exit is sent while CommitMessage::Data messages are still queued in the channel, will those pending state batches be lost without being committed, causing permanent state loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0ad851e-9800-4da7-9cbc-efcece8d4033?mode=deep",
+    "timestamp": "2026-01-26 04:34:11.624050",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Panic propagation] When the expect() call fails during state merkle node commit, does the panic properly propagate to crash the entire validator process, or could it leave the system in an inconsistent state with partial commits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02d75435-79e5-449e-b69c-41ffb86fe0d0?mode=deep",
+    "timestamp": "2026-01-26 04:34:28.520673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Channel buffer overflow] Given ASYNC_COMMIT_CHANNEL_BUFFER_SIZE is set to 1, can rapid state updates cause the channel to block senders, creating backpressure that delays transaction execution and reduces network throughput? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83abd358-f23f-4b5c-9d8e-257d8e1888c8?mode=deep",
+    "timestamp": "2026-01-26 04:34:47.023742",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Partial commit failure] When state_merkle_db.commit() is called with top_levels_batch and batches_for_shards, can a failure in committing one shard while others succeed create a partially committed state that violates the Jellyfish Merkle Tree integrity invariant? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6547d05-9e95-4431-8ed3-d5c2f4ad84d5?mode=deep",
+    "timestamp": "2026-01-26 04:35:07.036651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Shard count mismatch] If batches_for_shards contains fewer than NUM_STATE_SHARDS (16) batches due to a bug in the snapshot committer, will the commit() call detect this mismatch before writing, or could it write incomplete shard data leading to corrupted merkle tree nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_854e2a50-af86-4cc1-8902-125aabf70428?mode=deep",
+    "timestamp": "2026-01-26 04:35:29.448482",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Parallel shard write race] Since state_merkle_db.commit() uses parallel writes to shards via THREAD_MANAGER.get_io_pool(), can concurrent writes to different shards race with each other, causing non-deterministic commit ordering and state root hash mismatches across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b16686b1-6f7a-4df1-89c1-ddba9defedd9?mode=deep",
+    "timestamp": "2026-01-26 04:35:51.466021",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Top-level batch timing] Is there a race condition between the parallel shard batch commits and the subsequent top_levels_batch commit where queries could observe inconsistent state by reading from shards before top-level nodes are committed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb017ce4-63eb-4c08-b846-dc39b8b91dff?mode=deep",
+    "timestamp": "2026-01-26 04:36:15.220625",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Rollback safety] If commit() fails after some shards are written but before top_levels_batch is committed, is there a rollback mechanism to restore consistency, or will the database be left in a corrupted state requiring node restart? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cef92339-ca00-4072-b8ea-3cfa3c07caaa?mode=deep",
+    "timestamp": "2026-01-26 04:36:40.114661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Batch content validation] Are the contents of top_levels_batch and batches_for_shards validated before commit to ensure they contain only JellyfishMerkleNodeSchema entries for the correct version, or can malformed batches corrupt the state tree? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a59d919-8a24-479a-86e7-e09deb4f2049?mode=deep",
+    "timestamp": "2026-01-26 04:37:05.656635",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Duplicate batch attack] Can the same StateMerkleBatch be sent multiple times through the channel, causing the same merkle nodes to be committed twice at different versions and creating state tree inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_183be04d-e6b3-4eac-a364-2a2ad22b540a?mode=deep",
+    "timestamp": "2026-01-26 04:37:31.699809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Version regression] Can base_version (from persisted_state.get_state_summary()) be greater than current_version from the snapshot, allowing commits to go backwards in version and corrupting the state history? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_844d28f2-0900-4f52-8962-cd68e83bc087?mode=deep",
+    "timestamp": "2026-01-26 04:37:56.789823",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Version gap attack] If current_version is not exactly base_version + 1, can this create version gaps in the committed state tree where intermediate versions are missing, breaking state proof verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_485a1302-2793-4891-b5e8-d7aacc63d332?mode=deep",
+    "timestamp": "2026-01-26 04:38:22.340382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [None version bypass] The code uses expect() when snapshot.version() returns None - can an attacker construct a StateWithSummary with None version that bypasses version validation and commits stateless data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f858bb9-38ca-4489-ba16-00e7aec7ce26?mode=deep",
+    "timestamp": "2026-01-26 04:38:49.936669",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Version overflow] Can current_version overflow u64::MAX in long-running chains, and if so, does the code handle version wraparound safely or will it cause integer overflow panics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18f526aa-84d4-4127-9a86-cfff7894c871?mode=deep",
+    "timestamp": "2026-01-26 04:39:17.110337",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Concurrent version updates] Can concurrent calls to persisted_state.get_state_summary() and persisted_state.set() create race conditions where base_version is read in an inconsistent state relative to the snapshot being committed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fed70f64-2e69-4fc9-af82-78dcb3dc866e?mode=deep",
+    "timestamp": "2026-01-26 04:39:45.613857",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Version-root binding] Is the binding between current_version and snapshot.summary().root_hash() cryptographically enforced, or can an attacker provide mismatched version and root_hash values that pass validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7a63d7d-215a-4590-971e-a4deb58e658b?mode=deep",
+    "timestamp": "2026-01-26 04:40:12.813886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: check_usage_consistency()] [Validation bypass] The check_usage_consistency() call uses unwrap() - can an attacker trigger a validation failure that causes a panic instead of gracefully rejecting the invalid state commit and recovering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1cb9714-e5e7-49ed-bd46-db62815ddd8a?mode=deep",
+    "timestamp": "2026-01-26 04:40:40.559769",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: check_usage_consistency()] [Timing attack] Since check_usage_consistency() is called AFTER the state has been committed to state_merkle_db, can a failing validation leave the database in an inconsistent state where merkle nodes are persisted but persisted_state is not updated? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb0e5f32-46e6-4055-aae5-1ce005990cd4?mode=deep",
+    "timestamp": "2026-01-26 04:41:08.632512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: check_usage_consistency()] [Version mismatch] Can the version passed to check_usage_consistency() differ from the version used in the state_merkle_db.commit() call, causing validation to check the wrong version and miss actual inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_632a8696-ced2-4e90-a14a-c66d3c618d53?mode=deep",
+    "timestamp": "2026-01-26 04:41:35.774270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: check_usage_consistency()] [Ledger DB race] Can usage_from_ledger_db.get_usage(version) return stale data if ledger_db commits lag behind state_merkle_db commits, causing false positive validation failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bd5123c-b542-4235-94b7-55ecfcab79f0?mode=deep",
+    "timestamp": "2026-01-26 04:42:05.802712",
+    "report_generated": false
+  }
+]
