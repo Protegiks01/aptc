@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: run()] [Race condition] Can concurrent execution of the main loop and abort() create a race condition where aborted.store() at line 73 uses SeqCst but aborted.load() at line 109 also uses SeqCst, potentially allowing transactions to be partially processed after abort, causing state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf246e2d-203b-431f-b89a-db39b0451448?mode=deep",
+    "timestamp": "2026-01-26 04:39:20.113282",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: run()] [Race condition] In the backup task spawned at lines 86-99, can the async task continue running after the main service aborts, potentially uploading inconsistent snapshots or accessing deallocated resources when TableInfoService drops? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a85bedd9-8d12-4197-ac7b-23150468b64a?mode=deep",
+    "timestamp": "2026-01-26 04:39:32.391503",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: run()] [Race condition] At line 189-190, current_version is stored with SeqCst ordering after processing, but between lines 113-172, multiple operations read current_version - can this create a race where two concurrent run() calls (if somehow invoked) process overlapping transaction ranges? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cf54b41-ab97-4844-962b-ba8a6b1afeaa?mode=deep",
+    "timestamp": "2026-01-26 04:39:45.696332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: process_transactions_in_parallel()] [Race condition] At lines 302-304, update_next_version() is called after parallel processing completes, but can concurrent calls to this function from multiple run() invocations cause version updates to be applied out of order, creating gaps in the indexed data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe815f76-11a3-4af8-9622-34c7b5dad31c?mode=deep",
+    "timestamp": "2026-01-26 04:39:58.797367",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: process_transactions_in_parallel()] [Data race] Lines 258-274 spawn multiple tokio tasks sharing Arc<IndexerAsyncV2> - can concurrent writes to the underlying RocksDB from different tasks cause data corruption if IndexerAsyncV2's internal locking is insufficient? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7597cfb-4cd2-4c9e-8a74-7a8d5b903498?mode=deep",
+    "timestamp": "2026-01-26 04:40:12.740164",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: process_transactions_in_parallel()] [Race condition] At lines 286-294, the code checks is_indexer_async_v2_pending_on_empty(), clears pending state, and reprocesses - can a race condition occur where concurrent tasks modify pending_on state during this check-clear-reprocess sequence, causing infinite retry loops? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3b2dad7-2375-4daf-aa28-e8c633710264?mode=deep",
+    "timestamp": "2026-01-26 04:40:27.580231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: fetch_batches()] [Race condition] Lines 206-218 spawn multiple tokio::spawn tasks to fetch transactions in parallel - can these tasks complete out of order and cause the sorted_by_key at line 223 to produce incorrect ordering if transaction versions are reused or manipulated? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_811ec0b5-c4b6-4f22-bb2d-b833ee8c2ba8?mode=deep",
+    "timestamp": "2026-01-26 04:40:43.528144",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: get_highest_known_version()] [Race condition] At lines 499-527, the function loops checking current_version.load() at line 499 - can a race occur where current_version is updated by run() between the comparison at line 499 and the sleep at line 504, causing missed transaction batches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b17d6c1-d549-4058-b195-bfb3ee6355d9?mode=deep",
+    "timestamp": "2026-01-26 04:41:01.027270",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: run()] [Race condition] Lines 124-166 check if transactions_in_previous_epoch is empty and conditionally snapshot - can concurrent epoch transitions cause this logic to execute incorrectly if multiple epochs transition simultaneously, creating duplicate or missing snapshots? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a864d94-6553-4a8d-8e20-45ec243234a0?mode=deep",
+    "timestamp": "2026-01-26 04:41:18.995495",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: backup_snapshot_if_present()] [Race condition] At lines 443-489, the backup task runs in a separate async context checking for snapshots every 5 seconds - can this task race with snapshot_indexer_async_v2() creating snapshots, leading to partial or corrupted backup uploads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_959fb9b8-0dde-4ae4-b707-3168e952a5bd?mode=deep",
+    "timestamp": "2026-01-26 04:41:37.824695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: new()] [Race condition] At line 62, current_version is initialized with AtomicU64::new(request_start_version) - if multiple TableInfoService instances are created with different start versions, can they race to update the shared IndexerAsyncV2 state causing version inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb00a5a3-40e8-41ba-91fe-61617c3ec9dd?mode=deep",
+    "timestamp": "2026-01-26 04:41:57.730220",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: abort()] [Race condition] Line 73 sets aborted to true with SeqCst, but there's no synchronization for in-flight parallel processing tasks at lines 269-273 - can these tasks continue writing to RocksDB after abort, causing partial state updates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa5efcca-7cbd-4244-9b5c-2e0d4e66f610?mode=deep",
+    "timestamp": "2026-01-26 04:42:19.119350",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: process_transactions_in_parallel()] [Race condition] At lines 276-312, the code uses try_join_all() to wait for tasks, but can tasks that panic or fail leave the IndexerAsyncV2 in an inconsistent state before the panic at lines 308-311 triggers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80a47e43-eb65-4319-a926-21f284fc4225?mode=deep",
+    "timestamp": "2026-01-26 04:42:41.198018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: run()] [Race condition] Line 191 updates current_epoch = Some(epoch), but this is not atomic with the version update at line 189-190 - can a race between these updates cause epoch boundary detection logic to fail at lines 147-165? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5179d575-c6ef-4310-a258-4a230c99fa3e?mode=deep",
+    "timestamp": "2026-01-26 04:43:03.712357",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: backup_the_snapshot_and_cleanup()] [Race condition] Lines 576-584 check metadata.epoch >= epoch and delete the snapshot directory - can concurrent backup tasks cause a race where one task deletes a directory while another is still uploading it? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7894c95d-7044-45a0-8f9e-646acc9f4441?mode=deep",
+    "timestamp": "2026-01-26 04:43:27.452598",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: process_transactions_in_parallel()] [Race condition] At line 257, transactions is wrapped in Arc and shared across tasks - can modifications to the underlying Vec during iteration cause undefined behavior if the Arc's reference count handling has issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e108a37-bacf-4172-9062-b5c989af48af?mode=deep",
+    "timestamp": "2026-01-26 04:43:50.022355",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: fetch_batches()] [Race condition] Lines 220-224 flatten and sort results from parallel fetch tasks - can a race in the sorting logic cause transactions with identical versions to be dropped or duplicated? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7f66254-684a-44b9-9261-bc6ec465495b?mode=deep",
+    "timestamp": "2026-01-26 04:44:12.336403",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: next_version()] [Race condition] Line 196 loads current_version with SeqCst ordering - can external callers use this to detect version updates and create race conditions by acting on stale version information? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5de3119b-44fe-4681-9d85-169e54c57fef?mode=deep",
+    "timestamp": "2026-01-26 04:44:35.885400",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: run()] [Race condition] The backup task at lines 86-99 runs in an infinite loop - if the main run() loop exits due to abort, can the backup task continue indefinitely consuming resources and potentially corrupting state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebc9f9d9-f52d-46ad-8a3a-c22fad0970dc?mode=deep",
+    "timestamp": "2026-01-26 04:44:58.934476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: process_transactions()] [Race condition] Lines 329-339 implement an infinite retry loop with 5-second sleep - can concurrent retries from multiple tasks cause thundering herd behavior on the parse_table_info() function? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fac60bb5-5684-46fc-9d42-07f236a5a956?mode=deep",
+    "timestamp": "2026-01-26 04:45:20.892414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: get_batches()] [Race condition] Line 361 loads current_version, but this value can be updated at line 189-190 by run() - can this cause get_batches() to return overlapping or duplicate batch ranges if called concurrently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2b20c8e-a6e5-4717-b922-16acffd72cba?mode=deep",
+    "timestamp": "2026-01-26 04:45:43.573336",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: snapshot_indexer_async_v2()] [Race condition] Lines 419-436 create a checkpoint snapshot - can concurrent calls to this function (from different epoch transitions) cause RocksDB checkpoint corruption or file system race conditions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3da4b3c7-0228-4049-bdb5-8be283522816?mode=deep",
+    "timestamp": "2026-01-26 04:46:08.024561",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: backup_snapshot_if_present()] [Race condition] Lines 451-463 scan the filesystem for snapshot directories - can this race with snapshot_indexer_async_v2() creating new directories, causing partial directory listings that miss snapshots? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fab028f-dc7e-4f89-af38-90149a8e8778?mode=deep",
+    "timestamp": "2026-01-26 04:46:32.251468",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: transactions_in_epochs()] [Race condition] Lines 616-677 split transactions into epochs based on get_block_info_by_version() - can concurrent epoch transitions cause this function to return inconsistent splits if block info is updated during execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0f27f5e-46a1-4808-98e5-8115a5a383bc?mode=deep",
+    "timestamp": "2026-01-26 04:46:54.360031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-table-info/src/table_info_service.rs] [Function: run()] [Race condition] Lines 120-121 call transactions_in_epochs() which accesses context.db - can concurrent database updates during this call cause the epoch split to be computed incorrectly, leading to transactions being processed in the wrong epoch? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_28dc7190-e037-44dd-a32c-fe4c2a84fc3f?mode=deep",
+    "timestamp": "2026-01-26 04:47:16.770814",
+    "report_generated": false
+  }
+]
