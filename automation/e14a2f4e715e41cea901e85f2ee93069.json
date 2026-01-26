@@ -10,5 +10,17 @@
     "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe5733a1-457d-479a-b4bd-067ecb8fac5f?mode=deep",
     "timestamp": "2026-01-26 08:13:21.378050",
     "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Maximum validator set size] Does the code handle extremely large validator sets (thousands of validators) without performance degradation, memory exhaustion, or integer overflow in power calculations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a994843-faf4-4e0c-84ab-6c6a1dae4f10?mode=deep",
+    "timestamp": "2026-01-26 08:15:09.640205",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mo\n\n### Citations\n\n**File:** crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs (L1-128)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{\n    mode::TConsensusMode,\n    types::{JWKConsensusMsg, ObservedUpdate, ObservedUpdateResponse},\n};\nuse anyhow::{anyhow, ensure};\nuse aptos_consensus_types::common::Author;\nuse aptos_infallible::Mutex;\nuse aptos_logger::info;\nuse aptos_reliable_broadcast::BroadcastStatus;\nuse aptos_types::{\n    aggregate_signature::PartialSignatures,\n    epoch_state::EpochState,\n    jwks::{ProviderJWKs, QuorumCertifiedUpdate},\n    validator_verifier::VerifyError,\n};\nuse move_core_types::account_address::AccountAddress;\nuse std::{collections::BTreeSet, marker::PhantomData, sync::Arc};\n\n/// The aggregation state of reliable broadcast where a validator broadcast JWK observation requests\n/// and produce quorum-certified JWK updates.\npub struct ObservationAggregationState<ConsensusMode> {\n    epoch_state: Arc<EpochState>,\n    local_view: ProviderJWKs,\n    inner_state: Mutex<PartialSignatures>,\n    _phantom: PhantomData<ConsensusMode>,\n}\n\nimpl<ConsensusMode> ObservationAggregationState<ConsensusMode> {\n    pub fn new(epoch_state: Arc<EpochState>, local_view: ProviderJWKs) -> Self {\n        Self {\n            epoch_state,\n            local_view,\n            inner_state: Mutex::new(PartialSignatures::empty()),\n            _phantom: Default::default(),\n        }\n    }\n}\n\nimpl<ConsensusMode: TConsensusMode> BroadcastStatus<JWKConsensusMsg>\n    for Arc<ObservationAggregationState<ConsensusMode>>\n{\n    type Aggregated = QuorumCertifiedUpdate;\n    type Message = ConsensusMode::ReliableBroadcastRequest;\n    type Response = ObservedUpdateResponse;\n\n    fn add(\n        &self,\n        sender: Author,\n        response: Self::Response,\n    ) -> anyhow::Result<Option<Self::Aggregated>> {\n        let ObservedUpdateResponse { epoch, update } = response;\n        let ObservedUpdate {\n            author,\n            observed: peer_view,\n            signature,\n        } = update;\n        ensure!(\n            epoch == self.epoch_state.epoch,",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a4996d4-687a-4a0e-83f5-869314657a54?mode=deep",
+    "timestamp": "2026-01-26 08:15:22.674891",
+    "report_generated": false
   }
 ]
