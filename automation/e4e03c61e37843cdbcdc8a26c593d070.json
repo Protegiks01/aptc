@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Field consistency] Are all four extracted fields (epoch, round, block_id, timestamp) guaranteed to be consistent with each other, or could race conditions during block mutation cause FullRandMetadata to contain mismatched values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48a6217c-f693-4af2-8911-b092bc8d912f?mode=deep",
+    "timestamp": "2026-01-26 10:38:43.587217",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Atomic read] Does the conversion perform an atomic read of all Block fields, or can concurrent block modifications between reading different fields cause FullRandMetadata to capture an inconsistent snapshot? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b87e7577-b5e8-43ba-91de-fcf5d6542ad3?mode=deep",
+    "timestamp": "2026-01-26 10:38:56.001788",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Block immutability] Does the conversion assume blocks are immutable, or could modifications to the Block after conversion cause FullRandMetadata to become stale and inconsistent with actual block state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a9a2114-9b4d-4b2a-bc31-53a183535ee9?mode=deep",
+    "timestamp": "2026-01-26 10:39:08.894835",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Default values] If any Block field returns a default/zero value due to error, does the conversion detect this, or could it create FullRandMetadata with invalid zero values that break randomness protocol? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b75094a-7ce9-4d71-abe4-396762afb7bc?mode=deep",
+    "timestamp": "2026-01-26 10:39:23.982092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Metadata as input to crypto] Since FullRandMetadata.metadata (containing epoch/round) is serialized and used as input to WVUF cryptographic operations, can manipulation of these fields allow an attacker to predict or bias randomness output? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b425b018-d4fa-40db-b6b7-157d34050e48?mode=deep",
+    "timestamp": "2026-01-26 10:39:38.074935",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Block ID in signatures] Is block_id used in any cryptographic signatures for randomness, and if so, can block_id manipulation allow signature forgery or replay attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72d820b8-5292-43e2-b047-48f7bf1d8c7c?mode=deep",
+    "timestamp": "2026-01-26 10:39:53.104554",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Timestamp in crypto] Does timestamp influence cryptographic randomness generation (e.g., as entropy source), and can timestamp manipulation compromise randomness quality or predictability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c67f2b54-3c8e-4233-9921-0a916cf68465?mode=deep",
+    "timestamp": "2026-01-26 10:40:09.866164",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Metadata serialization] When FullRandMetadata is serialized for cryptographic operations, does the conversion ensure canonical encoding, or could different serializations of same logical metadata break signature verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05699054-4022-4db9-923d-fed13db9868d?mode=deep",
+    "timestamp": "2026-01-26 10:40:27.844663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Entropy reduction] Does the conversion preserve full entropy from Block fields into FullRandMetadata, or could field truncation/lossy conversion reduce randomness quality? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37413c6f-e030-49a5-bc89-9a96cefe7364?mode=deep",
+    "timestamp": "2026-01-26 10:40:45.358332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Share matching] Since randomness shares are matched by FullRandMetadata.metadata (epoch/round), can an attacker craft blocks that generate metadata matching existing shares but for wrong blocks, causing incorrect share aggregation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db7478df-3b99-4f81-976c-a93c66301cee?mode=deep",
+    "timestamp": "2026-01-26 10:41:04.878715",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Share retention] When shares are retained based on matching FullRandMetadata, can manipulation of converted metadata cause legitimate shares to be incorrectly discarded? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5dff9b1-0c4a-4c4a-ba7a-ccfb5081dab2?mode=deep",
+    "timestamp": "2026-01-26 10:41:25.609979",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Aggregation threshold] Does the conversion affect how share aggregation counts toward threshold weight, or could metadata manipulation allow Byzantine validators to prevent reaching quorum? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9cf3ec9e-e083-44b9-809a-3912a13b54f3?mode=deep",
+    "timestamp": "2026-01-26 10:41:47.814876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Metadata mismatch detection] If converted FullRandMetadata doesn't match expected values in share aggregation, does the system detect this quickly, or could it lead to silent failures and randomness generation stalls? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09f34239-dd94-47be-9d99-2b1289aa4e2f?mode=deep",
+    "timestamp": "2026-01-26 10:42:10.114841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [State transition] When FullRandMetadata is added to RandItem, does the conversion guarantee that metadata triggers correct state transitions (PendingMetadata → PendingDecision → Decided), or could malformed metadata cause state machine deadlock? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d58eb1e-12f1-4e98-8ac4-419a1ee1e731?mode=deep",
+    "timestamp": "2026-01-26 10:42:33.335738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Queue ordering] Since BlockQueue uses FullRandMetadata from converted blocks, can manipulation of conversion inputs cause blocks to be queued in wrong order, breaking randomness generation dependencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d4d3677-1351-45e6-8bfa-0bb038b87fc8?mode=deep",
+    "timestamp": "2026-01-26 10:42:57.686135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Pending blocks] If multiple blocks are converted to FullRandMetadata simultaneously, can this create race conditions in randomness state management that cause shares to be lost or misassigned? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17d96e7d-84dc-4715-bc3e-166bfea8b510?mode=deep",
+    "timestamp": "2026-01-26 10:43:23.251856",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Decision propagation] After FullRandMetadata leads to randomness decision, does the conversion ensure metadata remains consistent with decision, or could metadata changes invalidate the decision? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92b38d79-afb7-4797-b980-ccd63f4e7c4b?mode=deep",
+    "timestamp": "2026-01-26 10:43:47.983496",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Panic safety] Can any of the Block field accessor methods (epoch(), round(), id(), timestamp_usecs()) panic, and if so, does this cause the conversion to panic and crash the randomness generation thread? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9b2335f-7201-4664-b59a-88cfbf7ce0b8?mode=deep",
+    "timestamp": "2026-01-26 10:44:12.192926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Null/invalid blocks] Does the conversion handle invalid or malformed blocks gracefully, or could attempting to convert a corrupted Block cause undefined behavior or crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e677068-b1b2-4071-a5d5-4c8c10bb07f1?mode=deep",
+    "timestamp": "2026-01-26 10:44:37.596998",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Memory safety] Is the conversion memory-safe under all conditions, or could certain Block states trigger use-after-free or buffer overflows when extracting fields? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cd22920-8de7-453b-9bbb-0ab491790ec9?mode=deep",
+    "timestamp": "2026-01-26 10:45:03.670888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Error propagation] Since the From trait doesn't return Result, any errors during conversion are hidden - could this mask critical issues where Block fields are invalid? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb554dbc-2a77-4513-8fc3-9463f0b4a0ca?mode=deep",
+    "timestamp": "2026-01-26 10:45:29.958223",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Conversion cost] Is the conversion O(1), or could expensive Block field computations (e.g., hash recalculation for id()) allow DoS by forcing validators to process many conversion requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7711b28a-8792-4f22-a757-24a328fa9cd6?mode=deep",
+    "timestamp": "2026-01-26 10:45:57.525528",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Memory allocation] Does the conversion allocate memory (e.g., cloning data), and could an attacker trigger excessive conversions to exhaust validator memory? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1da1164d-081f-4dfc-8fdb-8b1d54c9057e?mode=deep",
+    "timestamp": "2026-01-26 10:46:25.588350",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Lock contention] If Block field accessors require locks, can mass conversion requests cause lock contention and slow down randomness generation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b87b7836-da94-420b-bd09-b1da6773000d?mode=deep",
+    "timestamp": "2026-01-26 10:46:54.102340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/consensus-types/src/randomness.rs] [Function: From<&Block>::from()] [Fast path] For randomness fast path, does the conversion work correctly with fast_config, or could metadata from converted blocks be incompatible with fast path share generation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22b7fd96-f72b-43c7-b98d-7af79d8064f6?mode=deep",
+    "timestamp": "2026-01-26 10:47:22.504949",
+    "report_generated": false
+  }
+]
