@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: new()] [Initialization vulnerability] Can a malicious on-chain configuration provide an empty HashMap for proposers combined with an invalid default_proposer (e.g., zero address or non-validator address), causing all rounds to be assigned to an unauthorized proposer and breaking consensus validator authority invariants? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d54da238-681c-4dcb-8eb1-10d959aad2af?mode=deep",
+    "timestamp": "2026-01-26 06:28:29.874311",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: new()] [Validator set manipulation] Can an attacker craft a proposers HashMap that maps all rounds to a single Byzantine validator (or < 1/3 colluding validators), centralizing block production and enabling censorship attacks or transaction ordering manipulation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56857e76-2253-4250-ab0d-6a83fd544115?mode=deep",
+    "timestamp": "2026-01-26 06:28:42.615652",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Determinism failure] Does the HashMap.get() operation guarantee deterministic behavior across all validators when the same round is queried, or could hash collision handling or internal HashMap implementation differences cause validators to select different proposers for the same round, leading to consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6627dfbb-ac4a-4443-8bdc-8b8ec5b1f991?mode=deep",
+    "timestamp": "2026-01-26 06:28:55.541357",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Default proposer abuse] When proposers.get(&round) returns None for unmapped rounds, all such rounds default to default_proposer - can this be exploited by intentionally leaving rounds unmapped to give one validator disproportionate proposal power, violating fairness and potentially enabling validator collusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c25baac9-2c64-4c9c-a494-3d7749f20387?mode=deep",
+    "timestamp": "2026-01-26 06:29:09.416698",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Struct: RoundProposer] [Concurrent access] Is the proposers HashMap accessed from multiple threads without synchronization primitives (Mutex/RwLock), and could concurrent reads during epoch transitions or reconfigurations cause race conditions leading to non-deterministic proposer selection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d28538a-4a76-40d2-b3a3-db7fd63d34f4?mode=deep",
+    "timestamp": "2026-01-26 06:29:23.260636",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Round overflow] Round is a u64 type - can an attacker force round numbers to overflow by manipulating timeout certificates or malicious proposals, causing rounds to wrap around to previously-mapped proposers and potentially triggering equivocation or safety violations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55fa8412-44eb-4c41-a98e-7101b4713f15?mode=deep",
+    "timestamp": "2026-01-26 06:29:38.398493",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: new()] [HashMap size DoS] Can a malicious on-chain governance proposal create a proposers HashMap with billions of entries (e.g., mapping every possible u64 round to validators), causing memory exhaustion on validator nodes and crashing the consensus layer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c34702cb-7596-4402-9a01-17e4dc3596de?mode=deep",
+    "timestamp": "2026-01-26 06:29:55.033852",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Author validation bypass] Does this implementation validate that the returned Author (proposer) is actually in the current validator set, or can it return addresses of non-validators, removed validators, or zero addresses, allowing unauthorized block proposals? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8229c8a7-3889-461b-b08c-29dd49074829?mode=deep",
+    "timestamp": "2026-01-26 06:30:11.987882",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Struct: RoundProposer] [Epoch boundary bugs] During epoch transitions when the validator set changes, is the RoundProposer instance properly updated or recreated, or could stale mappings persist across epochs, assigning rounds to validators who are no longer in the active set? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13854405-b4b6-4b7f-a762-b6c1f309882b?mode=deep",
+    "timestamp": "2026-01-26 06:30:30.308035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Liveness attack] If the default_proposer is offline or Byzantine, and most rounds are unmapped (falling back to default), can this cause persistent liveness failures as the network repeatedly selects a non-responsive proposer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec256be0-92c1-4d3a-991e-0fb06198eadb?mode=deep",
+    "timestamp": "2026-01-26 06:30:49.874122",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: new()] [Clone semantics] The proposers HashMap is cloned when passed to new() (based on usage in epoch_manager.rs) - does this deep clone operation preserve exact ordering and determinism across all validators, or could subtle differences in HashMap internal state cause non-deterministic behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81799da3-a841-4a73-ae39-6a033505f8b0?mode=deep",
+    "timestamp": "2026-01-26 06:31:09.924861",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Byzantine round skipping] Can Byzantine validators deliberately skip certain rounds to influence which proposer gets selected, exploiting the sparse HashMap to manipulate consensus flow and favor colluding validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad511b05-ddec-4d73-ad42-3c8fad036a3f?mode=deep",
+    "timestamp": "2026-01-26 06:31:31.402349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Struct: RoundProposer] [Serialization attacks] If RoundProposer state is serialized/deserialized (e.g., for checkpointing), could an attacker inject malicious data to corrupt the proposers mapping or default_proposer during deserialization, bypassing validator verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ecbb856-4138-41eb-a463-dd082ef15489?mode=deep",
+    "timestamp": "2026-01-26 06:31:53.941092",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Type confusion] Author is a type alias for AccountAddress - could type confusion between validator addresses, user addresses, and system addresses allow non-validator addresses to be returned as valid proposers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d34ee9a6-2620-4c21-8a93-9d93ec0b81db?mode=deep",
+    "timestamp": "2026-01-26 06:32:17.021324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: new()] [Default proposer selection] The default_proposer is hardcoded to proposers.first() in epoch_manager.rs - can the validator ordering be manipulated during validator set construction to ensure a Byzantine validator becomes the default proposer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_286a1b5c-9ce7-4d04-bc12-a9534fbd498a?mode=deep",
+    "timestamp": "2026-01-26 06:32:41.016287",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Struct: RoundProposer] [Memory safety] Are there any unsafe blocks or raw pointer manipulations in the HashMap implementation that could lead to memory corruption, use-after-free, or other memory safety violations affecting consensus integrity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a072a9ef-7cad-40b9-9fb0-bc7b7ed39b71?mode=deep",
+    "timestamp": "2026-01-26 06:33:06.241409",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Hash collision] If two different Round values hash to the same HashMap bucket and one is mapped while the other isn't, could bucket collision handling cause the wrong proposer to be selected for the unmapped round? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_559a151d-95d4-4324-8950-084d32bb55c2?mode=deep",
+    "timestamp": "2026-01-26 06:33:32.026274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Return value verification] Is the returned Author verified to be non-zero and valid before use, or could a zero/null address be returned (e.g., if default_proposer is uninitialized), causing crashes or undefined behavior in downstream consensus code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4e181c4-7d00-405c-a099-f92369e8a9c1?mode=deep",
+    "timestamp": "2026-01-26 06:33:59.194914",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Struct: RoundProposer] [Immutability assumption] Once created, RoundProposer has no mutator methods - but could shared mutable references to the underlying HashMap (via unsafe code or interior mutability patterns) allow runtime modification, breaking determinism guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d91c973-3b4f-4c12-9360-507a132b5f44?mode=deep",
+    "timestamp": "2026-01-26 06:34:27.750809",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: new()] [Duplicate mapping validation] Does the constructor validate that each Round maps to exactly one Author, or could duplicate/conflicting entries in the input HashMap cause ambiguous proposer selection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca8031fa-9e76-4cf8-b3d3-aaae231a87c6?mode=deep",
+    "timestamp": "2026-01-26 06:34:56.101502",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Cache timing attacks] Could the HashMap.get() operation's timing differences (cache hit vs. miss, or hash collision resolution time) leak information about which rounds are mapped, enabling side-channel attacks to predict future proposers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc01f00f-9db7-449a-8620-5476e195b9a0?mode=deep",
+    "timestamp": "2026-01-26 06:35:24.194769",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Struct: RoundProposer] [Arc/Mutex wrapping] When wrapped in Arc for multi-threaded access (as seen in epoch_manager.rs), are there missing Mutex guards that could allow data races when multiple threads query get_valid_proposer() during the same round? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12ee8df5-10bd-443c-a0c2-c4ccb2121455?mode=deep",
+    "timestamp": "2026-01-26 06:35:52.509325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: get_valid_proposer()] [Round range validation] Are there any checks that round is within valid bounds (e.g., not MAX_U64, not zero), or could extreme round values cause integer wraparound issues in the HashMap hashing function? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bd32132f-57ca-44dd-9901-0094923c92c1?mode=deep",
+    "timestamp": "2026-01-26 06:36:16.727117",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Function: new()] [Proposer validity check] Does the constructor verify that all Authors in the proposers HashMap and the default_proposer are valid public keys with corresponding private keys held by actual validators, preventing insertion of uncontrolled addresses? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_085ee68a-2fbe-48a4-a848-e63156ee929f?mode=deep",
+    "timestamp": "2026-01-26 06:36:41.320428",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/liveness/round_proposer_election.rs] [Struct: RoundProposer] [State consistency] If multiple RoundProposer instances are created across different validator nodes from the same on-chain configuration, is there guaranteed bitwise-identical state, or could differences in HashMap internal structure cause divergent behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21e5e0de-326f-4235-a97c-ad3273cea30a?mode=deep",
+    "timestamp": "2026-01-26 06:37:07.521820",
+    "report_generated": false
+  }
+]
