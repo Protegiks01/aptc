@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Function: MockVMValidator struct] [Production misuse] Can this MockVMValidator be accidentally or maliciously deployed in production environments instead of the real VMValidator, allowing all transactions to bypass actual validation and enabling unlimited fund theft and consensus violations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6148751-c17a-4986-9d56-c40f8c9ceec7?mode=deep",
+    "timestamp": "2026-01-26 06:34:59.519571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Function: VMValidator::validate_transaction()] [Validation bypass] Does the VMValidator trait implementation that always returns VMValidatorResult::new(None, 0) create a critical vulnerability if this mock is used in production, allowing any transaction regardless of validity to be accepted into the mempool and executed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14826def-b733-495f-942d-662d2ffd2da6?mode=deep",
+    "timestamp": "2026-01-26 06:35:12.203377",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Function: VMValidator::validate_transaction()] [Type confusion] Can an attacker exploit Rust's trait system to substitute MockVMValidator for the real VMValidator at runtime through dependency injection or configuration manipulation, bypassing all transaction validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1b2d903-bd76-4157-b049-776cb7cd1762?mode=deep",
+    "timestamp": "2026-01-26 06:35:25.718352",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 35-42] [State integrity] Does ignoring the _state_view and _module_storage parameters in VMValidator::validate_transaction() mean that if this mock is used, transactions could be validated without checking account existence, balances, or Move module bytecode, leading to state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6ce1cdb-0e1a-42ee-88ab-a86b70e8e6e7?mode=deep",
+    "timestamp": "2026-01-26 06:35:39.170582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Function: TransactionValidation::validate_transaction()] [Signature bypass] In line 49, can an attacker exploit the check_signature() call by crafting transactions with edge-case signature formats (empty, malformed, or reused signatures) that pass the check but are cryptographically invalid? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41c94c2a-1add-40e3-a831-588e0056454a?mode=deep",
+    "timestamp": "2026-01-26 06:35:53.889701",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 49-56] [Error handling] Does the signature validation error handling that returns INVALID_SIGNATURE on Err(_) hide specific signature verification failures, potentially allowing replay attacks or signature malleability exploits to go undetected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d537316-bd90-4533-8549-0c58e314faa1?mode=deep",
+    "timestamp": "2026-01-26 06:36:09.240042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 62-63] [Logic error] Why does INVALID_SIG_TEST_ADD return INVALID_SIGNATURE after the signature already passed check_signature() at line 49, and could this contradictory logic create confusion in integration tests that masks real signature validation bugs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c5f1cc0-d44f-4029-a0eb-30f2fdf4a98b?mode=deep",
+    "timestamp": "2026-01-26 06:36:25.740831",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Function: TransactionValidation::validate_transaction()] [Signature reuse] Does the signature validation only check mathematical correctness without verifying nonces or timestamps, allowing the same valid signature to be replayed across multiple transactions for unlimited fund theft? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6deed591-9fe0-47e6-a47b-63bda7fe7fe7?mode=deep",
+    "timestamp": "2026-01-26 06:36:45.222893",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 16-29] [Hardcoded addresses] Are the seven hardcoded test addresses (ACCOUNT_DNE_TEST_ADD through INVALID_AUTH_KEY_TEST_ADD) publicly known constants that an attacker could use to send transactions that trigger specific validation failures, potentially exploiting downstream error handling bugs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0e8a09d-6608-4731-8785-525ab321b5f0?mode=deep",
+    "timestamp": "2026-01-26 06:37:03.880428",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Constant: ACCOUNT_DNE_TEST_ADD] [Account creation bypass] Can an attacker send transactions from the ACCOUNT_DNE_TEST_ADD address (0x00...00) to exploit systems that handle SENDING_ACCOUNT_DOES_NOT_EXIST errors improperly, potentially creating accounts without proper initialization or stealing reserved address space? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bfb44e54-4f86-40cc-8fcb-3296c0fa70bd?mode=deep",
+    "timestamp": "2026-01-26 06:37:24.103583",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Constant: INSUFFICIENT_BALANCE_TEST_ADD] [Balance check bypass] Does returning INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE for INSUFFICIENT_BALANCE_TEST_ADD without checking actual balance mean that if this mock is used in production, any other address could spend beyond their balance causing fund loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef21475a-0f2c-467e-bc99-82d90e41b400?mode=deep",
+    "timestamp": "2026-01-26 06:37:45.363878",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Constants: SEQ_NUMBER_TOO_NEW_TEST_ADD, SEQ_NUMBER_TOO_OLD_TEST_ADD] [Sequence number bypass] Do the hardcoded sequence number test addresses allow an attacker to bypass actual sequence number validation if this mock is used, enabling transaction replay attacks and double-spending? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a68f01a-3bfe-4581-b306-cb4f329c1a33?mode=deep",
+    "timestamp": "2026-01-26 06:38:07.473370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Constant: TXN_EXPIRATION_TIME_TEST_ADD] [Timestamp bypass] Does the TXN_EXPIRATION_TIME_TEST_ADD only trigger TRANSACTION_EXPIRED for that specific address, meaning all other transactions are never checked for expiration, allowing stale transactions to be executed indefinitely if this mock is used? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_947d9562-3bea-49be-ad75-de1409748f67?mode=deep",
+    "timestamp": "2026-01-26 06:38:30.442939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Constant: INVALID_AUTH_KEY_TEST_ADD] [Auth key bypass] Can an attacker exploit the fact that only INVALID_AUTH_KEY_TEST_ADD triggers authentication key validation, while all other addresses skip this check, to rotate keys maliciously or hijack accounts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7766cd46-4240-47ad-8be3-2a9f4eb4b8ab?mode=deep",
+    "timestamp": "2026-01-26 06:38:55.357506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 60-76] [Address collision] What happens if an attacker generates a transaction where the sender address accidentally collides with one of the test addresses through hash collision or address grinding, causing unexpected validation behavior in production if this mock leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_733b5b5d-555d-4b6a-b560-b6701564a39e?mode=deep",
+    "timestamp": "2026-01-26 06:39:20.253868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 41, 77] [Gas bypass] Does always returning 0 for gas consumption in VMValidatorResult::new(ret, 0) mean that if this mock is used in production, attackers can execute unlimited computational work without paying gas, enabling resource exhaustion DoS attacks on validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1e0dc7f-6f04-41c5-8790-d68e50466883?mode=deep",
+    "timestamp": "2026-01-26 06:39:45.028940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Function: VMValidator::validate_transaction()] [Gas calculation missing] Why is gas consumption hardcoded to 0 instead of calculating actual validation costs, and could this prevent detection of gas-related bugs in integration tests where gas limits should be enforced? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52efd438-e143-435a-8d4e-91a3af88c02a?mode=deep",
+    "timestamp": "2026-01-26 06:40:10.099338",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 41, 77] [Economic attack] Can the zero gas return value allow an attacker to flood the mempool with complex transactions that consume significant validation resources but report zero cost, causing validator resource exhaustion and liveness issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_255cc975-545a-44d7-890a-4bd143cc5fc5?mode=deep",
+    "timestamp": "2026-01-26 06:40:36.330265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 35-42] [State consistency] Does ignoring the StateView parameter mean that concurrent transactions affecting the same accounts are not properly serialized, potentially allowing race conditions where sequence numbers or balances become inconsistent across validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41f46033-3706-44c1-8315-50c941087041?mode=deep",
+    "timestamp": "2026-01-26 06:41:01.656402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Function: notify_commit()] [State sync missing] Does the empty notify_commit() implementation at line 84 mean that if this mock is used, the validator never updates its view of committed state, causing it to validate transactions against stale state and accept invalid transactions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f50f94f-e3f3-41cf-b48f-d9510a1cf546?mode=deep",
+    "timestamp": "2026-01-26 06:41:26.353488",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Function: restart()] [State reset missing] Does the restart() function that simply returns Ok(()) without any state cleanup mean that restarting a validator using this mock preserves stale state, potentially causing consensus inconsistencies after node restarts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15e75ba7-1a86-4c10-b9fa-374468d5782c?mode=deep",
+    "timestamp": "2026-01-26 06:41:51.603870",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Struct: MockVMValidator] [Thread safety] Is the MockVMValidator struct thread-safe when cloned across multiple validation threads, or can concurrent validation of transactions from the same sender create race conditions in sequence number checking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_910d36c2-3beb-4a8b-b331-ccf2438f8dc3?mode=deep",
+    "timestamp": "2026-01-26 06:42:15.434897",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 31-32] [Clone implementation] Does the derived Clone trait on MockVMValidator create shallow copies that share internal state, potentially causing data races when the same instance is used across multiple validator threads? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_69248a7c-d5f2-44fa-b992-37e9563d3b90?mode=deep",
+    "timestamp": "2026-01-26 06:42:39.709198",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Lines: 38-39] [Module verification bypass] Does ignoring the _module_storage parameter mean that if this mock is used in production, transactions could call non-existent Move modules or modules with malicious bytecode without verification, enabling arbitrary code execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d18f2c74-77c7-4db8-b770-dbed0bc675b1?mode=deep",
+    "timestamp": "2026-01-26 06:43:03.178662",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/vm-validator/src/mocks/mock_vm_validator.rs] [Function: VMValidator::validate_transaction()] [Bytecode validation missing] Can an attacker submit transactions with malformed Move bytecode that would crash the real VM but passes validation in this mock, causing consensus failures when these transactions are executed by other validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4c321a2-3b89-49b0-8382-2373db99d9ab?mode=deep",
+    "timestamp": "2026-01-26 06:43:26.138396",
+    "report_generated": false
+  }
+]
