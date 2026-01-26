@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Race Condition] Can concurrent calls to update_sequence_numbers() cause a race condition when checking and updating our_funder_seq vs funder_seq at lines 221-225, allowing multiple transactions to use the same sequence number and causing transaction failures or fund loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7df2c1da-f714-48aa-be5b-7c304d32adf1?mode=deep",
+    "timestamp": "2026-01-26 03:21:31.338309",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [TOCTOU Vulnerability] Between reading our_funder_seq at line 224 and the check at line 234, can the sequence number be modified by another thread, creating a time-of-check-time-of-use vulnerability that allows exceeding MAX_NUM_OUTSTANDING_TRANSACTIONS and causing transaction expiration? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_120edeae-5ac0-4332-8519-cd30abd2814a?mode=deep",
+    "timestamp": "2026-01-26 03:21:44.458825",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Double Write] Can two concurrent requests with identical (receiver_address, amount) tuples both be added to the outstanding_requests queue at lines 238-243, causing both to execute and resulting in double-funding of the same amount? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_201e5b53-66a3-4fb0-b170-dd9fbc005953?mode=deep",
+    "timestamp": "2026-01-26 03:21:58.623171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Queue Manipulation] At lines 260-264, the code removes queue entries based on matching request_key, but can an attacker send identical requests to manipulate the queue ordering and bypass the FIFO guarantee, front-running legitimate requests? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5da27782-3fd0-4c67-a204-a9927614ac73?mode=deep",
+    "timestamp": "2026-01-26 03:22:14.113317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Integer Overflow] At line 234, when checking our_funder_seq < funder_seq + MAX_NUM_OUTSTANDING_TRANSACTIONS, can an attacker manipulate funder_seq to cause integer overflow, bypassing the outstanding transaction limit and flooding the mempool? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03b11882-6c1e-4e56-aa7a-045bdf092713?mode=deep",
+    "timestamp": "2026-01-26 03:22:30.529148",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Deadlock] The function acquires write lock at line 217, then releases it, then re-acquires it at line 238. Can this lock/unlock/lock pattern create a deadlock scenario with other concurrent operations, causing the faucet to halt completely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3debd3a9-ab21-4a36-b6be-5cd3eb1e6947?mode=deep",
+    "timestamp": "2026-01-26 03:22:48.000265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Starvation Attack] At lines 267-268, requests sleep for only 1ms while waiting for queue position. Can an attacker flood the system with requests for a specific asset, causing legitimate requests to starve and loop for 30 seconds before timing out? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ce04566a-1ae6-42ba-9794-6ec41edd1dc9?mode=deep",
+    "timestamp": "2026-01-26 03:23:07.003329",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Asset Isolation Bypass] The function uses asset_name to separate queues at lines 239-241, but is the asset_name properly validated? Can an attacker use special characters or malicious strings to bypass asset isolation and interfere with other asset queues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cfc0bc0-e5dd-4b2c-b185-d3e0b15866c0?mode=deep",
+    "timestamp": "2026-01-26 03:23:27.298369",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Sequence Number Reset Race] At lines 289-297, the sequence number is reset if transactions expire. Can multiple threads simultaneously detect expiration and all attempt to reset, causing the sequence number to be set incorrectly and breaking transaction ordering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34e9e2ab-74a9-4acf-88f7-060b33c3fdbc?mode=deep",
+    "timestamp": "2026-01-26 03:23:49.467323",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Loop Exhaustion] The outer loop at line 233 runs for wait_for_outstanding_txns_secs * 2 iterations. Can an attacker cause this loop to always hit the maximum iterations by keeping the outstanding transaction count high, effectively DoSing the faucet? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95ef8e85-223d-4988-b553-2ff6674ab872?mode=deep",
+    "timestamp": "2026-01-26 03:24:12.930372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Memory Exhaustion] The outstanding_requests HashMap at lines 238-243 can grow unbounded as requests are added. Can an attacker flood the system with unique (receiver_address, amount) combinations to cause memory exhaustion and crash the faucet service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8574a325-1e2f-4b29-a967-e66bb4005f96?mode=deep",
+    "timestamp": "2026-01-26 03:24:39.386865",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Queue Poisoning] At line 242, entries are pushed to the queue without any limit. Can an attacker add millions of requests to poison the queue, making legitimate requests wait indefinitely and never reach the front? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b33de83e-0afe-40d6-b9f2-3acfda2cb4ae?mode=deep",
+    "timestamp": "2026-01-26 03:25:05.457397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Race in Queue Removal] Between checking if request is at front (line 249) and removing it (lines 259-264), can another thread remove the entry, causing the removal to fail silently and the request to hang indefinitely waiting for its turn? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cefaa143-0915-489f-b11a-674b554261d7?mode=deep",
+    "timestamp": "2026-01-26 03:25:32.937607",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Read Lock to Write Lock Race] At lines 247-258, the code drops a read lock and acquires a write lock. Can another thread modify the queue during this transition, causing the first() check to succeed but the subsequent removal to fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e1cb6d1-7fa7-4303-99b6-38fbc9a31402?mode=deep",
+    "timestamp": "2026-01-26 03:25:58.944758",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: update_sequence_numbers()] [Duplicate Request Handling] The comment at lines 255-257 mentions handling duplicate requests, but only removes one entry. Can an attacker exploit this by sending many identical requests to permanently occupy queue slots? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63cb3647-d0e5-4095-804c-2326291d1b13?mode=deep",
+    "timestamp": "2026-01-26 03:26:26.704384",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: get_sequence_numbers()] [Account Existence Check] At lines 328-337, only the funder account is checked for existence, but the receiver account failure is silently ignored. Can this lead to transactions being submitted to non-existent receivers, wasting gas and sequence numbers? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18a3417e-4466-4d60-8c30-436d788ff9ad?mode=deep",
+    "timestamp": "2026-01-26 03:26:56.077558",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: get_sequence_numbers()] [Concurrent API Calls] At line 320, both API calls are made concurrently using join_all. If the API responses arrive in different orders due to network timing, can this cause sequence numbers to be mismatched with the wrong accounts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68cb9943-70a7-4c0f-b922-f58eff2046bc?mode=deep",
+    "timestamp": "2026-01-26 03:27:26.405371",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: get_sequence_numbers()] [Response Order Assumption] At lines 322-337, the code assumes responses are in the same order as requests by using remove(1) and remove(0). If the futures library changes behavior or responses arrive out of order, can this cause funder and receiver sequence numbers to be swapped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f91682a2-e8f5-4f58-8ea0-eb73ba18bc1f?mode=deep",
+    "timestamp": "2026-01-26 03:27:56.470981",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: get_sequence_numbers()] [Error Message Leakage] At lines 331-335, the error message includes the funder address. Can this leak sensitive information about the faucet's funding account to attackers, enabling targeted attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6021a349-4b52-4efc-a338-2ba215e20a22?mode=deep",
+    "timestamp": "2026-01-26 03:28:27.239558",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: get_sequence_numbers()] [Stale Sequence Numbers] The function fetches sequence numbers at a single point in time, but between fetching and using them, can the on-chain values change due to other transactions, causing sequence number conflicts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c9fdc3a-1c36-4c97-b232-d6cb37722566?mode=deep",
+    "timestamp": "2026-01-26 03:28:57.804323",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: submit_transaction()] [Sequence Number Rollback Race] At line 390, when a transaction fails, the sequence number is decremented. Can concurrent failures cause the sequence number to be decremented multiple times for the same failed transaction, breaking sequence number integrity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27960aa3-a4ad-4fb9-9024-9e635a2f2f4a?mode=deep",
+    "timestamp": "2026-01-26 03:29:27.643296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: submit_transaction()] [Transaction Wait Ambiguity] At lines 350-376, the wait_for_transactions flag determines behavior, but the comment at line 354 states it's hard to tell if timeout or user fault. Can this ambiguity cause the faucet to incorrectly decrement sequence numbers for timed-out transactions that actually succeeded? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cecc601a-d19a-4489-b65e-60b6860859cb?mode=deep",
+    "timestamp": "2026-01-26 03:29:56.460518",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: submit_transaction()] [Error Recovery Inconsistency] At lines 389-398, only the sequence number is rolled back on failure, but what about other state modifications? Can partial state updates cause inconsistencies between the local faucet state and on-chain state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4db16b8-8710-4bd7-8fc1-38ea944e9a19?mode=deep",
+    "timestamp": "2026-01-26 03:30:21.802430",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: submit_transaction()] [Double Decrement] If submit_and_wait_bcs fails at line 357 and returns early via Err(), and then another thread also fails, can both threads call decrement_sequence_number() at line 390, causing the sequence number to be decremented twice? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81508c2f-86fb-4fb1-a1a8-20f12e8a6f89?mode=deep",
+    "timestamp": "2026-01-26 03:30:47.566313",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/funder/common.rs] [Function: submit_transaction()] [Logging Sensitive Data] At lines 383-386 and 391-396, transaction hashes and receiver addresses are logged. Can this logging leak information that could be used to track faucet operations or identify patterns for exploitation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e80865c9-44c0-473d-a513-69a4007d3e2e?mode=deep",
+    "timestamp": "2026-01-26 03:31:13.298543",
+    "report_generated": false
+  }
+]
