@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: RandConfig::get_peer_weight()] [Weight manipulation] Lines 676-681 query wconfig for player weight cast to u64 - can integer overflow in the cast allow attackers to wrap large weights to small values, enabling threshold bypass with fewer validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92eec019-ef01-473e-9e35-3fc4627cb379?mode=deep",
+    "timestamp": "2026-01-26 22:20:41.510971",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: RandConfig::get_peer_weight()] [Weight staleness] The weight comes from wconfig which was set during construction - if validator stakes change mid-epoch, could stale weights allow validators with reduced stake to maintain high voting power? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee7283a8-6af1-42ec-b85f-62d2e715e1f4?mode=deep",
+    "timestamp": "2026-01-26 22:20:54.364884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: RandConfig::threshold()] [Threshold calculation] Lines 683-685 cast threshold_weight to u64 - can integer overflow cause threshold to wrap to a small value, allowing attackers to generate randomness with insufficient stake? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6a2923a6-1644-4f46-982f-76075d6abe43?mode=deep",
+    "timestamp": "2026-01-26 22:21:07.741765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Function: RandConfig::threshold()] [Threshold validation] Nothing validates the threshold is < total weight - can configurations with threshold >= total weight make randomness generation impossible, causing permanent liveness loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75cad038-e39f-4f21-a129-7bbb63befc18?mode=deep",
+    "timestamp": "2026-01-26 22:21:21.489327",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Constant: NUM_THREADS_FOR_WVUF_DERIVATION] [Resource exhaustion] Line 25 hardcodes thread count to 8 - can attackers spam share aggregation requests to exhaust the thread pool, causing all WVUF derivations to queue indefinitely and halt randomness generation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_889d58dd-2953-4459-927c-845f4f923f54?mode=deep",
+    "timestamp": "2026-01-26 22:21:36.112594",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Constant: FUTURE_ROUNDS_TO_ACCEPT] [Time manipulation] Line 26 allows accepting shares for up to 200 future rounds - can Byzantine validators generate shares far in advance, then selectively reveal them to bias randomness when those rounds are reached? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63f9a89b-6992-43c2-a3d3-c711dc027dae?mode=deep",
+    "timestamp": "2026-01-26 22:21:51.678044",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Constant: FUTURE_ROUNDS_TO_ACCEPT] [Round overflow] With FUTURE_ROUNDS_TO_ACCEPT=200, can round arithmetic overflow when checking current_round + 200 on very high round numbers, allowing acceptance of shares from past epochs? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_76c88b21-5f68-4aac-bfd6-3b6c98dd2096?mode=deep",
+    "timestamp": "2026-01-26 22:22:08.793072",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Trait: TShare] [Implementation flexibility] Lines 273-294 define trait with verify, generate, aggregate - can malicious custom implementations of TShare bypass security checks while still satisfying the trait bounds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_532519e9-c300-474b-9244-cdc123d69525?mode=deep",
+    "timestamp": "2026-01-26 22:22:27.768797",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Trait: TShare] [Lifetime safety] The aggregate function on line 287-293 takes Iterator<Item = &'a RandShare<Self>> - can incorrect lifetime annotations allow use-after-free when shares are dropped before aggregation completes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83bf4cf5-03a0-4d1d-b5c3-2146b8b26f76?mode=deep",
+    "timestamp": "2026-01-26 22:22:47.442840",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Trait: TAugmentedData] [Augmentation ordering] Lines 296-316 don't specify ordering of augment() relative to verify() - can attackers call augment() before verify() to inject unverified deltas into RandConfig? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b944be2d-3881-41ed-914c-89452471ba28?mode=deep",
+    "timestamp": "2026-01-26 22:23:08.436397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Trait: TAugmentedData] [Multiple augmentations] Nothing prevents calling augment() multiple times for the same author - can this cause delta to be applied repeatedly, corrupting APK derivation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8728f620-3573-48f4-bd16-d8e67aeb7e8a?mode=deep",
+    "timestamp": "2026-01-26 22:23:29.777792",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Enum: PathType] [Path confusion] Lines 28-32 define Fast/Slow paths but don't enforce usage - can attackers mix Fast and Slow path shares in the same aggregation to cause validators to use wrong configurations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c4a0225-00c1-4ece-ade5-25d388be6616?mode=deep",
+    "timestamp": "2026-01-26 22:23:53.122770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Struct: ShareId] [Insufficient uniqueness] Lines 318-323 use epoch, round, author for identity - is this sufficient, or can the same validator generate multiple valid shares for the same epoch/round causing deduplication failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f51e58c2-c8b2-4bb2-8a74-fa276775e414?mode=deep",
+    "timestamp": "2026-01-26 22:24:17.301695",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Struct: ShareId] [Hash collision] ShareId derives Hash on line 318 - can hash collisions in the derived implementation cause different ShareIds to collide in HashMaps, causing share confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b13fc2c3-6529-4f5b-8ffe-2c7a510b219d?mode=deep",
+    "timestamp": "2026-01-26 22:24:43.063922",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Struct: AugDataId] [Epoch boundary] Lines 436-454 only use epoch and author - at epoch boundaries, can AugData from epoch N and N+1 collide in deduplication maps, causing confusion about which epoch's APKs are certified? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c21e568f-3c2e-403a-bfe8-3610fbeba9f5?mode=deep",
+    "timestamp": "2026-01-26 22:25:09.481802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Struct: AugDataId] [Author spoofing] The author field comes from untrusted network input - is there cryptographic binding ensuring the AugDataId author matches the signature author to prevent spoofing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9b324ae-4756-4401-a73f-87fd458c05fe?mode=deep",
+    "timestamp": "2026-01-26 22:25:36.609241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Cross-function: Share generation and verification] [Metadata consistency] Share::generate() on line 84 and Share::verify() on line 52 both serialize RandMetadata - can inconsistent serialization between generation and verification cause valid shares to be rejected? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc3921ee-a40b-4c54-ba8e-a44a2541793f?mode=deep",
+    "timestamp": "2026-01-26 22:26:04.911066",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Cross-function: APK derivation and usage] [Derivation timing] derive_apk() on line 656 is called during verify, but APKs are used in aggregate() on line 119 - can timing windows allow using not-yet-verified APKs in aggregation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cb8f1ab-0572-4240-a6ed-6fd714d9a3e9?mode=deep",
+    "timestamp": "2026-01-26 22:26:32.362356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Cross-function: Delta management] [Delta ordering] add_certified_delta() on line 661 and AugmentedData::augment() on line 178 both add deltas - is there a total ordering ensuring deltas are added consistently across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8f2c7063-522d-410b-9a93-fe20568715cf?mode=deep",
+    "timestamp": "2026-01-26 22:27:00.565805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Cross-function: Configuration sharing] [Config staleness] Multiple RandShares can reference the same RandConfig via Arc - if the config is updated after shares are created, can stale config references cause verification to use wrong parameters? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dcfde1bf-62b8-4ce3-ae52-750f00a8e857?mode=deep",
+    "timestamp": "2026-01-26 22:27:28.957803",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Memory safety: Arc usage] [Data races] RandConfig wraps validator (line 584) and keys (line 588) in Arc - are the interior types properly Sync, or can concurrent access cause data races on certified_apks array? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ecfaf70-5107-4ed9-a9f1-f79470d42727?mode=deep",
+    "timestamp": "2026-01-26 22:27:58.368784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Memory safety: Clone implementation] [Deep copy validation] Many types derive Clone (lines 34, 40, 45, etc.) - do all contained cryptographic types properly deep-copy secrets to prevent use-after-free of key material? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba2b4e93-cafb-4c7f-badb-2713b1edd683?mode=deep",
+    "timestamp": "2026-01-26 22:28:27.329884",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Memory safety: Iterator lifetimes] [Share aggregation iterator] Line 98 takes Iterator<Item = &'a RandShare<Self>> - can the iterator yield shares that are dropped mid-iteration, causing use-after-free during aggregation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1774a589-98e7-4192-84cf-1dcfe23a4a81?mode=deep",
+    "timestamp": "2026-01-26 22:28:55.649087",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Cryptography: WVUF operations] [Side-channel attacks] WVUF::create_share() on line 89 and WVUF::verify_share() on line 65 perform cryptographic operations - are these constant-time to prevent timing attacks revealing secret keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67b68ab6-3504-415d-8514-84fa87dc9c43?mode=deep",
+    "timestamp": "2026-01-26 22:29:23.685778",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/rand/rand_gen/types.rs] [Cryptography: BLS signatures] [Signature malleability] AugDataSignature stores Signature on line 503 - can BLS signature malleability allow attackers to create different valid signatures for the same message, bypassing deduplication? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_600154fe-1727-40c6-81dc-3f2134e59eae?mode=deep",
+    "timestamp": "2026-01-26 22:29:52.230011",
+    "report_generated": false
+  }
+]
