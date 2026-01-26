@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: write_chunk()] [Chunk proof mismatch] Between lines 426-438, chunk data and chunk proof are written separately - can race conditions or storage errors cause mismatches where proof doesn't correspond to actual chunk data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_057e52ee-2704-44c5-bad4-4b1d42b5dd2f?mode=deep",
+    "timestamp": "2026-01-26 10:08:34.961378",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: Chunk struct] [Hash ordering] The Chunk struct on lines 42-48 stores first_key and last_key as HashValues - is there validation that first_key <= last_key in hash order? Can reversed ordering break Jellyfish Merkle tree assumptions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b8357cf-7ab4-4ebf-8396-985c73c9f1e5?mode=deep",
+    "timestamp": "2026-01-26 10:08:47.641499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: write_chunk()] [Key range gaps] When creating chunks, can gaps appear in the hash key space between last_key of chunk N and first_key of chunk N+1, causing missing state data that's undetectable until restore? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03832997-4682-4077-82f6-4ff11059c9bf?mode=deep",
+    "timestamp": "2026-01-26 10:09:00.876071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: ChunkerState::next_full_chunk()] [Key continuity] On line 114, when starting a new chunk, chunk_first_key is set to the next record's key - is there validation that this maintains lexicographic ordering of hashes? Can ordering violations corrupt the Merkle tree structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41e3fa5e-3665-46fb-9f3b-bd9e1c456f73?mode=deep",
+    "timestamp": "2026-01-26 10:09:14.553356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: write_manifest()] [Signature validation] The LedgerInfoWithSignatures on line 456 should contain validator signatures - are these signatures validated before including the state root hash in the manifest? Can forged signatures lead to accepting invalid state roots? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_369d1866-6dd0-47b5-9504-98b81de5aedd?mode=deep",
+    "timestamp": "2026-01-26 10:09:28.620295",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: send_records()] [Error propagation] On lines 300-306, tokio::spawn is called but the JoinHandle is immediately dropped - if the spawned task panics, is the error properly propagated through the channel? Can silent failures cause incomplete backups? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23cf3508-5b37-426b-a7dc-fdac63d82923?mode=deep",
+    "timestamp": "2026-01-26 10:09:43.788517",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: send_records_inner()] [Channel backpressure] On line 348, sender.send() is awaited - can channel buffer exhaustion cause deadlocks if the receiver (line 308) stops consuming, blocking the entire backup process? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e713bd3-eeeb-4086-a3dc-fd894abcb232?mode=deep",
+    "timestamp": "2026-01-26 10:10:00.414990",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: record_stream()] [Concurrent requests] Lines 295-314 create concurrent backup service requests with configurable concurrency - can race conditions cause records from different chunks to interleave incorrectly, corrupting chunk boundaries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_481fff90-72a2-47ed-ad77-2541ac55e4af?mode=deep",
+    "timestamp": "2026-01-26 10:10:18.350382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: run_impl()] [Stream buffering] On line 255, try_buffered_x(8, 4) allows 4 concurrent chunk writes with buffer of 8 - can this buffering reorder chunks in storage, causing non-monotonic chunk indices that break restore logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1250de3-b3c7-4140-b5bc-dba4cf5f948d?mode=deep",
+    "timestamp": "2026-01-26 10:10:38.102491",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: ChunkerState::next_full_chunk()] [Mutable state] The ChunkerState fields are mutated across lines 113-125 - can concurrent calls to next_full_chunk() (if the API allows) cause race conditions corrupting chunk_first_idx, current_idx, or buffer state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03fa0b74-fa08-4356-81dc-b8bd59b63e36?mode=deep",
+    "timestamp": "2026-01-26 10:10:57.821762",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: Chunker::next_chunk()] [State ownership] On line 192, self.state.take().unwrap() is called - can multiple concurrent calls cause unwrap() to panic if state is already taken, crashing the backup process? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94aa0f6b-ad18-42dc-a16c-ab053bd39ee4?mode=deep",
+    "timestamp": "2026-01-26 10:11:19.141798",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: record_stream()] [Start index races] Lines 283-292 use unfold to generate start indices - can concurrent execution cause duplicate start_idx values, resulting in redundant data fetches or missing ranges? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e9d57a86-8795-4fb9-b72f-999c640adeb3?mode=deep",
+    "timestamp": "2026-01-26 10:11:41.031856",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: write_chunk()] [Concurrent writes] Between lines 420-438, multiple files (chunk data and proof) are written concurrently - can storage backend limitations cause write ordering issues or partial failures affecting backup integrity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c22d88bb-fbd8-4f60-b5e6-68e8fe0dec50?mode=deep",
+    "timestamp": "2026-01-26 10:12:03.939172",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: run_impl()] [Version initialization] On line 237, self.version is set after get_version_for_epoch_ending - can concurrent calls to self.version() on line 360 before initialization cause unwrap() panic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0088145e-b958-4a77-8ced-729de0a66c3d?mode=deep",
+    "timestamp": "2026-01-26 10:12:27.998320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: send_records_inner()] [Stream exhaustion] Lines 342-349 process records from input stream - can concurrent consumers of the same stream cause race conditions where some records are skipped or duplicated? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8f06d94-bdf0-4c23-a68d-9559dfb91b57?mode=deep",
+    "timestamp": "2026-01-26 10:12:52.679318",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: ChunkerState::new()] [Unbounded buffer] On line 73, BytesMut::new() creates an unbounded buffer that grows with buf.extend() on line 75 - can extremely large first_record cause memory exhaustion before any chunk size checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71d758db-23b1-4cf3-9777-148c16b2ec4b?mode=deep",
+    "timestamp": "2026-01-26 10:13:18.722901",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: ChunkerState::next_full_chunk()] [Buffer growth] The buf on line 79 grows unboundedly via extend() on line 124 until max_chunk_size is reached - can a malicious service send records that keep buf just below threshold, consuming excessive memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46414630-56ca-4ad4-8206-e6f001428ca2?mode=deep",
+    "timestamp": "2026-01-26 10:13:45.436610",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: record_stream()] [Concurrency explosion] The concurrent_data_requests parameter on line 274 controls concurrency - can setting this to an extremely high value cause resource exhaustion through too many simultaneous backup service connections? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3955858-ca6a-4681-be8a-d7037cca9b43?mode=deep",
+    "timestamp": "2026-01-26 10:14:12.411447",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: run_impl()] [Channel buffer overflow] On line 298, tokio::sync::mpsc::channel(chunk_size) creates channels with chunk_size capacity - can chunk_size values of 100,000+ cause excessive memory allocation for channel buffers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ced99a0c-29d5-4631-a6ea-a05ca6bc3bb7?mode=deep",
+    "timestamp": "2026-01-26 10:14:38.417503",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: send_records_inner()] [Read timeout] Lines 338-345 read records from backup service without apparent timeout - can a stalled backup service connection cause indefinite blocking, preventing backup completion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_510cbe47-0b12-4b46-8e38-9ac3e03f7ee3?mode=deep",
+    "timestamp": "2026-01-26 10:15:03.437348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: write_chunk()] [Storage exhaustion] Lines 420-438 write chunk data and proofs to storage - is there validation of available storage space before writing? Can storage exhaustion mid-backup leave corrupt partial snapshots? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f79bec59-2ec6-47eb-899f-27a65ce13c1e?mode=deep",
+    "timestamp": "2026-01-26 10:15:28.960463",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: run_impl()] [Chunk accumulation] On line 254-267, all chunk manifests are collected into a Vec - for extremely large state (billions of items), can this Vec consume excessive memory holding all chunk metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3cd6588-3640-4238-8a14-4d1f27d9a09d?mode=deep",
+    "timestamp": "2026-01-26 10:15:52.654918",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: Chunker::new()] [Initialization cost] On line 183, ChunkerState::new() must read first_record before returning - can delayed first_record delivery cause timeout or excessive resource consumption during initialization? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be1b498f-8d06-4c87-b1ec-165e04ea7732?mode=deep",
+    "timestamp": "2026-01-26 10:16:15.155593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: write_manifest()] [Serialization bomb] On line 479, the entire manifest (including all chunks Vec) is serialized to JSON - can extremely large manifests (thousands of chunks) cause memory exhaustion during serialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6de5d5ef-477c-42a4-9104-5bbcd185afbe?mode=deep",
+    "timestamp": "2026-01-26 10:16:38.703215",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/backup_types/state_snapshot/backup.rs] [Function: record_stream()] [Stream accumulation] Lines 312-314 use try_buffered_x and try_flatten - can improper buffer sizing cause memory accumulation if record consumption is slower than production? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84d78c9d-f653-482c-946c-912bfa0d4179?mode=deep",
+    "timestamp": "2026-01-26 10:17:02.753355",
+    "report_generated": false
+  }
+]
