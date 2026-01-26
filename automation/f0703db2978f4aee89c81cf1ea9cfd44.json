@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: new()] [Integer Overflow] Can the quorum_voting_power calculation at line 212 (total_voting_power * 2 / 3 + 1) overflow when total_voting_power is near u128::MAX, causing incorrect quorum thresholds that allow minority validators to achieve consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7124f12e-f08b-432a-adc1-67655f0cd144?mode=deep",
+    "timestamp": "2026-01-26 23:27:53.354318",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: new()] [Zero Quorum] When validator_infos is empty at line 209, quorum_voting_power is set to 0. Can an attacker exploit this by creating an empty validator set that accepts any signature, bypassing all consensus safety guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1f2edab-f869-4fa7-a8e0-cfc6e9a0a852?mode=deep",
+    "timestamp": "2026-01-26 23:28:05.506032",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: new_with_quorum_voting_power()] [Quorum Validation] The check at line 223-229 only ensures quorum <= total, but doesn't validate quorum >= minimum_byzantine_threshold. Can an attacker specify quorum_voting_power = 1 to break Byzantine fault tolerance and enable single-validator consensus takeover? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9aa5e6c6-03f8-4a98-8226-09bbb77e169a?mode=deep",
+    "timestamp": "2026-01-26 23:28:18.253644",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: build_index()] [Index Collision] At lines 190-193, the address_to_validator_index is built from validator_infos enumeration. If duplicate addresses exist in validator_infos, does the HashMap silently overwrite entries, causing some validators to become unreachable and breaking quorum calculations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_342e7e40-0df4-479b-811c-d463e10037dd?mode=deep",
+    "timestamp": "2026-01-26 23:28:32.340217",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: new()] [Quorum Rounding] The quorum calculation at line 212 uses integer division. For 2 validators (total_voting_power=2), does quorum become 2*2/3+1=2, requiring unanimous consent instead of the expected 2f+1 supermajority, enabling denial-of-service by a single validator? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07a7cb2f-f7f2-429f-bb98-3ed633398940?mode=deep",
+    "timestamp": "2026-01-26 23:28:45.990219",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: sum_voting_power()] [Overflow Check] At lines 542-545, checked_add is used with expect() on overflow. If an attacker registers validators with voting_power values that sum > u128::MAX, does the panic crash validator nodes causing consensus halt? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d44a80c-8d37-48f7-ae17-3707b7770672?mode=deep",
+    "timestamp": "2026-01-26 23:29:01.040080",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: new_single()] [Single Validator] At line 250-252, new_single creates a verifier with 1 validator and voting_power=1. Does this result in quorum=1, allowing a single compromised key to sign arbitrary blocks without any Byzantine tolerance? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_318b2a0d-7747-4a22-ba95-1d0be2f5acbf?mode=deep",
+    "timestamp": "2026-01-26 23:29:17.760521",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: build_index()] [Race Condition] The address_to_validator_index HashMap is populated at line 190-193, but validator_infos is already stored at line 195. Can concurrent access between index building and validator_info reading cause index-to-validator mismatches in multithreaded contexts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd3eea49-0105-4e2b-86ad-88f42c9ca516?mode=deep",
+    "timestamp": "2026-01-26 23:29:35.091524",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: verify()] [Unknown Author Handling] At line 262-267, if author is unknown, UnknownAuthor error is returned. Can a Byzantine validator exploit timing differences between UnknownAuthor and InvalidMultiSignature responses to leak information about the validator set composition? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6da60465-c24c-4c54-895b-479f9c685039?mode=deep",
+    "timestamp": "2026-01-26 23:29:52.971627",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: verify()] [Signature Verification] At line 264-265, verify_struct_signature maps all crypto errors to InvalidMultiSignature. Does this hide critical errors like malformed signatures or invalid curve points that could indicate attempted cryptographic attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ce3e7da-05ac-4c2b-ab3f-271b23bbc230?mode=deep",
+    "timestamp": "2026-01-26 23:30:11.786921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: optimistic_verify()] [Optimistic Bypass] At lines 279-284, if optimistic_sig_verification is true and author is not in pessimistic_verify_set, signature verification is skipped. Can an attacker enable this flag maliciously to bypass signature checks entirely, accepting invalid votes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfe9ca4b-0704-43fd-bd6c-630f7ae8e5cb?mode=deep",
+    "timestamp": "2026-01-26 23:30:31.084221",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: optimistic_verify()] [Status Manipulation] At line 283, signature_with_status.set_verified() is called after verification. Is SignatureWithStatus thread-safe? Can concurrent calls cause race conditions where unverified signatures are marked as verified? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bfb1533-9b3d-452e-b9e4-ec2768007675?mode=deep",
+    "timestamp": "2026-01-26 23:30:52.257965",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: optimistic_verify()] [Unknown Author First] At line 276-278, unknown author check happens before optimistic verification check. Can an attacker flood with unknown authors to bypass optimistic verification logic and force expensive individual verification of all signatures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7985f0a-5e38-4b4a-bf82-81500fd3d365?mode=deep",
+    "timestamp": "2026-01-26 23:31:14.204651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: verify()] [Message Hash Collision] The verify function uses CryptoHash trait at line 256. If two different messages produce the same hash due to collision or preimage attack, can an attacker reuse signatures across different blocks to violate consensus safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ebd95df-e154-4051-bf50-722ccf5bb86d?mode=deep",
+    "timestamp": "2026-01-26 23:31:36.077686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: optimistic_verify()] [Pessimistic Set Race] At line 279, pessimistic_verify_set.contains() is checked without locks. Can a TOCTOU race occur where a validator is added to pessimistic set between the check and verification, causing unverified signatures to be accepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_643e71fa-22f0-4dd5-8f23-d6dbdb04caea?mode=deep",
+    "timestamp": "2026-01-26 23:31:58.678231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: aggregate_signatures()] [BitVec Index Overflow] At line 324-328, validator index is retrieved and BitVec is set at that index. If validator_infos.len() exceeds BitVec capacity (u16::MAX), can out-of-bounds index access cause memory corruption or incorrect signature aggregation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a5d3084f-e428-402e-907e-e2118b9f9100?mode=deep",
+    "timestamp": "2026-01-26 23:32:22.129940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: aggregate_signatures()] [Duplicate Signatures] The function iterates signatures at line 323 but doesn't check for duplicate addresses. Can a Byzantine validator submit the same signature multiple times to inflate voting power and bypass quorum requirements? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_636d0b07-651d-4441-adbd-c9d20f59e255?mode=deep",
+    "timestamp": "2026-01-26 23:32:46.701180",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: aggregate_signatures()] [Optimistic Aggregation] At line 332-333, bls12381::Signature::aggregate performs 'optimistic aggregation without verification'. Can an attacker include invalid signatures that cause aggregate verification to fail later, wasting validator resources in a DoS attack? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35b2722b-bb81-4e1c-84b4-f9222da365a1?mode=deep",
+    "timestamp": "2026-01-26 23:33:11.750680",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: aggregate_signatures()] [Empty Signatures] If the signatures iterator is empty, does the function return an AggregateSignature with empty BitVec and None signature? Can this empty aggregate pass verify_multi_signatures checks when quorum is 0? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3b693e0-65ea-43fe-9bd0-0c0aba651c0b?mode=deep",
+    "timestamp": "2026-01-26 23:33:36.074302",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: aggregate_signatures()] [Unknown Author Early Exit] At line 324-327, UnknownAuthor error causes early return. Can an attacker mix valid and invalid signatures to prevent aggregation, forcing validators to verify each signature individually and causing performance degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35526f8a-0ed7-48ea-bb6c-374e5c0fb7fa?mode=deep",
+    "timestamp": "2026-01-26 23:34:01.803902",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: aggregate_signatures()] [BitVec Initialization] At line 322, BitVec is initialized with self.len(). If validator set changes between aggregation and verification, can mismatched BitVec sizes cause incorrect signature mapping and quorum bypasses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e210b67e-ca50-44c0-aea6-f848fa88bcf5?mode=deep",
+    "timestamp": "2026-01-26 23:34:27.563736",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: aggregate_signatures()] [Signature Clone Cost] At line 329, signatures are cloned before aggregation. Can an attacker submit large numbers of signatures to cause excessive memory allocation and DoS through memory exhaustion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84adc0fd-eef0-4145-8789-187fb545253a?mode=deep",
+    "timestamp": "2026-01-26 23:34:52.680290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: verify_multi_signatures()] [BitVec Validation Bypass] At line 352, check_num_of_voters validates BitVec size. But if BitVec has valid size with all bits set to 0, can the function pass voting power check when quorum_voting_power is 0, accepting signatures with no actual validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_876d8d0d-214b-47cf-a60c-4ff0e0d397f4?mode=deep",
+    "timestamp": "2026-01-26 23:35:17.567572",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: verify_multi_signatures()] [Index Out of Bounds] At line 356-359, validator_infos.get(index) can return None. If BitVec contains indices >= validator_infos.len(), does UnknownAuthor error adequately prevent exploitation, or can bit manipulation bypass bounds checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2c30051-bf55-44c3-b085-713f5cd87db3?mode=deep",
+    "timestamp": "2026-01-26 23:35:41.780990",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/validator_verifier.rs] [Function: verify_multi_signatures()] [Test Bypass] At lines 365-372, when quorum_voting_power is 0 (test mode), the function returns Ok(()) without signature verification. Can an attacker force this code path in production by manipulating validator set initialization? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9110daa4-332f-484f-986b-a8761837e38f?mode=deep",
+    "timestamp": "2026-01-26 23:36:05.684718",
+    "report_generated": false
+  }
+]
