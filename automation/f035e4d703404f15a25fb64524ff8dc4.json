@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Premature certification] If check_voting_power() returns Ok() at exactly the quorum threshold, can an attacker cause QuorumCertifiedUpdate to be created before all honest validators have submitted their observations, potentially excluding their input from consensus? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0137bc33-eb36-4a6c-a086-a1b6f9136eb3?mode=deep",
+    "timestamp": "2026-01-26 23:19:31.083795",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Mutex deadlock] At line 76, the inner_state Mutex is locked - can recursive calls to add() or holding the lock while calling external functions (verify, check_voting_power) cause deadlocks that halt the consensus process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_96af0378-a72b-434f-9f3b-329e0c837249?mode=deep",
+    "timestamp": "2026-01-26 23:19:43.790668",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Lock poisoning] If verification or aggregation operations panic while holding the Mutex lock at line 76, does the lock become poisoned, and can this be exploited to permanently disable observation aggregation for this state object? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_799e0ab2-98bf-4803-87c6-005fe6fc9606?mode=deep",
+    "timestamp": "2026-01-26 23:19:56.918326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Mutex contention DoS] Can an attacker submit a high volume of observations to cause excessive Mutex lock contention at line 76, degrading consensus performance and potentially causing timeouts or validator slowdowns? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecb2e0ce-99cf-4b41-babc-0f32c7ceffde?mode=deep",
+    "timestamp": "2026-01-26 23:20:10.513660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Lock scope issues] The Mutex is locked at line 76 but which exact line is it dropped? Can the lock be held longer than necessary, creating contention, or dropped too early, creating race conditions in signature aggregation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70ad1735-2430-45fa-9048-7d1c68e75bd0?mode=deep",
+    "timestamp": "2026-01-26 23:20:25.135738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Async context safety] If add() is called from async contexts, does the Mutex guard being held across await points cause issues, and can this lead to task starvation or unexpected blocking behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b44372c-101c-484c-abec-e72269715ae5?mode=deep",
+    "timestamp": "2026-01-26 23:20:40.778207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: new()] [EpochState Arc sharing] At line 25, epoch_state is Arc<EpochState> - can concurrent modifications to the underlying EpochState through other Arc clones cause inconsistent epoch/validator state during observation aggregation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8fefdd5-0521-4f47-901e-bd3da363500a?mode=deep",
+    "timestamp": "2026-01-26 23:20:57.477168",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Struct: ObservationAggregationState] [Arc BroadcastStatus] The BroadcastStatus trait at line 42-43 is implemented for Arc<ObservationAggregationState> - can multiple Arc clones with separate PartialSignatures states cause split quorum scenarios where different instances certify different updates? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2eda8f62-4846-40d6-9b93-8c2d97f80e11?mode=deep",
+    "timestamp": "2026-01-26 23:21:16.634324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: new()] [Local view immutability] At line 26, local_view is stored directly (not Arc) - can the ProviderJWKs be mutated after construction if it contains mutable interior references, breaking the view consistency invariant? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ebcf42e6-ec6c-42f4-bd00-cda3b50b6898?mode=deep",
+    "timestamp": "2026-01-26 23:21:36.123325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Struct: ObservationAggregationState] [Shared state initialization] If multiple ObservationAggregationState instances are created with the same epoch_state Arc but different local_views, can this cause validators to aggregate signatures for different views within the same epoch? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20a4e3f4-267d-426e-b4fb-224270ca1705?mode=deep",
+    "timestamp": "2026-01-26 23:21:57.055893",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Struct: ObservationAggregationState] [PhantomData purpose] At line 28, _phantom: PhantomData<ConsensusMode> is unused - what safety guarantees does the ConsensusMode generic provide, and can incorrect instantiation with wrong ConsensusMode types cause type confusion attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16f1ef46-6d5a-4fe5-ab6a-674a987b77b3?mode=deep",
+    "timestamp": "2026-01-26 23:22:20.348872",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Message type confusion] At line 46, type Message = ConsensusMode::ReliableBroadcastRequest - can an attacker send messages with mismatched ConsensusMode types that get incorrectly deserialized, bypassing validation logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d421edcf-0963-486b-8aaa-c7d5d74c1024?mode=deep",
+    "timestamp": "2026-01-26 23:22:43.463628",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Response type confusion] At line 47, type Response = ObservedUpdateResponse - is this type properly validated before being passed to add(), or can network-layer type confusion allow attackers to inject malformed responses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff206bfd-1490-46bc-b4a4-124e716c9ec1?mode=deep",
+    "timestamp": "2026-01-26 23:23:06.649873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Trait: BroadcastStatus] [Generic constraints] Does the TConsensusMode: TConsensusMode bound at line 42 provide sufficient constraints, or can unsafe ConsensusMode implementations break invariants assumed by the observation aggregation logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d94d3b40-2705-4aa8-8512-38633f896029?mode=deep",
+    "timestamp": "2026-01-26 23:23:31.382876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Error information leak] Throughout add() function, detailed error messages with ensure! macros reveal internal state - can attackers use error responses to extract information about epoch state, validator sets, or consensus progress? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3ff52ff-b3c1-4316-8849-b71e77eea8e4?mode=deep",
+    "timestamp": "2026-01-26 23:23:57.303230",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Early return vulnerabilities] The function has multiple early returns (lines 62, 67, 73, 78, 84, 116) - can an attacker trigger specific error paths to bypass subsequent validation checks or leave the partial signatures in an inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_954c7187-a3c7-4701-9de7-819f1e03ae7c?mode=deep",
+    "timestamp": "2026-01-26 23:24:25.440341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Verification error handling] At line 89, verify() errors are propagated with ? operator - can specific VerifyError variants be exploited to cause unexpected behavior or bypass signature validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba7c13d6-441b-44eb-b513-cc2117331aee?mode=deep",
+    "timestamp": "2026-01-26 23:24:54.045553",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Anyhow error conversion] The function uses anyhow::Result throughout - can error context be lost during conversions, making it difficult to distinguish between malicious attacks and legitimate errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bb9c46d-b56d-47e1-89f2-9a4f5b181b81?mode=deep",
+    "timestamp": "2026-01-26 23:25:22.782133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Panic safety] Are there any unwrap() or expect() calls that could panic (like line 74 unwrap after is_some check), and can panics during signature aggregation leave the validator in an unrecoverable state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e218255f-f8da-49d8-a22e-95e9238e5d25?mode=deep",
+    "timestamp": "2026-01-26 23:25:51.434976",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Cross-epoch replay] Can ObservedUpdate messages from previous epochs be replayed with modified epoch fields to bypass the epoch check at line 61-63 and inject stale observations into current consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ad2eeae-b9da-495b-a39d-b16cdee663e1?mode=deep",
+    "timestamp": "2026-01-26 23:26:17.814039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Observation replay protection] Beyond the duplicate voter check at line 77, is there any nonce or sequence number to prevent the same observation from being submitted multiple times in different ObservationAggregationState instances? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b9a8ee9-fd64-45df-89ce-d7a0ccfa095c?mode=deep",
+    "timestamp": "2026-01-26 23:26:45.554768",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Signature reuse] Can BLS signatures from one ProviderJWKs view be replayed onto a different but structurally similar view, bypassing the view consistency check at line 82 and causing signature verification to incorrectly pass? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52051fcc-f70c-4859-a95e-a43af856c1e1?mode=deep",
+    "timestamp": "2026-01-26 23:27:12.008059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: new()] [State reuse attack] Can the same ObservationAggregationState instance be reused across multiple broadcast rounds or epochs, causing old partial signatures to be mixed with new ones and breaking consensus safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40190acb-9bff-42a1-964b-3d62dc694cd2?mode=deep",
+    "timestamp": "2026-01-26 23:27:38.966775",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [ProviderJWKs comparison semantics] At line 82, does ProviderJWKs equality check properly compare all fields including issuer, version, and JWK set, or can subtle differences in representation cause false positives in view matching? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eac546fe-6997-491a-8fd3-325d566d9329?mode=deep",
+    "timestamp": "2026-01-26 23:28:05.870530",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-jwk-consensus/src/observation_aggregation/mod.rs] [Function: add()] [Issuer field handling] At line 107, the issuer is converted from Vec<u8> to String with .ok() fallback - can malformed UTF-8 in the issuer field cause logging to fail silently and hide consensus anomalies? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d9689b7-f92d-4d2c-9b00-fa93533fa22a?mode=deep",
+    "timestamp": "2026-01-26 23:28:33.366734",
+    "report_generated": false
+  }
+]
