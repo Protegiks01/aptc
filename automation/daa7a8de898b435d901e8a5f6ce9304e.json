@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Weak entropy validation] The MINIMUM_SEED_LENGTH is set to 16 bytes - can an attacker provide a 16-byte seed with low entropy (e.g., all zeros or predictable patterns) that passes validation but compromises key derivation security, potentially allowing private key prediction for validator or account keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6bb39ecd-8e36-4fd1-9b13-cf83e74d3f67?mode=deep",
+    "timestamp": "2026-01-26 03:45:20.556298",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Insufficient seed validation] Does the ikm.len() < MINIMUM_SEED_LENGTH check at line 118 properly validate against exactly 16 bytes, or can an attacker use a 16-byte seed consisting of repeated patterns or known weak values that technically passes length validation but provides insufficient entropy for cryptographic operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0be405c-b096-48d3-9814-e1038a49fb60?mode=deep",
+    "timestamp": "2026-01-26 03:45:33.446591",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_no_ikm_check()] [Bypass seed validation] The extract_no_ikm_check() function at line 124 completely bypasses the MINIMUM_SEED_LENGTH validation - can malicious code call this internal function directly or indirectly to derive keys from zero-length or weak seeds, compromising validator signing keys or account private keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b946f9c3-5bc1-449e-9e30-a71dcb60e345?mode=deep",
+    "timestamp": "2026-01-26 03:45:46.775776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand_no_ikm()] [Zero-entropy key derivation] The extract_then_expand_no_ikm() function at line 165 explicitly allows empty ikm (&[]) - can an attacker exploit this to derive predictable keys when only salt is provided, potentially compromising session keys in validator-to-validator communication or Noise protocol handshakes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cbfeeee2-1c78-4979-83a1-e7e70668df89?mode=deep",
+    "timestamp": "2026-01-26 03:46:00.676851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Integer overflow in length check] Could the ikm.len() comparison at line 118 overflow on 32-bit platforms if ikm is a maliciously crafted large slice, allowing bypass of the MINIMUM_SEED_LENGTH check and enabling weak key derivation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14a1c8ad-6d42-44c2-b1f4-f819ab215203?mode=deep",
+    "timestamp": "2026-01-26 03:46:15.757712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Zero-length output bypass] The expand() function rejects zero-length output at line 134, but does it properly validate against maximum output length (255 * HashLen) before allocating the okm buffer at line 140, potentially causing memory exhaustion or integer overflow in vec![0u8; length]? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66448a40-1258-474a-84a1-6711ce39e546?mode=deep",
+    "timestamp": "2026-01-26 03:46:31.445728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Integer overflow in buffer allocation] At line 140, vec![0u8; length] is allocated - can an attacker request an extremely large length value (e.g., usize::MAX or near-max values) that causes integer overflow in memory allocation, leading to undersized buffers and memory corruption when hkdf.expand() writes output? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5cd9e22f-c96b-4c5d-bb3d-7c89da981e1a?mode=deep",
+    "timestamp": "2026-01-26 03:46:48.868364",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [OOM-based DoS] Can an attacker repeatedly call expand() with length values approaching the maximum allowed (255 * 64 = 16320 bytes for SHA512) to exhaust validator node memory through large okm vector allocations, causing consensus participants to crash and loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94aa5d78-98db-4be7-88c4-35ab23422588?mode=deep",
+    "timestamp": "2026-01-26 03:47:08.227730",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Uninitialized memory exposure] The okm buffer is initialized with vec![0u8; length] at line 140 - if hkdf.expand() fails partway through at line 141, does the partial output in okm get returned or cleared, potentially leaking uninitialized or partially derived key material? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79b9ef02-5209-4eea-bb33-6611ee6f5924?mode=deep",
+    "timestamp": "2026-01-26 03:47:29.056251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Maximum length boundary] The check for length > D::OutputSize::to_usize() * 255 occurs inside hkdf.expand() at line 143 - can an attacker provide length = 255 * HashLen exactly to bypass validation due to off-by-one errors, causing buffer overflow or undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1c5064f-45f9-4e68-9797-027b3bb1d05b?mode=deep",
+    "timestamp": "2026-01-26 03:47:51.289202",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Weak PRK validation] The from_prk() call at line 138-139 validates PRK length but does not check PRK entropy or randomness - can an attacker provide a PRK with low entropy (e.g., all zeros, repeated bytes) that passes length validation but produces predictable derived keys compromising validator authentication? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be1980cb-bd85-458a-b937-3ef50ef7dbc6?mode=deep",
+    "timestamp": "2026-01-26 03:48:14.819229",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [PRK reuse across contexts] Does expand() enforce any domain separation or context binding to prevent PRK reuse - can an attacker reuse the same PRK with different info parameters to derive related keys, enabling cross-protocol or cross-validator key correlation attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ff037a3-d510-44b5-a26c-76731f78ea2d?mode=deep",
+    "timestamp": "2026-01-26 03:48:38.887422",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Short PRK acceptance] The WrongPseudorandomKeyError at line 192 indicates PRK must be at least hash output size - does this properly reject PRKs that are exactly D::OutputSize but consist of weak values, or can attackers use minimum-length weak PRKs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d86dad19-56b2-4c31-bc4c-239ae1a82c86?mode=deep",
+    "timestamp": "2026-01-26 03:49:04.604090",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand()] [PRK intermediate exposure] At line 154, the PRK is stored in a Vec<u8> before being passed to expand() - is this PRK properly cleared from memory after use, or does it remain in the heap allowing memory scraping attacks to recover master keys from validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70112aff-0fbe-40b4-bcba-6bcab6c51dff?mode=deep",
+    "timestamp": "2026-01-26 03:49:31.510328",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_no_ikm_check()] [PRK from weak salt only] When extract_no_ikm_check() is called with empty ikm and only salt at line 170, does the resulting PRK have sufficient entropy, or can predictable salt values lead to deterministic PRK generation compromising key hierarchies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3107fed-3295-49b7-9475-c5fd6f06fe57?mode=deep",
+    "timestamp": "2026-01-26 03:49:57.282252",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Optional salt weakness] Salt is Option<&[u8]> at line 117 - when salt is None, does HKDF fall back to all-zeros salt or proper default, and can attackers force None salt in contexts expecting random salt, weakening key derivation for validator keypair generation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6cff985e-cea6-4910-bb23-760e859323be?mode=deep",
+    "timestamp": "2026-01-26 03:50:23.543325",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Salt length validation missing] The extract() function does not validate salt length - can an attacker provide excessively short salt (e.g., 1 byte) or excessively long salt causing performance degradation or hash function state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb51aca2-26f5-429a-9ba0-c1bf76fc8d8b?mode=deep",
+    "timestamp": "2026-01-26 03:50:49.893462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract()] [Salt reuse across validators] Is there any mechanism preventing salt reuse when deriving keys for different validators from the same master seed - can salt reuse enable key correlation attacks allowing an attacker to link validator identities or derive one validator's keys from another's? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e96c3941-f8fd-414d-85ec-be639f3c34d0?mode=deep",
+    "timestamp": "2026-01-26 03:51:17.457281",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand()] [Attacker-controlled salt] If an attacker can influence or control the salt parameter in contexts like network session key derivation, can they force predictable salt values (e.g., incrementing counters, timestamp-based) to enable rainbow table attacks or key prediction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cd9a82d5-2cba-4063-89d5-1f32f0254f00?mode=deep",
+    "timestamp": "2026-01-26 03:51:44.584470",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_no_ikm_check()] [Salt-only key derivation] When extract_no_ikm_check() uses only salt (no ikm) at line 170, does this violate HKDF's security assumptions - can attackers exploit this in Noise protocol contexts to derive session keys from controllable salt values alone? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1c2b36c-34f4-4bbd-9287-5fe77e70aae0?mode=deep",
+    "timestamp": "2026-01-26 03:52:12.338426",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Missing context binding] The info parameter is Option<&[u8]> at line 130 and defaults to empty slice at line 141 - can attackers omit info in contexts requiring domain separation (e.g., deriving both signing and encryption keys), causing key reuse across different cryptographic purposes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c522fb94-d808-4896-9797-5250434dcb70?mode=deep",
+    "timestamp": "2026-01-26 03:52:38.430996",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Info length validation missing] Does expand() validate info parameter length to prevent excessively long info values that could cause performance degradation during HMAC operations or enable DoS attacks against validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b0b4c7d-7be3-4b95-8c5b-8d5363988247?mode=deep",
+    "timestamp": "2026-01-26 03:53:05.646324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand()] [Info collision attacks] Can an attacker craft colliding info values (e.g., 'AB' vs 'A'+'B') that produce the same HKDF output, enabling cross-context key substitution attacks in validator authentication or account key derivation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ba4c336-6f1e-46de-ad46-a92983eb1b17?mode=deep",
+    "timestamp": "2026-01-26 03:53:32.084336",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: expand()] [Protocol number omission] The documentation at line 49 recommends including protocol numbers in info - is this enforced anywhere, or can developers omit critical context information enabling cross-protocol key reuse attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02d4ff13-5487-4849-a571-e1be9fb67d3b?mode=deep",
+    "timestamp": "2026-01-26 03:54:00.550693",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/hkdf.rs] [Function: extract_then_expand_no_ikm()] [Info without seed binding] When using extract_then_expand_no_ikm() at line 167 with only info (no ikm), does info provide sufficient domain separation, or can attackers generate the same keys for different contexts by manipulating info values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_248eaeb8-4cd9-4392-b383-d0ffc35e12d5?mode=deep",
+    "timestamp": "2026-01-26 03:54:28.277264",
+    "report_generated": false
+  }
+]
