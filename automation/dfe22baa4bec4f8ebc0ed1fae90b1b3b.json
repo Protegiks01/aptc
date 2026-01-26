@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Race condition] Can an attacker trigger concurrent serialization operations on the same thread where the TYPE_TAG_DEPTH thread-local counter gets corrupted due to interleaved increments/decrements, bypassing the MAX_TYPE_TAG_NESTING limit and causing stack overflow? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b98bbd44-99f3-42b3-b7b8-f90b35f17f23?mode=deep",
+    "timestamp": "2026-01-26 07:08:41.388070",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_deserialize()] [State corruption] If deserialization panics or fails between the depth increment at line 59 and decrement at line 65, does the TYPE_TAG_DEPTH counter remain permanently elevated, preventing all future deserializations on that thread and causing denial of service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3ff5646-8231-4f94-bcf5-c9fc0e3d31d0?mode=deep",
+    "timestamp": "2026-01-26 07:08:53.884293",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Panic safety] If the t.serialize(s) call at line 38 panics, does the depth counter at line 41 get properly decremented via unwinding, or does it remain elevated causing permanent state corruption and subsequent serialization failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6583d6ef-f7c4-4c30-9d7a-7d1f61ffd7f6?mode=deep",
+    "timestamp": "2026-01-26 07:09:06.825142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Global state] [RefCell panic] Can an attacker craft a scenario where TYPE_TAG_DEPTH.borrow_mut() at lines 29 and 64 is called while another borrow is active, triggering a RefCell panic that crashes the validator node? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca44a63e-3c55-4e8e-aedf-7de6c845ae1e?mode=deep",
+    "timestamp": "2026-01-26 07:09:20.259794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_deserialize()] [Reentrancy] If the T::deserialize(d) call at line 62 somehow triggers reentrant deserialization on the same thread, can the nested call bypass depth checks by reading stale TYPE_TAG_DEPTH values, allowing unbounded recursion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60c382bb-1111-4ea8-9862-c8c6d81090c8?mode=deep",
+    "timestamp": "2026-01-26 07:09:35.699081",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Integer overflow] Can an attacker manipulate the u8 TYPE_TAG_DEPTH counter to overflow past 255 back to 0 through repeated serialization attempts, completely bypassing the MAX_TYPE_TAG_NESTING_WHEN_SERIALIZING check at line 30? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38879899-d4cb-4841-a46d-74792032ed07?mode=deep",
+    "timestamp": "2026-01-26 07:09:50.659926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_deserialize()] [Integer underflow] If deserialization fails and the decrement at line 65 executes multiple times due to error handling logic, can the u8 counter underflow below 0 (wrapping to 255), corrupting all future depth checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f73b15d-4642-44dd-bdf9-5cb5904b6837?mode=deep",
+    "timestamp": "2026-01-26 07:10:07.471445",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Constant: MAX_TYPE_TAG_NESTING] [Limit bypass] Is the MAX_TYPE_TAG_NESTING value of 8 at line 11 sufficient to prevent stack overflow on all platform configurations, or can an attacker craft type tags that exhaust stack space before reaching this limit on systems with small stack sizes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b5808ec-ee74-415b-92f4-ddd30ca9b031?mode=deep",
+    "timestamp": "2026-01-26 07:10:24.981215",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Arithmetic edge case] At line 35 where *r += 1 increments the counter, can an attacker trigger exactly MAX_TYPE_TAG_NESTING_WHEN_SERIALIZING (8 or 9) depth to pass the check at line 30, then continue recursion without further checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_64f2daf0-4380-48ce-920b-39af76f4726a?mode=deep",
+    "timestamp": "2026-01-26 07:10:43.709319",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Limit bypass] Can an attacker exploit the test mode conditional at line 26 where MAX_TYPE_TAG_NESTING_WHEN_SERIALIZING becomes 9 instead of 8, allowing one extra nesting level that could be abused in production if test code paths are reachable? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56a354a8-c13d-418e-9836-fbd1edfe6650?mode=deep",
+    "timestamp": "2026-01-26 07:11:02.279707",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_deserialize()] [Asymmetric limits] Why does serialization allow depth 8 (or 9 in tests) at line 26 while deserialization only allows depth 8 at line 11? Can an attacker serialize a structure at depth 9 in test mode that cannot be deserialized, causing state inconsistency across validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df9a428b-27f0-435b-a022-04f38c1e9f9a?mode=deep",
+    "timestamp": "2026-01-26 07:11:22.618141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Off-by-one] The check at line 30 uses >= instead of >, meaning it rejects when depth equals MAX_TYPE_TAG_NESTING_WHEN_SERIALIZING, but allows at depth MAX_TYPE_TAG_NESTING_WHEN_SERIALIZING-1. Can this off-by-one allow one extra recursion level that exhausts stack? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1c3368b-543b-4174-93e0-668b30275e1c?mode=deep",
+    "timestamp": "2026-01-26 07:11:44.006878",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_deserialize()] [Validation bypass] At line 54, the check happens before incrementing depth at line 59. If an attacker controls the deserializer to manipulate depth between the check and increment, can they bypass the nesting limit? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e053fd51-a61b-46ed-a36f-f2682c0d7378?mode=deep",
+    "timestamp": "2026-01-26 07:12:06.487460",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Thread-local initialization] [Uninitialized state] Is the TYPE_TAG_DEPTH thread-local at line 14 guaranteed to be initialized to 0 for all threads, or can a thread start with uninitialized memory causing arbitrary depth values that bypass limits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5911d42d-7a86-42b7-b6cb-12a0e0805b2d?mode=deep",
+    "timestamp": "2026-01-26 07:12:31.354032",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_deserialize()] [DoS] Can an attacker submit transactions with type tags at exactly MAX_TYPE_TAG_NESTING depth that pass validation but consume maximum CPU time during deserialization, causing validator slowdown and consensus delays? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0f9dc4a8-5e9d-423d-9892-65c5001a0c59?mode=deep",
+    "timestamp": "2026-01-26 07:12:56.194793",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Resource exhaustion] Even with the depth limit at line 11, can an attacker craft type tags with wide branching (many fields per level) that consume excessive memory during serialization despite staying under nesting limits? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07ab49af-4acd-4e29-ad63-a468d0e9acf7?mode=deep",
+    "timestamp": "2026-01-26 07:13:21.498778",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Thread-local leakage] [Memory leak] If threads are created and destroyed frequently during transaction processing, does the TYPE_TAG_DEPTH thread-local at line 14 leak memory, eventually exhausting validator resources? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8a27c58-43ba-4883-aa98-433cb768000c?mode=deep",
+    "timestamp": "2026-01-26 07:13:44.900921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_deserialize()] [CPU exhaustion] Can an attacker submit malicious type tags that maximize deserialization time at each nesting level (e.g., through complex generic parameters), causing 8^n complexity that exhausts CPU before depth limit is reached? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68890bdc-068a-4189-b296-e8697e22679c?mode=deep",
+    "timestamp": "2026-01-26 07:14:08.771762",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Error propagation] At line 38 when t.serialize(s) returns an error, is the depth counter at lines 39-42 guaranteed to decrement through Result's Drop implementation, or can early returns skip the cleanup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f59fd9f6-ce46-4217-b913-f45d5a96adc6?mode=deep",
+    "timestamp": "2026-01-26 07:14:34.280242",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_deserialize()] [Exception safety] If T::deserialize(d) at line 62 throws an error, can the finally block at lines 63-66 fail to execute, leaving the depth counter permanently incremented? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa54d1b9-ec96-4388-939c-c15b1c85a09a?mode=deep",
+    "timestamp": "2026-01-26 07:14:58.396208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Custom error abuse] At line 31, the function returns S::Error::custom() with a string message. Can an attacker trigger this error repeatedly to fill logs or consume error handling resources, causing DoS? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_695f21d5-2e13-42e6-a630-55aab5d49136?mode=deep",
+    "timestamp": "2026-01-26 07:15:23.146983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_deserialize()] [Error string attack] The error message at line 56 is a static string. Could an attacker somehow inject data into error paths that get logged, potentially causing log injection attacks in validator monitoring systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba2eb9c5-77cf-45b3-b4d1-088c8ea9eeff?mode=deep",
+    "timestamp": "2026-01-26 07:15:48.518833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Thread-local isolation] [Cross-thread attack] Can an attacker exploit thread pooling in the Move VM where TYPE_TAG_DEPTH states from previous transactions on the same thread affect subsequent transactions, causing false positives or bypasses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_445ee76c-9d73-402e-82fb-ec53d7da0902?mode=deep",
+    "timestamp": "2026-01-26 07:16:12.875949",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Function: type_tag_recursive_serialize()] [Concurrent mutation] At line 29, TYPE_TAG_DEPTH.with() borrows mutably. Can Send/Sync trait violations or unsafe code elsewhere allow concurrent access to this thread-local, causing data races? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_597e591a-5cb6-4728-a90d-4cc296a45260?mode=deep",
+    "timestamp": "2026-01-26 07:16:39.000146",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-core/types/src/safe_serialize.rs] [Thread reuse] [State pollution] If validator threads are reused across epochs or validator set changes, can malicious transactions in one epoch corrupt TYPE_TAG_DEPTH state that persists into the next epoch, affecting consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67c33e84-1665-4f37-99d2-dd2472047561?mode=deep",
+    "timestamp": "2026-01-26 07:17:05.423053",
+    "report_generated": false
+  }
+]
