@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/transaction_root.rs] [Trait: From<proto>] [Type Safety] The From implementation uses proto_filter.transaction_type() which might return unexpected values. Can malicious protobuf data cause type confusion or undefined behavior when converting transaction types? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d432b405-de44-433f-9f48-1da1b474b6bc?mode=deep",
+    "timestamp": "2026-01-26 22:18:39.754344",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/transaction_root.rs] [Function: matches()] [Short-circuit Bypass] The matches() function checks success first, then txn_type. Can an attacker craft transactions that match the success filter but have incorrect types, potentially bypassing security checks if downstream code assumes type validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e16c64f-3d79-4ae7-8861-bc38b0b1168e?mode=deep",
+    "timestamp": "2026-01-26 22:18:52.461339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/transaction_root.rs] [Struct: TransactionRootFilter] [Default Values] The Default implementation creates a filter with both fields None. Can this default filter be inadvertently used in security-critical contexts where all transactions would be rejected? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bc1ddb0-a139-4319-ae51-711836ef1e4d?mode=deep",
+    "timestamp": "2026-01-26 22:19:05.665045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: get_standardized_sender()] [Clone Inefficiency] The get_standardized_sender() clones the sender string before standardizing. For large transaction volumes with repeated sender addresses, can this cause performance degradation or memory pressure that enables DoS attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_665c33e0-ec86-4c22-8ebb-bd27bc0b1b20?mode=deep",
+    "timestamp": "2026-01-26 22:19:20.217071",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: validate_state()] [Recursive Validation] The validate_state() calls self.payload.is_valid() which recursively validates nested filters. Can an attacker create deeply nested filter structures that cause stack overflow during validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52f00462-89f5-49a8-9ece-68baf672a4f6?mode=deep",
+    "timestamp": "2026-01-26 22:19:35.029552",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: matches()] [Type Extraction] The matches() function extracts user_request from TxnData::User. Can an attacker provide non-user transaction types that bypass filtering when the filter should only apply to user transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae216678-6864-49e9-933c-c412a2d5a265?mode=deep",
+    "timestamp": "2026-01-26 22:19:51.148060",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: matches()] [Null Handling] If user.request is None (line 87-88), the function returns false. Can malformed or corrupted transactions have None requests, and would this cause legitimate transactions to be incorrectly filtered? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e4a7f24-5de6-4659-a2fc-7cb3e851135f?mode=deep",
+    "timestamp": "2026-01-26 22:20:08.728992",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: get_entry_function_payload_from_transaction_payload()] [Pattern Matching] This function extracts entry function from both UserPayload and MultisigPayload. Can an attacker craft transactions with nested MultisigPayload containing non-EntryFunction payloads to bypass payload filtering? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17fa60d6-a718-4e2c-ad9f-0bbea1de49e7?mode=deep",
+    "timestamp": "2026-01-26 22:20:27.122942",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: matches()] [Optional Filter Bypass] If payload_filter is Some but entry_function_payload extraction returns None (lines 106-112), does the function return true or false? Can this create a filter bypass where payload filters are ignored for certain transaction structures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_499e5653-f2f5-4c50-bcd1-21c445d20f48?mode=deep",
+    "timestamp": "2026-01-26 22:20:47.050410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Trait: From<proto>] [OnceCell Initialization] The From implementation pre-initializes standardized_sender with OnceCell::with_value(). If the proto_filter.sender contains invalid address data, can this cause initialization to fail silently or create filters with corrupted state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e888fee-9f4b-41ba-8306-f99e17d12611?mode=deep",
+    "timestamp": "2026-01-26 22:21:07.658557",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Struct: EntryFunctionFilter] [Validation Logic] The validate_state() requires at least one of address, module, or function to be set. Can an attacker provide only one field with a wildcard-like empty string to create overly broad filters that match unintended functions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7094305f-56f6-4942-b02a-604e108103f9?mode=deep",
+    "timestamp": "2026-01-26 22:21:29.626766",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: matches() for EntryFunctionFilter] [Logic Error] Line 196 checks self.address.is_some() OR self.function.is_some() before validating module. This appears to be a bug - should it check self.module.is_some()? Can this logic error cause incorrect filtering behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95927e15-93dc-4af6-9440-1ae71443bac7?mode=deep",
+    "timestamp": "2026-01-26 22:21:53.262521",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: matches() for EntryFunctionFilter] [Short-circuit Failure] If module_id.module is None (line 205-207), the function returns false. Can transactions with missing module information bypass security-critical filtering when the filter only specifies a function name? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3107c05c-089b-4917-8947-209bb18022a3?mode=deep",
+    "timestamp": "2026-01-26 22:22:17.247157",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: matches() for EntryFunctionFilter] [Order Dependency] The function checks self.function.matches first (line 192), then address/module. Can an attacker exploit this ordering by crafting entry functions with matching names but different addresses to bypass filter logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aa1cf5ce-f69e-4bfe-90f1-9c40920b9ea6?mode=deep",
+    "timestamp": "2026-01-26 22:22:42.423497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: get_standardized_address() for EntryFunctionFilter] [Clone Cost] Similar to UserTransactionFilter, this clones the address before standardizing. Can high-volume attackers exploit this to cause memory pressure in the indexer service? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7092c6e-56e1-47d1-990a-c0e0d50d92ac?mode=deep",
+    "timestamp": "2026-01-26 22:23:08.642980",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Struct: UserTransactionPayloadFilter] [Single Field Constraint] The validate_state() requires function to be Some and recursively validates it. Can an attacker provide a valid EntryFunctionFilter but with fields that match everything, effectively creating a no-op filter? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_353e146e-e3f6-48e2-8b0e-5e27c0de9ee4?mode=deep",
+    "timestamp": "2026-01-26 22:23:35.807084",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: matches() for UserTransactionPayloadFilter] [Optional Propagation] The matches() calls self.function.matches_opt(&payload.function). If payload.function is None, does this correctly reject the match, or can None payloads slip through? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a76ecd1b-1ebe-44c9-bcf9-b80375663237?mode=deep",
+    "timestamp": "2026-01-26 22:24:02.645434",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/filters/user_transaction.rs] [Function: get_entry_function_payload_from_transaction_payload()] [Nested Payload Extraction] Lines 280-288 extract EntryFunctionPayload from MultisigPayload. Can an attacker create deeply nested MultisigPayload structures that aren't EntryFunction to bypass this filter while still being valid transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a490aed-ea95-4ccd-8627-1ab366641fde?mode=deep",
+    "timestamp": "2026-01-26 22:24:29.004596",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Trait: Filterable] [Recursive Validation] The is_valid() method recursively annotates errors with traces. Can an attacker create deeply nested filter structures that cause stack overflow during error annotation via serde_json::to_string(self)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d724802-c115-4dfb-9c1e-abf66afd0f88?mode=deep",
+    "timestamp": "2026-01-26 22:24:55.442326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Serialization DoS] The is_valid() calls serde_json::to_string(self) on every validation. For complex filters with large nested structures, can this cause extreme serialization overhead leading to DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40fe678c-87dc-40f7-be8b-21ec8276e7aa?mode=deep",
+    "timestamp": "2026-01-26 22:25:22.118414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Trait: Filterable<T> for Option<F>] [Logic Inversion] The Option<F> implementation returns true when the filter is None (line 95). Can this cause security issues where missing filters are interpreted as 'allow all' when 'deny all' would be safer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8e54e36-3bc2-4b27-ae9c-4b1a4315a268?mode=deep",
+    "timestamp": "2026-01-26 22:25:47.341771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: matches_vec()] [Algorithm Complexity] The matches_vec() uses any() which short-circuits on first match. For large event arrays, can an attacker craft transactions with many events where expensive matching operations must be performed on all events before finding a match? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4238fba9-1c43-4401-b31f-4ad75438b86f?mode=deep",
+    "timestamp": "2026-01-26 22:26:12.814591",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: filter_vec()] [Memory Allocation] The filter_vec() collects filtered items into a new Vec. Can an attacker provide transactions with extremely large vectors causing excessive memory allocation during filtering? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc2bc682-6f56-4d7d-a6eb-20b4af974adf?mode=deep",
+    "timestamp": "2026-01-26 22:26:38.353249",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Special Address Detection] Lines 16-27 detect special addresses by checking if first 31 bytes are zero and last byte <= 'f'. Can an attacker craft addresses like '0x0000...000g' that are misclassified as special addresses due to incomplete validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_882ffbd5-9423-4254-a532-043279044007?mode=deep",
+    "timestamp": "2026-01-26 22:27:03.502423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/utils.rs] [Function: standardize_address()] [Hex Validation] Line 20 checks last_char <= 'f' but doesn't validate it's a valid hex digit. Can non-hex characters between 'a'-'f' (like 'e' in scientific notation) cause incorrect standardization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ce61f47-db27-4e63-8414-05426d3f3484?mode=deep",
+    "timestamp": "2026-01-26 22:27:28.218287",
+    "report_generated": false
+  }
+]
