@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct: Transcript] [Design vulnerability] The module is explicitly named 'insecure_field' - is this implementation actually secure for production use in Aptos DKG, or does it contain known cryptographic weaknesses that could compromise the entire distributed key generation process? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04357559-73e0-4667-8038-6e7ae8a222d4?mode=deep",
+    "timestamp": "2026-01-26 14:04:22.409849",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct: Transcript] [Data exposure] The Transcript struct fields V and C are public - can malicious validators read secret key shares directly from memory or serialized transcripts, allowing them to reconstruct the distributed private key and compromise validator security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a375e6b9-f2c1-4af0-9d42-47a93305fca7?mode=deep",
+    "timestamp": "2026-01-26 14:04:35.103324",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct: Transcript] [State consistency] The dealers Vec can contain multiple entries - can a Byzantine validator inject duplicate or conflicting dealer entries to cause state inconsistencies during DKG aggregation, potentially leading to failed key generation or network splits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c64be438-34e3-453b-9469-118f0094dd7b?mode=deep",
+    "timestamp": "2026-01-26 14:04:48.437055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct: Transcript] [Array size mismatch] The V array has n+1 elements while C has n elements - can off-by-one errors in indexing these arrays cause buffer overflows, panics, or incorrect key share distribution during DKG execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5995a486-fd1a-4114-bf19-f26cddd0d121?mode=deep",
+    "timestamp": "2026-01-26 14:05:01.695138",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct: Transcript] [Serialization size attack] Can an attacker craft transcripts with extremely large V or C arrays (e.g., claiming n=1000000) to cause memory exhaustion during BCS deserialization, crashing validator nodes and preventing DKG completion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c239e94-ec24-4b48-86a5-7a35ec0607f9?mode=deep",
+    "timestamp": "2026-01-26 14:05:16.049120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: to_bytes()] [Panic on serialization] The to_bytes() function uses expect() which can panic - can this panic be triggered during consensus-critical DKG operations to crash validator nodes and prevent the network from completing epoch transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_21817582-c356-437b-8c57-e03ccf1ff0f3?mode=deep",
+    "timestamp": "2026-01-26 14:05:31.207359",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: try_from()] [Deserialization bypass] The try_from() deserializes without validating array sizes or cryptographic validity - can an attacker inject transcripts with mismatched V/C array lengths that pass deserialization but cause panics or undefined behavior in subsequent operations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94604193-8ea3-4e18-a861-81f586670965?mode=deep",
+    "timestamp": "2026-01-26 14:05:47.685096",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: try_from()] [Malformed cryptographic elements] Does try_from() validate that G2Projective points in V are valid curve points not at infinity, or can malicious transcripts contain invalid points that break cryptographic assumptions and compromise DKG security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33d9502b-da19-4c2f-b424-e8ed61466bd4?mode=deep",
+    "timestamp": "2026-01-26 14:06:05.272559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: try_from()] [Scalar validation] Does deserialization verify that Scalar values in C are within valid field order, or can out-of-range scalars cause cryptographic breaks, wraparound attacks, or incorrect key share computations? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed5b629f-9b71-4006-bbac-50a3cea77fee?mode=deep",
+    "timestamp": "2026-01-26 14:06:23.911003",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Trait: ValidCryptoMaterial] [Empty AIP_80_PREFIX] The AIP_80_PREFIX is empty string - does this violate Aptos crypto material standards and potentially allow transcript replay attacks across different contexts or protocol versions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb18f8c4-92f9-4e59-8e95-9899095d6fed?mode=deep",
+    "timestamp": "2026-01-26 14:06:44.086744",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Unused signature keys] The deal() function receives signing secret key and public key but never uses them - does this mean transcripts are not cryptographically authenticated, allowing any attacker to forge transcripts and inject malicious key shares into DKG? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2482bfd-af3b-42de-88b9-bed54229e693?mode=deep",
+    "timestamp": "2026-01-26 14:07:04.643161",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Unused auxiliary data] The aux parameter is never used in deal() - is critical context like round number, epoch, or dealer identity supposed to be bound to the transcript but isn't, enabling cross-context replay attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf2e0f34-7334-4472-99f5-215105db618b?mode=deep",
+    "timestamp": "2026-01-26 14:07:25.745373",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Unused encryption keys] The eks (encryption public keys) parameter is passed but never used - does this mean shares in C are not actually encrypted, exposing secret key material in plaintext to network observers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83717b97-a543-456a-a64c-491680474bc9?mode=deep",
+    "timestamp": "2026-01-26 14:07:47.316213",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Assert instead of error] Line 92 uses assert_eq!(eks.len(), sc.n) which panics on mismatch - can malicious validators provide mismatched encryption key arrays to crash honest dealers during critical DKG execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7753c81-922f-40b6-bd66-2be0b8233a19?mode=deep",
+    "timestamp": "2026-01-26 14:08:09.070107",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Weak RNG] The function accepts any RNG implementing CryptoRng - can callers pass weak or deterministic RNGs that make secret shares predictable, allowing attackers to reconstruct the distributed private key? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2908d086-a1fd-4a1a-941e-03324a740622?mode=deep",
+    "timestamp": "2026-01-26 14:08:31.906893",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Shamir secret sharing] The shamir_secret_share() function is called without validating threshold t vs n - can invalid threshold configurations (like t=0 or t>n) produce insecure key shares that don't provide threshold security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4a6c4cb0-2fdd-43d9-bbc1-79757b83369b?mode=deep",
+    "timestamp": "2026-01-26 14:08:55.512953",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Commitment calculation] Lines 98-101 compute V commitments as g_2.mul(C[i]) - are these Pedersen commitments or simple exponentiations, and can commitment malleability allow dealers to later change the committed values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff92d3fd-4c68-4734-8810-3fc7d0261313?mode=deep",
+    "timestamp": "2026-01-26 14:09:19.689997",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Public key at V[n]] The public key is placed at V[sc.n] (line 100) - can off-by-one indexing errors cause the wrong value to be used as the public key, breaking signature verification or key derivation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dbe1d0a8-aa73-43d1-8f1d-8476fd03e152?mode=deep",
+    "timestamp": "2026-01-26 14:09:44.789716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Single dealer vector] Line 107 creates dealers vec with single element - is this correct for multi-dealer DKG, or should it track all dealers, and can this cause dealer accountability failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e589609-161a-480d-aae5-f78c1d193e43?mode=deep",
+    "timestamp": "2026-01-26 14:10:09.858700",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Zero secret share] If InputSecret contains zero scalar, does Shamir sharing produce all-zero shares, and can this be exploited to generate weak or predictable distributed keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fb0f183-ca46-49b5-84f2-b8e942662f7f?mode=deep",
+    "timestamp": "2026-01-26 14:10:36.848395",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [No signature verification] The verify() function receives signing public keys but never validates transcript signatures - can any attacker forge transcripts without cryptographic proof of dealer authenticity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e131eb4-b8fe-4626-9ee8-bda2aa14f920?mode=deep",
+    "timestamp": "2026-01-26 14:11:04.246154",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Unused auxiliary data] The _aux parameter containing contextual data is ignored - can transcripts be replayed across different epochs, rounds, or validator sets without detection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65828b82-d861-4a6a-bc53-1f3cf85debbe?mode=deep",
+    "timestamp": "2026-01-26 14:11:29.286960",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [thread_rng() usage] Line 137 uses thread_rng() for Fiat-Shamir challenges - is this deterministic across validators, or will different validators generate different random challenges causing verification failures and DKG abortion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d347db2d-c318-4702-af4a-840bc24c248d?mode=deep",
+    "timestamp": "2026-01-26 14:11:55.085150",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Non-deterministic verification] Since verification uses thread_rng(), will the same transcript verify on some nodes but fail on others, causing validator set inconsistencies and network splits during DKG? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42bcc60e-50aa-4665-82f4-d23ce458e205?mode=deep",
+    "timestamp": "2026-01-26 14:12:21.897595",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Weak soundness] The linear combination check (lines 140-150) only validates that commitments match shares with random coefficients - is this cryptographically sound, or can malicious dealers pass verification while distributing incorrect shares? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d736baca-33ad-4adb-ba58-bf781acccaa8?mode=deep",
+    "timestamp": "2026-01-26 14:12:49.293749",
+    "report_generated": false
+  }
+]
