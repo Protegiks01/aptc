@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Function: Pool.get_balance()] [Division by zero] Can an attacker create a malicious on-chain Pool resource with total_shares set to 0, causing a division by zero panic when get_balance() calculates (*shares * self.total_coins) / self.total_shares, leading to Rosetta API crashes and exchange integration failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e87ba944-ef53-4782-b03c-4af71a6da516?mode=deep",
+    "timestamp": "2026-01-26 02:53:26.637650",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Function: Pool.get_balance()] [Integer overflow] In the calculation (*shares * self.total_coins) / self.total_shares, can an attacker craft on-chain state where shares and total_coins are both near u64::MAX, causing the multiplication to overflow before division, returning incorrect balances to exchanges and enabling theft through balance manipulation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e1101ce-5386-40e6-81b8-0204b9509c8a?mode=deep",
+    "timestamp": "2026-01-26 02:53:39.425771",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Function: Pool.get_balance()] [Precision loss] Does the integer division in (*shares * self.total_coins) / self.total_shares truncate remainders, allowing an attacker to systematically extract value through repeated small withdrawals where rounding errors accumulate, leading to fund drainage from the distribution pool? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e47fdb5d-4ded-49c7-9185-4110cef2c870?mode=deep",
+    "timestamp": "2026-01-26 02:53:52.478370",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Function: Pool.get_balance()] [Zero total_coins] If total_coins is 0 but total_shares is non-zero, does get_balance() return 0 balance correctly, or can this state be exploited to cause incorrect balance reporting in Rosetta API responses, misleading exchanges about available funds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af49def4-36ad-4e22-ad38-9535af6c47ec?mode=deep",
+    "timestamp": "2026-01-26 02:54:06.958975",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Function: StakingContract.get_balance()] [Delegation vulnerability] Can an attacker manipulate the distribution_pool field in StakingContract to point to a malicious Pool with crafted total_shares=0, causing get_balance() to panic when called through the staking contract interface, disrupting validator reward distributions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f972fcb6-d1e7-49f3-a05b-1f6e3d7363f8?mode=deep",
+    "timestamp": "2026-01-26 02:54:21.657052",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: StakingContract] [Deserialization attack] Can a malicious Move module create a StakingContract resource with malformed commission_percentage exceeding 100 (stored as u64), which when deserialized by Rosetta causes incorrect commission calculations, allowing operators to extract more than 100% of rewards? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0d0fd89-efad-47d6-91cd-a82ddd7506d9?mode=deep",
+    "timestamp": "2026-01-26 02:54:37.460691",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: Pool] [Vector bounds] Can an attacker create a Pool where the shares vector contains duplicate AccountAddress entries, causing get_balance() to return the first match only while other shares exist, hiding staked funds from Rosetta API queries and enabling fund concealment? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7ffdd8d-4aba-42bc-bac3-99e082578fb4?mode=deep",
+    "timestamp": "2026-01-26 02:54:54.236049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: Pool] [Inconsistent state] Can on-chain state have shareholders vector length exceeding shareholders_limit after deserialization, bypassing the limit check and causing state inconsistencies between Move VM and Rosetta API representations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_970b8133-791e-4b71-9b7b-754f4dc391d2?mode=deep",
+    "timestamp": "2026-01-26 02:55:12.852064",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: Pool] [Share-shareholder mismatch] Is there validation that shares vector and shareholders vector have consistent AccountAddress entries, or can deserialization accept state where an address appears in shareholders but not in shares, causing balance query failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_72fff741-c868-4e32-b3dc-2bed3e0245b2?mode=deep",
+    "timestamp": "2026-01-26 02:55:32.640774",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: DelegationPool] [Inactive shares manipulation] Can an attacker craft inactive_shares vector with overlapping ObservedLockupCycle indices, causing double-counting of locked funds when Rosetta aggregates balances across lockup cycles, leading to inflated balance reports? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2dfc1d03-02c8-4a99-81b9-df132331b3d5?mode=deep",
+    "timestamp": "2026-01-26 02:55:53.520672",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Constant: COIN_MODULE] [Module substitution] Can an attacker deploy a malicious module with name 'coin' that matches COIN_MODULE constant, causing Rosetta to parse transactions targeting the fake module as legitimate coin operations, enabling transaction misclassification and fund theft? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_564fb583-56a2-47c9-aa01-1fa9d7807aac?mode=deep",
+    "timestamp": "2026-01-26 02:56:14.589158",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Constant: TRANSFER_FUNCTION] [Function collision] If multiple modules implement a 'transfer' function, does Rosetta's use of TRANSFER_FUNCTION constant properly namespace-check the module, or can transactions to unrelated transfer functions be misinterpreted as coin transfers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_841ee9bd-8f89-4c32-9717-1775468131fe?mode=deep",
+    "timestamp": "2026-01-26 02:56:37.009835",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Constant: UPDATE_COMMISSION_FUNCTION] [Typo exploitation] The comment notes UPDATE_COMMISSION_FUNCTION uses misspelled 'update_commision' - can an attacker exploit this by deploying both correctly and incorrectly spelled functions, causing Rosetta to miss commission updates and report stale commission rates? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10ca0e8c-edd7-4ef7-9fee-ed9c083eb007?mode=deep",
+    "timestamp": "2026-01-26 02:57:00.312055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Constant: APTOS_COIN_RESOURCE] [Resource impersonation] Can a malicious contract create a resource named 'AptosCoin' in a non-standard module, which Rosetta incorrectly parses as legitimate AptosCoin balance due to resource name matching, showing fake balances to exchanges? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73480b6d-c2a8-4447-9fec-1f9ecd633b8a?mode=deep",
+    "timestamp": "2026-01-26 02:57:24.930880",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Constant: STAKE_POOL_RESOURCE] [Multiple stake pools] If an account has multiple StakePool resources at different paths, does Rosetta query using STAKE_POOL_RESOURCE constant return all pools or just the first one, potentially hiding staked funds from API consumers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3c4904cf-9026-4fd3-bd01-b71d4fc90fb0?mode=deep",
+    "timestamp": "2026-01-26 02:57:50.648258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: StakingContract] [Commission overflow] Can commission_percentage field (u64) be set to values greater than 10000 (100% with two decimals), causing calculation overflows when computing commission amounts in reward distribution, allowing operators to drain the entire reward pool? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_68cee7b5-940e-4ba3-8455-1efe85277ace?mode=deep",
+    "timestamp": "2026-01-26 02:58:17.640995",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: UpdateCommissionEvent] [Commission front-running] Does Rosetta properly sequence UpdateCommissionEvent with old_commission_percentage and new_commission_percentage, or can operators front-run commission changes by claiming rewards at old rate immediately before update takes effect? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33af4758-322e-4d3d-aaa0-2300e6ce7d3d?mode=deep",
+    "timestamp": "2026-01-26 02:58:44.537993",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: RequestCommissionEvent] [Accumulated rewards manipulation] Can commission_amount exceed accumulated_rewards in RequestCommissionEvent, indicating the operator requested more commission than available rewards, potentially draining funds from other delegators' shares? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef2671c8-58dc-4e1d-bad0-0161f3584d9f?mode=deep",
+    "timestamp": "2026-01-26 02:59:11.295544",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: UnlockStakeEvent] [Commission_paid validation] Is there validation that commission_paid in UnlockStakeEvent doesn't exceed the amount being unlocked, or can malformed events show commission exceeding principal, hiding fund extraction? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3a7f794-bb75-459b-9d38-1da43b8c90c8?mode=deep",
+    "timestamp": "2026-01-26 02:59:37.800191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: DelegationPool] [Operator commission override] Can operator_commission_percentage in DelegationPool differ from the commission_percentage in associated StakingContract, causing different commission rates to apply depending on which struct Rosetta queries, enabling commission rate confusion attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdd7e719-0201-454b-a5cf-cabe6889a71a?mode=deep",
+    "timestamp": "2026-01-26 03:00:03.373682",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: Store] [Event handle exhaustion] Can an attacker spam create_staking_contract_events EventHandle with fake events, causing the guid counter to overflow or the event log to grow unbounded, leading to API timeouts when Rosetta queries event history? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6a30e39-aac9-4d47-bbbf-084db9d6151d?mode=deep",
+    "timestamp": "2026-01-26 03:00:30.215972",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: DistributeEvent] [Recipient validation] Does Rosetta validate that the recipient address in DistributeEvent is actually a shareholder in the pool, or can malformed events claim distributions to arbitrary addresses, hiding fund flows from auditors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6399c160-1b83-4fb8-95a9-a8d8cb2c9b40?mode=deep",
+    "timestamp": "2026-01-26 03:00:56.337632",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: AddStakeEvent] [Amount validation] Can AddStakeEvent report an amount that exceeds the actual stake added on-chain, causing Rosetta to report inflated staking volumes and misleading validators about their delegation amounts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a02d83ac-55fc-470f-92fe-a8f9612ebbb0?mode=deep",
+    "timestamp": "2026-01-26 03:01:21.436693",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: WithdrawUndelegatedEvent] [Amount_withdrawn overflow] If amount_withdrawn in WithdrawUndelegatedEvent is u64::MAX, does Rosetta properly handle this edge case or could it cause integer overflows when aggregating total withdrawals across multiple events? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b9b4846-baee-4cf6-811a-6945bec5d484?mode=deep",
+    "timestamp": "2026-01-26 03:01:48.828726",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-rosetta/src/types/move_types.rs] [Struct: SwitchOperatorEvent] [Operator switching race] Can rapid SwitchOperatorEvent emissions (old_operator to new_operator, then back) cause Rosetta to process events out of order, showing incorrect current operator for a stake pool and misdirecting delegation decisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfaf0d23-161d-44d6-a6cb-d98a5cffa373?mode=deep",
+    "timestamp": "2026-01-26 03:02:16.259933",
+    "report_generated": false
+  }
+]
