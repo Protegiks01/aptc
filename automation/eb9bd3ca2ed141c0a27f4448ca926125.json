@@ -1,0 +1,110 @@
+[
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: update_connected_peers_metrics()] [Count inconsistency] At line 193-197, inbound connections are counted by filtering active_peers, but between this count and the metric update at line 200, could the count become stale if peers are added/removed concurrently? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02af4345-dd42-4555-ad39-a9d7ba486c4d?mode=deep",
+    "timestamp": "2026-01-26 14:45:30.802983",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: update_connected_peers_metrics()] [Saturating subtraction] At line 198, outbound count is calculated using total.saturating_sub(inbound) - if inbound > total due to a race condition, this would silently return 0 instead of panicking. Could this hide real bugs in the connection counting logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d8a2023-7144-4c53-82af-1fc9f4d60bd5?mode=deep",
+    "timestamp": "2026-01-26 14:45:43.278693",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: update_connected_peers_metrics()] [Metric accuracy] The metrics at line 200-202 show connection counts, but are these counts used for critical decisions elsewhere (e.g., health checks, monitoring alerts)? If so, could inaccurate metrics due to race conditions cause false alarms or miss real issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0fb7ebd4-b3d4-43c0-9432-0cb0bd71c8cf?mode=deep",
+    "timestamp": "2026-01-26 14:45:56.256548",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: sample_connected_peers()] [Sampling overhead] At line 207-224, the sample! macro collects all connected peers into a Vec and logs them at most once per minute - but what if there are thousands of peers? Could this cause memory spikes or logging performance issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db53c1e5-4dfb-4769-b387-37c4abde7eec?mode=deep",
+    "timestamp": "2026-01-26 14:46:10.329260",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: sample_connected_peers()] [Snapshot consistency] At line 208-217, active_peers.values() is iterated to collect peer information, but if peers are being added/removed concurrently, could the snapshot contain inconsistent data (e.g., disconnected peers)? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7e4a9dc-e182-4f65-bbfb-879def03746b?mode=deep",
+    "timestamp": "2026-01-26 14:46:24.825104",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: new()] [Channel size validation] At line 143, channel_size parameter is used to create multiple channels, but is there validation that channel_size is reasonable (not 0, not absurdly large)? Could incorrect values cause immediate deadlocks or memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ca40b57-e3e6-47bd-a5c9-9fef47991a8d?mode=deep",
+    "timestamp": "2026-01-26 14:46:40.294035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: new()] [Max frame size overflow] At line 144, max_frame_size is stored, but is there validation that it fits within reasonable bounds? Could an absurdly large max_frame_size cause integer overflows when calculating buffer sizes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24f6482c-9819-4fbb-9485-69dd6f022b32?mode=deep",
+    "timestamp": "2026-01-26 14:46:56.895297",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: new()] [Max message size bypass] At line 145, max_message_size is stored, but is it enforced consistently? If max_message_size > max_frame_size, could this cause protocol violations or parsing errors? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_324a46d3-ec6d-4bdf-a819-8120de5deff6?mode=deep",
+    "timestamp": "2026-01-26 14:47:14.553682",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: new()] [Inbound connection limit zero] At line 146, inbound_connection_limit is stored without validation - if it's set to 0, would the node reject all inbound connections including from validators, potentially isolating itself from the network? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d07f9765-1446-4223-83fc-d44de6ec5a37?mode=deep",
+    "timestamp": "2026-01-26 14:47:33.095596",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: new()] [Transport handler creation] At line 158-165, TransportHandler::new() is called, but what if it fails to bind to listen_addr (e.g., address already in use)? Is the error propagated, or does construction succeed with a non-functional listener? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cb5a695-f5f6-4ae8-9012-092d5ede4bd6?mode=deep",
+    "timestamp": "2026-01-26 14:47:52.355093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: new()] [Executor guard] At line 157, _guard = executor.enter() is called but then dropped - does this mean the executor context is only active during TransportHandler creation? Could subsequent executor.spawn() calls fail because they're outside the executor context? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98520a6e-f756-4bc1-b52e-d30ea9787015?mode=deep",
+    "timestamp": "2026-01-26 14:48:12.550224",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: new()] [Upstream handlers validation] At line 138-141, upstream_handlers is passed in and wrapped in Arc at line 182, but is there validation that required protocols (e.g., consensus, mempool) are registered? Could missing handlers cause silent message drops? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbd209e5-936d-4528-be9d-52006374df1d?mode=deep",
+    "timestamp": "2026-01-26 14:48:34.372978",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Function: new()] [Connection event handlers empty] At line 142, connection_event_handlers is passed as a Vec, but what if it's empty? Would NewPeer/LostPeer notifications be lost, causing components to never learn about peer changes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2dc9df09-73ad-4938-bcd3-91a908375479?mode=deep",
+    "timestamp": "2026-01-26 14:48:56.379277",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Struct: PeerManager] [Active peers HashMap thread safety] At line 82-88, active_peers is a HashMap<PeerId, (ConnectionMetadata, Sender)> not wrapped in Arc<Mutex<>>, but it's accessed from multiple async handlers - is Rust's borrow checker sufficient to prevent data races, or could concurrent access cause undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a78d5603-9790-4bfe-9e7d-b219bd3fa467?mode=deep",
+    "timestamp": "2026-01-26 14:49:18.412641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Struct: PeerManager] [Outstanding disconnect requests leak] At line 108-109, outstanding_disconnect_requests is a HashMap<ConnectionId, oneshot::Sender<Result<>>> - if a disconnect request is never completed (e.g., socket never closes), could this HashMap grow unbounded, causing memory exhaustion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fa208b3-2c92-4e02-aad3-4f037c6c769b?mode=deep",
+    "timestamp": "2026-01-26 14:49:41.238603",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Struct: PeerManager] [Peers and metadata Arc] At line 90, peers_and_metadata is wrapped in Arc<PeersAndMetadata> - if PeersAndMetadata uses interior mutability (Mutex/RwLock), could lock contention between PeerManager and other components cause performance degradation or deadlocks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8753cc16-8a8b-420d-b4d9-8166ed043936?mode=deep",
+    "timestamp": "2026-01-26 14:50:04.836973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Struct: PeerManager] [Upstream handlers Arc] At line 95-96, upstream_handlers is Arc<HashMap<ProtocolId, Sender>>, but HashMap is not Send - does wrapping in Arc make it safe to share across threads? Could concurrent sends to the same protocol cause data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af26b40f-6a18-40c3-b3f6-a86adf72049b?mode=deep",
+    "timestamp": "2026-01-26 14:50:29.041819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/network/framework/src/peer_manager/mod.rs] [Struct: PeerManager] [Transport handler Option] At line 80, transport_handler is Option<TransportHandler<...>> and taken at line 551-554 - what if multiple threads try to call start_connection_listener concurrently? Could this cause a race to None and panic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23fad205-9906-4e5b-85bb-f6408a350a7a?mode=deep",
+    "timestamp": "2026-01-26 14:50:52.800179",
+    "report_generated": false
+  }
+]
