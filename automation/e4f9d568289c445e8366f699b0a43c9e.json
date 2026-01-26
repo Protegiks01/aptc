@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Assertion vs Validation - MEDIUM] The function uses assert_eq! at line 92 which panics on failure rather than returning an error. If called with wrong-sized eks in production, this causes a validator crash instead of graceful error handling. Can an attacker trigger this by sending malformed deal requests during critical consensus operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d89b7c80-ecac-444c-ac07-96fcb720db41?mode=deep",
+    "timestamp": "2026-01-26 10:44:03.558251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct: Transcript] [Struct Invariants - MEDIUM] The Transcript struct at lines 27-35 doesn't enforce invariants like V.len() == C.len() + 1 or dealers.len() >= 1. Can malformed transcripts be created through direct struct construction (if exposed) that violate these invariants and cause crashes in methods that assume them? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b66bf27-b2d5-4b1a-8763-abf81914a487?mode=deep",
+    "timestamp": "2026-01-26 10:44:16.296512",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Error Information Leakage - MEDIUM] Lines 122, 126, and 130 use bail! with detailed error messages revealing internal state (expected vs actual lengths). Can an attacker use these error messages to fingerprint the node's configuration or probe for specific validation logic to craft bypasses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19e6f946-2c54-42b3-bbad-35b1528dae6e?mode=deep",
+    "timestamp": "2026-01-26 10:44:29.353238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Generic Error Handling - LOW] Line 150 returns a generic error 'Expected linear combination check test to pass' without details on which check failed. This makes debugging difficult. However, can this lack of detail allow attackers to probe for verification logic by analyzing which inputs fail without revealing why? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7dce70a8-bf2f-4d99-be3f-4e9012391a0c?mode=deep",
+    "timestamp": "2026-01-26 10:44:44.705755",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: to_bytes()] [Unrecoverable Panic - MEDIUM] The function panics on serialization error at line 41 instead of returning Result. If transcripts with invalid cryptographic elements reach this code, can it cause cascading crashes across the validator network as nodes attempt to serialize the same malformed transcript? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a89649f-d49c-4b6e-b456-400232ea214c?mode=deep",
+    "timestamp": "2026-01-26 10:44:59.231251",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: scheme_name()] [Protocol Identification - HIGH] The scheme_name() returns 'insecure_field_pvss' at line 76-78. If network protocol code doesn't properly check this identifier before processing transcripts, can an attacker downgrade DKG security by sending insecure transcripts to a system expecting secure encrypted transcripts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff4daa48-cc01-4f8b-a540-67972580448e?mode=deep",
+    "timestamp": "2026-01-26 10:45:15.023727",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Trait Implementation] [Type Erasure Attack - MEDIUM] The module implements generic traits (Transcript, Aggregatable, MalleableTranscript) that can be used polymorphically. Can an attacker exploit type erasure to substitute insecure_field::Transcript for secure variants in protocol code that uses trait objects, causing security downgrades? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1fd9c3f-1b1a-4b8d-b8b0-c8c98ec63c90?mode=deep",
+    "timestamp": "2026-01-26 10:45:31.778566",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/mod.rs] [Module Structure] [Export Safety - MEDIUM] The mod.rs at line 6 publicly exports Transcript without any documentation warning about insecurity. Can developers accidentally import and use this insecure variant in production code, thinking it's a valid secure PVSS implementation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed422ae1-0c05-463a-bcd1-1d1478ec604f?mode=deep",
+    "timestamp": "2026-01-26 10:45:49.924340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Dealing Multiple Secrets - MEDIUM] The deal() function can be called multiple times with different secrets. If the same RNG state is reused or if multiple deals use related secrets, can this leak information through share correlations that allows attackers to learn relationships between the dealt secrets? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8b545b01-d211-4507-8ff9-7f2743e22fe6?mode=deep",
+    "timestamp": "2026-01-26 10:46:09.434778",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Threshold Security Reduction - HIGH] When aggregating n transcripts, the final secret is the sum of n input secrets. If any single input secret has low entropy or is known to the attacker, does this reduce the security of the final aggregated secret below the expected threshold, allowing reconstruction with fewer shares? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_951d5966-c2e3-4e06-b4a3-445a73024f9c?mode=deep",
+    "timestamp": "2026-01-26 10:46:29.949361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: decrypt_own_share()] [Share Consistency - MEDIUM] The function returns both the secret share and public key share at lines 179. If there's a mismatch between these (e.g., due to corruption), can validators continue with inconsistent views of the DKG state, causing reconstruction failures or consensus disagreement? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ca75b34-b619-4b8d-9de3-531161f222e0?mode=deep",
+    "timestamp": "2026-01-26 10:46:51.297153",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Parameter Lifetime - LOW] The verify() function borrows eks and other parameters but doesn't specify lifetime requirements. If the verification is delayed and parameters are modified between check and use, can this cause TOCTOU vulnerabilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9fe2326-2637-4f00-87e7-92b80e5c7204?mode=deep",
+    "timestamp": "2026-01-26 10:47:14.560477",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Linear Combination Completeness - HIGH] The verification only checks one random linear combination at lines 140-151. While probabilistically sound, does this provide sufficient security against adaptive attackers who can observe verification behavior and craft transcripts that exploit specific random challenge values? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b043098-f72d-4cac-bb82-66eae1b34563?mode=deep",
+    "timestamp": "2026-01-26 10:47:37.715503",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Commitment Base Validation - MEDIUM] The function gets commitment base g_2 from public parameters at line 96 but doesn't verify it's a valid generator of the correct order. Can an attacker provide malicious public parameters with a weak or malformed base point that reduces the security of all commitments? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_657afa82-35c5-49b5-b0d0-76b8fedcc7e3?mode=deep",
+    "timestamp": "2026-01-26 10:48:01.612466",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Group Law Validation - LOW] Lines 209-212 perform point addition on G2Projective elements. Are these operations guaranteed to maintain group membership, or can malformed points cause the aggregate to leave the group and become invalid? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6342d4c9-1132-4fbf-bed8-c9e1c1f9b6e4?mode=deep",
+    "timestamp": "2026-01-26 10:48:25.864712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [Algorithmic Complexity - MEDIUM] The verify() function performs O(n) scalar multiplications and a multi-exponentiation. Can an attacker submit transcripts with very large n values (if not bounded elsewhere) to cause excessive CPU consumption during verification, slowing down DKG and potentially causing timeouts or consensus delays? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d785fd0-5ec8-4703-8348-5164041a7583?mode=deep",
+    "timestamp": "2026-01-26 10:48:50.937479",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Memory Growth - LOW] Each call to aggregate_with() extends the dealers vector at line 213. If a DKG ceremony receives thousands of transcripts, can this cause unbounded memory growth that eventually crashes validator nodes due to OOM errors? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1ddc28b-9fe1-4d01-987b-48aa0e2c28b8?mode=deep",
+    "timestamp": "2026-01-26 10:49:17.130441",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: get_dealers()] [Clone Performance - LOW] The function clones the entire dealers vector at line 157. For large DKG ceremonies with many dealers, can repeated calls to this function cause performance degradation or memory pressure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f18a152a-695b-4d05-a78f-9020987783f1?mode=deep",
+    "timestamp": "2026-01-26 10:49:45.285936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: deal()] [Zero Secret - MEDIUM] The function doesn't check if the input secret is zero. If a dealer provides a zero secret, all shares will be zero and the final DKG will produce a zero master key. Can this compromise protocol security if zero keys have special meaning or weak properties in the cryptographic scheme? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2ae9308a-eedc-4911-9ca7-5d87dc608ea4?mode=deep",
+    "timestamp": "2026-01-26 10:50:12.358487",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: aggregate_with()] [Empty Dealers List - LOW] If the initial transcript has an empty dealers list and aggregate_with() is called, the final dealers list could be incomplete. Can this cause authorization failures or incorrect dealer attribution in subsequent protocol steps? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74884763-59f6-4434-a8b9-f35ee20e9ba5?mode=deep",
+    "timestamp": "2026-01-26 10:50:37.845649",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [n = 0 Edge Case - MEDIUM] If sc.n == 0, the function might pass trivial checks but create degenerate transcripts. Can this be exploited to bypass DKG requirements or create invalid cryptographic material that appears valid? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60d638a3-5627-4364-a8ba-0a53bc8b3d51?mode=deep",
+    "timestamp": "2026-01-26 10:51:03.439923",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Function: verify()] [n = 1 Edge Case - MEDIUM] If sc.n == 1, there's only one share and no real secret sharing occurs. Can an attacker exploit single-player DKG scenarios to control the entire master key without threshold requirements? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e0cbba7-43c0-4b64-8c67-1b60d2002146?mode=deep",
+    "timestamp": "2026-01-26 10:51:29.817483",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Trait Bounds] [Generic Type Constraints - LOW] The auxiliary data parameter uses generic type A: Serialize + Clone, but Serialize is not a security-relevant bound. Can an attacker provide auxiliary data that serializes to attacker-controlled values, potentially causing confusion if auxiliary data is used for security-critical decisions elsewhere? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d778eef4-2d9d-487e-8b3c-3b64f11200c1?mode=deep",
+    "timestamp": "2026-01-26 10:51:55.345414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct Derivations] [PartialEq Soundness - LOW] The Transcript struct derives PartialEq at line 27. Are G2Projective and Scalar comparisons constant-time, or can timing side-channels leak information about secret shares when transcripts are compared? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19b894d6-6f20-4463-869d-ee3270098cf4?mode=deep",
+    "timestamp": "2026-01-26 10:52:20.884535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/pvss/insecure_field/transcript.rs] [Struct Derivations] [Hash Collisions - LOW] The struct derives BCSCryptoHash and CryptoHasher at line 27. If the hash function has collisions, can an attacker create two different transcripts with the same hash, causing confusion in protocol code that uses hashes for deduplication or identification? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7e289eb-3e98-48df-9f30-f98fb26e2ab4?mode=deep",
+    "timestamp": "2026-01-26 10:52:47.441470",
+    "report_generated": false
+  }
+]
