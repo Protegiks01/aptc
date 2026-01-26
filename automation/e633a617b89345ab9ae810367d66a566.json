@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Loss of Liveness] Can a malicious validator or attacker craft specific transaction payloads that trigger panics in critical consensus paths, causing the panic handler to call process::exit(12) and repeatedly crash validator nodes, leading to total network halt if affecting >1/3 of validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_995b5ba9-8e24-4c25-a77e-be5d4fc4e7cc?mode=deep",
+    "timestamp": "2026-01-26 11:32:00.331714",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Consensus Disruption] Does the immediate process::exit(12) termination allow partially-committed state or uncommitted votes to corrupt persistent storage, potentially causing validators to fork or produce conflicting state roots upon restart? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3365352-e3cd-4e6e-b26d-71a5e6fb7ca4?mode=deep",
+    "timestamp": "2026-01-26 11:32:12.982384",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: setup_panic_handler()] [Availability Attack] Can an attacker trigger panics during critical consensus phases (block proposal, voting, commit) to force process exits, preventing validators from participating in quorum formation and causing liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74935321-fb9d-4d41-acb1-90ad0511d943?mode=deep",
+    "timestamp": "2026-01-26 11:32:25.918039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [State Corruption] Does the process exit happen before all in-flight database writes are flushed, potentially leaving AptosDB in an inconsistent state where Merkle trees don't match committed transactions upon node restart? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6231a7c-fe83-4f75-8429-343fbd3c4a31?mode=deep",
+    "timestamp": "2026-01-26 11:32:40.232973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Byzantine Behavior] Can a Byzantine validator intentionally trigger panics at specific consensus rounds to avoid signing blocks they disagree with, effectively giving them selective participation without being detected as offline? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_678aa006-17cd-4018-a4a6-d30409eab70b?mode=deep",
+    "timestamp": "2026-01-26 11:32:54.249619",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Verifier Bypass] Can an attacker craft malicious Move bytecode that passes the verifier but triggers panics during execution, where the VMState::VERIFIER check prevents process exit but allows the malicious code to continue executing with corrupted state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7b3f959-ab29-4ef0-a3fb-3082f689e06c?mode=deep",
+    "timestamp": "2026-01-26 11:33:09.131364",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [State Manipulation] Is the thread-local VMState check at state::get_state() susceptible to race conditions where state could be mutated between the check and the return, allowing panics in verifier/deserializer contexts to still cause process exits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f738d6d6-b3ed-43fb-9f59-07c6287cd3b0?mode=deep",
+    "timestamp": "2026-01-26 11:33:24.918280",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Verifier Escape] Can malicious bytecode trigger panics in VMState::VERIFIER mode that leave the VM in an undefined state, where subsequent transaction execution operates on corrupted data structures leading to consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2646ba66-8b9e-4559-a629-08309a4ea3d1?mode=deep",
+    "timestamp": "2026-01-26 11:33:42.670577",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Deserializer Attack] Does the VMState::DESERIALIZER exemption allow attackers to provide crafted serialized objects that panic during deserialization but don't crash the process, potentially leaving partially-deserialized malicious objects in memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_870426db-4d8e-4af2-9b65-09388019a762?mode=deep",
+    "timestamp": "2026-01-26 11:34:01.866278",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Thread-Local Exploitation] Can an attacker spawn multiple threads with different VMState values and trigger coordinated panics to cause non-deterministic behavior where some threads exit and others don't, leading to state inconsistencies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecf18146-4226-4f63-aa68-9360a99e9947?mode=deep",
+    "timestamp": "2026-01-26 11:34:23.299673",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Nested Panic] What happens if toml::to_string_pretty(&info).unwrap() fails and panics during crash handling - does this create a recursive panic that prevents the original panic information from being logged and causes undefined process behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e244ecb4-7b83-493e-be0b-286bfc34cd4d?mode=deep",
+    "timestamp": "2026-01-26 11:34:44.017805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Log Injection] Can an attacker craft panic payloads with embedded TOML control characters or escape sequences in the panic message that corrupt log files or inject malicious log entries that mislead operators during incident response? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8079338a-0cd4-4110-9e81-1dac72918ddd?mode=deep",
+    "timestamp": "2026-01-26 11:35:05.847200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Information Disclosure] Does the backtrace in CrashInfo expose sensitive information like private keys, authentication tokens, or internal state that could be exploited if crash logs are inadvertently exposed or captured by an attacker? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3364230f-b488-4dbe-b348-eb44f8794b8d?mode=deep",
+    "timestamp": "2026-01-26 11:35:29.032332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Resource Exhaustion] Can an attacker trigger rapid sequential panics that cause the crash handler to repeatedly format large backtraces and serialize CrashInfo structures, exhausting memory or disk space before process::exit(12) is called? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2a8dc5a-a361-47fd-9768-2899cfa6b8b0?mode=deep",
+    "timestamp": "2026-01-26 11:35:52.641048",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Log Flush Failure] If aptos_logger::flush() blocks indefinitely or fails, does this prevent process::exit(12) from being called, leaving the validator in a zombie state that appears alive but doesn't participate in consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a43e09cd-a91a-4841-8fb8-a3e75e1938b5?mode=deep",
+    "timestamp": "2026-01-26 11:36:16.479912",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: setup_panic_handler()] [Hook Override] Can multiple threads call setup_panic_handler() concurrently, and if so, does panic::set_hook() guarantee atomic replacement or can race conditions cause panic hooks to be lost or applied incorrectly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9eb64ea0-51c0-4354-8c99-829fbd9e682e?mode=deep",
+    "timestamp": "2026-01-26 11:36:41.943248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Multi-Thread Panic] What happens if multiple threads panic simultaneously - do they all call handle_panic() concurrently, potentially causing race conditions in log writing or multiple process::exit(12) calls with undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fad93a4-d632-44db-a47d-91c2d5a952bb?mode=deep",
+    "timestamp": "2026-01-26 11:37:08.482489",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Shared State Corruption] If handle_panic() is called from multiple threads, can concurrent access to shared logging infrastructure or the TOML serializer cause data races that corrupt crash information or deadlock the process before exit? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d4ea9fb-38d3-4513-8fd5-3806a75fbb3f?mode=deep",
+    "timestamp": "2026-01-26 11:37:36.209273",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Exit Race Condition] Can one thread calling process::exit(12) race with another thread in the middle of critical consensus operations, causing partially-executed operations to be persisted incorrectly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7183e93e-8ec6-4a44-917c-06dd317eda6f?mode=deep",
+    "timestamp": "2026-01-26 11:38:04.880257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Logger State] If aptos_logger::flush() is called concurrently from multiple panicking threads, can this cause deadlocks in the logging subsystem that prevent the process from exiting cleanly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56e5a551-8885-47dd-956a-e4970c49628a?mode=deep",
+    "timestamp": "2026-01-26 11:38:34.938266",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Vote Loss] Can panics during vote signing or broadcast cause validators to lose votes that were already committed to memory but not persisted, violating AptosBFT safety guarantees when the node restarts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec73305e-c360-4421-8f22-024fdd20011a?mode=deep",
+    "timestamp": "2026-01-26 11:39:05.662767",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Quorum Certificate Corruption] Does process::exit(12) interrupt QC aggregation in progress, potentially causing the validator to restart with incomplete quorum certificates that cause consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a9c6f14-d435-4321-91fa-12e7ec63c429?mode=deep",
+    "timestamp": "2026-01-26 11:39:35.719301",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Safety Rules Violation] Can panics bypass safety rules persistence, allowing a validator to sign conflicting blocks after restart because the panic prevented safety data from being written to disk? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fda41bd7-f445-4b3a-80e9-49f4ffc4fd54?mode=deep",
+    "timestamp": "2026-01-26 11:40:05.045103",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Epoch Transition Attack] If a panic occurs during epoch reconfiguration, can the process exit leave the validator in a state where it's registered in the new epoch but hasn't properly initialized, causing it to produce invalid signatures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f27eb7ba-d211-40a1-97bb-f3fcb31434e4?mode=deep",
+    "timestamp": "2026-01-26 11:40:32.956264",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/crash-handler/src/lib.rs] [Function: handle_panic()] [Leader Election Manipulation] Can a malicious validator trigger panics strategically to avoid being selected as leader or to disrupt leader rotation, giving them unfair advantages in the consensus protocol? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a22bfdb6-0428-4fed-8247-d2c312a99186?mode=deep",
+    "timestamp": "2026-01-26 11:40:59.122577",
+    "report_generated": false
+  }
+]
