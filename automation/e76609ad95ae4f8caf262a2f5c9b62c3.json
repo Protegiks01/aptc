@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [No size validation] Does insert_with_size() validate that size_in_bytes is reasonable relative to the actual value being cached, or can attackers insert 1-byte values with claimed sizes of gigabytes to exhaust the size budget without actual memory consumption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_adbf8c23-a5e5-4160-90eb-c0c2ac294926?mode=deep",
+    "timestamp": "2026-01-26 12:19:08.155808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: with_capacity()] [Excessive capacity allocation] Can an attacker who controls cache initialization specify a capacity of usize::MAX, causing the Vec::with_capacity() allocation to fail or consume all available memory, crashing the validator node? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc88b862-b00f-40d8-9d13-2bae624a3c64?mode=deep",
+    "timestamp": "2026-01-26 12:19:20.670614",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Unbounded value size] Since T is only constrained to Send + Sync + Clone, can an attacker insert arbitrarily large values (e.g., multi-gigabyte transaction payloads) that fit within capacity but exhaust physical memory, causing OOM kills of validator processes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c449ab2-bc74-42a9-9b99-261c7b7445d6?mode=deep",
+    "timestamp": "2026-01-26 12:19:33.953425",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Clone amplification attack] For types T that are expensive to clone (e.g., large Vec<u8>), can an attacker repeatedly call get() on the same key to force repeated cloning operations, consuming CPU and memory bandwidth enough to slow down transaction validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a68cc8f4-a585-4626-aa2e-a57cbadb4ef2?mode=deep",
+    "timestamp": "2026-01-26 12:19:47.215393",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: with_capacity()] [Box<[CacheEntryLock<T>]> allocation] Does the conversion to boxed slice guarantee contiguous memory allocation, or can fragmented allocations for large capacities cause memory inefficiency that leads to premature OOM conditions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea837ea6-52e6-4ace-8996-0972145dab5d?mode=deep",
+    "timestamp": "2026-01-26 12:20:01.453138",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [No maximum size per entry] Is there any limit on the size_in_bytes of a single cache entry, or can one malicious transaction insert a terabyte-sized entry that monopolizes the entire cache and prevents other legitimate transactions from being cached? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_35284313-dfa6-478e-b6ae-9e871078cc93?mode=deep",
+    "timestamp": "2026-01-26 12:20:16.468800",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: total_size()] [Missing memory reclamation] When cache entries are evicted, is the memory actually freed and returned to the allocator, or can evicted entries remain in memory due to Rust's drop semantics, causing the validator to accumulate memory over time until OOM? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7387bb89-1979-43cc-a60c-4e83075e6459?mode=deep",
+    "timestamp": "2026-01-26 12:20:34.028312",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Non-deterministic eviction] If multiple validators insert the same transactions in slightly different orders due to network timing, can the modulo-based indexing cause different keys to be evicted on different validators, leading to divergent cache states and non-deterministic transaction execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3b40ab0-588b-4a68-9479-6c0cf2e129f2?mode=deep",
+    "timestamp": "2026-01-26 12:20:51.698263",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Cache miss inconsistency] If one validator has a key cached but another doesn't (due to different eviction patterns), can this cause validators to take different code paths during transaction execution, violating determinism and causing consensus failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a21ea72a-04dc-484d-9e45-f56a3546937e?mode=deep",
+    "timestamp": "2026-01-26 12:21:10.523209",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: total_size()] [Size counter drift] Over time with many concurrent operations using Relaxed ordering, can the size counter drift away from the actual sum of cached entry sizes, causing validators to disagree on cache state and producing different transaction execution results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b482a338-899e-45c0-88f8-e8f91e418970?mode=deep",
+    "timestamp": "2026-01-26 12:21:31.656907",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Insertion order dependency] If cache behavior depends on insertion order (e.g., which keys get evicted), can non-deterministic thread scheduling cause different validators to insert keys in different orders, breaking execution determinism? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5cf6a0b6-932c-49f2-865a-491243d7faf5?mode=deep",
+    "timestamp": "2026-01-26 12:21:52.196054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Concurrent evict-insert race] If one thread evicts a key while another inserts to the same index, can this create temporary inconsistencies where the key exists in some views but not others, violating snapshot isolation for transaction validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37038c60-43df-4606-8a91-f4f2feb9803c?mode=deep",
+    "timestamp": "2026-01-26 12:22:14.035077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Time-dependent cache behavior] If cache get() operations have timing-dependent behavior (e.g., cache hits vs misses depending on recent activity), can this introduce non-determinism into Move VM execution where transaction outcomes depend on wall-clock timing? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8f7cae1-ff74-4bec-a79e-c2d2e2d3e0fa?mode=deep",
+    "timestamp": "2026-01-26 12:22:35.046586",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Clone semantic differences] Does the Clone trait implementation for cached types guarantee deep copying, or can shallow clones cause aliasing issues where multiple cache entries share mutable state, leading to data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7e7ffc8-c0a5-4202-b902-2a01a4651f0f?mode=deep",
+    "timestamp": "2026-01-26 12:22:57.886904",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: total_size()] [Visibility across threads] With Relaxed ordering, can a thread observe an outdated total_size() value that doesn't reflect recent inserts/evicts from other threads, causing incorrect cache eviction decisions that diverge across validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1606ff45-a06c-4f3a-9d89-e5dea10d43b1?mode=deep",
+    "timestamp": "2026-01-26 12:23:21.763079",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Key overwrite without validation] When inserting to an occupied slot via modulo collision, does the code verify that the existing key matches before overwriting, or can an attacker insert with key=100 to overwrite an existing entry with key=0 (if capacity=100), causing data loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d652ee07-eba0-457c-b1b1-1f7a69a7d9d6?mode=deep",
+    "timestamp": "2026-01-26 12:23:42.988966",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Key verification missing] Does get() verify that the cached entry's key matches the requested key after computing the index, or does it blindly return whatever is at cache[key % capacity], potentially returning wrong data for collision cases? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_beed1683-03d8-413f-98b1-26f4df7bbe9a?mode=deep",
+    "timestamp": "2026-01-26 12:24:04.408518",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Eviction of wrong key] If multiple keys map to the same index, does evict() check that the cached entry's key matches before evicting, or can evict(100) accidentally remove the entry with key=0 due to modulo collision? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe094fd1-5fa5-43be-991c-f55c4c2ca302?mode=deep",
+    "timestamp": "2026-01-26 12:24:27.162555",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Lost data on collision] When a new key collides with an existing key at the same modulo index, the old entry is silently overwritten - can this cause critical transaction or state data to be prematurely evicted without any eviction policy, leading to cache thrashing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d08808f-b93b-4f80-9ed6-831f5346c4b1?mode=deep",
+    "timestamp": "2026-01-26 12:24:50.857098",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [No collision chain] Unlike traditional hash tables, this cache doesn't use collision chaining - can this design cause only one value to exist per modulo index, severely limiting effective capacity and causing a 90%+ cache miss rate under load? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcb32959-723e-43b4-9b54-1890e1485920?mode=deep",
+    "timestamp": "2026-01-26 12:25:14.891969",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [Unintended key shadowing] Can two different transaction hashes or state keys that happen to have the same (hash % capacity) value shadow each other in the cache, where inserting one automatically evicts the other, creating a persistent cache miss pattern? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_890f17f0-4b12-43c5-abee-bba03e7dd847?mode=deep",
+    "timestamp": "2026-01-26 12:25:40.024498",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: evict()] [Eviction returns wrong entry] If evict(key_A) is called but the slot contains key_B due to collision, does the function return the wrong entry and incorrectly decrement the size counter, causing both data corruption and size accounting errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ca1f4f6-0229-4096-9596-d86b2ea75986?mode=deep",
+    "timestamp": "2026-01-26 12:26:05.658234",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Stale key metadata] Since CacheEntry stores the original key, can get() return an entry where entry.key != requested_key due to modulo collision, and does calling code properly validate the returned key to detect collisions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2369859c-4615-4ca3-9fa1-baa85987e7eb?mode=deep",
+    "timestamp": "2026-01-26 12:26:30.546916",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: insert_with_size()] [ABA problem] Can the sequence 'thread1: insert(key=K)', 'thread2: evict(key=K)', 'thread3: insert(key=K)' cause the size counter to be incremented twice but only decremented once, leading to permanent size accounting errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b994f44-5130-45ae-81a8-8a6c52962f32?mode=deep",
+    "timestamp": "2026-01-26 12:26:53.920582",
+    "report_generated": false
+  },
+  {
+    "question": "[File: crates/aptos-in-memory-cache/src/caches/sync_mutex.rs] [Function: get()] [Read-modify-write race] If code does 'if cache.get(K).is_none() { cache.insert(K, V) }', can two threads both see None and both insert, causing double size accounting and data race conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9be37ee0-b519-4d8e-be54-2480fbd10ca0?mode=deep",
+    "timestamp": "2026-01-26 12:27:16.690586",
+    "report_generated": false
+  }
+]
