@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Struct: RemoteTxnWrite] [Clone Overhead] Since RemoteTxnWrite derives Clone, can excessive cloning of large write_op values during message passing cause CPU and memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae5aabf7-dc9d-4175-a195-f7611b2b7a18?mode=deep",
+    "timestamp": "2026-01-26 10:56:09.668962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Field: state_key] [Key Complexity] If StateKey has complex internal structure, can an attacker send RemoteTxnWrite messages with computationally expensive state_key values (e.g., deeply nested paths) that slow down HashMap lookups in CrossShardStateView? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5bfafa44-2f8e-4f6e-a558-2195dbace9d1?mode=deep",
+    "timestamp": "2026-01-26 10:56:22.620883",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Enum: CrossShardMsg] [Serialization Overhead] Can repeated serialization/deserialization of CrossShardMsg messages with large payloads create significant CPU overhead that slows down block execution below consensus timeouts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4fb58395-4ac0-45cb-94e3-499e987cbd2a?mode=deep",
+    "timestamp": "2026-01-26 10:56:36.336076",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Function: RemoteTxnWrite::new()] [Parameter Validation] Does new() perform any validation on its parameters (state_key, write_op), or does it blindly accept any values, potentially creating invalid RemoteTxnWrite instances that cause downstream errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_902a4d3e-321e-49f8-bdaf-3af4bd2225a1?mode=deep",
+    "timestamp": "2026-01-26 10:56:50.256054",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Function: RemoteTxnWrite::new()] [Invariant Enforcement] Can new() be called with a state_key that doesn't match the write_op's target (e.g., writing to a different key than specified), creating inconsistencies when the message is processed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6bab9f19-685d-4129-88f7-61fea5dc442c?mode=deep",
+    "timestamp": "2026-01-26 10:57:04.861055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Function: RemoteTxnWrite::take()] [Ownership Safety] The take() method consumes self and returns the inner values. Is there any validation that take() is called exactly once per message, or can unsafe code patterns lead to use-after-free vulnerabilities? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1236732d-61ff-4622-8685-51cfdee1acf8?mode=deep",
+    "timestamp": "2026-01-26 10:57:20.750847",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Function: RemoteTxnWrite::take()] [Error Handling] If take() is called on a RemoteTxnWrite that has already been consumed or is in an invalid state, does it panic, return an error, or silently return garbage values that could corrupt state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8e90862-54d1-4f68-a269-c140f79d4043?mode=deep",
+    "timestamp": "2026-01-26 10:57:37.654022",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Function: RemoteTxnWrite::new()] [None WriteOp Semantics] When write_op is None (indicating abort), does new() enforce any additional invariants or checks, or can None be freely mixed with any state_key potentially causing confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bc839e8-06a3-4b57-ac57-153daf1cad45?mode=deep",
+    "timestamp": "2026-01-26 10:57:57.404212",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Function: RemoteTxnWrite::take()] [Tuple Ordering] The take() method returns (StateKey, Option<WriteOp>). Can consumers accidentally swap the tuple elements in pattern matching, leading to using WriteOp as StateKey or vice versa? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27af4843-8fe2-4da6-99fd-3a6f2a42a103?mode=deep",
+    "timestamp": "2026-01-26 10:58:18.434116",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Struct: RemoteTxnWrite] [StateKey Type] Does StateKey have proper type bounds and validation to prevent type confusion attacks where an attacker provides a StateKey with incorrect variant or corrupted internal structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a39acea9-51fe-4219-b200-c63aa83c78e2?mode=deep",
+    "timestamp": "2026-01-26 10:58:40.627076",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Field: write_op] [WriteOp Type Safety] Can the WriteOp type be exploited through type confusion (e.g., treating a Deletion as a Modification) to bypass Move's type system or resource safety guarantees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56933231-5816-4c43-a746-e168edb0d898?mode=deep",
+    "timestamp": "2026-01-26 10:59:03.402858",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Derive: Clone] [Deep Copy Safety] When RemoteTxnWrite is cloned, does it perform deep copies of state_key and write_op, or are there shared references that could lead to aliasing issues and data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c084069-673d-4ba0-888f-ab9352214e34?mode=deep",
+    "timestamp": "2026-01-26 10:59:27.978740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Derive: Debug] [Information Leak] Does the Debug implementation of RemoteTxnWrite expose sensitive information (private keys, account data) in log messages that could be exploited by attackers with log access? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f247d7f5-ed3f-4079-b120-7e59de1b6056?mode=deep",
+    "timestamp": "2026-01-26 10:59:54.400350",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Struct: RemoteTxnWrite] [Memory Layout] Is RemoteTxnWrite's memory layout optimized to prevent padding bytes from leaking uninitialized memory when serialized, potentially exposing sensitive data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_449bd37a-6364-4824-81c7-2b49865c422c?mode=deep",
+    "timestamp": "2026-01-26 11:00:21.372011",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Enum: CrossShardMsg] [Variant Size] If RemoteTxnWriteMsg variant is significantly larger than StopMsg, can this create memory fragmentation or inefficient memory usage in message channels? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24663234-ef1b-419b-970a-518b53f027d3?mode=deep",
+    "timestamp": "2026-01-26 11:00:49.853747",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Struct: RemoteTxnWrite] [Empty StateKey] Can RemoteTxnWrite be created with an empty or null StateKey, and if so, how does the receiving shard handle this edge case - does it panic, skip the update, or corrupt state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4bc771d-86d3-4e7b-9b1a-49b8cda004cc?mode=deep",
+    "timestamp": "2026-01-26 11:01:19.472012",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Field: write_op] [Invalid WriteOp Variant] If write_op contains a MakeHot variant (which should be unreachable), does RemoteTxnWrite handle this gracefully or cause a panic that could be exploited for DoS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8dc995b9-0541-4266-a435-70679a3a0a3a?mode=deep",
+    "timestamp": "2026-01-26 11:01:47.748703",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Enum: CrossShardMsg] [Unknown Enum Variant] If future versions add new CrossShardMsg variants, can old validators handle unknown variants gracefully, or will this cause deserialization failures and network partitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a61e4ea6-5ff7-48d1-b7ee-3bdf0624ab76?mode=deep",
+    "timestamp": "2026-01-26 11:02:16.102257",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Struct: RemoteTxnWrite] [Circular References] Can state_key or write_op contain circular references or self-referential structures that cause infinite loops during serialization or processing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_779868f8-c59e-4f2d-8561-125dc0292855?mode=deep",
+    "timestamp": "2026-01-26 11:02:46.539476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Function: take()] [Panic Propagation] If take() or its consumers panic during processing, are resources properly cleaned up, or can panics leave CrossShardStateView in inconsistent states? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65295122-0a91-4fd0-ad48-b5b0febc62e6?mode=deep",
+    "timestamp": "2026-01-26 11:03:16.045088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Struct: RemoteTxnWrite] [CrossShardStateView Integration] When RemoteTxnWrite is applied to CrossShardStateView via set_value(), can a malicious write_op cause the RemoteStateValue to enter an invalid state that deadlocks waiting threads? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31c61c12-20dd-405e-b8e9-1e2edfd803be?mode=deep",
+    "timestamp": "2026-01-26 11:03:44.406654",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Enum: CrossShardMsg] [CrossShardClient Trust] Does the CrossShardClient properly validate messages before delivering them, or does it blindly forward any CrossShardMsg without sender verification, allowing network-level message injection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3340b0b6-7fd4-41fc-9970-f94a95a6e257?mode=deep",
+    "timestamp": "2026-01-26 11:04:12.839063",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Struct: RemoteTxnWrite] [Transaction Dependency Graph] Can RemoteTxnWrite messages be sent for state keys not declared in the original sub-block's cross_shard_dependencies, bypassing the static dependency analysis and causing unexpected cross-shard reads? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b548715-2d8e-4f87-84ca-7ea1ba20a866?mode=deep",
+    "timestamp": "2026-01-26 11:04:40.136656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Field: write_op] [WriteSet Consistency] When write_op is extracted from a transaction's WriteSet, can there be mismatches between what the transaction actually wrote and what's sent in RemoteTxnWrite due to post-processing or transformations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ebdc8d0-1560-4a9c-b311-302d37df5d8d?mode=deep",
+    "timestamp": "2026-01-26 11:05:08.313559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-move/aptos-vm/src/sharded_block_executor/messages.rs] [Struct: RemoteTxnWrite] [Block-STM Coordination] Does the Block-STM parallel execution engine properly synchronize RemoteTxnWrite message sending with transaction validation, or can writes be sent for transactions that later get re-executed with different results? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b33f6aef-a5d3-4bc6-bd07-296339fa0c2f?mode=deep",
+    "timestamp": "2026-01-26 11:05:36.656356",
+    "report_generated": false
+  }
+]
