@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Restore Mode Default] At line 181, restore_mode uses Default::default() - what is the default restoration mode, and can it be insecure (e.g., allowing overwrites without validation)? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98cdfaeb-d6d8-4ac9-955d-af46d3abd7ec?mode=deep",
+    "timestamp": "2026-01-26 06:44:04.483393",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Epoch History Omission] At line 185, epoch_history is explicitly set to None - does this disable epoch transition validation, allowing restoration across epoch boundaries without proper validator set verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5bb24f59-5235-4f85-8311-64dad1ce9bba?mode=deep",
+    "timestamp": "2026-01-26 06:44:17.169841",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Snapshot Restore Atomicity] If StateSnapshotRestoreController.run() at lines 187-188 fails partway, is the partial state properly rolled back, or could it leave the database in an inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52770575-09e1-4a2a-a1eb-a56f44b3b62c?mode=deep",
+    "timestamp": "2026-01-26 06:44:30.986866",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Storage Clone Safety] Arc::clone(&self.storage) at line 184 provides shared access - can StateSnapshotRestoreController and TransactionRestoreBatchController write to storage concurrently causing data races? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61f1c89e-2d01-4fb9-a7a6-c99711920743?mode=deep",
+    "timestamp": "2026-01-26 06:44:44.524887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Transaction Manifest Injection] At lines 195-198, transaction manifests are collected and passed to TransactionRestoreBatchController - are these manifests cryptographically signed and verified before being trusted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19b7f20d-d542-4a37-a567-c26c00d4da57?mode=deep",
+    "timestamp": "2026-01-26 06:44:59.226023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Manifest Order Preservation] The into_iter().map().collect() at lines 195-198 preserves order - but if transactions.into_iter() yields manifests in wrong order, could this break chronological replay? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_faf7cdcb-68b4-4c50-9e11-7dfea778b36a?mode=deep",
+    "timestamp": "2026-01-26 06:45:15.547067",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Save Start Version None] At line 199, save_start_version (which can be None) is passed - if None, does TransactionRestoreBatchController fail to save progress, causing full re-replay on every failure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85a5f1b7-678b-425b-967f-e90b04ce0bec?mode=deep",
+    "timestamp": "2026-01-26 06:45:32.507923",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Replay From Version Tuple] At line 200, Some((next_txn_version, false)) is passed as replay_from_version - what does the boolean flag control, and can setting it to true/false affect replay security? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81f0142a-fc27-43ff-a538-3d365f5f2c62?mode=deep",
+    "timestamp": "2026-01-26 06:45:50.641297",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Epoch History Missing] At line 201, epoch_history is None - does this disable epoch boundary checks during transaction replay, allowing cross-epoch attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cf21f034-b6bc-4991-be2f-90673443bd38?mode=deep",
+    "timestamp": "2026-01-26 06:46:09.848323",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Verify Execution Mode Clone] At line 202, verify_execution_mode is cloned - if VerifyExecutionMode::Verify contains shared state (Arc<AtomicBool>), can multiple controllers or threads access it concurrently safely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d56be7d-b095-4232-b3f2-297f46beeecd?mode=deep",
+    "timestamp": "2026-01-26 06:46:30.214943",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Last Parameter None] At line 203, the last parameter is None - what does this control, and could passing Some(value) enable additional security validations that are currently bypassed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7145efac-624e-4c8a-9d5f-cd3d0474d4ae?mode=deep",
+    "timestamp": "2026-01-26 06:46:51.338994",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Transaction Restore Failure] If TransactionRestoreBatchController.run() fails at lines 205-206, is the partial progress saved correctly via save_start_version, or could the same failure repeat indefinitely? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a63750f1-e5c8-47bc-8aa1-ea92ec8db896?mode=deep",
+    "timestamp": "2026-01-26 06:47:13.565042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Seen Error Check Race] At line 208, verify_execution_mode.seen_error() checks shared atomic state - can a race condition between checking and returning cause the wrong error to be returned? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61688e2b-f9e3-47b8-933f-95b1f52a2145?mode=deep",
+    "timestamp": "2026-01-26 06:47:36.520650",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Silent Verification Failure] If VerifyExecutionMode is NoVerify variant, does seen_error() return false even when transactions were not verified, silently passing corrupted state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f8a21c0-6243-45fe-8832-47d19c2b0195?mode=deep",
+    "timestamp": "2026-01-26 06:48:01.527609",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [TxnMismatch vs OtherError] At line 209, ReplayError::TxnMismatch is returned if seen_error() is true - but are all verification failures properly captured by seen_error(), or could some fail silently with Ok(())? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08f6e04a-aaba-44a9-87d3-28c8d3e64ab5?mode=deep",
+    "timestamp": "2026-01-26 06:48:24.625163",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Function: run_impl()] [Partial Success Handling] If 90% of transactions replay correctly but 10% fail, does seen_error() properly reflect this, or could partial success be treated as full success in certain edge cases? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92e914b9-42b6-46d1-9291-18c31dc9a99b?mode=deep",
+    "timestamp": "2026-01-26 06:48:48.981867",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Enum: ReplayError] [Error Information Loss] At lines 34-38, From<anyhow::Error> converts errors to OtherError(String) - does this lose critical error context like backtraces or error codes needed for security debugging? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05a722e1-2fca-4200-82f2-e15ee988c461?mode=deep",
+    "timestamp": "2026-01-26 06:49:13.430970",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Enum: ReplayError] [Error Type Confusion] With only TxnMismatch and OtherError variants, can critical security errors (like cryptographic failures) be misclassified as generic OtherError, hiding their severity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30b5f295-d252-4a82-9a28-f48bb949a5db?mode=deep",
+    "timestamp": "2026-01-26 06:49:39.600417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Enum: ReplayError] [AptosDbError Conversion] At lines 40-44, AptosDbError is converted to ReplayError::OtherError - could database corruption or security violations be masked by this generic conversion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3d4bb7f-3c01-4d46-a2bd-f158f45a723b?mode=deep",
+    "timestamp": "2026-01-26 06:50:06.327913",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Struct: ReplayVerifyCoordinator] [Storage Backend Trust] The storage field at line 46 is Arc<dyn BackupStorage> - is there runtime validation that the storage backend is trusted/authenticated, or can malicious implementations be injected? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a22c397-5a16-46df-9bc7-3e948d099a7b?mode=deep",
+    "timestamp": "2026-01-26 06:50:32.899171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Struct: ReplayVerifyCoordinator] [Metadata Cache Directory Traversal] At line 47, metadata_cache_opt can specify arbitrary cache directories - can an attacker use path traversal (../../etc/passwd) to read/write sensitive system files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5fb2abe-8a2e-4290-baae-13eb40c9d03c?mode=deep",
+    "timestamp": "2026-01-26 06:50:58.887922",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Struct: ReplayVerifyCoordinator] [Trusted Waypoints Immutability] At line 48, trusted_waypoints_opt may contain waypoints - are these cryptographically verified and immutable, or can they be modified after construction? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d2e6667-0a82-46f3-a953-9e18cab4ed87?mode=deep",
+    "timestamp": "2026-01-26 06:51:24.067301",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Struct: ReplayVerifyCoordinator] [Concurrent Downloads Resource] At line 49, concurrent_downloads controls parallelism - is there a maximum bound enforced, or can unlimited concurrent downloads exhaust file descriptors or memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af5fa76b-9a1b-4d43-9b37-4d4f96647a56?mode=deep",
+    "timestamp": "2026-01-26 06:51:49.732930",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Struct: ReplayVerifyCoordinator] [Replay Concurrency Resource] At line 50, replay_concurrency_level controls VM parallelism - can setting this to 1 disable parallel execution safety mechanisms like STM conflict detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9174af67-801e-43c4-a4b6-e0230f2a535c?mode=deep",
+    "timestamp": "2026-01-26 06:52:16.433830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-cli/src/coordinators/replay_verify.rs] [Struct: ReplayVerifyCoordinator] [Restore Handler Exclusivity] At line 51, restore_handler provides database access - if multiple ReplayVerifyCoordinator instances share the same restore_handler, could concurrent writes corrupt the database? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f2a7f82-649f-4f76-92e2-634f390bba58?mode=deep",
+    "timestamp": "2026-01-26 06:52:41.569148",
+    "report_generated": false
+  }
+]
