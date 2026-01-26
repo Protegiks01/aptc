@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Resource Exhaustion] If pull_proofs() is called with max_txns=u64::MAX, can this cause the function to scan the entire batch_proof_queue, creating extreme CPU/latency spikes that stall consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07e87817-1f73-4322-979f-c7e1c729c1fe?mode=deep",
+    "timestamp": "2026-01-26 00:20:38.942338",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Back Pressure Evasion] Lines 124-127 observe metrics but don't enforce limits - can validators ignore back pressure signals and continue generating oversized proposals? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e560ef8a-c04c-4393-8f0f-277c3e863c1d?mode=deep",
+    "timestamp": "2026-01-26 00:20:51.153452",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [OptQS Parameter Injection] Lines 131-152 check maybe_optqs_payload_pull_params - if this Option is Some but contains malicious exclude_authors or minimum_batch_age_usecs, can it be used to censor specific validators or manipulate batch selection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8f29db8-8c43-4956-b05b-9c011a9e2513?mode=deep",
+    "timestamp": "2026-01-26 00:21:04.057850",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Integer Underflow] Line 132 computes max_opt_batch_txns_size = request.max_txns - txns_with_proof_size without checking if txns_with_proof_size > request.max_txns, potentially causing underflow and pulling excessive batches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b0e90f6-5f98-4b1b-bb45-d47e1e9bc170?mode=deep",
+    "timestamp": "2026-01-26 00:21:17.750374",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Integer Underflow] Line 133 computes max_opt_batch_txns_after_filtering = request.max_txns_after_filtering - cur_unique_txns - can this underflow if cur_unique_txns exceeds the limit? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bcdfd684-ffc4-410b-b9fc-3d784d071c14?mode=deep",
+    "timestamp": "2026-01-26 00:21:32.285241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Author Exclusion Attack] Lines 141-142 chain exclude_authors from params - can a Byzantine proposer list all honest validators in exclude_authors to create blocks containing only their own batches? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45971ca9-e897-4e68-9592-4c36f193bf6b?mode=deep",
+    "timestamp": "2026-01-26 00:21:47.642465",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Batch Age Manipulation] Line 147 passes Some(params.minimum_batch_age_usecs) - can setting this to u64::MAX prevent any batches from being selected, causing empty blocks and loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1192792-2eb4-4186-be00-b9aee1cefd05?mode=deep",
+    "timestamp": "2026-01-26 00:22:02.142040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Double Counting] Line 154 adds txns_with_proof_size + opt_batch_txns_size - if these counts include overlapping transactions, can this allow proposals to exceed actual transaction limits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71255ce6-a1bc-4f7a-b76f-5ef235edfa0b?mode=deep",
+    "timestamp": "2026-01-26 00:22:21.034805",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Inline Batch Logic Bypass] Lines 156-184 only pull inline batches if allow_batches_without_pos_in_proposal AND proof_queue_fully_utilized - can attackers manipulate proof_queue_fully_utilized status to prevent inline batches when needed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a487e039-592c-4b77-b052-d7015ab13beb?mode=deep",
+    "timestamp": "2026-01-26 00:22:40.628356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Integer Overflow] Line 158-160 computes max_inline_txns_to_pull with saturating_sub but then uses minimum() - can the PayloadTxnsSize operations overflow in ways that allow pulling excessive inline transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f96a34f1-fcf2-48b0-b88b-c4ffe44debdf?mode=deep",
+    "timestamp": "2026-01-26 00:23:00.631911",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Limit Bypass] Lines 161-166 manually adjust max_inline_txns_to_pull.count() with min() - can this logic be bypassed if PayloadTxnsSize has multiple dimensions (count/bytes) that aren't consistently checked? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6d28734-2acb-498f-951b-d57a3ffce2ed?mode=deep",
+    "timestamp": "2026-01-26 00:23:21.946634",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Batch Overlap] Lines 169-174 chain excluded_batches, proof_block, and opt_batches for exclusion - if there's a bug in this chaining, can the same batch appear in multiple categories (proof, opt, inline)? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16dc3e02-27a2-475d-bffe-59584a78ef6e?mode=deep",
+    "timestamp": "2026-01-26 00:23:44.841351",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Transaction Retrieval Attack] Line 168 calls pull_batches_with_transactions which fetches actual transaction data - if batch store is corrupted or malicious, can this return different transactions than what the digest claims? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_86aef9c3-1ef4-435e-8abb-e5594b0f897a?mode=deep",
+    "timestamp": "2026-01-26 00:24:08.724677",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Memory Exhaustion] Lines 189-203 clone inline_block, opt_batches, and proof_block data - can large proposals with thousands of batches cause excessive memory allocation and OOM? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4f00a93-eb5b-4b5f-adae-1cffa1dcbe16?mode=deep",
+    "timestamp": "2026-01-26 00:24:32.824552",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Signature Extraction] Lines 199-202 call proof.unpack() to extract info and signature - is this signature verified before inclusion, or is verification assumed to have happened earlier? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26314293-2d28-4c46-9c38-da93affa5227?mode=deep",
+    "timestamp": "2026-01-26 00:24:58.133121",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Payload Type Confusion] Lines 205-235 construct different Payload types based on conditions - can the logic be exploited to construct an invalid Payload variant that validators can't process? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afac0dda-47a7-4b41-8114-60e8f1756be1?mode=deep",
+    "timestamp": "2026-01-26 00:25:24.680255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Empty Payload Attack] Line 214 returns Payload::empty(true, allow_batches_without_pos_in_proposal) when both proof_block and inline_block are empty - can attackers trigger this repeatedly to create many empty blocks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ac59756d-85bf-4ab7-a4f6-1af80a311e41?mode=deep",
+    "timestamp": "2026-01-26 00:25:52.492702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Version Mismatch] Lines 222-234 return different payload versions (QuorumStoreInlineHybridV2 vs QuorumStoreInlineHybrid) based on enable_payload_v2 flag - can mismatched flags across validators cause consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_22cd3087-dc5f-44ce-a0d3-c22cd20e2e7f?mode=deep",
+    "timestamp": "2026-01-26 00:26:21.575660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [PayloadExecutionLimit Missing] Lines 211, 226 set PayloadExecutionLimit::None - does this allow unlimited execution time, potentially creating blocks that take too long to process? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b355c6f-9456-485e-a7f5-86de2d07b8bf?mode=deep",
+    "timestamp": "2026-01-26 00:26:51.561925",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Callback Error Handling] Lines 238-241 silently log errors if callback.send() fails - if the callback receiver is dropped or closed, are proposals lost without retry? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e03a3677-cf1a-405b-8fb6-4e7a3a1dec89?mode=deep",
+    "timestamp": "2026-01-26 00:27:20.187666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: handle_proposal_request()] [Request Parameter Validation] Line 104 destructures GetPayloadCommand::GetPayloadRequest without validating request parameters - can malformed requests with inconsistent max_txns/max_txns_after_filtering cause panics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02f72eb4-530e-4fec-aa01-4c00a89d9d1b?mode=deep",
+    "timestamp": "2026-01-26 00:27:48.775669",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: qs_back_pressure()] [Integer Comparison Bug] Lines 246-248 compare remaining_total_txn_num > back_pressure_total_txn_limit - if these values are near u64::MAX, can wrapping behavior cause incorrect back pressure signals? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc607127-5ee0-48a4-bc50-bebf0a990688?mode=deep",
+    "timestamp": "2026-01-26 00:28:18.926638",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: qs_back_pressure()] [Back Pressure Evasion] Lines 261-264 return BackPressure struct with two boolean fields - if only one field is true, do upstream components properly handle partial back pressure or can they ignore it? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_18d4e93e-c1e9-4c52-87db-ac6ed0f4f49b?mode=deep",
+    "timestamp": "2026-01-26 00:28:48.277968",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: qs_back_pressure()] [Denial of Service] If both txn_count and proof_count back pressure trigger simultaneously and persist, does the system have recovery mechanisms or will it permanently halt batch generation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6829bc1a-2a48-4e13-aaa9-dcb61c54a236?mode=deep",
+    "timestamp": "2026-01-26 00:29:17.796007",
+    "report_generated": false
+  },
+  {
+    "question": "[File: consensus/src/quorum_store/proof_manager.rs] [Function: qs_back_pressure()] [Log Spam] Lines 249-258 log info!() when back pressured - can this be triggered repeatedly to fill logs and cause disk space exhaustion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_62705157-5ef2-453b-bed7-f167836f9e4e?mode=deep",
+    "timestamp": "2026-01-26 00:29:45.895698",
+    "report_generated": false
+  }
+]
