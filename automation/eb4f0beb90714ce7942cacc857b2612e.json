@@ -1,0 +1,134 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_accumulator_pruner.rs] [Function: prune()] [Accumulator Integrity] Pruning the transaction accumulator could break Merkle proof verification - does the pruner ensure that proof data for non-pruned transactions remains available? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e2e54efc-cc1b-4a2a-94ec-be30c09aaac8?mode=deep",
+    "timestamp": "2026-01-26 14:31:20.256232",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Metrics] [PRUNER_VERSIONS] Sets metrics for progress and target - but are these metrics atomic with the actual database state? Can metrics show data as pruned when it's actually still in the DB due to failed writes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_54bb6079-cbe9-45c1-99a4-7b9ee961e276?mode=deep",
+    "timestamp": "2026-01-26 14:31:32.933018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Function: work()] [Error Logging] Errors are sampled at 1-second intervals - can this cause important error patterns to be missed, hiding systematic failures in the pruning process? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3958bd21-5428-473a-9678-5b435b0c6e66?mode=deep",
+    "timestamp": "2026-01-26 14:31:45.800300",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/db_pruner.rs] [Type: Version] [Type Aliasing] Version is likely a type alias for u64 - are there any overflow checks when adding batch_size to progress? Can malicious configs with huge batch sizes cause overflow? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9981c155-21cb-4256-a8d4-0b28f48d3b1a?mode=deep",
+    "timestamp": "2026-01-26 14:32:00.537769",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Type: Version] [Comparison Safety] Versions are compared using > and >= - if version numbering ever wraps around (unlikely but possible in long-running chains), can this cause pruning logic to break catastrophically? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d2fe9b7-4be2-4388-8399-f70071d632b7?mode=deep",
+    "timestamp": "2026-01-26 14:32:14.736123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Schema Operations] [Two-Key Deletion] Deletes using both StaleStateValueIndexByKeyHashSchema and StateValueByKeyHashSchema - if schema definitions change between versions, can this cause the pruner to delete wrong entries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_453e2af4-9f1a-4ccd-a724-ce4fba5368f5?mode=deep",
+    "timestamp": "2026-01-26 14:32:29.492660",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_shard_pruner.rs] [Schema Operations] [Node Key Validity] Deletes JellyfishMerkleNodeSchema using index.node_key - if the node_key in the stale index is corrupted, can this delete the wrong node or fail to delete the correct one? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38a5c3b2-3509-4881-952a-0deef8423c25?mode=deep",
+    "timestamp": "2026-01-26 14:32:45.655698",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Trait: StaleNodeIndexSchemaTrait] [Metadata Key Mapping] Different schemas return different metadata keys - can incorrect trait implementation cause progress to be written to/read from the wrong metadata key, causing one pruner type to think another's progress is its own? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79b81875-2816-4944-bb2f-64e18cdc0b6e?mode=deep",
+    "timestamp": "2026-01-26 14:33:02.999887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/generics.rs] [Implementation] [Shard ID Logic] The trait allows shard_id: Option<usize> - what happens if Some(shard_id) is passed when only None is expected, or vice versa? Can this cause metadata corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c566154-d3d3-40bb-8518-f40303e09a91?mode=deep",
+    "timestamp": "2026-01-26 14:33:20.636929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/pruner_worker.rs] [Field: batch_size] [Configuration] batch_size is set from config but never validated - can a config of 0 cause division by zero or infinite loops? Can usize::MAX cause integer overflow? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_daaf5431-5f57-4cf2-9e9d-5afaa757d2d8?mode=deep",
+    "timestamp": "2026-01-26 14:33:40.027595",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/ledger_pruner_manager.rs] [Field: pruning_batch_size] [Threshold Logic] Used in maybe_set_pruner_target_db_version() threshold calculation - if batch_size is larger than prune_window, can the pruner never wake up? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ed43b1b-3947-4251-8efc-3b2fb604ef09?mode=deep",
+    "timestamp": "2026-01-26 14:33:59.054288",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_pruner_manager.rs] [Field: prune_window] [Zero Window] What if prune_window is set to 0? Does this cause immediate pruning of all data, or does it cause the pruner to prune nothing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4dd263a-28b7-477d-82eb-765e9b74cda1?mode=deep",
+    "timestamp": "2026-01-26 14:34:19.724285",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_pruner_manager.rs] [Field: prune_window] [Window Change] If prune_window is changed via config update while the node is running, can this cause already-pruned data to be considered within the window, breaking queries? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2975a00d-ec27-4591-8cca-cf8cf04e8374?mode=deep",
+    "timestamp": "2026-01-26 14:34:41.258896",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [THREAD_MANAGER] [Pool Exhaustion] Uses THREAD_MANAGER.get_background_pool().install() for parallel sub-pruners - if the thread pool is exhausted or misconfigured, can this block pruning indefinitely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03e35ddd-72bc-44c9-8736-a4fa62bbcde9?mode=deep",
+    "timestamp": "2026-01-26 14:35:03.736218",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [THREAD_MANAGER] [Same Risk] Uses the same thread pool pattern - if multiple pruners compete for the same thread pool during heavy load, can this cause pruning to lag dangerously behind? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5430afd-4968-49f4-bf15-b2918385c7ec?mode=deep",
+    "timestamp": "2026-01-26 14:35:26.403719",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/mod.rs] [THREAD_MANAGER] [Resource Contention] If state merkle pruning is processing millions of nodes, can it starve other pruners of thread pool resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bca94043-fed6-430b-a8ec-bd22c91e37ea?mode=deep",
+    "timestamp": "2026-01-26 14:35:50.060099",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/mod.rs] [Function: record_progress()] [Memory Only] Updates AtomicVersion in memory but doesn't write to disk immediately - if the node crashes, can this cause the pruner to re-prune the same range on restart, potentially double-deleting data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b415a4ae-7650-4cc4-894b-2f5a2d6ee70d?mode=deep",
+    "timestamp": "2026-01-26 14:36:14.289126",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/mod.rs] [Function: record_progress()] [Same Issue] Same pattern as ledger pruner - is there a mechanism to periodically persist progress, or only at completion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cefc0eb8-4fe9-4264-bb5c-488d95249ebf?mode=deep",
+    "timestamp": "2026-01-26 14:36:38.981120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/transaction_pruner.rs] [Function: new()] [Synchronous Catch-up] Calls prune() synchronously during initialization - if there's a huge backlog, can this block node startup for minutes or hours? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_39e6d1c8-5edd-4af2-9bc6-fe20a68a2285?mode=deep",
+    "timestamp": "2026-01-26 14:37:04.914738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/ledger_pruner/event_store_pruner.rs] [Function: new()] [Same Pattern] All sub-pruners catch up synchronously - can cumulative catch-up time cause unacceptable startup delays? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c6bbc56-99f0-4c5b-af33-9168f012345e?mode=deep",
+    "timestamp": "2026-01-26 14:37:30.906042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: new()] [Per-Shard Catch-up] Each shard catches up independently - with many shards, can this amplify startup delay N times? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e909e91-538c-492e-bd4d-81eef8f0277e?mode=deep",
+    "timestamp": "2026-01-26 14:37:56.744945",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_merkle_pruner/state_merkle_shard_pruner.rs] [Function: new()] [Unbounded Catch-up] Passes usize::MAX as max_nodes_to_prune during catch-up - can this cause OOM if there are millions of stale nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d63d43e8-035a-4991-8d83-aa150e5bdb38?mode=deep",
+    "timestamp": "2026-01-26 14:38:23.957661",
+    "report_generated": false
+  }
+]
