@@ -1,0 +1,38 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/storage/mod.rs] [ChangeSetConfigs] [for_feature_version_3 constants] Feature version 3 uses hardcoded MB constants - are these values still appropriate, or can attackers exploit that 1MB per write is too generous given storage costs? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10b09dba-cc6b-425f-8da6-b78f33ee15f1?mode=deep",
+    "timestamp": "2026-01-26 12:52:54.011114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/storage/mod.rs] [ChangeSetConfigs] [from_gas_params overflow] from_gas_params() converts InternalGasPerByte to u64 - can this conversion overflow for extreme gas parameter values? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc11c796-d939-4165-baef-ee814906262c?mode=deep",
+    "timestamp": "2026-01-26 12:53:07.066982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/storage/mod.rs] [ChangeSetConfigs] [check_change_set iteration] check_change_set() iterates write_set_size_iter() and events_iter() - can attackers craft iterators that skip validation or report incorrect sizes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc9642e2-4819-4bd2-8bca-6c10dd34ab2e?mode=deep",
+    "timestamp": "2026-01-26 12:53:20.879478",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/storage/mod.rs] [DiskSpacePricing] [V1 free write quota bug] discounted_write_op_size_for_v1() uses checked_sub that returns zero on underflow - can this be exploited for writes smaller than quota to get completely free storage? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51d444b2-82d5-4be3-8f12-e14ed7a9f69c?mode=deep",
+    "timestamp": "2026-01-26 12:53:34.965543",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/storage/mod.rs] [DiskSpacePricing] [V2 bytes deposit underflow] In charge_refund_write_op_v2(), if old_bytes_deposit > target_bytes_deposit due to price decrease, is there proper handling or can this cause underflow? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_29e8cc2e-15d0-4f32-a308-2147826edd82?mode=deep",
+    "timestamp": "2026-01-26 12:53:50.058852",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/storage/mod.rs] [DiskSpacePricing] [metadata_mut aliasing] metadata_mut is passed as mutable reference - can multiple calls to charge_refun\n\n### Citations\n\n**File:** aptos-move/aptos-vm-types/src/storage/mod.rs (L1-85)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::storage::{\n    change_set_configs::ChangeSetConfigs, io_pricing::IoPricing, space_pricing::DiskSpacePricing,\n};\nuse aptos_gas_schedule::{AptosGasParameters, InitialGasSchedule, LATEST_GAS_FEATURE_VERSION};\nuse aptos_types::{\n    on_chain_config::{ConfigStorage, Features},\n    state_store::state_key::StateKey,\n};\nuse bytes::Bytes;\nuse std::fmt::Debug;\n\npub mod change_set_configs;\npub mod io_pricing;\npub mod space_pricing;\n\n#[derive(Clone, Debug)]\npub struct StorageGasParameters {\n    pub io_pricing: IoPricing,\n    pub space_pricing: DiskSpacePricing,\n    pub change_set_configs: ChangeSetConfigs,\n}\n\nimpl StorageGasParameters {\n    pub fn new(\n        gas_feature_version: u64,\n        features: &Features,\n        gas_params: &AptosGasParameters,\n        config_storage: &impl ConfigStorage,\n    ) -> Self {\n        Self::new_impl(\n            gas_feature_version,\n            features,\n            gas_params,\n            config_storage,\n            ChangeSetConfigs::new(gas_feature_version, gas_params),\n        )\n    }\n\n    pub fn unlimited() -> Self {\n        Self::new_impl(\n            LATEST_GAS_FEATURE_VERSION,\n            &Features::default(),\n            &AptosGasParameters::zeros(), // free of charge\n            &DummyConfigStorage,\n            ChangeSetConfigs::unlimited_at_gas_feature_version(LATEST_GAS_FEATURE_VERSION), // no limits\n        )\n    }\n\n    pub fn latest() -> Self {\n        Self::new(\n            LATEST_GAS_FEATURE_VERSION,\n            &Features::default(),\n            &AptosGasParameters::initial(),\n            &DummyConfigStorage,\n        )\n    }\n\n    fn new_impl(\n        gas_feature_version: u64,\n        features: &Features,\n        gas_params: &AptosGasParameters,\n        config_storage: &impl ConfigStorage,\n        change_set_configs: ChangeSetConfigs,\n    ) -> Self {\n        let io_pricing = IoPricing::new(gas_feature_version, gas_params, config_storage);\n        let space_pricing = DiskSpacePricing::new(gas_feature_version, features);\n\n        Self {\n            io_pricing,\n            space_pricing,\n            change_set_configs,\n        }\n    }\n}\n\nstruct DummyConfigStorage;\n\nimpl ConfigStorage for DummyConfigStorage {\n    fn fetch_config_bytes(&self, _state_key: &StateKey) -> Option<Bytes> {\n        unreachable!(",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42508f5a-7e30-4907-84f1-a3564af02b57?mode=deep",
+    "timestamp": "2026-01-26 12:54:06.288569",
+    "report_generated": false
+  }
+]
