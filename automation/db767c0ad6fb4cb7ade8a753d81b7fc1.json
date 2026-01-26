@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: import_private_key()] [Audit logging bypass] When import_private_key() is called, is it properly logged for security auditing, or can attackers import malicious keys without detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d016e756-6f78-40af-9c31-0127661b4be3?mode=deep",
+    "timestamp": "2026-01-26 04:25:05.288971",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: get_public_key()] [Public key derivation] Does get_public_key() derive the public key from the stored private key each time, or could cached public keys become stale after key rotation, causing signature verification failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2aef3f91-4b96-4366-8d28-685a29ad9e09?mode=deep",
+    "timestamp": "2026-01-26 04:25:17.477913",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: get_public_key()] [Timestamp manipulation] Can the last_update timestamp in PublicKeyResponse be manipulated to cause validators to use outdated keys, breaking consensus synchronization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_330567f0-8d4b-4007-a488-3c2ed1315017?mode=deep",
+    "timestamp": "2026-01-26 04:25:30.141908",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: get_public_key()] [Private key exposure risk] By repeatedly calling get_public_key() and measuring timing, can an attacker perform side-channel attacks to recover bits of the private key? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06d219fa-b81d-4613-b751-04a9fcdd5d8a?mode=deep",
+    "timestamp": "2026-01-26 04:25:43.645397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: get_public_key()] [Error state information leak] If get() fails in get_public_key(), does the error reveal whether the key exists but is corrupted versus not existing at all? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65bbe13b-f1e3-499b-affb-0f0914420d4e?mode=deep",
+    "timestamp": "2026-01-26 04:25:57.362728",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: get_public_key_previous_version()] [Previous version enumeration] Can attackers repeatedly call get_public_key_previous_version() to enumerate all historical public keys, aiding in cryptanalysis or validator identification attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea8e754a-e451-4c60-8ab3-324b50aa219b?mode=deep",
+    "timestamp": "2026-01-26 04:26:11.924063",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: get_public_key_previous_version()] [Missing previous version handling] If no previous version exists (first key), does the KeyVersionNotFound error properly distinguish this from other error cases, preventing confusion in key rotation logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_145ac5df-992f-4d4a-a866-143d6fa51ffb?mode=deep",
+    "timestamp": "2026-01-26 04:26:27.759197",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: get_public_key_previous_version()] [TOCTOU in version chain] Between get_public_key_previous_version() and subsequent operations, can rotate_key() be called, making the returned previous version no longer be the previous version? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a31688d7-a18f-4bf0-af4c-65ca40e6535f?mode=deep",
+    "timestamp": "2026-01-26 04:26:43.964052",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: rotate_key()] [Rotation atomicity failure] If rotate_key() fails between setting previous_version and setting the new key, can this leave storage in an inconsistent state where both versions are invalid? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa796ddb-c4c6-48d3-ae46-c55717e8ea3e?mode=deep",
+    "timestamp": "2026-01-26 04:27:02.464038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: rotate_key()] [Previous version overwrite] Does rotate_key() check if a previous_version already exists before overwriting it, or can repeated rotations lose key history needed for signature verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8c9f3cf-c48e-4957-94fa-12f35fa95036?mode=deep",
+    "timestamp": "2026-01-26 04:27:20.202643",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: rotate_key()] [Concurrent rotation race] Can multiple concurrent rotate_key() calls for the same name cause key history corruption where previous_version doesn't match the actual previous current key? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05417a7e-8777-4248-8849-5839b7d9e74b?mode=deep",
+    "timestamp": "2026-01-26 04:27:39.781851",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: rotate_key()] [Old key retention] After rotate_key(), is the old current key properly moved to previous_version, or can it be lost, breaking verification of signatures made with the old key? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53f9565e-bf06-4796-ac02-9f35fc55bab0?mode=deep",
+    "timestamp": "2026-01-26 04:28:00.018885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: rotate_key()] [Rollback attack] Can an attacker force a rollback to a previous key version after rotate_key(), potentially reusing a compromised old key? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3b297b1-e566-4866-8e91-39685a35f4cd?mode=deep",
+    "timestamp": "2026-01-26 04:28:22.774264",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: rotate_key()] [New key generation failure] If new_ed25519_key_pair() fails or generates a weak key during rotate_key(), is the rotation aborted safely without losing the current valid key? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca86379e-ab06-4f8c-95c3-871441990bc8?mode=deep",
+    "timestamp": "2026-01-26 04:28:44.476209",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: rotate_key()] [Transaction not atomic] Since rotate_key() makes two separate set() calls, if the first succeeds and second fails, is the state rolled back, or is the validator left with inconsistent key storage? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d058922-4b94-49f2-92d0-210a7c54e64c?mode=deep",
+    "timestamp": "2026-01-26 04:29:06.741031",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: rotate_key()] [Previous version chain breaking] After multiple rotations, can the previous_version chain become corrupted such that export_private_key_for_version() cannot find legitimate old keys? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95937371-ea31-46e0-beb4-805955c5b02a?mode=deep",
+    "timestamp": "2026-01-26 04:29:29.779388",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: rotate_key()] [Rotation frequency abuse] Can an attacker trigger excessive rotate_key() calls to overflow storage with previous_version entries or cause performance degradation in key lookups? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56013b33-a1aa-4c1c-8ff9-33cc0938d0a8?mode=deep",
+    "timestamp": "2026-01-26 04:29:52.915056",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: sign()] [Key retrieval race] Between export_private_key() and private_key.sign() in sign(), can the key be rotated or deleted, causing signature generation with an unintended key version? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83ea5130-4cd2-4a8a-83e8-8e5eac9c410a?mode=deep",
+    "timestamp": "2026-01-26 04:30:17.779571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: sign()] [Signature malleability] Does the Ed25519 signature implementation prevent malleability attacks where an attacker can modify a valid signature to create another valid signature? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fcff7977-3073-4380-afc0-37ca7888436c?mode=deep",
+    "timestamp": "2026-01-26 04:30:42.214089",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: sign()] [Message serialization vulnerability] Can an attacker craft two different messages that serialize to the same bytes, causing sign() to produce identical signatures for semantically different messages? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c82fe613-01f2-409c-ac43-322813e42125?mode=deep",
+    "timestamp": "2026-01-26 04:31:06.468802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: sign()] [Error message leakage] If sign() fails due to SerializationError, does the error message leak information about the message content or internal state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b525a821-62b8-46ad-8dfb-21f9f1e37cd1?mode=deep",
+    "timestamp": "2026-01-26 04:31:31.103860",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: sign()] [Side channel attack] Does the private_key.sign() operation execute in constant time, or can timing variations leak information about the private key or message being signed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b52ef86-0bcf-40f1-b6e7-dd3a2331de2e?mode=deep",
+    "timestamp": "2026-01-26 04:31:57.735029",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: sign()] [Key version ambiguity] Does sign() explicitly track which key version was used for signing, or can signature verification fail if the key is rotated between signing and verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2240bf0-2e27-4631-8ea8-a94276de0d1c?mode=deep",
+    "timestamp": "2026-01-26 04:32:23.509065",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: sign()] [Signature caching vulnerability] Are signatures ever cached, and if so, can an attacker reuse a cached signature for a different message or context? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5daa0dc5-62c8-4123-8154-d3b1ec59287a?mode=deep",
+    "timestamp": "2026-01-26 04:32:48.427332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/secure/storage/src/crypto_kv_storage.rs] [Function: sign_using_version()] [Version downgrade attack] Can an attacker force sign_using_version() to use an old compromised key version by specifying an outdated version parameter? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_176aeb3e-77d4-4453-a703-2918d3386246?mode=deep",
+    "timestamp": "2026-01-26 04:33:14.905091",
+    "report_generated": false
+  }
+]
