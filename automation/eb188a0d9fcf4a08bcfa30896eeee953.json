@@ -1,0 +1,68 @@
+[
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Overall] [Struct Unpacking] Move allows destructuring structs - could unpacking operations abort (e.g., on type mismatches) in ways not tracked by the analysis? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3ae3d79-a1f4-40a9-83d3-6d6ef89012cd?mode=deep",
+    "timestamp": "2026-01-26 14:28:42.364702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Overall] [Signers] Move has special 'signer' types for authentication - could signer operations abort in ways that bypass exit state tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31612f21-0a5d-462b-afac-9c7992b93fe7?mode=deep",
+    "timestamp": "2026-01-26 14:28:56.027801",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Overall] [Event Emission] Move supports event emission - do events on abort paths require cleanup, and is this tracked by exit state analysis? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7a959b4f-aaff-4b40-ac7d-60716e96684f?mode=deep",
+    "timestamp": "2026-01-26 14:29:09.501675",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Overall] [Compiler Exploit Chain] Could an attacker chain multiple bugs (e.g., malformed bytecode + CFG construction bug + analysis overapproximation) to deploy a contract that appears safe but aborts deterministically to lock funds? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_34b981cc-d6ec-443b-b307-d511ecd5cc95?mode=deep",
+    "timestamp": "2026-01-26 14:29:23.819045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Overall] [Upgrade Attack] Could an attacker exploit exit state analysis to deploy a contract that initially appears safe but becomes unsafe after a protocol upgrade that changes native function abort behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd61cf11-b3ee-4c21-a72e-778e339a14f5?mode=deep",
+    "timestamp": "2026-01-26 14:29:39.516410",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Overall] [Metadata Manipulation] Could an attacker manipulate function metadata to cause the analysis to skip security-critical functions, allowing vulnerable code through? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_628ea33e-458d-4566-9166-99893278f52b?mode=deep",
+    "timestamp": "2026-01-26 14:29:56.077808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Method: execute()] [Pack/Unpack] Are Pack/Unpack bytecode instructions handled - could struct manipulation hide abort paths? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2288eeca-9ede-4ebb-b7c1-73e8766aff5f?mode=deep",
+    "timestamp": "2026-01-26 14:30:14.998970",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Method: execute()] [Exists/BorrowGlobal] Do Exists/BorrowGlobal/MoveFrom operations on global storage correctly set can_abort() for missing resources? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ead55f51-9abd-4de4-867d-7700f8665e21?mode=deep",
+    "timestamp": "2026-01-26 14:30:35.021382",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Method: execute()] [VecPack/VecUnpack] Vector operations - are out-of-bounds and type errors correctly classified as aborts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_617e7504-5c03-4d3e-97da-cc9c160b4343?mode=deep",
+    "timestamp": "2026-01-26 14:30:56.939198",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Method: execute()] [Assert Bytecode] Does Move have an assert instruction, and if so, is it correctly mapped to ExitStatus::Abort? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f43af55b-e174-4a5e-a0c9-659a0c10582c?mode=deep",
+    "timestamp": "2026-01-26 14:31:20.631411",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs] [Overall] [Empty Functions]\n\n### Citations\n\n**File:** third_party/move/move-compiler-v2/src/pipeline/exit_state_analysis.rs (L1-165)\n```rust\n// Copyright © Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\n//! Computes at a given program point, how the function may exit later.\n//! Does the function return, abort, or doesn't terminate?\n//! Check documentation of `ExitState` for more on the abstract domain used in the analysis.\n//! The analysis is intraprocedural, and considers any user function may abort.\n//!\n//! Requires: The program cannot silently exits, i.e., neither returns nor aborts, but runs out of instructions.\n\nuse abstract_domain_derive::AbstractDomain;\nuse itertools::Itertools;\nuse move_binary_format::file_format::CodeOffset;\nuse move_model::model::FunctionEnv;\nuse move_stackless_bytecode::{\n    dataflow_analysis::{DataflowAnalysis, TransferFunctions},\n    dataflow_domains::{AbstractDomain, JoinResult, SetDomain},\n    function_target::{FunctionData, FunctionTarget},\n    function_target_pipeline::{FunctionTargetProcessor, FunctionTargetsHolder},\n    stackless_bytecode::Bytecode,\n    stackless_control_flow_graph::StacklessControlFlowGraph,\n};\nuse std::{collections::BTreeMap, fmt::Display};\n\n/// The power set lattice of `ExitStatus`\n///\n/// - the join operation is set union\n/// - the top element is { Return, Abort }: may return, abort, or not terminate\n/// - { Return }: may return or not terminate, but definitely does not abort\n/// - { Abort }: may abort or not terminate, but definitely does not return\n/// - the bottom element is {}: don't terminate\n///\n/// That is, if at a program point the abstract state is `s`, then for all paths from that point,\n/// the program can only exit in the exit states contained in `s`, if the program does terminate.\n#[derive(AbstractDomain, Clone, Default)]\npub struct ExitState(SetDomain<ExitStatus>);\n\nimpl ExitState {\n    /// Returns a empty set, which is the bottom element\n    pub fn bot() -> Self {\n        Self(SetDomain::default())\n    }\n\n    /// Returns a singleton\n    pub fn singleton(e: ExitStatus) -> Self {\n        Self(SetDomain::singleton(e))\n    }\n\n    /// Checks whether the state may return\n    pub fn may_return(&self) -> bool {\n        self.0.iter().contains(&ExitStatus::Return)\n    }\n}\n\n/// The exit state of a function\n#[derive(PartialEq, Eq, PartialOrd, Ord, Clone)]\npub enum ExitStatus {\n    /// The program returns\n    Return,\n    /// The program aborts\n    Abort,\n}\n\nimpl Display for ExitStatus {\n    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {\n        f.write_str(match self {\n            ExitStatus::Return =>",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f88abb91-d5e0-4d98-b855-22ff4c8c4315?mode=deep",
+    "timestamp": "2026-01-26 14:31:45.782054",
+    "report_generated": false
+  }
+]
