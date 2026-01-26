@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 92-94] [First Block Assumption] The existing_pending_block() function only checks the first block's epoch and round (line 94) - can an attacker craft an ordered block where the first block matches an existing entry but subsequent blocks are different, bypassing duplicate detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3ac44cb-ca57-48e2-bedc-23222b271564?mode=deep",
+    "timestamp": "2026-01-26 11:53:34.628411",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: get_pending_block_by_hash()] [Hash Lookup Inconsistency] If blocks_without_payloads_by_hash gets out of sync with blocks_without_payloads, can get_pending_block_by_hash() (lines 102-109) return a block that doesn't exist in the primary store, causing downstream code to operate on stale or invalid block references? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79090ea8-1c06-4240-9245-2b9ed8aee62d?mode=deep",
+    "timestamp": "2026-01-26 11:53:47.967132",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 106-108] [Clone Overhead] Does cloning the Arc<PendingBlockWithMetadata> in get_pending_block_by_hash() (line 108) create a memory or performance vulnerability where an attacker can trigger excessive cloning operations by repeatedly querying the same block hash? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d189cefd-6d51-47b6-afb9-7c86955ba216?mode=deep",
+    "timestamp": "2026-01-26 11:54:02.415738",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: update_pending_blocks_metrics()] [Metric Poisoning] Can an attacker craft blocks with extreme values (very large ordered block arrays) to cause the sum operations in lines 280-281 and 292-293 to overflow, corrupting the metrics and hiding the true state of the system? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb174914-1abf-48b9-bf8e-42a43f8dc5ad?mode=deep",
+    "timestamp": "2026-01-26 11:54:16.715699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 277-298] [Information Leakage] Do the detailed metrics exposed in update_pending_blocks_metrics() (number of entries, number of blocks, highest round) leak information about pending blocks that could help an attacker predict consensus behavior or plan timing attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66fb9003-b06a-45f9-be18-6e261267964c?mode=deep",
+    "timestamp": "2026-01-26 11:54:32.312025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 301-310] [None Unwrap Safety] When computing highest_pending_round using last_key_value() (line 303), is the unwrap_or(0) at line 306 safe, or could returning 0 for an empty store mask detection of abnormal states where the store should not be empty? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_549cba4a-425d-4f05-91b7-d8a6f724edb3?mode=deep",
+    "timestamp": "2026-01-26 11:54:49.206038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: update_pending_blocks_metrics()] [Inconsistent Metrics] If the two stores have different sizes (as detected in garbage_collect_pending_blocks), will update_pending_blocks_metrics() report inconsistent values between PENDING_BLOCK_ENTRIES_LABEL and PENDING_BLOCK_ENTRIES_BY_HASH_LABEL that could confuse monitoring systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f739c6a0-6576-408e-9bcc-5b53270f451b?mode=deep",
+    "timestamp": "2026-01-26 11:55:06.958180",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Struct: PendingBlockStore] [Epoch Rollover] When epoch values rollover (e.g., from u64::MAX to 0), will the BTreeMap ordering in blocks_without_payloads (keyed by (u64, Round) tuple at line 67) cause blocks from the new epoch to be considered \\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_14aa718b-b005-4da6-a164-05e5c328ecdf?mode=deep",
+    "timestamp": "2026-01-26 11:55:27.469953",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: insert_pending_block()] [Round Number Attack] Can an attacker insert blocks with very high round numbers (close to Round::MAX) to position them at the end of the BTreeMap, preventing them from being garbage collected while legitimate blocks with lower rounds are removed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_680aabf8-8141-4362-b63c-b33dd580cebc?mode=deep",
+    "timestamp": "2026-01-26 11:55:49.515262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 93-94] [Tuple Ordering] Does the (epoch, round) tuple ordering in BTreeMap correctly handle all edge cases where epoch increases but round decreases (as in epoch transitions), or could this cause blocks to be misordered? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b61de4ed-38fa-4626-9bb6-f12edcb2f5a4?mode=deep",
+    "timestamp": "2026-01-26 11:56:13.443201",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: remove_ready_block()] [Round Comparison] Are all round comparisons (lines 207, 224) using the correct operators to handle round number wraparound, or could integer overflow cause blocks to be processed out of order? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d2a09bb-10a8-4b44-a14e-7fa5c8a4bf57?mode=deep",
+    "timestamp": "2026-01-26 11:56:38.009760",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: remove_ready_block()] [External Dependency] Does remove_ready_block() properly validate the BlockPayloadStore reference passed at line 204, or can an attacker pass a manipulated or poisoned payload store that returns incorrect results from all_payloads_exist() to cause blocks to be incorrectly processed or dropped? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_24c04f37-665f-4148-9780-2bd0b926e984?mode=deep",
+    "timestamp": "2026-01-26 11:57:04.120215",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 219] [Payload Existence Check] Can an attacker exploit a race condition where all_payloads_exist() returns true, but payloads are deleted from the BlockPayloadStore before the block is actually processed, causing execution failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2ec96e1-c427-41e5-9bbc-1e913444d791?mode=deep",
+    "timestamp": "2026-01-26 11:57:32.398508",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: remove_ready_block()] [Incomplete Payloads] If a block has multiple pipelined blocks and all_payloads_exist() only checks some of them due to a bug in the payload store, can this cause partial blocks to be marked as ready and processed with missing transaction data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9555297-554b-4413-b864-9b4e629b7a4e?mode=deep",
+    "timestamp": "2026-01-26 11:57:59.942442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: clear_missing_blocks()] [Memory Leak] After calling clear_missing_blocks() (lines 85-88), are all Arc references properly dropped, or could there be lingering references in other parts of the code that prevent memory from being freed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f06a3cd3-b414-4ef2-94db-950ff5c8e394?mode=deep",
+    "timestamp": "2026-01-26 11:58:29.140124",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Struct: PendingBlockStore] [Unbounded Growth] If max_num_pending_blocks in the config is set to u64::MAX, can the stores grow without bounds until the node runs out of memory, even with garbage collection enabled? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea80c875-2c17-4041-87d3-b19c8d06ffd3?mode=deep",
+    "timestamp": "2026-01-26 11:58:59.185542",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 67-72] [BTreeMap Overhead] Do the two BTreeMap structures have sufficient memory overhead that an attacker can cause memory exhaustion by inserting blocks with maximum-size keys (epoch and round at extreme values) and maximum-size values (large Arc references)? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0e29220-25dd-4610-9b89-3daf5e4c26be?mode=deep",
+    "timestamp": "2026-01-26 11:59:22.531241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: insert_pending_block()] [Arc Reference Counting] When inserting the same pending_block Arc into both stores (lines 130 and 148), does this create multiple strong references that could prevent the block from being deallocated even after removal from both stores? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87c9ce61-5d0c-4c00-8c2b-94ef7bf148aa?mode=deep",
+    "timestamp": "2026-01-26 11:59:48.148042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Struct: PendingBlockStore] [No Mutex Protection] The PendingBlockStore struct doesn't have internal synchronization - if accessed from multiple threads without external locking, can concurrent mutations to blocks_without_payloads and blocks_without_payloads_by_hash cause data races and undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e294f976-bcba-4bc6-bd51-a8353fb31320?mode=deep",
+    "timestamp": "2026-01-26 12:00:14.903095",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: garbage_collect_pending_blocks()] [Non-Atomic Operations] The multi-step process in garbage_collect_pending_blocks() (check size, pop from one map, remove from another) is not atomic - can interleaved execution cause the stores to become permanently inconsistent? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fa86f9f-57a1-4559-a104-fd7d2d2341af?mode=deep",
+    "timestamp": "2026-01-26 12:00:43.076075",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: remove_ready_block()] [Concurrent Modification] Can concurrent calls to remove_ready_block() cause blocks to be removed multiple times or lost, especially during the clear and rebuild phase (lines 244-252)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6b1e272-0a0d-4b9f-8c1b-cb924765515b?mode=deep",
+    "timestamp": "2026-01-26 12:01:09.164088",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 248-252] [Iterator Invalidation] When iterating over blocks_without_payloads.values() and inserting into blocks_without_payloads_by_hash (lines 248-252), can a concurrent modification invalidate the iterator and cause a panic or skip blocks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e626cd75-d98f-4a3d-b8e9-3c049170c742?mode=deep",
+    "timestamp": "2026-01-26 12:01:36.749112",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 114-115] [First Block Assumption] Multiple functions assume ordered_block.first_block() is always valid - can an attacker craft an OrderedBlock with an empty blocks array to cause a panic or undefined behavior when first_block() is called? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9cc8e8a9-dbc5-4b0b-8122-b37f3e73582c?mode=deep",
+    "timestamp": "2026-01-26 12:02:04.726386",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Lines: 55-57] [Ordered Block Access] Does ordered_block() method guarantee that the returned reference is always valid and immutable, or can an attacker exploit interior mutability in ObservedOrderedBlock to modify the block after it's been stored? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0077e8e2-8437-4fae-bb42-c257e24287b3?mode=deep",
+    "timestamp": "2026-01-26 12:02:32.358083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/consensus/src/consensus_observer/observer/pending_blocks.rs] [Function: remove_ready_block()] [Last Block Access] When accessing last_block() at lines 223-224 and 304, is there validation that the ordered block has at least one block, or could an empty ordered block cause index out of bounds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bb7c018-0936-4635-9809-4e5d12287cac?mode=deep",
+    "timestamp": "2026-01-26 12:03:02.382844",
+    "report_generated": false
+  }
+]
