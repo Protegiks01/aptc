@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 5] [Memory Safety] Does the #![forbid(unsafe_code)] directive at the crate root actually prevent all submodules from using unsafe code, or can individual modules override this with their own #![allow(unsafe_code)] attributes, potentially introducing memory safety vulnerabilities? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d7cdbe1-f3b5-4953-a48c-ffcfdceb2fef?mode=deep",
+    "timestamp": "2026-01-26 11:40:42.252689",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 5] [FFI Security] Given the #![forbid(unsafe_code)] directive, are there any FFI boundaries or C interop points in submodules that could bypass this protection through safe wrapper functions around unsafe foreign code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81fae6b3-300e-4a7b-9303-02321c20a68a?mode=deep",
+    "timestamp": "2026-01-26 11:40:55.277562",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 5] [Dependency Safety] Does the unsafe code prohibition extend to third-party dependencies, or could malicious/vulnerable unsafe code be introduced through external crates used by the modules declared in this file? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf5f6a7d-d033-4379-b5cd-5838c5fc9552?mode=deep",
+    "timestamp": "2026-01-26 11:41:08.787696",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 7-59] [Access Control] Are all 50+ modules declared as 'pub mod' intentionally meant to be publicly accessible outside the types crate, or does this expose internal implementation details that should have restricted visibility? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4465b5b2-078c-42a7-abba-e23f72a363ec?mode=deep",
+    "timestamp": "2026-01-26 11:41:22.754290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 54-55] [Validator Security] The validator_txn and validator_verifier modules are exposed publicly - can external crates misuse these to forge validator transactions or bypass validator verification checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3dd32741-49cf-465c-8504-d1c83ffea6c0?mode=deep",
+    "timestamp": "2026-01-26 11:41:37.949668",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 26, 34] [Configuration Security] Both ledger_info and on_chain_config modules are publicly exposed - can malicious code create fake ledger info or manipulate on-chain configuration through these public interfaces? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3a662b5-b357-48e6-b1f1-ab4e0d96830b?mode=deep",
+    "timestamp": "2026-01-26 11:41:54.175350",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 47, 13] [Transaction Security] The transaction and block_metadata modules are public - does this allow external crates to construct malformed transactions or blocks that could bypass validation in the execution layer? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c314adc-afd0-4d72-82af-72176103e7a3?mode=deep",
+    "timestamp": "2026-01-26 11:42:12.403790",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 53] [Cryptographic Security] The validator_signer module is publicly exposed - can this be abused to extract private key material or create unauthorized signatures outside the consensus protocol? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9743b017-6f46-4eb4-b823-7b06b5339c9b?mode=deep",
+    "timestamp": "2026-01-26 11:42:32.276064",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 61] [Identity Aliasing] AccountAddress is re-exported as PeerId - could this type aliasing create confusion where peer network identifiers are incorrectly used as account addresses in financial transactions, leading to fund loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4daef9d-5d5c-41a3-a04f-b3449e47465f?mode=deep",
+    "timestamp": "2026-01-26 11:42:53.237675",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 61] [Type Safety] The PeerId re-export creates a type alias for AccountAddress - does this break type safety boundaries between network layer (peer) and transaction layer (account) components, allowing cross-layer attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab030e8b-e9cc-4782-864c-18610661f72c?mode=deep",
+    "timestamp": "2026-01-26 11:43:15.921831",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 62] [Wildcard Export] The utility_coin module uses wildcard re-export (pub use utility_coin::*) - does this expose internal coin implementation details or test-only functions that could be exploited for unauthorized minting? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f7a7f91-2cdb-4218-b619-059ea063a7b4?mode=deep",
+    "timestamp": "2026-01-26 11:43:38.777059",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 62] [Symbol Collision] The wildcard re-export from utility_coin could cause namespace collisions - can an attacker exploit naming conflicts to substitute malicious implementations of coin-related types? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3184071e-3250-4524-9c1a-00728c857bbd?mode=deep",
+    "timestamp": "2026-01-26 11:44:02.875115",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 36-37, 44-45] [Test Code Exposure] The proptest_types and test_helpers modules are conditionally compiled with #[cfg(any(test, feature = \\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_051d0e38-d4f9-41ed-919c-c9bc3ee2053d?mode=deep",
+    "timestamp": "2026-01-26 11:44:28.061077",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 36-37] [Property Testing Security] If proptest_types is compiled with the fuzzing feature in production, could it expose arbitrary value generation functions that allow creation of invalid state for security testing purposes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95d77656-4089-4198-8509-e2f39c65555c?mode=deep",
+    "timestamp": "2026-01-26 11:44:54.187914",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 70-71] [Test Module Exposure] The unit_tests module is only excluded from non-test builds with #[cfg(test)] - are there any test utilities or mock implementations that could be exploited if this cfg guard is bypassed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_032da71d-5dce-4250-90e8-96c6cf10a0f1?mode=deep",
+    "timestamp": "2026-01-26 11:45:20.435955",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 64] [Signature Aggregation] The aggregate_signature module is exposed publicly - can external code misuse BLS signature aggregation to create forged aggregate signatures or bypass multi-signature verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77e05dc6-a1d4-4da0-965f-38e9cc5374d6?mode=deep",
+    "timestamp": "2026-01-26 11:45:48.385853",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 15, 39] [DKG Security] Both dkg (Distributed Key Generation) and randomness modules are public - could these be exploited to predict or manipulate random beacon outputs used for leader election? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b667d0e0-fcd3-46ea-ab41-3ccb11f72d29?mode=deep",
+    "timestamp": "2026-01-26 11:46:17.825720",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 68] [Keyless Authentication] The keyless module is exposed - does this experimental authentication mechanism have proper security boundaries, or can it be abused to authenticate without proper cryptographic proofs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17394cdc-a649-4d80-accf-a2871a900d0f?mode=deep",
+    "timestamp": "2026-01-26 11:46:48.397749",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 69] [State Store Access] The state_store module is publicly accessible - can external code directly manipulate state storage bypassing the transaction execution layer and causing state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7bd4407-8e46-42c0-b5fa-35ca82c08bab?mode=deep",
+    "timestamp": "2026-01-26 11:47:20.270936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 67] [Delayed Fields] The delayed_fields module is public - can this be exploited to defer critical state updates indefinitely or cause inconsistencies in delayed materialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e98268a3-c03f-4ba3-bd2c-e451c43bf855?mode=deep",
+    "timestamp": "2026-01-26 11:47:52.983385",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 59] [Write Set Manipulation] The write_set module is exposed - could malicious code construct invalid write sets that violate state transition invariants when applied to storage? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a2b454ac-a663-4cf2-91b5-e7fe22a40e2e?mode=deep",
+    "timestamp": "2026-01-26 11:48:24.476815",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 35, 58] [Merkle Proof Security] Both proof and waypoint modules are public - can attackers forge Merkle proofs or waypoint checkpoints to make false state claims? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afd117db-aabb-4bb0-b672-61c0c070cab6?mode=deep",
+    "timestamp": "2026-01-26 11:48:56.543833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 16-17] [Epoch Transition Security] The epoch_change and epoch_state modules are public - can external code trigger invalid epoch transitions or manipulate validator set changes outside the governance protocol? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07803e29-d882-4b9c-8b3c-639f92c188bd?mode=deep",
+    "timestamp": "2026-01-26 11:49:26.734609",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Lines: 10, 12] [Block Construction] Both block_info and block_metadata_ext modules are exposed - can malicious code construct blocks with invalid metadata that bypass consensus validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f7168226-e09a-44a8-92ab-63bb3d276df2?mode=deep",
+    "timestamp": "2026-01-26 11:49:55.240816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/lib.rs] [Line: 38] [Quorum Store Security] The quorum_store module is public - does this expose batch construction or proof-of-store mechanisms that could be abused to cause consensus delays? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c54f7e8-dd7f-458f-b583-f104e983a2a0?mode=deep",
+    "timestamp": "2026-01-26 11:50:22.421798",
+    "report_generated": false
+  }
+]
