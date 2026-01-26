@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Error propagation] All operations use '?' operator for error propagation - if any operation fails (lines 56, 57, 59, 63, 64, 71), does the function properly roll back partial changes, or can it leave the batch in a half-applied state requiring manual recovery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8e492ce1-16a3-49bd-8260-162533ff85ca?mode=deep",
+    "timestamp": "2026-01-26 07:00:07.655123",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: new()] [Initialization failure] At line 42, if prune() fails during initialization, the error propagates but leaves the pruner in an undefined state - can subsequent operations on a partially-initialized pruner cause crashes or data corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef69afdd-2a30-419b-8677-3ad75cd07c6f?mode=deep",
+    "timestamp": "2026-01-26 07:00:20.042424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Batch commit failure recovery] If write_schemas at line 71 fails, the progress metadata in the batch is already set to target_version (lines 66-69) - on retry, will the pruner re-seek to current_progress correctly, or skip versions due to incorrect state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c97e905-9d72-459e-b4b4-0648a25aa6f7?mode=deep",
+    "timestamp": "2026-01-26 07:00:32.983176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Panic safety] If a panic occurs during iteration at line 58-62 (e.g., from unwrap in user code), can this leave locks held or database transactions open, causing deadlocks or corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_156661e0-a41f-4eaf-a6ca-2be3a1da9993?mode=deep",
+    "timestamp": "2026-01-26 07:00:46.049286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: new()] [Progress initialization failure] At line 30-34, get_or_initialize_subpruner_progress can fail - if it returns an error after partially writing progress metadata, can this corrupt the progress tracking permanently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed25e480-9737-424b-877a-1c887f247c51?mode=deep",
+    "timestamp": "2026-01-26 07:00:59.728824",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: new()] [Progress key collision] At line 32, DbMetadataKey::StateKvShardPrunerProgress(shard_id) uniquely identifies each shard's progress - if shard_id values collide or are reused incorrectly, can this cause multiple pruners to share progress metadata and skip pruning? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b1fa2510-57ee-4a30-aadb-d7d56a6cf20d?mode=deep",
+    "timestamp": "2026-01-26 07:01:14.543192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Progress monotonicity violation] At line 68, target_version is written as progress - if target_version < current_progress due to caller error, can this cause the pruner to go backwards and re-delete already processed data, or skip forward leaving gaps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba26e46b-43ef-49d7-8c18-04a3e8b9f828?mode=deep",
+    "timestamp": "2026-01-26 07:01:30.264424",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: new()] [Metadata-shard desync] The progress retrieved at line 30-34 comes from db_shard's metadata - if metadata_progress parameter at line 28 is from a different database or out of sync, can catch-up at line 42 delete incorrect version ranges? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_922dba9f-9e6f-42c9-b11b-09fd13d4b6b8?mode=deep",
+    "timestamp": "2026-01-26 07:01:47.597145",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Progress persistence guarantee] After write_schemas at line 71, is the progress update at line 66-69 guaranteed to be durably persisted, or can node crashes cause progress rollback requiring re-pruning of already deleted data (idempotency violation)? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79782fab-be1c-4aec-843e-f0a3572e3245?mode=deep",
+    "timestamp": "2026-01-26 07:02:05.608015",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: new()] [Catch-up version range] At line 42, catch-up prunes from progress to metadata_progress - if this range is extremely large (millions of versions), can the single prune() call exceed memory limits, cause OOM, or take so long that initialization timeouts occur? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb432d95-cd18-42ad-8945-6d06d01e9d25?mode=deep",
+    "timestamp": "2026-01-26 07:02:24.825358",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Struct: StateKvShardPruner] [Shard ID validation] The shard_id field at line 20 is stored but never validated - if shard_id >= NUM_STATE_SHARDS (16), can this cause out-of-bounds access or routing to non-existent shards when used with db_shard? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_90c115d1-99ca-43cf-9b1f-98e7bbc6c5db?mode=deep",
+    "timestamp": "2026-01-26 07:02:44.823795",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: new()] [DB shard mismatch] At line 27, db_shard is provided externally - if the caller passes the wrong shard's DB for the given shard_id, can this cause the pruner to delete data from an incorrect shard, corrupting cross-shard consistency? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b14b72a-3b69-4343-b6df-ffc2e045bf85?mode=deep",
+    "timestamp": "2026-01-26 07:03:06.391315",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Cross-shard data leakage] If state_key_hash at line 64 routes to a different shard than self.shard_id, but deletion is attempted on self.db_shard, can this cause silent failures or corruption where stale data persists because it's in the wrong shard? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3008a531-f1f3-47c3-a552-10600cea71a5?mode=deep",
+    "timestamp": "2026-01-26 07:03:28.355581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: shard_id()] [Shard ID immutability] At line 74-76, shard_id() returns the shard ID - if this value changes after construction (though usize is Copy), can callers make incorrect assumptions about which shard is being pruned? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9db71ed3-01f8-48e2-804f-8bef16ed4e2a?mode=deep",
+    "timestamp": "2026-01-26 07:03:50.949114",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Struct: StateKvShardPruner] [Shard boundary] If keys near shard boundaries (key_hash % 16 transitions) exist in multiple shards due to incorrect routing, can pruning one shard leave stale copies in adjacent shards, causing state bloat? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_901b243c-4763-4a43-ada7-f5cc27695168?mode=deep",
+    "timestamp": "2026-01-26 07:04:14.029129",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Merkle tree desynchronization] If StateValueByKeyHashSchema deletion at line 64 succeeds but the corresponding Jellyfish Merkle tree state isn't updated, can this cause Merkle root mismatches that prevent state proof generation or verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad78aad2-f634-4108-8df2-e1eff4ad8fbf?mode=deep",
+    "timestamp": "2026-01-26 07:04:38.928703",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Snapshot consistency] If database snapshots are created while prune() executes at lines 58-71, can this capture an inconsistent view where indices are deleted but values remain, causing snapshot restores to fail? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4683afb-e071-4ae4-9d89-65d870388c0b?mode=deep",
+    "timestamp": "2026-01-26 07:05:03.527478",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Query inconsistency window] Between deleting StaleStateValueIndex at line 63 and StateValueByKeyHash at line 64, if queries execute, can they observe intermediate state where indices are missing but values exist, returning incorrect results? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a50e705-bc05-4dac-a82e-55bfee0ffd78?mode=deep",
+    "timestamp": "2026-01-26 07:05:28.368989",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: new()] [Historical query failure] After catch-up pruning at line 42 deletes historical versions, if nodes require those versions for consensus (e.g., state sync serving), can this cause protocol failures or inability to serve historical proofs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7511c7fc-6d21-4e9f-a761-aafd3f120d87?mode=deep",
+    "timestamp": "2026-01-26 07:05:53.602912",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Reorg vulnerability] If blockchain reorganization occurs while pruning executes, and versions being pruned become part of the canonical chain again, can deletion of these versions cause permanent state loss requiring node resync? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fc44a788-013c-4192-8df4-700150fce377?mode=deep",
+    "timestamp": "2026-01-26 07:06:19.752208",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Iterator memory exhaustion] The for loop at line 58 iterates over potentially millions of stale entries without pagination or memory limits - can an attacker flood the state with updates causing iterator to consume all available memory? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3a813cf-c150-4f54-8f81-ca1f1c871aef?mode=deep",
+    "timestamp": "2026-01-26 07:06:47.068125",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Batch memory limit] SchemaBatch at line 52 accumulates all deletions in memory before committing - if target_version - current_progress is huge, can this cause OOM crashes or memory pressure affecting validator liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c004b5fc-8769-44ff-a4b3-aac423423711?mode=deep",
+    "timestamp": "2026-01-26 07:07:15.087341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: new()] [Initialization DoS] At line 42, catch-up calls prune() synchronously during initialization - if metadata_progress is far ahead, can this block initialization for extended periods causing node startup failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_51cafa46-8d74-43f2-82ca-435c6cbce2b4?mode=deep",
+    "timestamp": "2026-01-26 07:07:43.332789",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Disk I/O exhaustion] The write_schemas call at line 71 performs bulk deletion - if the batch is extremely large, can this saturate disk I/O bandwidth causing other critical operations (consensus, execution) to slow down or timeout? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f22ada78-c92d-4330-889a-bd736e240151?mode=deep",
+    "timestamp": "2026-01-26 07:08:12.023445",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/pruner/state_kv_pruner/state_kv_shard_pruner.rs] [Function: prune()] [Compaction storm] Deleting large amounts of data at lines 63-64 triggers RocksDB compaction - can this cause cascading compactions that consume CPU/disk resources and degrade node performance below consensus thresholds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f58b51f2-9212-40c9-a5b3-b5f7f4e424bc?mode=deep",
+    "timestamp": "2026-01-26 07:08:40.425608",
+    "report_generated": false
+  }
+]
