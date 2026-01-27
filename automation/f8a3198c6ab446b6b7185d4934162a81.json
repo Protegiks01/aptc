@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [JSON Content Injection to GCS] The full JSON value is uploaded to GCS at line 142-160 without sanitization - can attacker inject malicious JavaScript, XSS payloads, or executable content that gets served from CDN to end users? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75647a5b-60a3-441f-8fc8-601d6d3dd39a?mode=deep",
+    "timestamp": "2026-01-27 04:46:04.659611",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Path Traversal in GCS] When write_json_to_gcs() is called at line 142-147 with asset_uri as bucket path, can attacker use '../' sequences to write outside intended bucket structure or overwrite critical files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1eb82cc5-4ecc-4449-9777-b91349e6bebc?mode=deep",
+    "timestamp": "2026-01-27 04:46:17.654791",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Race Condition in CDN URI] Between GCS write succeeding and setting cdn_json_uri in model at line 157-160, if another worker processes the same URI, can race condition cause wrong CDN URL to be associated with asset, breaking NFT metadata links? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edf69f02-ba29-421a-a06d-2a031cbafd1d?mode=deep",
+    "timestamp": "2026-01-27 04:46:31.366139",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Unchecked GCS Failure] When write_json_to_gcs() fails at line 150-155, the error is logged but cdn_json_uri remains None, yet upsert() proceeds at line 165 - can this leave database in inconsistent state where JSON parsing succeeded but no CDN link exists? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c4828407-b3ff-4cc8-93a4-12412c88cd07?mode=deep",
+    "timestamp": "2026-01-27 04:46:44.997438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [GCS Quota Exhaustion] No rate limiting on GCS uploads - can attacker submit millions of unique asset URIs to exhaust GCS quota, storage space, or API rate limits, causing service disruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7edacda6-02fd-472d-8f5a-16fbc3e6c56a?mode=deep",
+    "timestamp": "2026-01-27 04:46:59.745762",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [CDN URL Injection] The cdn_prefix from parser_config is concatenated with GCS path at lines 158, 264, 354 without validation - can malicious config inject arbitrary domains into cdn URLs stored in database? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7050fcb-fb00-4f2e-896a-8662e8977407?mode=deep",
+    "timestamp": "2026-01-27 04:47:15.648259",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Image Upload Without Sanitization] Images are uploaded to GCS at line 247-261 without content-type validation or malware scanning - can attacker upload malicious executables disguised as images that get served from CDN? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3c821d9-a487-4c40-9288-5c892f4ac093?mode=deep",
+    "timestamp": "2026-01-27 04:47:32.829677",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Image Bomb DoS] When ImageOptimizer.optimize() is called at lines 230-242, can attacker provide specially crafted images (decompression bombs, large dimensions, high complexity) that pass max_file_size_bytes but consume excessive CPU/memory during optimization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ef5a250-5d36-4b02-8c2c-12553b11e5d7?mode=deep",
+    "timestamp": "2026-01-27 04:47:51.737190",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Integer Overflow in Dimensions] If max_image_dimensions parameter to ImageOptimizer.optimize() at line 234 can overflow when multiplied (width * height), can this cause buffer overflow or incorrect memory allocation during image processing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60009b69-3c7f-44e6-9300-5e6e76f169b9?mode=deep",
+    "timestamp": "2026-01-27 04:48:10.907765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Unsafe Image Format Detection] ImageOptimizer returns ImageFormat at lines 230-242, but if format detection is wrong (e.g., .jpg file actually contains .exe), can this lead to RCE when image is processed or served? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_48d7806e-8ed0-44f4-9001-b4c533dc2932?mode=deep",
+    "timestamp": "2026-01-27 04:48:31.516802",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Animation Optimization RCE] Animation files (potentially MP4, GIF, etc.) are processed through ImageOptimizer.optimize() at lines 323-335 - can malicious video codecs or GIF parsers in the image library lead to RCE during optimization? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_539139c0-e1f6-4ec4-b171-0e835dc530b6?mode=deep",
+    "timestamp": "2026-01-27 04:48:51.075963",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Failed Optimization Memory Leak] When ImageOptimizer.optimize() fails at line 237-242, error handling returns empty vec but doesn't clean up partial allocations - can repeated failures cause memory leak and eventual OOM? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0796e1b3-5457-49d4-95d8-8ea84a0f030a?mode=deep",
+    "timestamp": "2026-01-27 04:49:10.671203",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Unbounded Retry Amplification] Each failed JSON parse increments json_parser_retry_count at line 132, but there's no backoff or delay - can attacker force repeated failures to amplify resource consumption before hitting max_num_retries limit at line 364? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0590906-1f5f-4d7d-a966-05ae6b414bd1?mode=deep",
+    "timestamp": "2026-01-27 04:49:32.274897",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Retry Count Race Condition] Multiple workers processing same asset_uri can each increment retry counts independently - can this cause retry limit to be exceeded by factor of N workers, or conversely, allow infinite retries if counts aren't properly synchronized? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c77a585d-a011-4f8f-bd44-990ff12f4571?mode=deep",
+    "timestamp": "2026-01-27 04:49:52.012201",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Incorrect Retry Reset] Image optimizer retry count is reset at line 267 after successful image upload, but only for images, not animations - can this cause animations to hit retry limit prematurely while images succeed? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b5fd3db-9c22-4146-8fad-05d36f00f634?mode=deep",
+    "timestamp": "2026-01-27 04:50:12.236034",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Retry Limit Bypass via Force] When force=true, parsing proceeds even if retry counts exceed max_num_retries - can attacker abuse force flag to bypass rate limiting and repeatedly attack external resources or flood GCS? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55e05f4d-d49e-44e8-9a21-94fb5e95187e?mode=deep",
+    "timestamp": "2026-01-27 04:50:33.989631",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [DoS via Retry Exhaustion] The retry check at line 364-371 only marks as do_not_parse AFTER processing completes - during the max_num_retries attempts, attacker can cause expensive operations (large image downloads, complex optimizations) repeatedly before being blocked? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d09e33a-ac36-4bfa-b09b-c1c08da2d0a3?mode=deep",
+    "timestamp": "2026-01-27 04:50:56.885680",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Force Flag Privilege Escalation] The force parameter at line 57 bypasses do_not_parse checks at line 85 and deduplication at lines 174, 281 - can attacker with force=true permission reprocess all blocked URIs, causing resource exhaustion or SSRF attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a330ac19-75e0-41f1-b804-12bd4c878a9d?mode=deep",
+    "timestamp": "2026-01-27 04:51:19.791134",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Force Flag Data Corruption] When force=true at line 110, 174, existing cdn_json_uri and cdn_image_uri are overwritten - can this be exploited to corrupt NFT metadata by forcing reprocessing of malicious URIs that replace legitimate cached content? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7566028c-d2f9-4ee6-a32a-733ab721fa14?mode=deep",
+    "timestamp": "2026-01-27 04:51:40.758034",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Missing Force Authorization] Force flag is passed directly from pubsub_message without authentication or authorization checks - can any user trigger forced reprocessing of arbitrary URIs by crafting malicious pubsub messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49ba433c-6424-4cd2-950b-bc2a1d5fb1c3?mode=deep",
+    "timestamp": "2026-01-27 04:52:01.363686",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: new()] [Force Flag Injection] The force parameter is parsed from pubsub_message string without validation - can boolean parsing be exploited (e.g., 'true', 'True', '1', 'yes') to cause unexpected force behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdf71c94-860e-4c7a-ab1f-7f6ef3072b25?mode=deep",
+    "timestamp": "2026-01-27 04:52:20.729238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Deduplication Bypass] The deduplication check at line 81 only looks up by asset_uri, but if same content is accessible via multiple URIs (different protocols, aliases, redirects), each gets processed separately, multiplying resource consumption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb5dde02-cfb4-4e67-bdd9-d1bb741ec088?mode=deep",
+    "timestamp": "2026-01-27 04:52:41.542020",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Raw Image Dedup Logic Error] At line 179, deduplication checks if raw_image_uri.is_none() - this logic is inverted (should check is_some()), potentially skipping deduplication when raw_image_uri exists? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_964df011-9e75-4323-9144-6808ebd6cfc7?mode=deep",
+    "timestamp": "2026-01-27 04:53:02.204265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Cross-Asset Dedup Confusion] Raw_image_uri deduplication at line 180-194 queries by both asset_uri AND raw_image_uri, but then copies cdn_image_uri from a DIFFERENT asset - can this cause NFT A to incorrectly reference NFT B's image? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_71d87632-6afb-42e4-ab07-ce7b4572190e?mode=deep",
+    "timestamp": "2026-01-27 04:53:23.639939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/parser/worker.rs] [Function: parse()] [Animation Dedup Type Confusion] At line 293, log message says 'Duplicate raw_image_uri found' but this is in animation processing block - is this a copy-paste error that could lead to debugging confusion or incorrect metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eec9cee3-7885-43f4-9f58-e3529508914c?mode=deep",
+    "timestamp": "2026-01-27 04:53:45.830730",
+    "report_generated": false
+  }
+]
