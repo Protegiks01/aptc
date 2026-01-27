@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - ModuleTestType enum] [Access Control Bypass] In the ModuleTestType::AllTransactionsAndAccesses variant where all transactions publish modules, can a malicious transaction exploit the unconditional module publishing to overwrite critical system modules or framework modules, causing permanent state corruption or fund loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6c74cee-f00a-4b9a-9c8f-fc391cef40e3?mode=deep",
+    "timestamp": "2026-01-27 05:58:10.394734",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - ModuleTestType enum] [Race Condition] In ModuleTestType::MixedTransactionsMixedAccesses where every 5th transaction publishes modules (line 93), can an attacker exploit timing windows between module publishing transactions to create race conditions where a module is read before it's fully published, causing state inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6389723c-9622-4c6f-93b2-990875cf93a2?mode=deep",
+    "timestamp": "2026-01-27 05:58:23.454663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - transaction materialization] [Module Collision] When converting transaction_gen to modules via materialize_modules() (line 99), can an attacker craft transactions that generate colliding module IDs in the InternedModuleIdPool, allowing unauthorized module overwrites and potential consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d1b97194-8d97-46b8-ac6d-757859add5a9?mode=deep",
+    "timestamp": "2026-01-27 05:58:37.278162",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - i % 5 == 0 logic] [Transaction Ordering Attack] The hardcoded modulo 5 pattern for module transactions (line 93) creates predictable module publishing sequences - can a Byzantine validator exploit this predictability to reorder transactions and cause module publishing conflicts that break deterministic execution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fadf36ab-eb0d-40d5-a1fe-7e19940268a2?mode=deep",
+    "timestamp": "2026-01-27 05:58:52.040415",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - ModuleTestType::AllTransactionsMixedAccesses] [State Inconsistency] When using AllTransactionsMixedAccesses mode where all transactions publish but accesses are mixed (line 73-79), can non-module accesses read stale or uncommitted module state during parallel execution, violating linearizability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9db49bf1-d045-475d-852f-210cf4b6d21a?mode=deep",
+    "timestamp": "2026-01-27 05:59:07.395598",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - materialize() vs materialize_modules()] [Type Confusion] The conditional branching between materialize() and materialize_modules() (lines 99-102) - can an attacker craft transactions that are misclassified, causing module operations to execute as regular transactions or vice versa, bypassing module publishing validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6db22ea-9bfd-4ccb-8318-ed5c8faa1792?mode=deep",
+    "timestamp": "2026-01-27 05:59:23.749205",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - module_id_pool] [Resource Exhaustion] The InternedModuleIdPool (line 55) stores all module IDs across test iterations - can an attacker flood the pool with malicious module IDs to exhaust memory or cause hash collisions in the interning system? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf0f76cc-3780-42b8-87f0-231e9b2f3c9b?mode=deep",
+    "timestamp": "2026-01-27 05:59:41.652599",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - TransactionGenParams::new_dynamic_modules_only()] [Module Dependency Attack] When generating dynamic modules only (line 69), can an attacker create circular module dependencies or missing dependency chains that cause execution failures or allow module code injection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7d380325-fb1a-45c0-b53b-5d340de0ace0?mode=deep",
+    "timestamp": "2026-01-27 06:00:00.947517",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - TransactionGenParams::new_dynamic_with_modules()] [Mixed Transaction Exploit] The new_dynamic_with_modules() parameter (line 76) mixes module and non-module operations - can this mixing be exploited to create execution order dependencies that cause different outcomes in parallel vs sequential execution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_248cf5bc-98fb-43fb-90e1-1bad689a42c2?mode=deep",
+    "timestamp": "2026-01-27 06:00:21.586886",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - enumerate().map() iteration] [Integer Overflow] The transaction enumeration starting from index i (line 91) - if transaction_count is near usize::MAX, can integer overflow in the i % 5 calculation cause incorrect module transaction classification? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3963fa9-da0e-4762-adfa-af40dacf1f80?mode=deep",
+    "timestamp": "2026-01-27 06:00:42.962396",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - execute_block_parallel()] [Parallel Execution Race] During parallel block execution (line 120-134), can concurrent module publishing transactions create race conditions where multiple threads attempt to publish different versions of the same module simultaneously, causing non-deterministic state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_519b5b64-3a20-4800-9240-aca99bb502ff?mode=deep",
+    "timestamp": "2026-01-27 06:01:06.016629",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - blockstm_v2 parameter] [Version Compatibility] The blockstm_v2 boolean flag (line 40, 133) switches between BlockSTM versions - can inconsistencies between v1 and v2 module handling be exploited to cause consensus divergence where different validators run different versions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5685c58-1244-4ffb-a013-41ad7951ecba?mode=deep",
+    "timestamp": "2026-01-27 06:01:23.691421",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - execute_block_parallel() with all_module_ids] [Module Metadata Manipulation] The all_module_ids parameter passed to execute_block_parallel() (line 132) provides metadata about possible modules - can an attacker manipulate this list to exclude modules, causing the executor to miss dependency checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b08efe52-ee86-418e-9c96-860ea70267c6?mode=deep",
+    "timestamp": "2026-01-27 06:01:47.813147",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - executor_thread_pool] [Thread Pool Exhaustion] The executor thread pool created by create_executor_thread_pool() (line 52) is reused across iterations - can malicious module publishing transactions deadlock threads or exhaust the pool, causing liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6aff9245-9e1b-4d2b-815a-f669a19b6786?mode=deep",
+    "timestamp": "2026-01-27 06:02:12.569528",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - parallel execution ordering] [Transaction Dependency Violation] When executing module transactions in parallel, can read-after-write dependencies on module state be violated, allowing a transaction to read a module before it's published by an earlier transaction? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41f6270d-43ea-4e32-af73-a66502918652?mode=deep",
+    "timestamp": "2026-01-27 06:02:36.007049",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - nested loop execution] [Execution Ordering Attack] The nested loops (gen_idx, exe_idx, gas_limits) execute the same transaction set multiple times (lines 58-140) - can non-determinism in parallel execution cause different outputs across iterations, violating safety? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb3dd2d1-98c4-4c28-8fb0-798c3899f470?mode=deep",
+    "timestamp": "2026-01-27 06:02:59.641448",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - BlockSTM version switching] [State Corruption] If blockstm_v2 handles module version metadata differently than v1, can switching between versions mid-execution leave corrupted version metadata that causes incorrect module resolution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab6ae5e4-03b3-4690-8dcd-a0316446f74e?mode=deep",
+    "timestamp": "2026-01-27 06:03:24.998784",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - concurrent module reads] [Read Consistency Violation] During parallel execution with ModuleTestType::AllTransactionsAndAccesses where all accesses are module reads, can concurrent reads from different threads observe inconsistent module versions violating snapshot isolation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_819a1631-b6fb-4e07-bf1b-e64dce39e1d2?mode=deep",
+    "timestamp": "2026-01-27 06:03:51.825999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - transaction abort handling] [Partial State Commit] If a module publishing transaction aborts mid-execution during parallel processing, can partially written module state be observed by concurrent transactions, causing state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5d42ea40-a497-4a4f-9d05-59749d25785b?mode=deep",
+    "timestamp": "2026-01-27 06:04:19.551716",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - module cache coherency] [Cache Inconsistency] Does the parallel executor properly invalidate module caches when new modules are published, or can stale cached module bytecode be executed, causing execution divergence? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_19071259-15cf-4ae9-af82-9f5f8697ae17?mode=deep",
+    "timestamp": "2026-01-27 06:04:50.157936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - get_gas_limit_variants()] [Gas Limit Bypass] The get_gas_limit_variants() function (line 57) generates gas limit variants including Some(0) - can the zero gas limit case allow module publishing without gas charges, enabling DoS through unlimited module creation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91654043-fef3-4d4d-83b3-18bd896d7e07?mode=deep",
+    "timestamp": "2026-01-27 06:05:18.739597",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - maybe_block_gas_limit] [Block Gas Exhaustion] When block_gas_limit is set, can an attacker craft module publishing transactions that consume exactly the limit minus one, preventing other critical transactions from executing and causing liveness issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_608408ca-480a-4ff3-b5b0-5be0433892c0?mode=deep",
+    "timestamp": "2026-01-27 06:05:46.208655",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - gas limit loop optimization] [Test Coverage Bypass] The optimization to run 0 gas limit test only once (lines 115-118) - can this create blind spots where gas accounting bugs in module publishing are missed during subsequent test iterations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_116fe5c8-3d46-4ff6-80d8-ed54a939a231?mode=deep",
+    "timestamp": "2026-01-27 06:06:13.904770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - gas limit with module transactions] [Gas Metering Inconsistency] When executing module publishing with various gas limits, can parallel and sequential execution calculate different gas costs for the same module, causing baseline validation failure and consensus divergence? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4edb1417-966d-40fe-8b87-7f1250c53ec3?mode=deep",
+    "timestamp": "2026-01-27 06:06:42.725942",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/combinatorial_tests/module_tests.rs] [Function: execute_module_tests() - use_gas_limit parameter] [Gas Limit Disabled Attack] When use_gas_limit is false (line 39), gas limits are completely disabled - can this allow module publishing operations to consume unbounded resources, enabling validator node resource exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9984c448-4d9e-4d9d-8eaa-f1bff9deb736?mode=deep",
+    "timestamp": "2026-01-27 06:07:12.158993",
+    "report_generated": false
+  }
+]
