@@ -1,0 +1,98 @@
+[
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [Version monotonicity] Does the code enforce that last_transaction_version increases monotonically per staking pool, or can version decreases indicate data corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed7af73d-4e6d-451d-b7eb-0b064b4ea39b?mode=deep",
+    "timestamp": "2026-01-27 03:24:54.544016",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Struct: CurrentStakingPoolVoter] [Historical data loss] The struct only stores current state - is voter change history preserved elsewhere, or is it impossible to audit governance vote delegation over time? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d2905079-ca15-4c8f-9f75-214b4f37a95e?mode=deep",
+    "timestamp": "2026-01-27 03:25:07.510462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [Genesis transaction special case] GenesisTransactions are processed at lines 33-35 - can genesis-time voter assignments be manipulated differently than normal transactions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca7e7bf9-00c6-4bad-a7b2-6ab863c29589?mode=deep",
+    "timestamp": "2026-01-27 03:25:20.766421",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [BlockMetadata voter changes] BlockMetadataTransactions (lines 36-38) can modify voter state - can validators manipulate their own voter assignments through block metadata? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_447e3f55-a327-4f83-8e81-ae12bb2a6d11?mode=deep",
+    "timestamp": "2026-01-27 03:25:34.561914",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [UserTransaction validation] Are UserTransactions (lines 32) validated for proper authentication before voter changes are indexed, or can unauthenticated transactions affect voter tracking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_579be49c-fb98-494d-9a54-3d63c0de85a6?mode=deep",
+    "timestamp": "2026-01-27 03:25:49.525142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [Transaction failure handling] If a transaction failed on-chain but is in the changes list, does the indexer still process voter updates from failed transactions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6173a560-bb2b-42d9-9cfc-04f67342cb8c?mode=deep",
+    "timestamp": "2026-01-27 03:26:05.831641",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [VM status ignored] The code doesn't check transaction execution success status - can voter changes from failed/reverted transactions be incorrectly indexed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9032b13b-57ca-44c6-b012-9e19d5e8fe19?mode=deep",
+    "timestamp": "2026-01-27 03:26:23.150431",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Database: insert_current_stake_pool_voter] The database upsert at processor uses ON CONFLICT DO UPDATE - can this cause lost updates if two transactions at the same version modify different fields? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_95c7535b-3345-4acb-a82f-a81628ef4e5d?mode=deep",
+    "timestamp": "2026-01-27 03:26:41.826893",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Database: insert_current_stake_pool_voter] The WHERE clause checks 'last_transaction_version <= EXCLUDED.last_transaction_version' - can equal versions cause non-deterministic update order? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba5bb359-34e9-4938-825b-8554a555896a?mode=deep",
+    "timestamp": "2026-01-27 03:27:00.929191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Struct: CurrentStakingPoolVoter] [inserted_at timestamp] The processor updates inserted_at on conflict - does this timestamp represent data freshness accurately if stale version numbers are used? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85653d7c-db6c-4eaf-be6d-fb59a7e9ca9a?mode=deep",
+    "timestamp": "2026-01-27 03:27:22.928364",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Database: batch insertion] If voter data is inserted in batches with chunking, can partial batch failures cause some pools to have updated voters while others remain stale? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b11edc78-5d00-4545-8d1c-df3adaf8ba92?mode=deep",
+    "timestamp": "2026-01-27 03:27:45.410723",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [Voter manipulation] If voter_address extraction is exploited to store incorrect voter addresses, can this lead to incorrect governance vote counting and proposal manipulation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17d76b13-b20b-4f6d-b70c-ae0ed37bf443?mode=deep",
+    "timestamp": "2026-01-27 03:28:09.115808",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [Voting power confusion] The indexed voter_address determines who can vote with a pool's stake - can inconsistencies between indexer and on-chain state allow unauthorized governance voting? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2dea79da-e5ec-4763-8d73-af7960a835c4?mode=deep",
+    "timestamp": "2026-01-27 03:28:33.252903",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Struct: CurrentStakingPoolVoter] [Stale voter data] If indexer lags behind chain state, can outdated voter_address values allow old delegates to still vote with a pool's stake after delegation changes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fe74f576-0675-4b02-9118-2f98aeff1af9?mode=deep",
+    "timestamp": "2026-01-27 03:28:58.711042",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [Operator voting confusion] Does voter_address correctly represent governance voting rights, or can operator_address also vote, causing double-counting of voting power? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4b01e90b-6c44-4db5-8a61-95a9e985b414?mode=deep",
+    "timestamp": "2026-01-27 03:29:24.531381",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/indexer/src/models/stake_models/staking_pool_voter.rs] [Function: from_transaction()] [Delegation front-running] Can attackers observe pending voter delegation transactions and front-run them to vote with soon-to-be-delegated stake before delegation takes effect? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6c16244-0be2-4418-9ba3-2c3519d8abae?mode=deep",
+    "timestamp": "2026-01-27 03:29:51.384017",
+    "report_generated": false
+  }
+]
