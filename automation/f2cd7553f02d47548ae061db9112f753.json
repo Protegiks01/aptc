@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Unsafe environment variable race condition] Can multiple concurrent calls to new() from different threads cause race conditions when setting SERVICE_ACCOUNT_ENV_VAR via unsafe env::set_var(), potentially leading to authentication with wrong credentials and unauthorized access to different GCS buckets? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2954f8e-62b3-4aac-8972-518365eec07f?mode=deep",
+    "timestamp": "2026-01-27 00:54:14.713888",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Unsafe memory corruption] Does the unsafe env::set_var() call violate Rust's memory safety guarantees if other threads are reading the environment variable concurrently, potentially causing undefined behavior or memory corruption in the indexer service? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dc28290b-f183-46b6-b458-267e4dd8561c?mode=deep",
+    "timestamp": "2026-01-27 00:54:27.628150",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Authentication bypass] Can an attacker exploit the race condition in unsafe env::set_var() to authenticate GCS operations with a malicious service account by timing their call to new() between another legitimate call's env::set_var() and Bucket::read(), leading to data exfiltration or corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2f8f45d-e5cf-4bfc-98f5-94270e0ba2b8?mode=deep",
+    "timestamp": "2026-01-27 00:54:40.580139",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Credential leakage] Since SERVICE_ACCOUNT_ENV_VAR is set globally via unsafe env::set_var(), can service account credentials persist across multiple GcsFileStore instances, allowing unintended cross-bucket access or credential leakage to other components reading environment variables? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d73561eb-2825-4e14-9c57-2e4a5bc6f04a?mode=deep",
+    "timestamp": "2026-01-27 00:54:54.136080",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [TODO audit violation] The comment on line 27 states 'TODO: Audit that the environment access only happens in single-threaded code' - if this audit hasn't been completed, can multi-threaded indexer deployments experience authentication corruption leading to data integrity issues? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00b7ca10-a486-439b-aaf6-a7dc8d97d7c5?mode=deep",
+    "timestamp": "2026-01-27 00:55:08.886510",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Panic DoS] Does the expect() call on line 39 when Bucket::read() fails cause the entire indexer-grpc service to panic and crash, creating a DoS condition where attackers can cause service unavailability by triggering bucket access failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ee95dd4f-40a7-4a9a-bbed-f5c4f3846960?mode=deep",
+    "timestamp": "2026-01-27 00:55:24.172993",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: is_initialized()] [Panic DoS] Can the unwrap_or_else() panic on lines 80-84 be triggered by an attacker controlling GCS responses to cause indexer service crashes and prevent blockchain data indexing, leading to loss of liveness for dependent applications? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a63bcd3-1456-4df2-bccc-b87cd76b8e03?mode=deep",
+    "timestamp": "2026-01-27 00:55:40.514401",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: is_initialized()] [Panic DoS] Does the expect() on line 89 and unwrap_or_else() panic on line 90 create additional crash vectors where malformed GCS stream responses can terminate the indexer service, causing data indexing gaps? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45570531-c145-413f-adb1-56f2e11e8640?mode=deep",
+    "timestamp": "2026-01-27 00:55:58.606699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: is_initialized()] [Error handling bypass] Can an attacker manipulate GCS list responses to bypass the initialization check by returning carefully crafted empty prefixes and items arrays, causing the indexer to incorrectly determine initialization state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7c4b72a-5759-4890-befa-4b52f8d53936?mode=deep",
+    "timestamp": "2026-01-27 00:56:17.184387",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_path()] [Path traversal] Can an attacker provide a malicious file_path containing path traversal sequences (../, ..\\, etc.) to escape the bucket_sub_dir boundary and access or overwrite arbitrary files in the GCS bucket, potentially corrupting indexer data or accessing sensitive information? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8fe426e-c03f-442e-a0b5-d5563c717746?mode=deep",
+    "timestamp": "2026-01-27 00:56:37.402200",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_path()] [Path injection] Does get_path() perform any validation on the file_path argument, or can attackers inject absolute paths or special characters to bypass subdirectory isolation and access unauthorized bucket locations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f87d2eca-87cb-4eba-a4cc-e8ec8a7306db?mode=deep",
+    "timestamp": "2026-01-27 00:56:58.544227",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_path()] [Null byte injection] Can null bytes or other control characters in file_path or bucket_sub_dir cause path construction to be truncated or misinterpreted by GCS APIs, leading to unintended file access patterns? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ded2d249-eb76-4996-a3b8-14efb07d1cf3?mode=deep",
+    "timestamp": "2026-01-27 00:57:21.407215",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_path()] [Unicode path confusion] Can Unicode normalization issues in PathBuf conversion via to_string_lossy() create path confusion attacks where visually similar but distinct Unicode paths access different GCS objects than intended? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad9a41bf-c2f4-4461-97d5-0e0c1708ccd1?mode=deep",
+    "timestamp": "2026-01-27 00:57:43.613345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Missing credential validation] Does new() validate that the service_account_path points to a valid, non-expired service account credential, or can attackers provide expired/invalid credentials that fail silently during later operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb09c676-4a81-48cc-8a84-1c822df59307?mode=deep",
+    "timestamp": "2026-01-27 00:58:06.884611",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Excessive permissions] Are the GCS service account permissions validated to be minimal (read-only for readers, write-only for writers), or could overly permissive service accounts allow attackers who compromise the indexer to perform unauthorized GCS operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_954ac8de-6350-4b69-b50a-bd4d6de99cba?mode=deep",
+    "timestamp": "2026-01-27 00:58:30.109296",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: new()] [Bucket existence check bypass] Can an attacker create a bucket with the same name in a different GCS project to pass the Bucket::read() check, then have subsequent operations unknowingly access the attacker's bucket instead of the legitimate indexer bucket? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f4a94df-3454-457c-b344-610b741b0068?mode=deep",
+    "timestamp": "2026-01-27 00:58:53.998727",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Struct: GcsFileStore] [No access control] Does GcsFileStore implement any access control mechanisms to ensure only authorized indexer components can read/write specific file paths, or can any component with a GcsFileStore instance access all bucket data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ebc8f15-d4e2-47d4-ba65-9dfcde37c01c?mode=deep",
+    "timestamp": "2026-01-27 00:59:18.054299",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [Atomic write failure] Does save_raw_file() ensure atomic writes to GCS, or can partial writes during network failures or crashes lead to corrupted indexer data files that break blockchain data integrity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_846b2f48-52c5-48d6-a0d4-d73182528364?mode=deep",
+    "timestamp": "2026-01-27 00:59:41.100073",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [Overwrite without verification] Can save_raw_file() overwrite existing files without checksum verification, allowing an attacker to corrupt historical indexer data by repeatedly writing malicious content to existing file paths? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5b57fbe2-47e4-48b6-8b4d-06b00214bf3a?mode=deep",
+    "timestamp": "2026-01-27 01:00:01.563222",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [Missing data validation] Does save_raw_file() validate that the data Vec<u8> contains valid indexer data format (e.g., valid JSON), or can arbitrary corrupted data be written to GCS causing downstream parsing failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7e1fc4dd-c627-465d-bc19-95f3acf33955?mode=deep",
+    "timestamp": "2026-01-27 01:00:23.614876",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [TOCTOU race] Is there a time-of-check-time-of-use race condition where a file could be modified between get_raw_file() checking for existence and actually downloading, allowing an attacker to serve malicious data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fa999525-b336-481d-a028-543dcb7a9cbd?mode=deep",
+    "timestamp": "2026-01-27 01:00:45.452301",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [No integrity verification] Does get_raw_file() verify cryptographic checksums or signatures on downloaded data, or can an attacker with GCS write access serve malicious indexer data that appears legitimate? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8456e69f-c7d9-441f-8fa8-68f52c3de186?mode=deep",
+    "timestamp": "2026-01-27 01:01:06.461707",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: get_raw_file()] [Memory exhaustion] Can an attacker create extremely large files in GCS and trigger get_raw_file() to download them entirely into memory as Vec<u8>, causing OOM crashes in the indexer service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03efe79b-c050-4e0a-9e84-d0f0b3526d7a?mode=deep",
+    "timestamp": "2026-01-27 01:01:29.369694",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: save_raw_file()] [Storage exhaustion] Is there any limit on the size of data that can be written via save_raw_file(), or can attackers exhaust GCS bucket quota by writing unbounded amounts of data through the indexer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5019d2e1-f23a-439a-9419-e860adbea32f?mode=deep",
+    "timestamp": "2026-01-27 01:01:52.570224",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator_v2/gcs.rs] [Function: max_update_frequency()] [Rate limit bypass] The max_update_frequency() returns 1.5 seconds but is this enforced by callers, or can attackers bypass this limit to trigger GCS rate limiting errors that cause indexer service degradation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3159bcac-a632-46f4-862f-403fe9a4521e?mode=deep",
+    "timestamp": "2026-01-27 01:02:14.890093",
+    "report_generated": false
+  }
+]
