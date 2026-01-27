@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: get_public_key()] [Timestamp manipulation] PublicKeyResponse includes last_update timestamp - can an attacker manipulate this timestamp to make validators believe a key was created more recently than it was, bypassing key age-based security policies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e0ff3748-ec48-4ce4-bc69-12726a4d94b8?mode=deep",
+    "timestamp": "2026-01-27 04:23:02.411395",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: get_public_key()] [Key derivation verification] Does get_public_key() verify that the returned public key actually matches the stored private key? Can a corrupted storage backend return a mismatched public key, causing signature verification to always fail? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2562fe95-00f0-4d40-8d49-22a895c420be?mode=deep",
+    "timestamp": "2026-01-27 04:23:14.855540",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: get_public_key()] [Clock skew attack] The last_update field is 'Time since Unix Epoch in seconds' - can clock skew between validators cause confusion about key freshness, leading to validators rejecting each other's signatures due to perceived outdated keys? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_31bd6d5e-290f-43fb-b931-8ab49e72cc15?mode=deep",
+    "timestamp": "2026-01-27 04:23:28.284476",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: get_public_key()] [Caching inconsistency] If implementations cache public keys, can stale cache entries cause validators to use outdated public keys that don't match the latest rotated private key, breaking signature verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40b86b68-ee1a-4a45-8a4b-87debaf0ed12?mode=deep",
+    "timestamp": "2026-01-27 04:23:41.319927",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: get_public_key_previous_version()] [Version boundary] The method returns 'the previous version' but doesn't specify what happens if there is no previous version - can this cause epoch transition failures when validators first join and haven't rotated keys yet? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0b9bc9d7-009f-41c4-a35c-dd8a3f373561?mode=deep",
+    "timestamp": "2026-01-27 04:23:55.225519",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: get_public_key_previous_version()] [Key rotation window] If a validator rotates keys multiple times rapidly, does get_public_key_previous_version() return the immediately previous version or could it skip versions, causing SafetyRules to fail to find the right key during epoch reconciliation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1a205344-5510-4163-ab28-9023ea186a6a?mode=deep",
+    "timestamp": "2026-01-27 04:24:10.406244",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: get_public_key_previous_version()] [Retention guarantee] The trait comment says 'At most two versions are expected to be retained' - but what if an implementation retains more or fewer? Can this cause consensus divergence when validators disagree on which previous version to use? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_221283db-f057-4171-9361-17393e059c43?mode=deep",
+    "timestamp": "2026-01-27 04:24:26.442757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: rotate_key()] [Rotation atomicity] Is rotate_key() atomic? Can a crash during rotation leave the validator with the new key partially written, causing all subsequent signing operations to fail and the validator to permanently drop from consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf0f0002-f89b-42bf-b864-d4815cb4b7ee?mode=deep",
+    "timestamp": "2026-01-27 04:24:44.979294",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: rotate_key()] [Previous version retention] The documentation states 'The previous key is retained' - but for how long? Can validators prune old versions too aggressively, causing SafetyRules to fail during epoch transitions when it needs to verify previous epoch signatures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_974615c6-33bb-462c-bde0-0205e97135ca?mode=deep",
+    "timestamp": "2026-01-27 04:25:03.646763",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: rotate_key()] [Rotation frequency limit] There's no rate limiting on rotate_key() - can a malicious validator rapidly rotate their consensus key thousands of times, exhausting storage space and potentially causing storage backend failures that affect other validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cd389ce-4ef4-4ef6-a5ee-00122b952dbc?mode=deep",
+    "timestamp": "2026-01-27 04:25:24.066822",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: rotate_key()] [Concurrent rotation] Can two threads call rotate_key() simultaneously? Could this result in both rotations succeeding but only one being persisted, leaving the validator with a different key than what's registered in the next epoch state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58f77f94-f29e-4fed-9491-5f3e4f027053?mode=deep",
+    "timestamp": "2026-01-27 04:25:43.451350",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: rotate_key()] [Epoch boundary timing] If a validator calls rotate_key() immediately before an epoch transition, can timing issues cause the rotation to be partially visible, where some nodes see the old key and others see the new key, causing consensus to diverge? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c769990-e067-4d21-9cdd-bc66ac0b9f00?mode=deep",
+    "timestamp": "2026-01-27 04:26:04.656326",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: rotate_key()] [Version pruning policy] Since 'at most two versions are expected to be retained', does rotate_key() automatically prune versions older than 2? If not, can unbounded version accumulation cause storage exhaustion and validator crashes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb793489-d08f-4a3e-af11-e3062b9bbbda?mode=deep",
+    "timestamp": "2026-01-27 04:26:27.379593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: rotate_key()] [Return value ambiguity] rotate_key() returns the new Ed25519PublicKey - but what if the rotation fails after generating the new key? Can the return value indicate success while the actual storage operation failed, causing SafetyRules to use a key that isn't persisted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_11cb6a58-7af1-447c-abe9-922ed1fe48ae?mode=deep",
+    "timestamp": "2026-01-27 04:26:50.690833",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: rotate_key()] [Backwards compatibility] After rotation, can old code paths that call export_private_key() without a version still access the rotated key, or will they retrieve stale previous versions, causing signature mismatches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_38294656-3ecb-4db2-9b63-cf5fd6ae8aa6?mode=deep",
+    "timestamp": "2026-01-27 04:27:14.347181",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign()] [Message hash collision] The sign() method uses CryptoHash - can an attacker craft two different messages that produce the same hash, causing a validator to sign conflicting blocks with the same signature, breaking consensus safety? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4ac14227-534e-4253-bd18-b654d8b9073b?mode=deep",
+    "timestamp": "2026-01-27 04:27:39.178361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign()] [Serialization manipulation] The message must be Serialize - can an attacker exploit non-deterministic serialization to cause different validators to sign different serialized representations of the 'same' block, leading to signature verification failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_236910d3-7a93-4b0b-bc1f-07dba4624283?mode=deep",
+    "timestamp": "2026-01-27 04:28:03.270878",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign()] [Key version confusion] sign() doesn't specify which key version to use - during key rotation, can sign() use an outdated key version that doesn't match what other validators expect, causing all signatures to be rejected? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b500260-cd8a-46c0-99e9-8eb2cbd7404f?mode=deep",
+    "timestamp": "2026-01-27 04:28:28.754654",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign()] [Error handling] If the underlying export_private_key() fails during sign(), what error is returned? Can generic errors hide critical issues like key deletion, causing validators to silently stop signing without alerting operators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b01ceb3f-5faf-49d6-8f69-7e08b2bca630?mode=deep",
+    "timestamp": "2026-01-27 04:28:54.982932",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign()] [Signature malleability] Ed25519 signatures should be canonical - does sign() enforce this, or can an attacker create multiple valid signatures for the same message, enabling replay attacks or signature stripping? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7428609-a033-4a01-9691-2fea932f3302?mode=deep",
+    "timestamp": "2026-01-27 04:29:22.275874",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign()] [Performance DoS] Can an attacker cause sign() to be called in a tight loop (e.g., by spamming proposals), exhausting the validator's CPU and causing it to miss signing legitimate blocks, reducing consensus participation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_983223da-b0d9-4e68-917e-07b8c99bb3ff?mode=deep",
+    "timestamp": "2026-01-27 04:29:49.465295",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign_using_version()] [Version downgrade attack] Can a malicious implementation of sign_using_version() ignore the version parameter and always sign with the current key, enabling an attacker to forge signatures for old epochs where they didn't control that key? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b8b0170-3fc3-4ec7-958c-130322181ae6?mode=deep",
+    "timestamp": "2026-01-27 04:30:16.168274",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign_using_version()] [Version not found handling] When the specified version doesn't exist, sign_using_version() 'may fail' - can this error be triggered during epoch transitions to cause validator signing failures at critical moments, preventing block finalization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4282b109-2605-4719-b79a-d0bd037752d6?mode=deep",
+    "timestamp": "2026-01-27 04:30:42.774837",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign_using_version()] [Public key verification] Does sign_using_version() verify that the version parameter (Ed25519PublicKey) matches the public key of the exported private key? Can mismatches cause silent signing failures where signatures are generated but fail verification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5185e74-2c06-4219-96c1-3ce61b152692?mode=deep",
+    "timestamp": "2026-01-27 04:31:10.141806",
+    "report_generated": false
+  },
+  {
+    "question": "[File: secure/storage/src/crypto_storage.rs] [Function: sign_using_version()] [Concurrent version deletion] If one thread calls rotate_key() while another calls sign_using_version() with the old version, can the signing operation fail mid-operation, creating partial signatures that corrupt the consensus state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fab35455-b37e-431a-a565-1c7636005f96?mode=deep",
+    "timestamp": "2026-01-27 04:31:37.327119",
+    "report_generated": false
+  }
+]
