@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Memory exhaustion] Can an attacker repeatedly call this function with massive JSON objects causing unbounded memory allocation via into_bytes() and buffer cloning during retries, leading to OOM crashes of the NFT crawler service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c79b0717-5bc4-41f9-ba28-8767379005c5?mode=deep",
+    "timestamp": "2026-01-27 00:04:54.961973",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Buffer clone DoS] Does the buffer.clone() operation in the retry closure create multiple copies of large image buffers in memory, allowing attackers to amplify memory consumption and crash the service through repeated upload failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ecfb0da9-aee9-4f12-9cba-db67d3cdb1c8?mode=deep",
+    "timestamp": "2026-01-27 00:05:07.404637",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Clone amplification] During exponential backoff retries, does cloning json_bytes multiple times for each retry attempt cause memory amplification attacks where a single large upload can consume memory exponentially with retry count? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_75e9ae7e-7971-41f3-8020-343347e00f1b?mode=deep",
+    "timestamp": "2026-01-27 00:05:20.394698",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Concurrent upload exhaustion] Can an attacker trigger hundreds of concurrent write_image_to_gcs() calls with large buffers to exhaust available memory through parallel buffer cloning and retry operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6726b83-d4a3-40ea-a50d-a9a0d0c901bd?mode=deep",
+    "timestamp": "2026-01-27 00:05:33.721442",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [String allocation DoS] Does the json.to_string() operation allocate unbounded memory for the resulting string, and can attackers craft JSON structures that produce multi-gigabyte string representations causing OOM? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e1d84f18-08b8-4acf-850f-e2b7e5c66484?mode=deep",
+    "timestamp": "2026-01-27 00:05:48.965564",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Retry exhaustion] With MAX_RETRY_TIME_SECONDS set to only 2 seconds, can transient GCS failures cause permanent data loss where critical NFT metadata fails to upload and is never retried, causing incomplete metadata indexing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27710d2e-be7b-41f5-91fd-afc1f1669544?mode=deep",
+    "timestamp": "2026-01-27 00:06:04.466571",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Insufficient retry duration] Does the 2-second MAX_RETRY_TIME_SECONDS provide adequate retry coverage for large image uploads that may experience network hiccups, or will legitimate uploads frequently fail causing NFT data loss? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_553f6800-0975-4a74-9333-6ccdcd28144f?mode=deep",
+    "timestamp": "2026-01-27 00:06:20.718192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Retry loop exploitation] Can an attacker cause intentional upload failures (e.g., by manipulating bucket names) that force the retry mechanism to continuously attempt uploads, wasting compute resources and GCS API quota? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fbe02bc4-5d80-4ce4-81ad-7688762f9d89?mode=deep",
+    "timestamp": "2026-01-27 00:06:37.907144",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Exponential backoff timing attack] Does the ExponentialBackoff default configuration expose timing patterns that allow attackers to predict when retries will occur and time additional attacks to maximize impact? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5de9b4bc-0e02-4643-b116-bad30ff4987f?mode=deep",
+    "timestamp": "2026-01-27 00:06:56.193739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Retry state inconsistency] If the retry() function partially succeeds in uploading data but fails to complete the request, does this leave orphaned incomplete data in GCS that consumes storage or causes confusion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9eaf6d25-eec8-4e93-86bc-bc210be57233?mode=deep",
+    "timestamp": "2026-01-27 00:07:15.600875",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Retry counter validation] Is there proper validation of retry attempts to prevent infinite retry loops if the ExponentialBackoff configuration is misconfigured or tampered with? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0236848-c1ca-493e-adf7-c1b2915835b1?mode=deep",
+    "timestamp": "2026-01-27 00:07:35.180258",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Concurrent upload race] Can multiple concurrent calls to write_json_to_gcs() with the same URI but different JSON content create a race condition where the last write wins, causing non-deterministic NFT metadata and potential data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2df5faf0-07f6-458d-84b9-aa2efc2f7481?mode=deep",
+    "timestamp": "2026-01-27 00:07:55.791459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Time-of-check-time-of-use] Is there a TOCTOU vulnerability where an attacker can modify the uri or buffer between when they're validated (if at all) and when they're used in the upload operation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e032aa50-702e-4e5d-811d-452940f79b94?mode=deep",
+    "timestamp": "2026-01-27 00:08:15.827170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Async race on metrics] Can concurrent operations cause race conditions on the counter increment operations (GCS_UPLOAD_INVOCATION_COUNT, etc.), leading to incorrect metrics and monitoring blind spots? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4c948f09-d81c-4514-8095-4f0d069fc1a5?mode=deep",
+    "timestamp": "2026-01-27 00:08:36.417889",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Client state corruption] If the GCS Client object is shared across multiple async tasks, can concurrent upload operations corrupt internal client state causing authentication failures or request mixing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9a774e9-5590-4634-a022-2b68df71399a?mode=deep",
+    "timestamp": "2026-01-27 00:08:58.539455",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Upload ordering] Is there any guarantee of upload ordering when multiple JSON files are uploaded concurrently, or can out-of-order uploads cause inconsistent NFT metadata indexing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9ce62f8-6809-4a24-aac7-9f029f97965c?mode=deep",
+    "timestamp": "2026-01-27 00:09:20.548191",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Error context leakage] Does the .context('Error uploading JSON to GCS') error wrapping expose sensitive information about internal GCS bucket names, authentication tokens, or infrastructure details to attackers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0a27db4-0bfa-4f1a-a335-b81b10dade4e?mode=deep",
+    "timestamp": "2026-01-27 00:09:41.875740",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Error message injection] Can attackers inject malicious content into error messages via uri or filename parameters that get logged, potentially exploiting log injection vulnerabilities in monitoring systems? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3664b98c-ecfe-4215-96e2-4d193bbf3257?mode=deep",
+    "timestamp": "2026-01-27 00:10:01.625294",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Insufficient error handling] Does the error propagation via anyhow::Result provide adequate context for debugging, or could important error details be lost making it impossible to diagnose security-relevant failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_299e5a46-ed59-4a71-8151-7c56a348de54?mode=deep",
+    "timestamp": "2026-01-27 00:10:19.907198",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Silent failure risk] If the counter increment operations fail or panic, could uploads succeed but not be tracked in metrics, hiding attacks or failures from monitoring systems? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b3c92b4-3c87-4b7f-a6a8-e7a95976daaa?mode=deep",
+    "timestamp": "2026-01-27 00:10:39.710433",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Panic safety] Are there any unwrap() or expect() calls in the code path that could cause panics and crash the entire NFT crawler service when encountering malformed input? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_365707bd-15d2-4de8-bdbe-008860bdef75?mode=deep",
+    "timestamp": "2026-01-27 00:10:59.951047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Missing authentication check] Does this function verify that the GCS Client has proper write permissions to the target bucket before attempting upload, or can authorization failures only be detected after expensive retry attempts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a11973a0-c943-4ecd-9912-26c6e0387eee?mode=deep",
+    "timestamp": "2026-01-27 00:11:19.927179",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Bucket permission bypass] Can an attacker call this function with a GCS Client configured for a different bucket to bypass intended access controls and write NFT data to unauthorized locations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56641c1d-4e0d-470a-a759-b24586553cf3?mode=deep",
+    "timestamp": "2026-01-27 00:11:39.924704",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_json_to_gcs()] [Caller authentication] Is there any validation of who is calling this function to ensure only authorized NFT crawler components can upload metadata, or can arbitrary code trigger uploads? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df769cf4-cd72-400b-8ded-c78ab02f6a01?mode=deep",
+    "timestamp": "2026-01-27 00:11:59.605570",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/nft-metadata-crawler/src/utils/gcs.rs] [Function: write_image_to_gcs()] [Cross-bucket contamination] If the bucket parameter is attacker-controlled, can malicious NFT data be uploaded to production buckets contaminating legitimate NFT metadata stores? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7976eff6-5da0-43a0-8554-1c973a8b142e?mode=deep",
+    "timestamp": "2026-01-27 00:12:19.574942",
+    "report_generated": false
+  }
+]
