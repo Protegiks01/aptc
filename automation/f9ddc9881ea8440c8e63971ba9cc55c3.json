@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Validation failure handling] If check_usage_consistency() returns an error, does the unwrap() cause a panic that crashes the committer thread, and is there any mechanism to retry or recover from transient validation failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_177000f5-db95-499d-b7b7-70d09c22f2b6?mode=deep",
+    "timestamp": "2026-01-27 05:28:44.231617",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Panic isolation] Are panics in the committer thread properly isolated to prevent cascading failures in other storage components, or can a panic in this thread deadlock the entire validator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_730da7c5-6adf-48b9-860a-17b4625c4f3f?mode=deep",
+    "timestamp": "2026-01-27 05:28:57.221393",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Channel disconnect handling] If the sending side of state_merkle_batch_receiver is dropped unexpectedly, does recv() return Err and exit gracefully, or can this cause undefined behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_066c3708-c4b4-4e54-83ea-76975eece75b?mode=deep",
+    "timestamp": "2026-01-27 05:29:11.061873",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Poison error handling] If a mutex in persisted_state or state_db becomes poisoned due to a panic, can subsequent operations detect this and fail gracefully instead of propagating undefined behavior? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d3f22df-801b-4c40-beaa-4c437127712a?mode=deep",
+    "timestamp": "2026-01-27 05:29:24.809988",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: new()] [Initialization order] Can the StateMerkleBatchCommitter be constructed with a persisted_state that doesn't match the actual state in state_db, causing immediate consistency violations on the first commit? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c2f17ab-714c-4aa2-ab6b-f72f7b4511dd?mode=deep",
+    "timestamp": "2026-01-27 05:29:39.438614",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: new()] [Receiver sharing] Can the same state_merkle_batch_receiver be shared with multiple StateMerkleBatchCommitter instances, causing commits to be processed by different threads and violating ordering guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_318c6c7b-5f83-4765-b95d-4cd0d113ab5b?mode=deep",
+    "timestamp": "2026-01-27 05:29:54.951614",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Struct: StateMerkleBatchCommitter] [Lifetime safety] Are the Arc references to state_db properly synchronized with the receiver lifecycle, or can state_db be dropped while the committer thread is still processing messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_761b43c2-5e58-47e4-903f-e8f8cd660137?mode=deep",
+    "timestamp": "2026-01-27 05:30:11.921294",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Struct: StateMerkleBatch] [Data validation] Can an attacker construct a StateMerkleBatch with mismatched top_levels_batch, batches_for_shards, and snapshot that passes through the channel but corrupts state on commit? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_70467e3b-ab39-4db6-b062-20d54538f5bf?mode=deep",
+    "timestamp": "2026-01-27 05:30:31.420317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [StateSnapshotCommitter coordination] Can the StateSnapshotCommitter send StateMerkleBatch messages faster than StateMerkleBatchCommitter can process them, causing unbounded queue growth and memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aee2a498-d617-4c9e-8db3-8407f06d43df?mode=deep",
+    "timestamp": "2026-01-27 05:30:51.539573",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [BufferedState sync] If BufferedState sends a Sync message while StateMerkleBatch commits are pending, can this cause the sync to complete before all pending commits finish, violating synchronization guarantees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d4a50aa-0d68-4c90-82f9-2765cefcc2c1?mode=deep",
+    "timestamp": "2026-01-27 05:31:14.254399",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [StateDb thread safety] Is state_db.state_merkle_db thread-safe for concurrent access from the committer thread and query threads, or can concurrent reads during commits observe torn/incomplete merkle nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d49ad5c-1d8a-4973-95bd-b425680b9096?mode=deep",
+    "timestamp": "2026-01-27 05:31:37.339298",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Ledger DB coordination] Can ledger_db metadata commits lag behind state_merkle_db commits, causing check_usage_consistency() to fail spuriously when the system is actually consistent? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_933a4af0-cda5-4c73-ac4a-b33a6a50d145?mode=deep",
+    "timestamp": "2026-01-27 05:32:00.994885",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Commit latency attack] Can an attacker construct StateMerkleBatch objects with extremely large top_levels_batch or batches_for_shards that take excessive time to commit, blocking the committer thread and delaying all subsequent state updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2b4dbbd8-c934-45b2-bbc9-26326b43fadd?mode=deep",
+    "timestamp": "2026-01-27 05:32:25.883128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Timer overhead] Do the OTHER_TIMERS_SECONDS timer measurements add significant overhead to the commit path, and can timer lock contention cause commit delays? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_613d254a-550a-41db-8d99-2a60feb853a9?mode=deep",
+    "timestamp": "2026-01-27 05:32:50.811128",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Log generation overhead] Does snapshot.summary().global_state_summary.log_generation() perform expensive computation that could be exploited to slow down state commits? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a9d2dca-ed66-4c0c-996a-4e0b4e8423d0?mode=deep",
+    "timestamp": "2026-01-27 05:33:17.126129",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Snapshot tamper detection] Is the snapshot.summary().root_hash() verified against the committed merkle nodes to detect tampering, or can a corrupted snapshot be committed without detection? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7adfc77c-97b6-4b90-a677-d87aee67f8e1?mode=deep",
+    "timestamp": "2026-01-27 05:33:44.620678",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Batch integrity] Are top_levels_batch and batches_for_shards cryptographically bound to the snapshot to prevent mix-and-match attacks where batches from different versions are committed together? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_10a42238-ce3c-4c28-833f-00c564ed3c40?mode=deep",
+    "timestamp": "2026-01-27 05:34:12.355963",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Shard hash validation] When committing batches_for_shards, is each shard's content validated against the expected merkle subtree hash before writing to prevent shard corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0340861-e4d8-454b-98dc-78d969d84910?mode=deep",
+    "timestamp": "2026-01-27 05:34:40.340358",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: check_usage_consistency()] [Usage calculation] Is the usage calculation in ledger_db and state_merkle_db deterministic across all validators, or can different validators calculate different usage values causing consensus failures? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16428ab0-da7e-4e9d-bf91-17a9272fbed8?mode=deep",
+    "timestamp": "2026-01-27 05:35:07.167398",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Empty snapshot attack] Can an attacker send a StateMerkleBatch with empty top_levels_batch and batches_for_shards but a non-empty snapshot, causing merkle tree inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e856c4d-c8f8-417d-8129-452db0c7b45d?mode=deep",
+    "timestamp": "2026-01-27 05:35:33.391339",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Duplicate version commit] If two StateMerkleBatch messages with the same current_version are sent in sequence, will the second commit overwrite the first, potentially with different merkle nodes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b3b31f80-a97c-4775-8a4a-7c365c8de4b5?mode=deep",
+    "timestamp": "2026-01-27 05:36:01.158706",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [State root collision] Can an attacker find two different state snapshots that produce the same root_hash through hash collision, allowing state substitution attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c9151b8f-62d3-4bfd-9712-1fb3fd45a145?mode=deep",
+    "timestamp": "2026-01-27 05:36:29.657127",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Memory exhaustion] Can repeated commits without proper cleanup of old state versions cause unbounded memory growth in persisted_state or state_db caches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e618e999-fbf2-4891-ac2b-8a01888e2027?mode=deep",
+    "timestamp": "2026-01-27 05:36:56.355157",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: run()] [Disk space exhaustion] If state_merkle_db commits succeed but disk space runs out before persisted_state.set() completes, can this leave the system in a state where merkle nodes exist but are not referenced by any snapshot? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a408966-a04b-44e8-980c-1b4729c3113a?mode=deep",
+    "timestamp": "2026-01-27 05:37:22.232214",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/state_merkle_batch_committer.rs] [Function: check_usage_consistency()] [Database query failure] Can transient database errors in ledger_db.metadata_db().get_usage() or state_merkle_db.metadata_db().get() cause spurious validation failures that halt state commits unnecessarily? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b48894f-7641-4687-938b-529867c4a7e6?mode=deep",
+    "timestamp": "2026-01-27 05:37:48.826974",
+    "report_generated": false
+  }
+]
