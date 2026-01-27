@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Runtime Creation] Line 103 creates a new runtime with aptos_runtimes::spawn_named_runtime(). Can this fail due to resource constraints? What happens if runtime creation fails and the function tries to use runtime.handle()? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fed2dd47-887e-4597-b8d7-29fed4c423f2?mode=deep",
+    "timestamp": "2026-01-27 01:40:22.924272",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Runtime Ownership] The function returns the Runtime at line 124. If the caller drops this Runtime prematurely, will all spawned tasks (coordinator, gc_coordinator, snapshot_job) be aborted causing mempool shutdown? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4914acd5-3a6e-4beb-b4f5-a584b6f46988?mode=deep",
+    "timestamp": "2026-01-27 01:40:35.662380",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [CoreMempool Creation] Line 104 creates CoreMempool::new(config) wrapped in Arc<Mutex>. Can this constructor fail or panic with invalid config? Is there proper error handling to prevent uninitialized mempool state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_04738b4e-bb3d-4032-9487-a34e7291b857?mode=deep",
+    "timestamp": "2026-01-27 01:40:49.031500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [VM Validator Creation] Lines 105-108 create PooledVMValidator::new() with num_cpus::get() as pool size. Can num_cpus::get() return 0 or invalid value causing panic or creating validator pool with no workers? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fbcb8b9c-d29b-40bd-9254-8d1cda99e523?mode=deep",
+    "timestamp": "2026-01-27 01:41:02.856595",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [VM Validator Pool Size] The VM validator pool size is set to num_cpus::get(). On systems with very high CPU count (>256 cores), can this cause excessive resource consumption or contention in validator pool? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_032d9b8d-2a51-4274-b942-bbd07339cb38?mode=deep",
+    "timestamp": "2026-01-27 01:41:17.697287",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [VM Validator Initialization] PooledVMValidator is initialized with Arc::clone(&db). If database is not fully synced or in inconsistent state during bootstrap, can validator make incorrect decisions on transaction validity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_794051c5-5fa1-408e-973a-ca057f48247f?mode=deep",
+    "timestamp": "2026-01-27 01:41:32.892231",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Empty Subscribers] Line 121 passes empty vec![] as subscribers to start_shared_mempool(). Does this break any notification logic that assumes at least one subscriber exists? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49c192e5-5e4d-4cc5-a42c-52a77294043e?mode=deep",
+    "timestamp": "2026-01-27 01:41:49.742078",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Parameter Ordering] The function calls start_shared_mempool() with many parameters (lines 109-123). Can incorrect parameter ordering due to refactoring cause type confusion if parameters have same type? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94dac574-b05c-4b16-9c8d-c541e9f811bb?mode=deep",
+    "timestamp": "2026-01-27 01:42:07.884051",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Configuration Validation] Does bootstrap() validate the config parameter before creating CoreMempool and passing to start_shared_mempool()? Can malformed config cause panic during initialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f276ee5-80fa-4003-9b0b-ef5318d51303?mode=deep",
+    "timestamp": "2026-01-27 01:42:27.967243",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Database State] The db Arc<dyn DbReader> is cloned multiple times (line 106 for validator, line 119 for start_shared_mempool). Can these clones observe different database states due to concurrent writes causing inconsistent validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f1a48cff-7ec0-4ce7-bf20-6217fc80cd29?mode=deep",
+    "timestamp": "2026-01-27 01:42:49.588322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Network Events] The network_service_events parameter is passed directly to start_shared_mempool without validation. Can malformed or closed event stream cause coordinator to panic immediately after start? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3fcca9f-c44a-4535-a854-b0d193f38e9e?mode=deep",
+    "timestamp": "2026-01-27 01:43:11.660248",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Client Events] The client_events MempoolEventsReceiver channel is passed directly. If this channel is already closed or has pending messages, does it affect mempool initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7978e507-eb40-4dab-b2b6-4efb97befda4?mode=deep",
+    "timestamp": "2026-01-27 01:43:34.742317",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Quorum Store Channel] The quorum_store_requests Receiver is passed to coordinator. If consensus has already sent requests before bootstrap completes, are those requests lost or buffered? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df9d862b-77b8-4359-9564-626085bec38d?mode=deep",
+    "timestamp": "2026-01-27 01:44:00.315891",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Mempool Listener] The mempool_listener is passed directly. If state sync has already committed blocks before mempool starts, does mempool miss those commit notifications causing stale transactions to remain? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_532455dc-2915-441a-8a05-3518466b68f8?mode=deep",
+    "timestamp": "2026-01-27 01:44:26.391462",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Reconfig Listener] The mempool_reconfig_events listener is passed directly. If an epoch change occurs during bootstrap, can coordinator miss the reconfig event causing it to use stale on-chain config? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d3da4cd-aa0f-47e4-8fe4-72efe6bcfc7f?mode=deep",
+    "timestamp": "2026-01-27 01:44:50.790661",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Peers Metadata] The peers_and_metadata is passed directly. If peer connections are established before mempool bootstraps, does mempool miss peer connection events? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94081569-e903-4829-9d6c-5c1f35308a17?mode=deep",
+    "timestamp": "2026-01-27 01:45:15.998748",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Runtime Name] Line 103 names the runtime 'shared-mem'. Can having multiple instances of bootstrap() create runtime name conflicts? Does this affect runtime identification or metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88a734ab-77a9-42c8-9739-ed484884aadc?mode=deep",
+    "timestamp": "2026-01-27 01:45:40.587606",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Type Parameters] The function uses DbBackedOnChainConfig as concrete type for ConfigProvider. Can this cause issues if different on-chain config source is needed during emergency? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d6fe5f59-c5ad-4e37-9b64-a961ebcd1090?mode=deep",
+    "timestamp": "2026-01-27 01:46:04.527266",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Return Timing] The function returns Runtime immediately after calling start_shared_mempool() without waiting for tasks to start. Can caller use runtime before mempool is fully initialized causing race conditions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43988c42-5880-4b90-83be-72195cbec001?mode=deep",
+    "timestamp": "2026-01-27 01:46:28.014499",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Resource Cleanup] If bootstrap() is called multiple times (e.g., during restart), are previous Runtime instances properly shutdown to avoid resource leaks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66b8249d-5c27-44af-b4be-f08f2c51a1e6?mode=deep",
+    "timestamp": "2026-01-27 01:46:54.033741",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Arc Clone Pattern] The mempool Arc is cloned at line 38, 80, and 86. Can this cloning pattern cause lock ordering issues if gc_coordinator and snapshot_job acquire locks in different order than coordinator? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cad09bb7-9977-49fd-9be4-ce95db45e401?mode=deep",
+    "timestamp": "2026-01-27 01:47:19.315612",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [Arc Clone Pattern] The db Arc is cloned at line 106 and 119. Can concurrent read operations from validator and coordinator observe inconsistent database snapshots during state transitions? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_064e93c0-7fa1-4464-9724-b3b46e8abc42?mode=deep",
+    "timestamp": "2026-01-27 01:47:46.741523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Mutex Contention] With coordinator, gc_coordinator, and snapshot_job all accessing mempool via Mutex, can lock contention during high transaction load cause coordinator to miss network events or broadcasts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db482f27-b66c-44ea-a4f1-b92ee88629a4?mode=deep",
+    "timestamp": "2026-01-27 01:48:14.665473",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: bootstrap()] [RwLock Pattern] The vm_validator uses RwLock. Can write lock acquisition during validator updates block coordinator's read attempts causing transaction validation delays? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e10937c8-c572-4780-95a8-28fbb1785050?mode=deep",
+    "timestamp": "2026-01-27 01:48:43.803656",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/mempool/src/shared_mempool/runtime.rs] [Function: start_shared_mempool()] [Task Spawn Order] Tasks are spawned in order: coordinator, gc_coordinator, snapshot_job. Can this ordering cause gc_coordinator to start garbage collecting before coordinator initializes peer state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_accbe859-513a-415f-b62a-735e636f420a?mode=deep",
+    "timestamp": "2026-01-27 01:49:11.843142",
+    "report_generated": false
+  }
+]
