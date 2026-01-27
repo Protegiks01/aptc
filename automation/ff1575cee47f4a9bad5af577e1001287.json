@@ -1,0 +1,32 @@
+[
+  {
+    "question": "[File: third_party/move/tools/move-package-manifest/src/package_name.rs] [Function: is_valid_package_name()] [Multiple consecutive hyphens] Are package names like 'my--package' or 'my---package' valid? Could multiple hyphens be used for visual confusion or dependency confusion attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b81848e0-9c59-48ce-ba14-ada809599ccc?mode=deep",
+    "timestamp": "2026-01-27 08:54:32.349952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-package-manifest/src/named_address.rs] [Impl: Display for NamedAddress] [Format injection] Display prepends '@' to the address - if the inner string contains format string specifiers or escape sequences, could this cause issues in string formatting code? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_320fd4c4-e0b9-4bc3-869e-35d979b2efad?mode=deep",
+    "timestamp": "2026-01-27 08:54:44.882669",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-package-manifest/src/manifest.rs] [Impl: Display for Version] [Format string safety] Version's Display uses write! macro - if version components are maliciously large u64 values, could the formatted string cause buffer issues in downstream code? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_217fd159-5eb4-4bf1-85a5-547d2ea23351?mode=deep",
+    "timestamp": "2026-01-27 08:54:57.675107",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-package-manifest/src/manifest.rs] [Function: Version::deserialize()] [Panic on malformed input] The code uses .parse().map_err() which could panic on extreme inputs - is error handling robust enough to prevent panics that could crash build systems or validator nodes? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52782f9b-76e0-4697-91d5-15b3f3fd808a?mode=deep",
+    "timestamp": "2026-01-27 08:55:11.171832",
+    "report_generated": false
+  },
+  {
+    "question": "[File: third_party/move/tools/move-package-manifest/src/manifest.rs] [Function: AddressAssignment::deserialize()] [AccountAddress parse panic] If AccountAddress::from_str() pan\n\n### Citations\n\n**File:** third_party/move/tools/move-package-manifest/src/lib.rs (L1-19)\n```rust\n// Copyright (c) Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nmod manifest;\nmod named_address;\nmod package_name;\nmod util;\n\npub use manifest::{\n    AddressAssignment, BuildOptions, Dependency, PackageLocation, PackageManifest, PackageMetadata,\n    Version,\n};\npub use named_address::NamedAddress;\npub use package_name::PackageName;\npub use util::render_error;\n\npub fn parse_package_manifest(s: &str) -> Result<PackageManifest, toml::de::Error> {\n    toml::from_str(s)\n}\n```\n\n**File:** third_party/move/tools/move-package-manifest/src/manifest.rs (L1-425)\n```rust\n// Copyright (c) Aptos Foundation\n// SPDX-License-Identifier: Apache-2.0\n\nuse crate::{NamedAddress, PackageName};\nuse move_core_types::account_address::AccountAddress;\nuse move_model::metadata::LanguageVersion;\nuse serde::{Deserialize, Deserializer, Serialize, Serializer};\nuse std::{\n    collections::{BTreeMap, BTreeSet},\n    fmt::{self, Debug, Display},\n    path::PathBuf,\n    str::FromStr,\n};\nuse url::Url;\n\n/***************************************************************************************************\n * Manifest Definition\n *\n **************************************************************************************************/\n/// Represents the full parsed contents of a `Move.toml` manifest file.\n#[derive(Default, Debug, Clone, Eq, PartialEq, Serialize, Deserialize)]\n#[serde(deny_unknown_fields)]\npub struct PackageManifest {\n    /// Metadata about the package itself, such as package name etc.\n    pub package: PackageMetadata,\n\n    /// Named address mappings defined by the package.\n    #[serde(default)]\n    pub addresses: BTreeMap<NamedAddress, AddressAssignment>,\n\n    /// Dev-only named address bindings defined by the package.\n    /// Being dev-only means the bindings are only active in unit tests, not when being compiled regularly.\n    #[serde(default, rename =",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f2314721-057a-409d-b68b-0dc4b089a483?mode=deep",
+    "timestamp": "2026-01-27 08:55:25.383354",
+    "report_generated": false
+  }
+]
