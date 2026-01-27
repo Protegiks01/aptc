@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Module: aptosdb_testonly] [Production code leak] Is this test-only module properly gated by #[cfg(test)] or feature flags to prevent compilation in production builds, or can an attacker exploit test functions in production nodes to manipulate database state and cause state corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e10c3225-d1b4-46bb-93bc-74208ce3a9db?mode=deep",
+    "timestamp": "2026-01-27 00:26:38.207762",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Module: aptosdb_testonly] [Access control bypass] If this test module is accidentally compiled into production, can external APIs or RPC endpoints invoke these test-only database initialization functions to reset or reconfigure a running validator's database, causing total loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f0f8d659-7666-4053-a947-41fd6930e7c5?mode=deep",
+    "timestamp": "2026-01-27 00:26:50.371580",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Module: aptosdb_testonly] [Configuration override] Can an attacker who gains access to test-only functions bypass production security configurations (pruner disabled, buffered state limits) to degrade performance or cause database corruption on production validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37c3a8fd-345a-4ca2-abc0-b3146ab4e8c0?mode=deep",
+    "timestamp": "2026-01-27 00:27:04.277638",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test()] [Pruner bypass] Does disabling the pruner in this function (NO_OP_STORAGE_PRUNER_CONFIG) allow unbounded database growth that could fill disk space and halt validator operations if called on production nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_41e888da-6ab0-4655-9627-3a1dbccd77a8?mode=deep",
+    "timestamp": "2026-01-27 00:27:19.527816",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test()] [Configuration manipulation] Can an attacker manipulate the BUFFERED_STATE_TARGET_ITEMS_FOR_TEST constant to set extremely low or high values, causing either excessive memory usage or performance degradation in database writes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_277199b0-5cfb-462e-969f-14534e5b958a?mode=deep",
+    "timestamp": "2026-01-27 00:27:35.196126",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test()] [Cache configuration] Does using DEFAULT_MAX_NUM_NODES_PER_LRU_CACHE_SHARD without validation allow an attacker to force excessive memory allocation by opening multiple test databases, potentially causing OOM conditions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_279c240f-a7b1-49cc-ae55-a5e028d68199?mode=deep",
+    "timestamp": "2026-01-27 00:27:49.629584",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test()] [Read-write mode] Does opening the database in read-write mode (readonly=false) without proper access control allow unauthorized state modifications if test functions are exposed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5de2d9b0-23b7-44e8-9fd1-a32081521c67?mode=deep",
+    "timestamp": "2026-01-27 00:28:08.498237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test()] [Path traversal] Is the db_root_path parameter validated against path traversal attacks, or can an attacker specify arbitrary filesystem paths to corrupt system files or access sensitive data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3cf32e81-4437-4c64-a85e-5aaabeb08bba?mode=deep",
+    "timestamp": "2026-01-27 00:28:28.741342",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test()] [Database collision] If multiple test databases are opened with the same db_root_path concurrently, can this cause file lock conflicts, data corruption, or race conditions that leave the database in an inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb142259-e0db-48eb-b7ad-7bb154e0cc98?mode=deep",
+    "timestamp": "2026-01-27 00:28:50.640664",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_sharding()] [Panic on failure] The function uses .expect('Unable to open AptosDB') which will panic and crash the process if database opening fails - can an attacker trigger this by corrupting database files or exhausting file descriptors, causing validator downtime? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_927f351c-33ab-43cf-8676-fe68ff4a08c9?mode=deep",
+    "timestamp": "2026-01-27 00:29:14.603454",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_sharding()] [Sharding configuration attack] Can an attacker enable storage sharding (enable_storage_sharding: true) on a database that wasn't properly initialized for sharding, causing data to be written to wrong shards and corrupting state merkle tree integrity? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_655f0164-2551-4110-945c-603a29f0bb4c?mode=deep",
+    "timestamp": "2026-01-27 00:29:39.272234",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_sharding()] [Cache exhaustion] Is the max_node_cache parameter validated for reasonable bounds, or can an attacker pass usize::MAX or 0 to cause either memory exhaustion or complete cache bypass, degrading performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f0d731b-02c3-427c-a7d2-90acafd53d6f?mode=deep",
+    "timestamp": "2026-01-27 00:30:05.561823",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_sharding()] [Configuration inconsistency] If a database is opened with sharding enabled via this function but was previously opened without sharding, can this cause shard mapping conflicts that corrupt the merkle tree structure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_168101ca-fe8c-4b3a-8f1e-4030ed63dac6?mode=deep",
+    "timestamp": "2026-01-27 00:30:34.259404",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_sharding()] [Default configuration abuse] Does using ..Default::default() for other RocksdbConfigs fields bypass important security settings like write buffer limits or compaction settings, allowing DoS through excessive writes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8fed505f-0f9c-484a-abfd-4feaa5fbc6e9?mode=deep",
+    "timestamp": "2026-01-27 00:31:01.466171",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_no_cache()] [Performance degradation] By setting max_node_cache to 0, does this function force all merkle tree node lookups to hit disk, allowing an attacker to cause severe performance degradation if used on production validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9c8cea5a-c461-4a18-80fa-34b4266e4a08?mode=deep",
+    "timestamp": "2026-01-27 00:31:28.748768",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_no_cache()] [Disk I/O amplification] Without caching, can an attacker submit transactions that repeatedly access the same merkle tree nodes, causing excessive disk I/O that degrades consensus performance and violates liveness requirements? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de0b6c38-313f-4296-9fc1-d7ce8380fd2f?mode=deep",
+    "timestamp": "2026-01-27 00:31:55.218929",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_no_cache()] [Resource exhaustion] Does disabling the cache entirely (max_node_cache: 0) allow unbounded disk reads that could exhaust I/O bandwidth and slow down state synchronization for other validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89e0f5d8-086f-4f0f-be9a-3d1daeccced4?mode=deep",
+    "timestamp": "2026-01-27 00:32:23.635947",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_indexer()] [Indexer overhead] Does enabling the indexer without proper resource limits allow an attacker to cause excessive CPU and disk usage through complex queries, affecting consensus participation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cd79a97-6a50-45bf-b224-ade72bec23e4?mode=deep",
+    "timestamp": "2026-01-27 00:32:52.521810",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_indexer()] [Sharding mismatch] If enable_sharding parameter doesn't match the existing database's sharding state, can this cause index corruption where indexed data points to wrong shards, breaking query results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_63e0e2bf-2756-4403-aec1-3b10575aeff3?mode=deep",
+    "timestamp": "2026-01-27 00:33:18.453029",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_indexer()] [Index injection] Can an attacker exploit the indexer to inject malformed index entries that cause crashes when queried, or point to sensitive data outside the intended scope? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_890fe6dc-d901-4b93-b379-d59222c4256b?mode=deep",
+    "timestamp": "2026-01-27 00:33:43.711711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_indexer()] [Dual-state inconsistency] If the indexer is enabled on a database with existing data but no indices, can this cause inconsistencies where indexed and non-indexed queries return different results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f2508ed-d5f1-49ab-a711-389bcc448d50?mode=deep",
+    "timestamp": "2026-01-27 00:34:09.491648",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_buffered_state_target_items()] [Memory exhaustion] Is the buffered_state_target_items parameter validated, or can an attacker pass an extremely large value (e.g., usize::MAX) to allocate excessive memory for buffered state, causing OOM crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_06b91986-f2a4-4cb5-9239-17f039391a0f?mode=deep",
+    "timestamp": "2026-01-27 00:34:36.759254",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_buffered_state_target_items()] [Buffer overflow risk] If buffered_state_target_items is set to 0 or 1, does this cause immediate flushes on every state change, creating a performance bottleneck that affects block execution timing? (Medium)",
+    "url": "https://deepwiki.com/grass-dev-pa/aptos-core-050",
+    "timestamp": "2026-01-27 00:34:55.666578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_buffered_state_target_items()] [State loss] If the buffer size is too small, can rapid state updates cause buffer thrashing where state changes are lost or written out of order, breaking state merkle tree consistency? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d47ffb9-080d-483c-b130-180ec4941046?mode=deep",
+    "timestamp": "2026-01-27 00:35:24.407574",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/db/aptosdb_testonly.rs] [Function: new_for_test_with_buffered_state_target_items()] [Integer overflow] Can passing a value near usize::MAX for buffered_state_target_items cause integer overflow in buffer size calculations, wrapping to a small value and causing unexpected behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cda331fd-ed48-41e3-9ae9-b41d8bf9265b?mode=deep",
+    "timestamp": "2026-01-27 00:35:52.713255",
+    "report_generated": false
+  }
+]
