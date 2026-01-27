@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Weak Randomness] Can an attacker predict or bias the random scalars r[0] and r[1] generated via Fr::rand(rng) if the RNG is improperly seeded or compromised, allowing them to recover the symmetric key and decrypt all ciphertexts? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8ec388c-847a-4357-a788-40ee1bb375d0?mode=deep",
+    "timestamp": "2026-01-27 03:25:44.472506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Nonce Reuse] If the same RNG state is used across multiple encryption calls, could identical random scalars r[0] and r[1] be generated, leading to one-time pad reuse and complete key recovery through XOR attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5a7ed73a-0fb0-4acf-babd-c6b8250773ec?mode=deep",
+    "timestamp": "2026-01-27 03:25:57.132959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Small Subgroup Attack] Are the random scalars r[0] and r[1] validated to be non-zero elements in the correct subgroup, or can an attacker force zero or small-order values to create degenerate ciphertexts that leak plaintext information? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1d065a18-8f8f-4c73-be2a-f095c7955ed2?mode=deep",
+    "timestamp": "2026-01-27 03:26:10.108985",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Scalar Overflow] Can integer overflow occur when computing r[0] or r[1] with Fr::rand(), potentially wrapping to zero or predictable values that compromise ciphertext security? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6bc78d77-a0f2-4261-8e13-2be71110ad96?mode=deep",
+    "timestamp": "2026-01-27 03:26:25.189527",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: prepare_individual()] [Invalid Curve Points] Does prepare_individual() validate that digest.as_g1() and self.ct_g2[0], self.ct_g2[1] are valid curve points on the correct subgroups before computing pairings, or can an attacker supply invalid points to cause incorrect pairing outputs or crashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_abb23d67-5739-4f6f-b8b2-b5b77ab432ab?mode=deep",
+    "timestamp": "2026-01-27 03:26:39.513791",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: prepare_individual()] [Identity Element Attack] Can an attacker craft a BIBECiphertext with ct_g2[0] or ct_g2[1] set to the identity element (point at infinity), causing the pairing output to become trivial and allowing key recovery through algebraic manipulation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b211ffe6-2e2b-49ef-8c4e-4b0ec3ac183d?mode=deep",
+    "timestamp": "2026-01-27 03:26:54.844223",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: prepare_individual()] [Pairing Equation Manipulation] In the pairing computation 'PairingSetting::pairing(digest.as_g1(), self.ct_g2[0]) + PairingSetting::pairing(**eval_proof, self.ct_g2[1])', can an attacker manipulate eval_proof to cancel out the first pairing term and create a known pairing_output for key extraction? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6fb4cf63-4b7d-49df-9b80-a917ad94d4ee?mode=deep",
+    "timestamp": "2026-01-27 03:27:12.001961",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Pairing Bilinearity Exploitation] In line 135 where otp_source_gt is computed as '-PairingSetting::pairing(hashed_encryption_key, self.sig_mpk_g2) * r[1]', can an attacker exploit bilinearity properties by choosing malicious sig_mpk_g2 values to make the OTP predictable? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a0e57a32-eedb-4aee-bbbf-b3a37523ed53?mode=deep",
+    "timestamp": "2026-01-27 03:27:30.435522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_decrypt()] [Pairing Output Validation] Does bibe_decrypt() verify that the computed pairing output 'otp_source_1 + ct.pairing_output' is in the correct GT subgroup and not the identity, or can invalid pairings lead to weak OTP generation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60371816-46f6-4c51-82f0-f646c99c6422?mode=deep",
+    "timestamp": "2026-01-27 03:27:49.193315",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [G2 Construction - ct_g2[0]] In line 129, can an attacker exploit the construction 'G2Affine::generator() * r[0] + self.sig_mpk_g2 * r[1]' by providing a malicious sig_mpk_g2 that is not in the correct subgroup, bypassing security assumptions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_849b9e05-89e2-48d9-baa9-86fd262e6e5e?mode=deep",
+    "timestamp": "2026-01-27 03:28:09.458678",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [G2 Construction - ct_g2[1]] In line 130, the expression '(G2Affine::generator() * id.x() - self.tau_g2) * r[0]' involves id-dependent computation - can an attacker choose a malicious id value to make this term zero or controllable? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98140c0c-da8e-4b99-9c66-7735d9f38533?mode=deep",
+    "timestamp": "2026-01-27 03:28:31.028984",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [G2 Construction - ct_g2[2]] In line 131, the negation '-(G2Affine::generator() * r[1])' is stored in ct_g2[2] - can an attacker manipulate this to create ciphertexts where the sign is flipped, affecting decryption consistency? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15ad45e7-90b9-43d7-8455-29cc11d1b58b?mode=deep",
+    "timestamp": "2026-01-27 03:28:52.917347",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Subgroup Check Missing] Are the computed ct_g2 elements validated to be in the prime-order subgroup after construction, or can attacker-controlled inputs cause them to lie in a small subgroup enabling discrete log attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eb8067de-1131-4653-aa3a-945fc827e110?mode=deep",
+    "timestamp": "2026-01-27 03:29:16.195002",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [OTP Source Entropy] The otp_source_gt is computed from a pairing and serialized to bytes - does the serialization preserve sufficient entropy, or can compression/canonicalization reduce randomness allowing statistical attacks on the OTP? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_de94fe18-8826-4225-996a-23231a3ef4e1?mode=deep",
+    "timestamp": "2026-01-27 03:29:40.687459",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [OTP Reuse via ID Collision] If two different plaintexts are encrypted with the same id value but different eval_proofs, could this lead to OTP reuse since the otp_source_gt depends on r[1] but not on the specific plaintext, enabling key recovery? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db50eff7-4b76-4f91-ae74-b4eb65d29ca2?mode=deep",
+    "timestamp": "2026-01-27 03:30:06.456725",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_decrypt()] [OTP Reconstruction Attack] In bibe_decrypt(), the OTP is reconstructed from 'otp_source_1 + ct.pairing_output' - can an attacker who knows multiple ciphertexts with the same id compute differential information about the OTP to recover keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c89cd07-9db0-4c58-bb9d-b3ac548afeae?mode=deep",
+    "timestamp": "2026-01-27 03:30:33.444690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Serialization Non-Determinism] If serialize_compressed() is non-deterministic for the same PairingOutput value, could different OTP bytes be generated for semantically identical otp_source_gt values, breaking decryption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_268f5cf4-30d4-4440-b6b2-7ca0c6b53731?mode=deep",
+    "timestamp": "2026-01-27 03:31:00.370693",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Hash Collision] In line 126, symmetric::hash_g2_element() hashes self.sig_mpk_g2 to G1 - can an attacker find two different sig_mpk_g2 values that hash to the same G1 point, allowing key substitution attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c597f08d-934f-4282-a0d4-d23a92ce950f?mode=deep",
+    "timestamp": "2026-01-27 03:31:27.270079",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Hash to Curve Failure] If hash_g2_element() fails after 256 iterations and returns an error, does bibe_encrypt() properly handle this failure, or could partial state leak through error channels? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ef6577fe-a72e-4ab0-a1ac-afda1ba43cd0?mode=deep",
+    "timestamp": "2026-01-27 03:31:53.699976",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Hash Weakness] Does the hash_g2_element() implementation resist preimage attacks, or could an attacker compute a sig_mpk_g2 value that hashes to a chosen hashed_encryption_key, enabling forgery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d4b0e217-11b3-4d1d-a437-b8642fe2bc03?mode=deep",
+    "timestamp": "2026-01-27 03:32:20.829080",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [ID Malleability] Can an attacker modify the id parameter to create different ciphertexts that decrypt to the same plaintext under different decryption keys, enabling cross-identity decryption attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44ff73da-568e-43ae-83f0-ca6987548e08?mode=deep",
+    "timestamp": "2026-01-27 03:32:48.641044",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: id()] [ID Tampering] The id() method returns self.id directly - can an attacker who obtains a ciphertext modify the id field in transit to cause decryption with a different key, bypassing access control? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1dbce5a1-d24e-487c-8226-b075ce446b35?mode=deep",
+    "timestamp": "2026-01-27 03:33:17.488219",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Struct: BIBECiphertext] [ID Binding] Is the id field cryptographically bound to the ct_g2 components, or can an attacker swap ids between ciphertexts to cause incorrect decryption or denial of service? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8997418-1504-49ee-b3b1-655548496536?mode=deep",
+    "timestamp": "2026-01-27 03:33:46.498201",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: bibe_encrypt()] [Special ID Values] Can special id values (like zero, infinity, or negative values) cause undefined behavior in the computation 'G2Affine::generator() * id.x() - self.tau_g2' leading to weak ciphertexts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4b77430-35b4-4cd9-9f3d-6a1a82ef2b54?mode=deep",
+    "timestamp": "2026-01-27 03:34:15.935057",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-batch-encryption/src/shared/ciphertext/bibe.rs] [Function: prepare()] [Missing Eval Proof] In line 86-87, if eval_proofs.get(&self.id) returns None, UncomputedEvalProofError is returned - can an attacker trigger this by manipulating the eval_proofs map to cause denial of service or bypass decryption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e80dcd0-c93a-4f4a-86b7-d3cdba9b2ea7?mode=deep",
+    "timestamp": "2026-01-27 03:34:46.456719",
+    "report_generated": false
+  }
+]
