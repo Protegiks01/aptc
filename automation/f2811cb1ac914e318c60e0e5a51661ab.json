@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_min_overflow()] [Underflow exploitation] The function returns error on underflow (line 210-217) but Ok(None) on overflow - can an attacker exploit this asymmetry by carefully constructing prev_delta values that trigger underflow during merge, causing the entire transaction sequence to be rejected when it should succeed? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30008ada-d249-48ea-bef1-8785525be388?mode=deep",
+    "timestamp": "2026-01-27 00:35:49.152164",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_min_overflow()] [Merge logic error] Lines 222-225 merge adjusted_min_overflow with prev_min_overflow using pattern matching - can an attacker exploit the (Some(a), Some(b)) => Some(min(a, b)) logic to force the merged history to always use the most permissive bound, weakening security? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5992006e-4d81-4da1-bc80-71a8e5edcf26?mode=deep",
+    "timestamp": "2026-01-27 00:36:01.407762",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_min_overflow()] [Error reason confusion] The function returns DeltaHistoryMergeOffsetFailureReason::FailureNotExceedingBoundsAnyMore on underflow - but can an attacker exploit confusion between offset failures and merge failures to bypass validation in calling code? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e32a05b0-33e7-4ee9-987f-a929757d2504?mode=deep",
+    "timestamp": "2026-01-27 00:36:14.129176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_min_overflow()] [None propagation] The pattern (a, b) => a.or(*b) at line 224 means if adjusted_min_overflow is None, prev_min_overflow is used - can an attacker exploit this to force None values that eliminate overflow tracking during critical merge operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1731bddb-faac-409d-8c44-6c3a46c105a1?mode=deep",
+    "timestamp": "2026-01-27 00:36:27.872834",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_min_overflow()] [BoundedMath max_value] The function uses BoundedMath with a specific max_value - can an attacker exploit mismatches between the max_value used in different merge operations to create inconsistent bounds that allow validation bypasses? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9a85f6a4-b5d1-425e-b8f6-3a5ccd390707?mode=deep",
+    "timestamp": "2026-01-27 00:36:41.825036",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_max_achieved()] [Achieved delta overflow] When offsetting max_achieved with prev_delta, the function uses ok_underflow() which converts underflow to None - can an attacker exploit this to make achieved deltas disappear during merge, allowing operations that should fail validation to succeed? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_000b8805-a94d-48f5-a36c-53ce94353327?mode=deep",
+    "timestamp": "2026-01-27 00:36:56.348125",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_max_achieved()] [Error on overflow] Line 235-240 returns error when offsetting max_achieved causes overflow (AchievedExceedsBounds) - but can an attacker craft transaction sequences that intentionally trigger this error to DoS legitimate merge operations and prevent state finalization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cefc9880-22e3-4709-8866-33236e2dbdd2?mode=deep",
+    "timestamp": "2026-01-27 00:37:11.712259",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_max_achieved()] [map_or logic] Line 242 uses map_or(prev_max_achieved, |value| max(prev_max_achieved, value)) - can an attacker exploit the None case to force prev_max_achieved to always be used, preventing newer stricter bounds from taking effect? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7b2cebc-4c1b-4158-bec3-a2362d007fdd?mode=deep",
+    "timestamp": "2026-01-27 00:37:28.904286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_max_achieved()] [Max calculation] The function always takes max(prev_max_achieved, value) - can an attacker exploit this to monotonically increase achieved bounds across transactions until they reach u128::MAX, making all subsequent validations fail? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_43c9d8b9-ab01-4e19-9419-6bdd4fe404e0?mode=deep",
+    "timestamp": "2026-01-27 00:37:46.838942",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_history()] [History merge vulnerability] The function merges two delta histories - can an attacker submit parallel transactions that create conflicting histories which, when merged, produce a combined history that allows both overflow AND underflow to be bypassed simultaneously? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff856da4-8d4c-4ac4-bae4-93e70bd64b35?mode=deep",
+    "timestamp": "2026-01-27 00:38:05.338107",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_history()] [Negative delta exploitation] Line 265 uses prev_delta.minus() for max_underflow merging - can an attacker exploit sign flipping logic to create scenarios where negating the delta causes unexpected overflow/underflow in the offset calculation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf523572-ecdd-4cea-87d7-110df46103f7?mode=deep",
+    "timestamp": "2026-01-27 00:38:24.744083",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_history()] [Overlap check bypass] Lines 290-305 check if new_min_overflow <= new_max_achieved or new_max_underflow <= new_min_achieved - can an attacker craft histories where these checks pass but the actual merged state violates critical invariants, allowing impossible aggregator values? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c8842d9f-5062-4aa9-a721-f0ede22bab12?mode=deep",
+    "timestamp": "2026-01-27 00:38:44.996569",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_history()] [is_some_and predicate] Lines 290 and 298 use is_some_and() for overlap checks - can an attacker exploit the None case (where no overflow was recorded) to bypass overlap validation entirely, allowing contradictory achieved/failure bounds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_79b2bec8-58cc-42ab-8dfa-e69704d26d78?mode=deep",
+    "timestamp": "2026-01-27 00:39:04.714133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_history()] [Delta offset order] The function offsets new history by prev_delta and merges with prev_history - can an attacker exploit non-commutativity in this operation by carefully ordering transactions to produce different merged results depending on execution order? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eab1c56d-e4e0-467f-9649-0c0f055443aa?mode=deep",
+    "timestamp": "2026-01-27 00:39:26.244169",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_history()] [Max value consistency] The function creates BoundedMath with max_value parameter - can an attacker exploit inconsistencies if different merge operations use different max_values, creating histories that are valid under one max but invalid under another? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f18339a4-26b3-4f57-8d5d-359d919fbc27?mode=deep",
+    "timestamp": "2026-01-27 00:39:47.823712",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_history()] [Four-way merge complexity] The function performs four separate offset_and_merge operations (lines 256-288) - can an attacker exploit any inconsistency between these four operations to create merged histories with contradictory positive/negative bounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15e2163e-2067-4632-804e-909155d3215e?mode=deep",
+    "timestamp": "2026-01-27 00:40:11.203578",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: offset_and_merge_history()] [Error unwrap safety] Line 294 uses unwrap() on new_min_overflow after is_some_and() check - can race conditions or logic errors cause this unwrap to panic in concurrent execution, crashing validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_008205dc-f5de-46d9-95ec-b81642df2de1?mode=deep",
+    "timestamp": "2026-01-27 00:40:35.495189",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: stricter_than()] [Comparison logic error] The function checks if self is stricter than other by comparing achieved and overflow/underflow bounds - can an attacker exploit edge cases where two histories are incomparable (neither is strictly stricter) to cause validation inconsistencies across validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d49a8a05-92a5-4b58-a29f-d183915bcccc?mode=deep",
+    "timestamp": "2026-01-27 00:40:59.608061",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: stricter_than()] [is_none_or predicate] Lines 318-325 use is_none_or() for overflow/underflow comparisons - can an attacker exploit the asymmetry where None (no overflow recorded) is considered less strict than Some, allowing permissive histories to be incorrectly accepted? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_819c5934-3507-4a29-a351-74db680d545e?mode=deep",
+    "timestamp": "2026-01-27 00:41:23.980625",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: stricter_than()] [Transitivity violation] Does stricter_than() maintain proper transitivity (if A stricter than B and B stricter than C, then A stricter than C)? Can an attacker exploit non-transitivity to create circular strictness relationships that confuse validation logic? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_edeadbbc-42ae-438a-bbfb-ed973ed5f070?mode=deep",
+    "timestamp": "2026-01-27 00:41:48.924131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: stricter_than()] [Positive/negative symmetry] The function checks both positive (max_achieved, min_overflow) and negative (min_achieved, max_underflow) bounds symmetrically - can an attacker exploit any asymmetry in how positive vs negative deltas are compared to create histories that appear stricter but are actually more permissive? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33bd3baf-d6b3-4d8d-a55a-607fb0f450b9?mode=deep",
+    "timestamp": "2026-01-27 00:42:13.957082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: stricter_than()] [Partial ordering] Since stricter_than() defines a partial order (not total), can an attacker exploit the existence of incomparable histories to cause different validators to select different histories during conflict resolution, leading to state divergence? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9595322-db06-4f82-ae07-01df72b913ef?mode=deep",
+    "timestamp": "2026-01-27 00:42:39.112090",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: merge_data_and_delta()] [Validation then apply pattern] The function validates history against prev_value, then applies delta - can a race condition between these two steps allow another transaction to modify prev_value, causing the delta to be applied to a different base than was validated? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9544836a-7777-4876-ba07-9a9d93d3d913?mode=deep",
+    "timestamp": "2026-01-27 00:43:03.317172",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: merge_data_and_delta()] [expect_ok() panic] Line 338-340 uses expect_ok() which can panic if the delta application fails - can an attacker craft inputs that bypass validation but still fail during delta application, causing validator crashes and network disruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9ccf367e-1abf-4973-b8ee-412d34215f19?mode=deep",
+    "timestamp": "2026-01-27 00:43:29.125310",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-aggregator/src/delta_math.rs] [Function: merge_data_and_delta()] [Double validation] The function validates history, then expects unsigned_add_delta() to succeed - but can an attacker exploit any difference between history validation and BoundedMath validation to cause the expect_ok() to fail unexpectedly? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52568603-e615-4a3a-8614-3539193afb47?mode=deep",
+    "timestamp": "2026-01-27 00:43:55.123710",
+    "report_generated": false
+  }
+]
