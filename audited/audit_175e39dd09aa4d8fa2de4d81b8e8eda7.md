@@ -1,1 +1,0 @@
-Let me examine how the CFG handles different control flow instructions, particularly focusing on whether `Call` instructions with abort actions are properly handled.
