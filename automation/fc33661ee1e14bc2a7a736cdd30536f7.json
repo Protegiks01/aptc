@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Struct: HealthCheckData] [Integer overflow] Can the round field (u64) overflow when malicious peers send health check messages with u64::MAX round numbers, potentially wrapping to 0 and causing stale state to be treated as fresh? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0e8c761a-73b5-4978-ac48-d2a48b8853d4?mode=deep",
+    "timestamp": "2026-01-27 07:05:21.406063",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Struct: HealthCheckData] [Integer overflow] Can the failures field (u64) overflow after 2^64 consecutive health check failures, wrapping to 0 and preventing peer disconnection despite persistent failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4967a1d-2b2f-4a4d-b98c-fd3cc58bce37?mode=deep",
+    "timestamp": "2026-01-27 07:05:34.204541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: HealthCheckData::new()] [State initialization] Does new() properly validate that the initial round parameter is not u64::MAX, which could prevent any future round updates via reset_peer_round_state()? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff42b392-4e72-4042-88a8-b4309b018062?mode=deep",
+    "timestamp": "2026-01-27 07:05:47.074058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Struct: HealthCheckData] [Default trait] Does the Default implementation initialize failures to 0 and round to 0, and can this cause issues if a peer reconnects with the same PeerId, potentially treating old stale health data as current? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b5e4dbe0-a2ec-4fea-9b24-71bce4607b17?mode=deep",
+    "timestamp": "2026-01-27 07:06:00.656412",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Field: health_check_data] [Race condition] Can concurrent write() calls to the RwLock<HashMap> from multiple threads cause a race condition where peer health data is corrupted or lost during simultaneous create/remove operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7fa79f3-f316-4faf-b400-388c912dd45d?mode=deep",
+    "timestamp": "2026-01-27 07:06:14.979289",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: connected_peers()] [TOCTOU] Can a peer be disconnected between the read() call acquiring the lock and the keys().cloned().collect() operation, causing the returned vector to contain stale peer IDs that are no longer connected? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea0bcdda-7823-4281-9b63-d55ea2c3de35?mode=deep",
+    "timestamp": "2026-01-27 07:06:30.200770",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: increment_peer_round_failure()] [Race condition] Can concurrent calls to increment_peer_round_failure() and reset_peer_round_state() for the same peer cause a race where failures are incremented for an old round after the round has been reset, leading to incorrect failure counts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13d3e70b-b2ed-421e-a2f2-d705fe174d25?mode=deep",
+    "timestamp": "2026-01-27 07:06:45.798356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: disconnect_peer()] [Race condition] Is there a race condition between the write().remove() call at line 79 and other functions reading health_check_data, potentially causing use-after-remove panics or stale data reads? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32b365c3-b134-4aef-8d8f-9c72db2a0695?mode=deep",
+    "timestamp": "2026-01-27 07:07:03.475279",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: create_peer_and_health_data()] [Race condition] Can concurrent calls to create_peer_and_health_data() with the same peer_id but different rounds cause non-deterministic final state depending on execution order? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8625ef49-e93d-4891-8b8a-321c8327df42?mode=deep",
+    "timestamp": "2026-01-27 07:07:21.842256",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: reset_peer_failures()] [TOCTOU] Between checking if health_check_data exists (get_mut) and setting failures to 0, can the peer be removed by disconnect_peer(), causing a TOCTOU vulnerability where failures are reset for a non-existent peer? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0339b09-9b68-4bb9-a74b-61b61db8c526?mode=deep",
+    "timestamp": "2026-01-27 07:07:41.688694",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: get_peer_failures()] [TOCTOU] Can the peer be disconnected immediately after get_peer_failures() reads the failure count, causing the caller to act on stale failure data for a disconnected peer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91079f2a-8f98-4559-afb1-7c1f39a19e78?mode=deep",
+    "timestamp": "2026-01-27 07:08:00.510367",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: disconnect_peer()] [State inconsistency] Can the function remove health_check_data (line 79) even when disconnect_from_peer() fails, causing permanent loss of peer state that cannot be recovered if the peer is still connected at the network layer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_250a5a71-9d25-4c28-9f5e-5377d7a8483f?mode=deep",
+    "timestamp": "2026-01-27 07:08:19.020516",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: disconnect_peer()] [State inconsistency] If update_connection_state() fails but returns Ok (line 72), can the peer remain in an inconsistent state where ConnectionState is not Disconnecting but disconnect_from_peer() is still called? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_42812e11-e162-4e9e-a034-827e90d206e5?mode=deep",
+    "timestamp": "2026-01-27 07:08:38.916522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: disconnect_peer()] [Race condition] Between update_connection_state(Disconnecting) at line 72 and the actual disconnect_from_peer() call at lines 74-76, can the peer send or receive additional health check messages that modify health_check_data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4eab53c4-8a9c-44d5-839e-c52a801b692d?mode=deep",
+    "timestamp": "2026-01-27 07:09:00.014141",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: disconnect_peer()] [Error handling] The comment 'Possibly already disconnected, but try anyways' (line 71) suggests idempotency, but is the error from update_connection_state() silently ignored with let _, potentially hiding critical state corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_08b4621b-44ef-4c06-887a-ee8a8c23d0b8?mode=deep",
+    "timestamp": "2026-01-27 07:09:21.849756",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: disconnect_peer()] [Byzantine peer] Can a malicious peer trigger repeated disconnect_peer() calls to cause repeated HashMap write lock acquisitions, potentially blocking all other health check operations and causing liveness issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a562e90e-0854-4755-9890-dd82cd468191?mode=deep",
+    "timestamp": "2026-01-27 07:09:44.352368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: disconnect_peer()] [Memory leak] If disconnect_from_peer() returns Ok but the peer reconnects immediately after remove() at line 79, does the system properly recreate health_check_data or can this cause orphaned network connections without health tracking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_398c2ef5-aa0d-4493-ac7d-cc535db96dc8?mode=deep",
+    "timestamp": "2026-01-27 07:10:08.228524",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: create_peer_and_health_data()] [State override] Can an attacker exploit the and_modify() logic at line 100 to repeatedly reset a peer's round to arbitrary values, preventing proper round progression and failure tracking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3eac4fd-c85d-43c1-9ecc-599bdf29636b?mode=deep",
+    "timestamp": "2026-01-27 07:10:32.331535",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: create_peer_and_health_data()] [Missing validation] Does create_peer_and_health_data() validate that the provided round parameter is reasonable, or can Byzantine peers trigger creation with round=0 or round=u64::MAX to manipulate health check logic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_db278c02-3043-40ec-ada5-a91789c49d18?mode=deep",
+    "timestamp": "2026-01-27 07:10:57.327438",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: create_peer_and_health_data()] [State inconsistency] If this function is called for an existing peer with a lower round number than currently stored, does the and_modify() clause at line 100 incorrectly move the peer backwards in time, invalidating failure counts? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9f99dc2-ed29-439e-bfae-0e3caf371252?mode=deep",
+    "timestamp": "2026-01-27 07:11:19.512090",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: create_peer_and_health_data()] [Race condition] Can concurrent calls to create_peer_and_health_data() and remove_peer_and_health_data() for the same peer cause the entry() operation to behave unpredictably due to the remove happening between entry lookup and modification? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b793e388-9b2d-45e2-9141-ab185bf398aa?mode=deep",
+    "timestamp": "2026-01-27 07:11:40.457855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: create_peer_and_health_data()] [Memory exhaustion] Does the HashMap have any size limits, or can an attacker cause unbounded memory growth by repeatedly connecting new PeerIds, filling health_check_data with entries that are never garbage collected? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36adb966-26f7-44af-9814-60b5d7484d70?mode=deep",
+    "timestamp": "2026-01-27 07:12:04.004497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: increment_peer_round_failure()] [Logic error] The condition 'health_check_data.round <= round' at line 113 allows incrementing failures for the CURRENT round, but does this check correctly handle the case where round=u64::MAX and health_check_data.round=u64::MAX? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4cc99854-33fe-4b4a-b2a4-5a6e42620c44?mode=deep",
+    "timestamp": "2026-01-27 07:12:27.678909",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: increment_peer_round_failure()] [Integer overflow] If failures reaches u64::MAX and increment_peer_round_failure() is called again (line 114), does the += 1 operation overflow to 0, resetting the failure count and preventing peer disconnection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d8a89e19-3d63-457b-827c-d394c0b1f313?mode=deep",
+    "timestamp": "2026-01-27 07:12:51.012350",
+    "report_generated": false
+  },
+  {
+    "question": "[File: network/framework/src/protocols/health_checker/interface.rs] [Function: increment_peer_round_failure()] [Byzantine peer] Can a malicious peer intentionally fail health checks to increment failures to near-u64::MAX, then cause an overflow on the next failure to reset its failure count to 0 and avoid disconnection? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12b050ab-1411-491d-bea7-d987ee2c0154?mode=deep",
+    "timestamp": "2026-01-27 07:13:15.416511",
+    "report_generated": false
+  }
+]
