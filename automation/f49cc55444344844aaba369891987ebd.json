@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: new()] [Transaction index extraction] At line 112, transaction_index is extracted from auxiliary_info - can attacker manipulate auxiliary_info to provide wrong index causing transactions to execute out of order or bypass ordering-dependent checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e995eff-0831-451d-9805-c0f9cf4316ae?mode=deep",
+    "timestamp": "2026-01-27 02:03:32.131567",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: transaction_index()] [Index None handling] At lines 211-213, transaction_index returns Option<u32> - does downstream code that relies on ordering properly handle None case, or will it cause undefined behavior in block execution where transaction order matters? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7cdac951-ac63-462d-9f3c-5c29ee166386?mode=deep",
+    "timestamp": "2026-01-27 02:03:45.675373",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: as_user_transaction_context()] [Context conversion inconsistency] At lines 195-209, TransactionMetadata is converted to UserTransactionContext - if any field transformations lose information (like fee_payer unwrap_or at line 199), can this cause execution context to differ from transaction intent? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6481aeb-80e0-4d68-a03e-28b8bc3b3736?mode=deep",
+    "timestamp": "2026-01-27 02:03:59.026461",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: as_user_transaction_context()] [Entry function payload transformation] At lines 203-204, entry_function_payload() is mapped to as_entry_function_payload() - can this transformation introduce type confusion where payload appears valid in context but is actually malformed, bypassing entry function validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e143365-7905-4076-827c-210b4f162ff7?mode=deep",
+    "timestamp": "2026-01-27 02:04:13.549184",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: as_user_transaction_context()] [Multisig payload transformation] At lines 205-206, multisig_payload is mapped to as_multisig_payload() - similar to entry function, can transformation lose critical information like multisig threshold or signer set causing multisig bypass? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eff37ab6-122f-454f-b722-1de091d194d0?mode=deep",
+    "timestamp": "2026-01-27 02:04:28.806019",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Struct: TransactionMetadata] [Uninitialized field access] At lines 18-40, struct has many fields - if struct is partially initialized (e.g., through unsafe code or Default impl), can uninitialized fields be accessed causing undefined behavior or security bypasses? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e3b8260-4f68-4ed7-9346-42352b0f433f?mode=deep",
+    "timestamp": "2026-01-27 02:04:44.843523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Struct: TransactionMetadata] [Public field mutation] All fields at lines 19-39 are public - can external code mutate fields after construction causing metadata to become inconsistent with original transaction, enabling post-validation manipulation attacks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7944d649-b856-4505-8f4f-920d49012cce?mode=deep",
+    "timestamp": "2026-01-27 02:05:02.490041",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: sender()] [Sender mutation via public field] At lines 132-134, sender() returns cloned value but sender field is public at line 19 - can external code mutate self.sender directly causing sender() to return different value than actual stored sender? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_88e4708d-b459-4ca2-81ef-db1a6a77740a?mode=deep",
+    "timestamp": "2026-01-27 02:05:22.547306",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Struct: TransactionMetadata] [Vec capacity DoS] At lines 21-22, secondary_signers and secondary_authentication_proofs are Vecs with no capacity limits - can attacker provide transaction with thousands of secondary signers causing excessive memory allocation that crashes validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e7c776c9-00db-42fe-b4e8-1bc6aa446dda?mode=deep",
+    "timestamp": "2026-01-27 02:05:42.984959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Struct: TransactionMetadata] [Script hash Vec size] At line 33, script_hash is Vec<u8> - can attacker craft transaction that produces extremely large hash vector (more than SHA3-256 output size) causing memory issues or hash comparison vulnerabilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5829d348-2c9e-47b4-96ff-7dbfb8673df2?mode=deep",
+    "timestamp": "2026-01-27 02:06:05.336354",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Struct: TransactionMetadata] [Parallel execution race] If TransactionMetadata is accessed by multiple threads during Block-STM parallel execution, can concurrent reads of mutable Vec fields (lines 21-22) cause data races leading to corrupted authentication data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_769c8ac7-614f-4030-964c-47cb9ab8eddd?mode=deep",
+    "timestamp": "2026-01-27 02:06:28.696333",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: authentication_proofs()] [Reference lifetime issue] At lines 146-150, returns Vec of references to authentication_proof and secondary_authentication_proofs - in parallel execution, can these references outlive the TransactionMetadata causing use-after-free when one thread drops metadata while another validates? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_110efc7f-ac22-4303-a3a8-f7e337f1da99?mode=deep",
+    "timestamp": "2026-01-27 02:06:54.091213",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: new()] [Construction race condition] If new() is called concurrently for same transaction from multiple threads, can race conditions in authenticator extraction (lines 46-59) cause non-deterministic metadata causing validators to execute transaction differently? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2da22d19-7ecb-4314-9b18-672ee33836ec?mode=deep",
+    "timestamp": "2026-01-27 02:07:19.983227",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Struct: TransactionMetadata] [Send/Sync safety] If TransactionMetadata incorrectly implements Send/Sync, can it be shared across threads unsafely leading to data races on non-atomic fields like is_keyless (line 35) or transaction_index (line 39)? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a4beeb52-9e25-48d6-9378-58f197cfad22?mode=deep",
+    "timestamp": "2026-01-27 02:07:47.079102",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: new()] [Gas type conversion] At lines 60-61, transaction gas values are converted with .into() to Gas and FeePerGasUnit types - do these conversions properly validate ranges, or can attacker provide values that are valid u64 but invalid in gas types causing panics? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a586334b-e1bc-43ac-87b4-7d360f602b8a?mode=deep",
+    "timestamp": "2026-01-27 02:08:14.277286",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: new()] [NumBytes type overflow] At lines 62, 75, 77, NumBytes is created from u64 - does NumBytes type use checked arithmetic, or can large values cause overflow when NumBytes are added together for total gas calculation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_87a4ce82-db52-45a7-8061-56aaae96255f?mode=deep",
+    "timestamp": "2026-01-27 02:08:41.947152",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: as_user_transaction_context()] [Type downcast] At lines 200-201, Gas and FeePerGasUnit are converted back with .into() - can this round-trip conversion lose precision or cause value changes enabling gas manipulation attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2081c43-8caf-46a6-9731-4d07f254bad7?mode=deep",
+    "timestamp": "2026-01-27 02:09:10.207548",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Struct: TransactionMetadata] [ChainId type] At line 32, chain_id is ChainId type - if ChainId is a newtype without proper validation, can attacker construct invalid ChainId that bypasses checks but causes issues in execution? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_26da3b96-e10e-45b7-bbfc-3f3cfd59b85e?mode=deep",
+    "timestamp": "2026-01-27 02:09:39.340170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: new()] [Payload executable_ref() error handling] At lines 65-66, 72-73, 84-85, executable_ref() returns Result that is matched with Ok - can Error case contain sensitive information that leaks through metadata, or can specific Error values bypass validation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_03bc4307-db10-48df-b0bd-14b13425381a?mode=deep",
+    "timestamp": "2026-01-27 02:10:06.500702",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: new()] [Script vs EntryFunction confusion] At lines 82-90, transaction can be either script or entry function but not multisig - can attacker craft transaction that appears as both causing dual execution or bypassed validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_20a68dde-9f46-42e6-a961-855760e3886e?mode=deep",
+    "timestamp": "2026-01-27 02:10:32.980583",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: new()] [Multisig v1 payload matching] At lines 93-109, special handling for TransactionPayloadInner::V1 with multisig_address - can attacker provide V2 or future versions that bypass multisig validation while still having multisig semantics? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f6bd5c3b-4192-47ea-9714-652a8bb02c7d?mode=deep",
+    "timestamp": "2026-01-27 02:10:57.439815",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: new()] [Executable type exhaustiveness] At lines 102-108, match on TransactionExecutable only handles EntryFunction with _ => None - can future executable types bypass multisig construction causing multisig transactions to silently fail validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d400805e-f2d1-48cf-95e7-fe03a2acd462?mode=deep",
+    "timestamp": "2026-01-27 02:11:23.174299",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: new()] [Authentication proof immutability] At lines 46-53, authentication proofs are extracted from authenticator - if authenticator is mutable reference, can it be changed after extraction causing metadata authentication_proof to become stale and differ from transaction authenticator? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53cbc0ec-f2bf-43a2-82b2-2c91b72065e4?mode=deep",
+    "timestamp": "2026-01-27 02:11:49.767109",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Function: authentication_proof()] [Proof reference escape] At lines 152-154, returns reference to internal authentication_proof - can this reference be used to modify the proof through interior mutability (like Cell/RefCell) causing post-validation authentication bypass? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0baa1c1-cd1c-4762-b5bb-4a62c6047082?mode=deep",
+    "timestamp": "2026-01-27 02:12:16.570464",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/transaction_metadata.rs] [Struct: TransactionMetadata] [Secondary proof Vec mutability] At line 22, secondary_authentication_proofs is public Vec - can external code push/pop elements causing length mismatch with secondary_signers enabling authentication bypass for some signers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9dd2d73b-51dc-4c19-8b1e-af5f5795e6e3?mode=deep",
+    "timestamp": "2026-01-27 02:12:45.089792",
+    "report_generated": false
+  }
+]
