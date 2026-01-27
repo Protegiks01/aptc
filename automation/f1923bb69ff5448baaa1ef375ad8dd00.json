@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: open_counter_file()] [Panic on Counter File Access] If counter_path() file is unreadable due to filesystem errors, does the panic on line 162 crash validators without attempting alternative port allocation strategies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f00f2f1-0068-43e9-801e-e78ce1ac440c?mode=deep",
+    "timestamp": "2026-01-27 00:07:39.206946",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: Drop::drop()] [Panic on Cleanup] If lock file deletion fails (line 57), does the unwrap() panic during validator shutdown cause unclean termination that leaves resources locked or ports bound? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc6f3372-97d5-4a34-a2b1-647244d8b423?mode=deep",
+    "timestamp": "2026-01-27 00:07:51.847365",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_unique_port()] [Silent Error Propagation] When counter read fails (line 125-131), does the warn!() and reset to 0 mask critical filesystem failures that indicate broader system compromise? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0a5f99ac-538f-4eb2-8d51-fb08e23dca70?mode=deep",
+    "timestamp": "2026-01-27 00:08:04.839361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_unique_port()] [Counter Bounds Check] At line 119, if counter >= PORT_VECTOR.len(), it resets to 0, but does this check account for concurrent modifications where another process incremented counter between read and bounds check? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bebbae62-e78f-41bb-b123-1d08c0cddec5?mode=deep",
+    "timestamp": "2026-01-27 00:08:18.469979",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: bind_port_from_counter()] [Counter Wraparound] When counter reaches PORT_VECTOR.len() (line 178), does the reset to 0 happen atomically with respect to other processes, or can concurrent increments cause counter > len() and out-of-bounds access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3f296e54-8f61-47fe-a851-549f1d168937?mode=deep",
+    "timestamp": "2026-01-27 00:08:33.071376",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_unique_port()] [Partial Write] If write_u16::<BigEndian>() (line 139) writes only 1 byte due to disk full, does subsequent read_u16() interpret this as a valid but incorrect counter, causing systematic port misallocation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aec7a5b2-5381-430b-8b92-bb35bdb6c668?mode=deep",
+    "timestamp": "2026-01-27 00:08:48.415923",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: bind_port_from_counter()] [Counter Type Overflow] Since counter is u16, can the increment (line 177) overflow from 65535 to 0 if PORT_VECTOR was somehow larger, bypassing the explicit bounds check and causing undefined behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_789b72c6-2cf3-4851-9189-e9c99feca450?mode=deep",
+    "timestamp": "2026-01-27 00:09:04.518423",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_unique_port()] [Counter Reset Attack] Can an attacker continuously write invalid data to the counter file, forcing all validators to reset to port 0 and causing systematic port collisions during mass validator restarts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed538e40-d9ef-44ff-8f76-d5fa9ce7aacf?mode=deep",
+    "timestamp": "2026-01-27 00:09:23.117253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_available_port_in_multiaddr()] [IPv4 Wildcard Binding] Does binding to 0.0.0.0 (line 214) expose validator nodes to external networks if firewall rules are misconfigured, allowing remote attackers to connect to internal consensus ports? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_81915c6e-d668-4f80-92b0-d4bff4572907?mode=deep",
+    "timestamp": "2026-01-27 00:09:43.049340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_local_ip()] [IP Selection Logic] If multiple non-loopback interfaces exist (line 207), does find() return the first match non-deterministically, causing validators to bind to incorrect network interfaces across restarts? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65bf5cdf-767a-4d33-b6ca-daf2b03489d9?mode=deep",
+    "timestamp": "2026-01-27 00:10:02.854192",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_local_ip()] [Loopback Filter] Can an attacker manipulate network interface configurations to make all interfaces appear as loopback, causing this function to return None and validators to fail network initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61dea2ca-7772-4d6b-8f1b-c65c495e87bd?mode=deep",
+    "timestamp": "2026-01-27 00:10:24.015144",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_available_port_in_multiaddr()] [IPv6 Localhost] Does binding to ::1 (line 216) instead of :: or specific IPv6 address restrict validators to localhost-only connections in IPv6 environments, breaking distributed consensus? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c20f2ca-c35b-4b98-8170-edba78b1d663?mode=deep",
+    "timestamp": "2026-01-27 00:10:45.160999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_local_ip()] [Interface Down] If the selected non-loopback interface is administratively down or cable unplugged, does returning its IP cause validators to bind to unreachable addresses and fail consensus participation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4aa181d0-073e-4e28-a2e5-4c1ce9671ccf?mode=deep",
+    "timestamp": "2026-01-27 00:11:06.455458",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_unique_port()] [Unwrap Chain] Lines 135-140 contain four consecutive unwrap() calls on file operations - if disk becomes read-only during operation, can this panic cascade crash validators mid-write leaving corrupted state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4599644d-897c-4512-bdf5-51f685aac794?mode=deep",
+    "timestamp": "2026-01-27 00:11:28.188829",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_available_port_in_multiaddr()] [Parse Unwrap] Does unwrap() on IP address parsing (lines 214, 216) panic if the hardcoded strings are somehow corrupted in binary, causing validator startup failure? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3553bf0f-139d-4c9a-a5f3-e60002cd4f9d?mode=deep",
+    "timestamp": "2026-01-27 00:11:51.262741",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_available_port_in_multiaddr()] [Protocol Unwrap] Does NetworkAddress::from_protocols() unwrap (line 218) panic if the protocol vector is invalid, and can this occur during adversarial network configurations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1c017f7a-2018-4dc9-ac86-f217f0bf3127?mode=deep",
+    "timestamp": "2026-01-27 00:12:14.203609",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: try_bind()] [Connection Failure] If TcpStream::connect() fails (line 91) due to connection refused, does the ? operator properly propagate the error or can timing issues cause the listener to be dropped before TIME_WAIT is established? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b3a8b48-9b87-4d69-9482-c9919292566e?mode=deep",
+    "timestamp": "2026-01-27 00:12:38.837936",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: try_bind()] [Accept Timeout] Does listener.accept() (line 92) have a timeout, or can a malicious client connect but never complete handshake, causing try_bind() to hang indefinitely and stall validator startup? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cff96915-65f5-4b66-85dc-52a7087ced70?mode=deep",
+    "timestamp": "2026-01-27 00:13:00.677668",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Global: PORT_VECTOR] [Lazy Initialization Race] Can multiple threads simultaneously access PORT_VECTOR during first initialization (line 34-39), causing data races in the shuffle operation before Lazy synchronization completes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e4f05f5-60b9-4c9b-802c-669408c3d5b9?mode=deep",
+    "timestamp": "2026-01-27 00:13:22.549710",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Global: NEXTEST_RUN_ID] [Environment Variable Race] If NEXTEST_RUN_ID environment variable changes after Lazy initialization but before validator uses it, can this cause validators to use mismatched lock files and corrupt shared counter state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b4774381-de5c-461d-b237-b3ec4f43e43d?mode=deep",
+    "timestamp": "2026-01-27 00:13:45.756135",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: get_unique_port()] [Non-Atomic File Operations] Between rewind() (line 136), set_len(0) (line 135), and write_u16() (line 139), can another process holding the lock (impossible?) or signal interruption leave file in inconsistent state? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b89c5b84-8bab-47f4-ae36-7012b7e5ebe0?mode=deep",
+    "timestamp": "2026-01-27 00:14:08.021600",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Struct: PortCounterFiles] [Drop Order] If counter_file and _lock_file have file descriptors to same underlying files, does Drop order (counter_file dropped before lock_file) matter for ensuring counter is flushed before lock released? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_13e42016-0b6e-4905-8963-c9a64c166d51?mode=deep",
+    "timestamp": "2026-01-27 00:14:29.922967",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: lock_path()] [Hardcoded /tmp] Does using /tmp for lock files expose validators to local privilege escalation where unprivileged users can observe NEXTEST_RUN_ID values and interfere with validator startup? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5474d3b2-5311-413f-84af-23c24bfc0d6e?mode=deep",
+    "timestamp": "2026-01-27 00:14:52.042907",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: counter_path()] [World-Readable Counter] Are counter files created with permissions that allow any local user to read port allocation patterns and predict validator network topology? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_403bdc1a-3f63-4e8b-a873-5cdd152926e1?mode=deep",
+    "timestamp": "2026-01-27 00:15:14.639789",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/config/src/utils.rs] [Function: open_counter_file()] [Lock File Permissions] Does create_new(true) on lock file (line 150) create with secure permissions, or can local attackers read lock file contents to infer validator startup timing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d74b6a8c-38b8-4069-8c6b-7f1441f3c55f?mode=deep",
+    "timestamp": "2026-01-27 00:15:37.895042",
+    "report_generated": false
+  }
+]
