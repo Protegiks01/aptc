@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_nonzero_scalar()] [Weak randomness] Does the underlying aptos_crypto::blstrs::random_scalar_internal() properly implement constant-time rejection sampling, or can timing side-channels leak information about how many zero scalars were rejected, potentially biasing the DKG secret key distribution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a91c3fed-9469-413b-98b9-4febf94d5bc9?mode=deep",
+    "timestamp": "2026-01-27 06:22:54.091651",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_nonzero_scalar()] [RNG state manipulation] Can a malicious validator manipulate the RNG state by controlling the timing of RNG calls to influence the distribution of nonzero scalars generated during DKG, potentially enabling private key prediction attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07af996b-d9d5-44e4-9f25-b01ee9541325?mode=deep",
+    "timestamp": "2026-01-27 06:23:06.455581",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_nonzero_scalar()] [Cryptographic bias] Does the rejection sampling in random_scalar_internal() properly reject zero without introducing bias toward small or large scalars, or can statistical analysis of generated DKG shares reveal validator randomness patterns? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_301faa56-7a71-40a4-a254-a31c224eb356?mode=deep",
+    "timestamp": "2026-01-27 06:23:19.324871",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_nonzero_scalar()] [Dependency vulnerability] Since this relies on aptos-crypto's older rand version due to 'rand_core_hell', are there known vulnerabilities in the specific rand/rand_core versions that could compromise scalar generation security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57d68a89-a12a-4959-a0de-100d2b7f8833?mode=deep",
+    "timestamp": "2026-01-27 06:23:33.592034",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_nonzero_scalar()] [RNG exhaustion] If the RNG produces zero scalars repeatedly (malicious or broken RNG), does random_scalar_internal() have a maximum retry count, or could it loop indefinitely causing DKG timeout and liveness failure? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f23a49c8-3166-4dc2-b895-4dee403e9715?mode=deep",
+    "timestamp": "2026-01-27 06:23:47.787506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_nonzero_scalar()] [Zero probability] What is the exact probability of generating a zero scalar from a cryptographically secure 256-bit random source, and has this been verified to be negligible (approximately 1/2^256) to ensure the retry is theoretically sound? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ad1e07fd-793e-4082-b942-57a57adbbb9f?mode=deep",
+    "timestamp": "2026-01-27 06:24:02.644950",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_nonzero_scalar()] [Type confusion] Can type confusion between different RNG trait implementations (rand_core vs rand) lead to using a non-cryptographic RNG that produces predictable nonzero scalars compromising DKG security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cfbe6141-6340-4f79-8145-224d4f18f6dd?mode=deep",
+    "timestamp": "2026-01-27 06:24:18.544322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_nonzero_scalar()] [Generic bounds exploitation] Can an attacker satisfy the generic RNG bounds with a malicious RNG implementation that passes type checks but produces biased or predictable scalars? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55069526-aa37-43b3-8441-252406229e6f?mode=deep",
+    "timestamp": "2026-01-27 06:24:36.295475",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_scalar_from_uniform_bytes()] [Modular bias] Does the modular reduction using mod_floor() on 512-bit input properly implement nearly uniform distribution over the scalar field, or does it introduce statistical bias that could be exploited in DKG transcript analysis? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4bba185f-24d9-4197-981d-62cd6e7fa520?mode=deep",
+    "timestamp": "2026-01-27 06:24:53.972501",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_scalar_from_uniform_bytes()] [Buffer overflow] Is the fixed-size 64-byte input ([u8; 2 * SCALAR_NUM_BYTES]) properly validated before from_bytes_le(), or can oversized inputs cause memory corruption in BigUint parsing? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_56ade071-0b9e-4ee3-83d3-5e52cd1efc9d?mode=deep",
+    "timestamp": "2026-01-27 06:25:13.183345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_scalar_from_uniform_bytes()] [Endianness attack] Can an attacker exploit little-endian byte interpretation to craft inputs that produce specific scalar values after modular reduction, enabling targeted DKG share manipulation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d7b28739-2364-4274-924b-adb41da38a76?mode=deep",
+    "timestamp": "2026-01-27 06:25:33.468674",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_scalar_from_uniform_bytes()] [Zero output] Can crafted input bytes result in a zero scalar after mod_floor() reduction, potentially causing DKG protocol failures if this function is used without zero-checking? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_176d37b2-9f0c-432e-b528-20e6ecc6f909?mode=deep",
+    "timestamp": "2026-01-27 06:25:55.049622",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_scalar_from_uniform_bytes()] [SCALAR_FIELD_ORDER validation] Is SCALAR_FIELD_ORDER the correct BLS12-381 scalar field order (prime r), and has it been verified that mod_floor() uses the exact prime avoiding off-by-one errors? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ccc795d9-267b-4404-8c6b-fc8d6db71366?mode=deep",
+    "timestamp": "2026-01-27 06:26:17.026253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_scalar_from_uniform_bytes()] [BigUint conversion] Can the BigUint to Scalar conversion (biguint_to_scalar) fail or produce invalid field elements for edge case values near the field boundary? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a32d8b8e-b38a-489c-8794-6851bdd1379e?mode=deep",
+    "timestamp": "2026-01-27 06:26:39.709082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_scalar_from_uniform_bytes()] [Determinism] Is this function deterministic for the same input bytes across different platforms/architectures, or could endianness/platform differences cause consensus failures in DKG? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5f537e6-8af6-4f27-ac10-1a00195cb8b8?mode=deep",
+    "timestamp": "2026-01-27 06:27:02.524541",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_scalar_from_uniform_bytes()] [Side-channel] Does the modular reduction operation execute in constant time, or can timing variations leak information about the remainder value enabling scalar prediction attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_539ed169-8aaa-4e66-8998-b1b4887b4ccb?mode=deep",
+    "timestamp": "2026-01-27 06:27:26.348082",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_128bit_scalar()] [Insufficient entropy] By limiting randomness to 128 bits (SCALAR_NUM_BYTES / 2) instead of full 256-bit scalar field, does this create brute-force attack vectors on DKG secrets with only 2^128 computational security instead of 2^256? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_689e0fd5-1455-419f-8368-dc8cfeb7aec2?mode=deep",
+    "timestamp": "2026-01-27 06:27:50.728304",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_128bit_scalar()] [Partial knowledge attack] If an attacker learns the upper 128 bits are always zero, can they reduce the search space for DKG private keys by half, making cryptographic attacks feasible? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12d9b4fc-704f-493c-abb8-a13d597a2a99?mode=deep",
+    "timestamp": "2026-01-27 06:28:17.302559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_128bit_scalar()] [Buffer initialization] Are the remaining upper 128 bits explicitly zeroed (full_bytes = [0u8; SCALAR_NUM_BYTES]), and could uninitialized memory contain predictable patterns that bias the scalar distribution? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e28ed8cb-48a8-4acc-8539-dad367f69268?mode=deep",
+    "timestamp": "2026-01-27 06:28:43.190035",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_128bit_scalar()] [Array indexing] Could the array slice operation full_bytes[..SCALAR_NUM_BYTES / 2].copy_from_slice() cause out-of-bounds writes if SCALAR_NUM_BYTES is odd or not properly defined? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_466f6e78-fd1d-4781-b89f-2c3f439a9f6d?mode=deep",
+    "timestamp": "2026-01-27 06:29:08.619630",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_128bit_scalar()] [Unwrap panic] Does Scalar::from_bytes_le() unwrap() always succeed for 128-bit inputs with upper bits zero, or can invalid scalar field elements cause panics disrupting DKG? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_77b7bbc1-6b52-4357-a809-171aebe4bb11?mode=deep",
+    "timestamp": "2026-01-27 06:29:30.877562",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_128bit_scalar()] [Use case validation] Where is this 128-bit function used in DKG, and could substituting it for full randomness in security-critical contexts (like secret key generation) catastrophically weaken the protocol? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e732f6c4-fe35-4c3a-ac48-09e574a6077b?mode=deep",
+    "timestamp": "2026-01-27 06:29:54.048605",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_128bit_scalar()] [Constant-time] Does the copy_from_slice operation execute in constant time, or can cache-timing attacks leak the random 128-bit value during DKG key generation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fb9c9868-8159-4297-ba21-bf2d67309521?mode=deep",
+    "timestamp": "2026-01-27 06:30:16.933585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_128bit_scalar()] [RNG fill security] Can the rng.fill() operation fail silently or produce non-random bytes if the RNG is in a compromised state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_775cfdab-222c-4077-a7ba-019433fb7cff?mode=deep",
+    "timestamp": "2026-01-27 06:30:40.682618",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-dkg/src/utils/random.rs] [Function: random_g1_point()] [Hash-to-curve bias] Does G1Projective::hash_to_curve() implement the standardized hash_to_curve algorithm (RFC 9380) ensuring uniform distribution, or can biased point generation compromise DKG public key security? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ccbe054-bd92-4882-9dc8-8fdd618a0866?mode=deep",
+    "timestamp": "2026-01-27 06:31:04.458467",
+    "report_generated": false
+  }
+]
