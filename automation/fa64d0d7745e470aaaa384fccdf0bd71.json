@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: validate_module_and_extract_new_entries()] [Empty Map Attack] If both original_groups and original_members are empty (new module), does the validation at lines 143-165 get completely skipped, allowing attackers to publish modules with arbitrary resource group configurations without checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aaada30c-8d18-470d-a31f-9bb3709555a6?mode=deep",
+    "timestamp": "2026-01-27 05:55:11.921178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: validate_module_and_extract_new_entries()] [Invariant Violation] The comment at line 149 says 'for this to fail is an invariant violation' - if structs.remove(&member) actually fails, is this logged or silently ignored, potentially masking upgrade attacks that violate Move's type system? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32e6b55f-439e-4391-b8a5-ed7981f008c9?mode=deep",
+    "timestamp": "2026-01-27 05:55:24.538530",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: validate_module_and_extract_new_entries()] [Metadata Extraction Failure] If extract_resource_group_metadata_from_module at line 140 returns Ok with corrupted data (invalid BTreeMaps), does subsequent validation detect this or proceed with bad state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f24d371b-dc8d-415e-804b-30150eb0341f?mode=deep",
+    "timestamp": "2026-01-27 05:55:37.500232",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: validate_module_and_extract_new_entries()] [Scope Downgrade Attack] At line 156, can an attacker craft a new_scope that appears valid but actually removes security restrictions by exploiting edge cases in ResourceGroupScope's is_less_strict() implementation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55bfa984-8300-4dd3-a4eb-c7a92846c21c?mode=deep",
+    "timestamp": "2026-01-27 05:55:51.184849",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: validate_module_and_extract_new_entries()] [BTreeMap Ordering] Since BTrees maintain sorted order, can an attacker craft struct names that exploit comparison ordering to bypass the remove() checks at lines 150, 164, 178, 183? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6835c196-2a6c-4f1f-a01b-3e7206530235?mode=deep",
+    "timestamp": "2026-01-27 05:56:05.531867",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata_from_module()] [Metadata Absence Attack] At lines 199-212, if get_metadata_from_compiled_code returns None, the function returns empty BTrees - can an attacker publish modules without metadata to bypass all resource group validation while still using resource group features in bytecode? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0fff3470-8593-4812-a375-6a623242eee3?mode=deep",
+    "timestamp": "2026-01-27 05:56:20.943939",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata_from_module()] [Struct Definition Mismatch] At lines 201-208, struct names are extracted from struct_defs - can an attacker craft a module where metadata references structs that don't exist in struct_defs, causing the validation logic to operate on phantom structs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_453a0b93-c8fb-49cc-aa64-96f11d5e1a15?mode=deep",
+    "timestamp": "2026-01-27 05:56:38.432711",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata_from_module()] [Handle Dereferencing] At line 205, struct_handle_at dereferences struct_def.struct_handle - can this panic if struct_handle is an invalid index, allowing DoS by crafting malicious CompiledModule with corrupted indices? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_50bafcae-4bae-4365-8dda-969c6addf418?mode=deep",
+    "timestamp": "2026-01-27 05:56:56.378768",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata_from_module()] [Identifier Extraction] At line 206, identifier_at(struct_handle.name) converts to string - can special characters or non-UTF8 bytes in the identifier cause panics or incorrect string comparisons in subsequent validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9e736b95-b8fc-4479-a796-8a693f9c2215?mode=deep",
+    "timestamp": "2026-01-27 05:57:15.798194",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata_from_module()] [Collection Iterator Attack] The iter() at line 203 creates an iterator over struct_defs - if the CompiledModule is maliciously crafted with an extremely large number of struct definitions, can this cause memory exhaustion or timeout during validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_40a58a67-0a56-4e53-9b5d-f39c57929118?mode=deep",
+    "timestamp": "2026-01-27 05:57:35.528045",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata_from_module()] [Metadata/Code Desync] If extract_resource_group_metadata succeeds but returns groups/members that reference structs not in the collected BTreeSet at line 208, does this create an inconsistency that later validation fails to catch? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3d5db0c-a767-41d0-9896-6d90212c9145?mode=deep",
+    "timestamp": "2026-01-27 05:57:56.545357",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata_from_module()] [Empty Module Attack] If old_module has no struct_defs (empty iterator), does returning an empty structs BTreeSet at line 208 cause validation logic to incorrectly assume all groups/members are valid since there are no structs to check against? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89177e56-34e3-4476-ab3b-f4fe42fa3589?mode=deep",
+    "timestamp": "2026-01-27 05:58:18.927161",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata()] [Duplicate Detection Bypass] At lines 230-233, groups.insert returns old value to detect duplicates - can an attacker craft metadata where the first insert is valid but a second insert with the same key has malicious scope, and the duplicate check only triggers error without reverting the first insertion? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5463713e-91f1-40de-b906-840bd8270143?mode=deep",
+    "timestamp": "2026-01-27 05:58:41.872360",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata()] [Attribute Type Confusion] At lines 226-242, the code checks is_resource_group() vs is_resource_group_member() - can an attacker craft attributes that return true for both predicates, causing the struct to be inserted into both groups and members maps and creating validation confusion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7cd44c40-9a16-4096-83b0-2a00950090c8?mode=deep",
+    "timestamp": "2026-01-27 05:59:06.203908",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata()] [Metadata Extraction Failure] At lines 227-229 and 235-237, get_resource_group() and get_resource_group_member() can return None despite the is_* checks passing - is this exploitable to cause validation to incorrectly reject valid modules or accept invalid ones? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ce7ac8f-b9a1-46f0-af2a-65cac5cec946?mode=deep",
+    "timestamp": "2026-01-27 05:59:31.049940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata()] [Member Duplicate Attack] At lines 238-241, similar duplicate detection for members - can an attacker insert the same member multiple times with different groups, where only the last insertion is caught but earlier ones poison the validation state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec35a866-fc95-4a55-9f3b-87668b76872d?mode=deep",
+    "timestamp": "2026-01-27 05:59:56.765741",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata()] [Attribute Iteration] At line 225, the nested loops iterate over struct_attributes - if metadata contains millions of attributes, can this cause validation timeout and allow attackers to DoS module publishing by including expensive-to-validate metadata? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f11261d6-d2b8-44ab-92f5-42fd6f62b89a?mode=deep",
+    "timestamp": "2026-01-27 06:00:23.458343",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata()] [StructTag Key Collision] Both groups and members use String keys from struct_ - can an attacker craft struct names that cause hash collisions in BTreeMap, making it impossible to store certain valid resource group configurations? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_067051fb-8f94-4458-8a26-b8b8890ebc13?mode=deep",
+    "timestamp": "2026-01-27 06:00:51.956058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata()] [Partial Extraction] If the function encounters an error mid-way through the loops at line 224, are the partially-constructed groups/members maps returned or discarded, and could partial data be exploited in subsequent validation steps? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf06523a-c001-46cf-b582-eaff0f3a6909?mode=deep",
+    "timestamp": "2026-01-27 06:01:19.907237",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: extract_resource_group_metadata()] [Unknown Attribute Bypass] If attrs contains attribute types other than resource_group or resource_group_member, are these silently ignored at line 242, potentially allowing attackers to include hidden metadata that bypasses Move VM checks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e8bf862d-037d-4ed1-bd57-eccbd9cb928e?mode=deep",
+    "timestamp": "2026-01-27 06:01:48.178319",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: metadata_validation_err()] [Error Suppression] At line 21, this function always returns Err - can callers misuse it in contexts where Ok() is expected, causing the error to be incorrectly handled and validation to continue with invalid state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_74201e29-8bd1-45c4-92fe-d8d570fea229?mode=deep",
+    "timestamp": "2026-01-27 06:02:16.986156",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: metadata_validation_error()] [Status Code] At line 25, StatusCode::CONSTRAINT_NOT_SATISFIED is used for all metadata errors - does this generic status code make it harder to distinguish critical security violations from benign validation failures in logs and monitoring? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_af2a1c7b-4d56-4456-9e62-36841b03e1a7?mode=deep",
+    "timestamp": "2026-01-27 06:02:45.404311",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: metadata_validation_error()] [Location Undefined] At line 27, Location::Undefined is used - does this make it impossible to debug which specific module or transaction caused the validation failure, potentially hiding exploitation attempts? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0a81605-ce0b-44bb-a46b-8a5d044c02e1?mode=deep",
+    "timestamp": "2026-01-27 06:03:14.426023",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Function: metadata_validation_error()] [Message Injection] At line 26, the error message is formatted with user-provided msg - can attackers inject special characters or extremely long strings that cause log injection or buffer overflow in error handling code? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_025ae2ef-5e3b-4aaa-be1b-9275fc7d86e5?mode=deep",
+    "timestamp": "2026-01-27 06:03:43.332529",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm/src/verifier/resource_groups.rs] [Gas Metering] [Unmetered Operations] The file uses multiple 'unmetered_get_*' functions at lines 66, 79, 137 - can attackers exploit these unmetered operations to perform expensive storage reads without gas payment, causing validator resource exhaustion? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1edede28-4239-45b9-bec5-34993515eef1?mode=deep",
+    "timestamp": "2026-01-27 06:04:12.960251",
+    "report_generated": false
+  }
+]
