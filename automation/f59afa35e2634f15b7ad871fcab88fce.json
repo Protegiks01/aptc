@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: build_filter()] [Filter Inconsistency] When RUST_LOG is set but RUST_LOG_TELEMETRY is not, does the split filtering at lines 396-427 create situations where critical errors are logged locally but not sent to telemetry, causing incomplete security audit trails? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_352d87ef-4842-4c1e-8fb9-c47525fb87fe?mode=deep",
+    "timestamp": "2026-01-27 02:44:33.242233",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: build_filter() telemetry] [Logic Error] If is_async is true but remote_log_tx is None (line 410), telemetry filter is set to Off - can this hide Byzantine validator behavior when telemetry is expected but not configured correctly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49204c1b-57dc-472d-9401-d8395bdfa1d9?mode=deep",
+    "timestamp": "2026-01-27 02:44:45.735368",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: FilterTuple::enabled()] [Filter Bypass] Does the OR logic at line 500 mean that if either local_filter OR telemetry_filter is enabled, the event is logged - could this allow an attacker to bypass intended filtering by manipulating one filter to always return true? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7ed7d32-0b15-4e65-a676-613b81880115?mode=deep",
+    "timestamp": "2026-01-27 02:44:58.946255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::set_filter()] [Race Condition] When set_filter() acquires write lock at line 540, can concurrent log events acquire read locks, causing validators to use inconsistent filters and produce non-deterministic log output during filter updates? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_da4bb4cd-41b0-483c-8692-9c4ec55dc5d7?mode=deep",
+    "timestamp": "2026-01-27 02:45:12.518281",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::set_local_filter()] [Lock Ordering] If multiple threads simultaneously call set_local_filter() and set_telemetry_filter() (lines 543-548), could lock acquisition ordering differ causing potential deadlocks that halt validator logging and hide consensus issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_915a5f0f-9413-4f52-8d5f-1c5c971a9189?mode=deep",
+    "timestamp": "2026-01-27 02:45:27.098402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::set_filter()] [Memory Ordering] Does the RwLock at line 540 provide proper memory ordering guarantees, or could relaxed atomics in the underlying implementation cause other threads to see partially-updated filter state leading to log corruption? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d33f854-e53e-4934-9198-76aea17a18a6?mode=deep",
+    "timestamp": "2026-01-27 02:45:42.497363",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::send_entry()] [Format Panic] Can the formatter function call at line 553 panic if custom_format is provided with invalid LogEntry data, and would this panic propagate to consensus code causing validator crash during block proposal? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_966d7d62-9382-40bc-8c5c-8224db59091b?mode=deep",
+    "timestamp": "2026-01-27 02:45:59.522040",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::send_entry()] [Synchronous Write] When printer is Some, does the synchronous write at line 554 block the calling thread, and could an attacker cause slow disk I/O to delay consensus operations below timeout thresholds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a199310d-bee6-4a86-bd96-a0ee07fdbbac?mode=deep",
+    "timestamp": "2026-01-27 02:46:17.627534",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::send_entry()] [Channel Drop] When try_send fails at line 558-563, STRUCT_LOG_QUEUE_ERROR_COUNT is incremented but the LogEntry is silently dropped - can an attacker cause sustained channel saturation to drop all consensus-critical security audit logs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6e8153f3-b478-429b-9fa2-6d266b3c149f?mode=deep",
+    "timestamp": "2026-01-27 02:46:36.598322",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::send_entry()] [Error Metric Overflow] If STRUCT_LOG_QUEUE_ERROR_COUNT overflows after 2^64 increments, could this wrap to zero, making monitoring systems incorrectly believe log dropping has stopped when it continues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_23c1a403-465c-4f6b-bc70-f1266d47fb0c?mode=deep",
+    "timestamp": "2026-01-27 02:46:57.619674",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::flush()] [Timeout Deadlock] If the oneshot_receiver.recv_timeout() at line 588 always times out because LoggerService is overwhelmed, does the validator retry indefinitely, or could this cause flush() callers to hang during critical shutdown sequences? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_943a103e-43c1-4114-b43c-60478c4f97dd?mode=deep",
+    "timestamp": "2026-01-27 02:47:19.002213",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::flush()] [Sleep DoS] When try_send fails at line 592-595, the code sleeps for FLUSH_TIMEOUT (5 seconds) - can an attacker cause repeated flush failures to make validator threads sleep excessively, missing consensus deadlines and causing liveness loss? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5dad6e41-3b64-4cb8-94b1-1631a332c985?mode=deep",
+    "timestamp": "2026-01-27 02:47:40.338955",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::flush()] [Channel Allocation] Does sync_channel(1) at line 585 allocate new memory for each flush operation, and could an attacker trigger frequent flushes to cause memory pressure affecting validator performance? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d934bd83-000b-43be-88d6-bfb36bebd1d3?mode=deep",
+    "timestamp": "2026-01-27 02:48:01.956406",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: AptosData::flush()] [Error Handling] The eprintln! calls at lines 589 and 593 write to stderr which may block or fail - could stderr write failures cause panics that crash validators during consensus-critical log flushing? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97669eb4-a145-482b-a007-92e828f87a21?mode=deep",
+    "timestamp": "2026-01-27 02:48:23.949333",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Constant: FLUSH_TIMEOUT] [Timeout Tuning] Is the 5-second FLUSH_TIMEOUT at line 46 appropriate for all deployment scenarios, or could slow telemetry systems cause legitimate flushes to timeout, dropping critical audit data about consensus violations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f849247-82ca-448d-8dc3-045690a13196?mode=deep",
+    "timestamp": "2026-01-27 02:48:46.430163",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: LoggerService::run()] [Unbounded Loop] Does the for loop at line 619 exit cleanly when receiver is dropped, or could the thread continue running indefinitely if sender is leaked, wasting resources and preventing validator shutdown? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_09128670-0af5-4ce0-baea-b3b916af0ff2?mode=deep",
+    "timestamp": "2026-01-27 02:49:08.872285",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: LoggerService::run() LogEntry processing] [Metric Race] Do the counter increments at lines 622-628 use atomic operations, or could concurrent increments from multiple LoggerService instances (if multiple are created) cause incorrect metrics? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d3bd4a63-f0d4-48c7-bdad-8339d0fd82d7?mode=deep",
+    "timestamp": "2026-01-27 02:49:29.257764",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: LoggerService::run() printer write] [Format Error Panic] Can the formatter call at line 638 panic if custom format logic has bugs, and would this kill the LoggerService thread causing all subsequent logs to be dropped silently? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f5e7db5-5242-443f-9914-9fb1f705d5e5?mode=deep",
+    "timestamp": "2026-01-27 02:49:51.055511",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: LoggerService::run() write_buferred] [Typo Consequences] The misspelled write_buferred() at line 639 instead of write_buffered - does this indicate rushed code that may have additional logic errors in buffer management? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cdefbcbe-a6b2-4547-8381-a0164d772b28?mode=deep",
+    "timestamp": "2026-01-27 02:50:13.480566",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: LoggerService::run() telemetry write] [JSON Format Panic] Can json_format() at line 651 panic if LogEntry contains non-serializable data, killing the LoggerService thread and stopping all logging? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7bc15027-ff7b-4b47-b85d-08fa355955b8?mode=deep",
+    "timestamp": "2026-01-27 02:50:37.242593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: LoggerService::run() telemetry write] [Error Swallowing] Why is telemetry writer.write() result ignored with let _ at line 652 - can this hide critical failures where security audit logs are not actually sent to telemetry backend? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9c25413-2831-43fe-93b8-d4858cccf84f?mode=deep",
+    "timestamp": "2026-01-27 02:51:01.187372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: LoggerService::run() flush handling] [Timeout Chain] When enable_telemetry_flush is true (line 659), can cascading timeouts from writer.flush() at line 660-676 and rx.recv_timeout() at line 662 cause total flush time to exceed validator timeout thresholds? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60a357c0-d270-4f37-8d2e-9ebdd28ca3c8?mode=deep",
+    "timestamp": "2026-01-27 02:51:25.303292",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: LoggerService::run() flush sampling] [Sample Rate Bypass] Does the SampleRate::Duration(60 seconds) at lines 664 and 671 mean errors are only logged once per minute - could an attacker cause sustained flush failures that are barely visible in logs, hiding telemetry system compromise? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_be7bd315-d31d-445c-8fa6-4032728800b4?mode=deep",
+    "timestamp": "2026-01-27 02:51:49.634238",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: LoggerService::run() flush response] [Response Drop] If sender.send(()) at line 678 fails because the flush requester already timed out and dropped the receiver, is this handled gracefully, or could errors accumulate affecting service stability? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3eed28e4-7a01-446e-83e7-471b5219c65f?mode=deep",
+    "timestamp": "2026-01-27 02:52:14.370520",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-logger/src/aptos_logger.rs] [Function: StdoutWriter::write()] [Stdout Lock] Does println!() at line 708 acquire stdout lock on each call, and could an attacker cause lock contention by triggering high log rates that degrade validator performance during consensus rounds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_02a8e7e1-81ff-45e0-a09c-5d95e36ce6a8?mode=deep",
+    "timestamp": "2026-01-27 02:52:40.332980",
+    "report_generated": false
+  }
+]
