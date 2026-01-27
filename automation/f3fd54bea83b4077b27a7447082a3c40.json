@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [DoS/Memory exhaustion] Can a malicious validator propose an UnsupportedJWK with extremely large id or payload Vec<u8> fields (e.g., gigabytes) during JWK consensus, causing memory exhaustion and validator crashes leading to loss of liveness? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_07795486-a8f9-4fc0-b462-31bbba1191b7?mode=deep",
+    "timestamp": "2026-01-27 01:47:41.222004",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [DoS/Storage exhaustion] Since there are no size limits on the payload field, can an attacker submit thousands of UnsupportedJWKs with maximum-size payloads through consensus to bloat on-chain storage, causing state explosion and making the blockchain unmanageable? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2a7eac0f-2d60-4f8c-b187-1077dc78528e?mode=deep",
+    "timestamp": "2026-01-27 01:47:53.719743",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Validation bypass] Are there any bounds checks on the id field length? Can a zero-length id be used to create collisions or bypass lookup mechanisms in ProviderJWKs.get_jwk(), allowing unauthorized JWK usage? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1cb5e60c-3c50-469f-8f3e-6d712bfc4a1e?mode=deep",
+    "timestamp": "2026-01-27 01:48:06.529751",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Data integrity] Can the payload field contain arbitrary binary data including null bytes or control characters that could break downstream parsing in keyless validation, causing authentication failures or bypasses? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_58f7cc01-9443-40a9-9965-0fbf8de78484?mode=deep",
+    "timestamp": "2026-01-27 01:48:19.947498",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: fmt()] [Panic/DoS] In the Debug implementation at line 23, String::from_utf8() can fail for non-UTF8 payload data. Does this cause a panic that could crash validator nodes during logging, leading to consensus disruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3f1b25a-0234-4187-bf3c-a8e3e6b89144?mode=deep",
+    "timestamp": "2026-01-27 01:48:33.926175",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: fmt()] [Information leakage] The Debug trait exposes the full payload in logs. Can this leak sensitive cryptographic material or private keys if an UnsupportedJWK accidentally contains confidential data, violating security assumptions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_94d0508e-3516-42a8-be98-77ac5e754fe5?mode=deep",
+    "timestamp": "2026-01-27 01:48:49.214794",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: fmt()] [DoS/Performance] Does hex::encode() on arbitrarily large id fields in the Debug implementation cause performance degradation or stack overflow when logging during consensus, potentially stalling validator operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f8f26fd2-79b5-46a5-a67c-c77dfe3be252?mode=deep",
+    "timestamp": "2026-01-27 01:49:05.325530",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: new_with_payload()] [Hash collision] At line 39, SHA3-256 is used to generate the id from payload. If SHA3-256 is ever broken or a practical collision is found, can an attacker create two different JWKs with the same id, causing consensus confusion or authentication bypasses? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9d6aef1-4c51-47ec-ac23-0a3c449da6d4?mode=deep",
+    "timestamp": "2026-01-27 01:49:22.912739",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: new_with_payload()] [Preimage attack] Can an attacker who controls the payload field craft a specific payload that produces a desired id hash, allowing them to impersonate or replace legitimate JWKs in the consensus system? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3fb1be9e-1c97-480c-bd2f-f175c5ef3a4e?mode=deep",
+    "timestamp": "2026-01-27 01:49:42.125188",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: From<serde_json::Value>] [Hash collision exploitation] At line 55, the same SHA3-256 hashing is used. Can an attacker exploit JSON canonicalization differences (noted in the TODO at line 53) to create multiple JSON representations that hash to the same id but have different semantic meanings? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17f1ddef-1e51-4127-8c80-1f786677aa0f?mode=deep",
+    "timestamp": "2026-01-27 01:50:01.969409",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: From<serde_json::Value>] [Determinism violation] Since the TODO at line 53 mentions non-canonical JSON serialization, can different validators produce different payload bytes for the same JSON object, leading to different id hashes and consensus failure? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5fd8b350-abab-43bb-a34e-7a33195dc49e?mode=deep",
+    "timestamp": "2026-01-27 01:50:22.958982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: From<serde_json::Value>] [Consensus divergence] The TODO comment at line 53 indicates that to_string() is not canonical. Can this cause validators to disagree on the byte representation of UnsupportedJWKs, breaking consensus safety guarantees and causing chain splits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0359d9f6-b7d9-44a1-b60d-33467a634eba?mode=deep",
+    "timestamp": "2026-01-27 01:50:44.876522",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: From<serde_json::Value>] [Key ordering attack] Does serde_json::Value.to_string() preserve key ordering? Can an attacker exploit different JSON key orderings to bypass id-based deduplication while actually representing the same JWK? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_218f32f7-dea7-41da-9693-87efb68c4425?mode=deep",
+    "timestamp": "2026-01-27 01:51:06.952272",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: From<serde_json::Value>] [Whitespace manipulation] Can differences in JSON whitespace, newlines, or formatting cause the same logical JWK to produce different payload bytes and thus different ids, allowing duplicate JWKs in consensus state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55a51d38-2e74-428b-941c-74a1e9c0252f?mode=deep",
+    "timestamp": "2026-01-27 01:51:30.583506",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: From<serde_json::Value>] [Unicode normalization] If the JSON contains Unicode characters, can different Unicode normalization forms (NFC, NFD, NFKC, NFKD) produce different byte representations, causing id mismatches and consensus issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0ac682ab-c8fa-422a-b825-03c5273a8cf7?mode=deep",
+    "timestamp": "2026-01-27 01:51:55.150485",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: From<serde_json::Value>] [Number precision] Does serde_json's number serialization maintain consistent precision across platforms? Can floating-point representation differences cause validators to generate different payload bytes for numeric JWK fields? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e552cce8-9f93-4fa5-b36b-0861e65b8ebc?mode=deep",
+    "timestamp": "2026-01-27 01:52:19.738692",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Trait: Clone] [Memory amplification] The struct derives Clone at line 13. Can repeated cloning of UnsupportedJWKs with large payloads during consensus message passing cause memory exhaustion attacks on validator nodes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dd1c86b3-606e-43dd-9bd2-01dc5a82063f?mode=deep",
+    "timestamp": "2026-01-27 01:52:45.063592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Function: id()] [Unnecessary allocation] At line 47, id() returns a cloned Vec<u8>. In high-frequency consensus operations, does this cause excessive memory allocations and performance degradation that could slow down block processing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c2fc8d09-9623-4c68-a6e6-60858b42764d?mode=deep",
+    "timestamp": "2026-01-27 01:53:11.869417",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Struct: UnsupportedJWK] [Reference safety] Since id and payload are Vec<u8>, are there any unsafe pointer operations or transmutations elsewhere in the codebase that could cause use-after-free or double-free vulnerabilities when handling UnsupportedJWKs? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5292d6e-ed52-4965-8620-47098f0d619d?mode=deep",
+    "timestamp": "2026-01-27 01:53:39.721811",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Derive: Serialize/Deserialize] [Deserialization bomb] Can a maliciously crafted serialized UnsupportedJWK with nested or compressed data cause exponential memory expansion during BCS deserialization, crashing validator nodes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_213cb62e-26ca-4bcb-b1d0-5ead2c0b98e0?mode=deep",
+    "timestamp": "2026-01-27 01:54:06.908449",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Derive: Serialize/Deserialize] [Version incompatibility] If the struct layout changes in future versions, can old serialized UnsupportedJWKs be deserialized incorrectly, causing state corruption or consensus divergence during upgrades? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37bb754c-ae42-465d-81e3-2b25f519eebe?mode=deep",
+    "timestamp": "2026-01-27 01:54:34.002160",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Derive: Serialize/Deserialize] [Integer overflow in length] During deserialization, can extremely large length prefixes for the Vec<u8> fields cause integer overflow in memory allocation calculations, leading to buffer overflows? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_037561ae-0ea5-437e-b989-a66986a2b03e?mode=deep",
+    "timestamp": "2026-01-27 01:55:01.703877",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Trait: AsMoveValue] [Type confusion] At lines 62-67, the struct is converted to a MoveStruct::Runtime. Can type confusion occur if the Move contract expects a different struct layout, causing resource corruption or unauthorized access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_726fd82e-f9be-4db1-8318-3d09a95f8e4b?mode=deep",
+    "timestamp": "2026-01-27 01:55:30.379765",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Trait: AsMoveValue] [Field ordering] Does the as_move_value() implementation at lines 63-66 guarantee the same field ordering as the Move definition? Can field order mismatches cause Move VM to misinterpret id and payload fields? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3a79c76f-74da-431b-aa7e-0563dfa90ae0?mode=deep",
+    "timestamp": "2026-01-27 01:55:59.175919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/types/src/jwks/unsupported/mod.rs] [Trait: AsMoveAny] [Type name collision] The MOVE_TYPE_NAME at line 71 is hardcoded as '0x1::jwks::UnsupportedJWK'. Can an attacker deploy a malicious module with the same type name to cause type confusion and hijack JWK validation logic? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84c988bf-6464-448e-a4f8-4d05f58839e7?mode=deep",
+    "timestamp": "2026-01-27 01:56:27.874578",
+    "report_generated": false
+  }
+]
