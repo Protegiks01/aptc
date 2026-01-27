@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: from_resource_write_with_maybe_layout()] [Layout validity] Is the provided TriompheArc<MoveTypeLayout> validated to actually match the WriteOp's data structure, or can attackers provide incorrect layouts causing type confusion during delayed field resolution? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_45773f75-ab11-4f1e-abeb-ddb727e89a58?mode=deep",
+    "timestamp": "2026-01-27 07:08:52.130855",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: from_resource_write_with_maybe_layout()] [Arc reference counting] The use of TriompheArc (atomic reference counting) suggests shared ownership - can memory leaks or use-after-free bugs occur if the layout is freed while WriteWithDelayedFieldsOp still references it? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d34bdb27-2685-4f31-b82d-8d5373486965?mode=deep",
+    "timestamp": "2026-01-27 07:09:04.787952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: GroupWrite::new()] [Assertion bypass] The assert on line 185 requires metadata_op.bytes() to be None or empty - can an attacker create a GroupWrite with non-empty bytes by directly constructing the struct instead of using new(), bypassing validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_811cc7e1-7d1f-4087-85aa-57b59593da23?mode=deep",
+    "timestamp": "2026-01-27 07:09:18.045521",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: GroupWrite::new()] [Inner ops metadata assertion] The assert on line 191 requires inner_ops to have no metadata - if this assertion is bypassed, can attackers include metadata in inner_ops to double-count storage deposits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_98b813a6-5910-4801-b583-cf5e6c38e027?mode=deep",
+    "timestamp": "2026-01-27 07:09:32.330006",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: GroupWrite::new()] [Deletion consistency] The comment on line 161 states 'If the metadata_op is a deletion, all (correct) inner_ops should be deletions' - is this validated, or can attackers mix deletion metadata_op with creation/modification inner_ops causing state corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_208976a4-aa80-41a4-9f53-4c0573547d8e?mode=deep",
+    "timestamp": "2026-01-27 07:09:46.694080",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: GroupWrite::new()] [Creation inner op] The comment notes 'if metadata_op is a creation, then there may not be a creation inner op' - can this ambiguity be exploited to create resource groups without proper inner resource initialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ead9ffc-b41b-4a1d-b489-d3fabca431d0?mode=deep",
+    "timestamp": "2026-01-27 07:10:01.839542",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: GroupWrite::new()] [maybe_group_op_size calculation] Line 196 uses !metadata_op.is_deletion() to determine if maybe_group_op_size should be Some - can attackers exploit modification ops that behave like deletions to set Some(size) when it should be None? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e372def0-18d9-4ccc-813a-fe2d2361c16b?mode=deep",
+    "timestamp": "2026-01-27 07:10:19.107130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: GroupWrite] [BTreeMap ordering] inner_ops uses BTreeMap<StructTag, _> - does the deterministic ordering matter for consensus, and can attackers exploit hash collisions or ordering differences to cause non-deterministic state roots? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca372dd5-0bd7-4de4-949a-d2b9b85ad6a6?mode=deep",
+    "timestamp": "2026-01-27 07:10:36.942290",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: GroupWrite] [Layout storage] inner_ops stores Option<TriompheArc<MoveTypeLayout>> for each entry - can attackers provide Some(layout) for some resources but None for others in the same group, causing inconsistent delayed field handling? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8db68f28-da76-42fb-884f-c740960bbeef?mode=deep",
+    "timestamp": "2026-01-27 07:10:56.178039",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: GroupWrite] [prev_group_size overflow] The prev_group_size is u64 - can extremely large resource groups cause overflow when calculating size deltas for storage fees, allowing attackers to shrink groups without paying deletion fees? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2f55210-29f6-4a83-ada6-02eff2635ec8?mode=deep",
+    "timestamp": "2026-01-27 07:11:16.509397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: GroupWrite::new()] [Empty inner_ops] Can an attacker create a GroupWrite with an empty inner_ops BTreeMap, representing a resource group with only metadata but no actual resources, bypassing gas charges for group operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3ce8f8b4-25da-43f0-b6b3-e5060341adf7?mode=deep",
+    "timestamp": "2026-01-27 07:11:37.371007",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: GroupWrite::new()] [Panic in production] The asserts on lines 185 and 191 will panic if violated - can attackers deliberately trigger these panics in production to crash validator nodes and cause liveness failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85d97b5c-ab8a-4ff7-b679-d0c5608be900?mode=deep",
+    "timestamp": "2026-01-27 07:11:59.744838",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: maybe_group_op_size()] [Size deserialization] The comment on line 207 mentions 'asserts on deserializing the size' - if deserialization fails for maybe_group_op_size, can this cause validators to diverge on group size calculations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2daa5743-40ec-4967-a8cd-486bdf9d2ec3?mode=deep",
+    "timestamp": "2026-01-27 07:12:23.406058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: maybe_group_op_size()] [None vs Some(0)] Can an attacker exploit the semantic difference between None (deletion) and Some(ResourceGroupSize(0)) (empty group) to manipulate storage fee calculations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3f3d0ac-41f4-4d9c-973d-a9f8a1d51b22?mode=deep",
+    "timestamp": "2026-01-27 07:12:48.180101",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: prev_group_size()] [Size validation] Does prev_group_size undergo any validation to ensure it matches actual previous storage state, or can attackers arbitrarily set this value when constructing GroupWrite? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3097cf7-a440-4dd0-81ab-d2aeb002be17?mode=deep",
+    "timestamp": "2026-01-27 07:13:13.834982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: metadata_op()] [Immutable reference] metadata_op() returns &WriteOp - can the immutability be bypassed using unsafe code or interior mutability patterns to modify metadata_op after GroupWrite construction? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fd79c03a-8f80-4f8d-9e43-74a4b887b99e?mode=deep",
+    "timestamp": "2026-01-27 07:13:40.589131",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Function: inner_ops()] [BTreeMap exposure] Returning &BTreeMap exposes internal structure - can attackers exploit iteration order differences or use this reference to observe partial write states during concurrent execution? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_16cdef75-00dc-442d-9e26-3989d83a18fc?mode=deep",
+    "timestamp": "2026-01-27 07:14:07.940227",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: WriteWithDelayedFieldsOp] [Deletion with layout] The comment on line 229 notes 'write_op can be a Deletion, as long as the Move type layout contains a delayed field' - can this be exploited to delete resources while avoiding delayed field finalization costs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3e0374c2-c996-4735-9897-b6eb39376199?mode=deep",
+    "timestamp": "2026-01-27 07:14:35.101999",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: WriteWithDelayedFieldsOp] [materialized_size Option] Why is materialized_size Option<u64> instead of always Some? Can None values cause gas calculation errors when the size should be known? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6263d8fd-f2d9-4b4d-8b0d-fbbc1c78ffaa?mode=deep",
+    "timestamp": "2026-01-27 07:15:02.385407",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: WriteWithDelayedFieldsOp] [Layout-size mismatch] Is there validation that the layout actually contains delayed fields matching the write_op bytes, or can mismatched layouts cause crashes during materialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32082aa8-ff8c-47b7-b844-c2d93cebe516?mode=deep",
+    "timestamp": "2026-01-27 07:15:30.474933",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: WriteWithDelayedFieldsOp] [Layout memory] TriompheArc provides atomic reference counting - can reference count overflows (unlikely but theoretically possible) cause use-after-free if layout is shared across millions of transactions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37fa5b18-71dd-430a-bdbf-b82448583f92?mode=deep",
+    "timestamp": "2026-01-27 07:16:00.425379",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: InPlaceDelayedFieldChangeOp] [No WriteOp] This variant stores metadata separately without an associated WriteOp - can this cause state inconsistencies where metadata is updated but actual resource bytes aren't written? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a48e3ab4-d757-425e-bdd9-3d84e07df715?mode=deep",
+    "timestamp": "2026-01-27 07:16:29.802910",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: InPlaceDelayedFieldChangeOp] [Comment on line 237-238] The comment says 'Actual information on which delayed fields were read is unnecessary' - could tracking this information prevent attackers from claiming they modified delayed fields they never actually read? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61c61752-d60c-4756-b916-a65227382cd2?mode=deep",
+    "timestamp": "2026-01-27 07:16:58.175170",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: InPlaceDelayedFieldChangeOp] [materialized_size required] Unlike WriteWithDelayedFieldsOp, this has materialized_size as u64 not Option<u64> - what prevents attackers from setting this to 0 to avoid gas charges for large in-place modifications? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_92a1dc10-ce97-4933-8549-a49ba1db87c2?mode=deep",
+    "timestamp": "2026-01-27 07:17:27.139106",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/aptos-vm-types/src/abstract_write_op.rs] [Struct: InPlaceDelayedFieldChangeOp] [Metadata standalone] The metadata is stored independently - can attackers exploit timing differences between metadata updates and actual value materialization in the storage layer? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c5ff6036-7b9d-4ee1-806c-8abd572716b6?mode=deep",
+    "timestamp": "2026-01-27 07:17:56.484134",
+    "report_generated": false
+  }
+]
