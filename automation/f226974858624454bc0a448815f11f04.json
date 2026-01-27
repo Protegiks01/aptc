@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Panic/DoS] In the is_valid() method at line 34, serde_json::to_string(self).unwrap() is called without error handling - can an attacker craft a malicious filter implementation with non-serializable fields (e.g., circular references, infinite recursion in Debug trait) to trigger a panic and crash the indexer service, causing denial of service for all clients querying filtered transaction data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8265e2a5-ca96-4a83-a908-031f0c4d3130?mode=deep",
+    "timestamp": "2026-01-27 00:24:35.509799",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Resource exhaustion] When serde_json::to_string(self) is called on line 34, can an attacker provide a deeply nested filter structure (e.g., thousands of nested Option<Filter> types) that causes exponential JSON serialization time and memory consumption, leading to OOM crashes and indexer unavailability? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97a794fe-8e80-4077-ba7b-ae3f3422a1ee?mode=deep",
+    "timestamp": "2026-01-27 00:24:47.860001",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Information disclosure] The error trace includes the full serialized filter via serde_json::to_string(self) at line 34 - can this leak sensitive internal state, private keys, or configuration data if a custom filter implementation accidentally includes confidential fields that get serialized and propagated in error messages? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4efe9879-74ba-4722-89c5-c2a435417804?mode=deep",
+    "timestamp": "2026-01-27 00:25:00.916255",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Type confusion] At line 35-36, std::any::type_name::<Self>() exposes the full Rust type path - can an attacker use this information to fingerprint the exact version and internal structure of filter implementations, enabling targeted exploits against known vulnerabilities in specific filter versions? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d58c1e1a-b3d3-422c-906f-6f922d9db403?mode=deep",
+    "timestamp": "2026-01-27 00:25:15.343681",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: matches()] [Filter bypass] The trait documentation at line 44 states 'If a filter doesn't explicitly prevent an item, then it should be allowed' - can an attacker exploit this default-allow logic by creating a filter that fails to call matches() on nested filters, causing critical transactions (e.g., governance proposals, large fund transfers) to bypass filtering and be incorrectly included/excluded from indexer results? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c1e8eafe-f5d0-4561-9f7c-a81a3e86a85e?mode=deep",
+    "timestamp": "2026-01-27 00:25:29.558167",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: matches_vec()] [Logic error] The matches_vec() implementation at line 50 uses .any() which returns true if ANY item matches - is this the correct semantic for vector filtering, or should it require ALL items to match? Can an attacker exploit this by including one matching transaction in a batch to bypass filtering of malicious transactions in the same vector? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_599e3917-0c2f-4f13-8f05-f22c70695447?mode=deep",
+    "timestamp": "2026-01-27 00:25:44.482523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: matches_opt()] [Null pointer logic] At lines 54-59, matches_opt() returns false for None values - can an attacker exploit this by submitting transactions with intentionally missing optional fields (e.g., missing event data, missing user transaction payload) to bypass filters that should match those transactions, causing incorrect indexer behavior? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_292ffbcc-74cf-4ea5-8ba3-49267d70b02d?mode=deep",
+    "timestamp": "2026-01-27 00:26:00.794062",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: matches_opt_vec()] [Double-Option confusion] The matches_opt_vec() at lines 62-67 handles Option<&Vec<T>> - can the double-option wrapping lead to logic errors where a filter incorrectly returns false for Some(empty_vec) vs None, causing inconsistent filtering behavior between empty and missing transaction event lists? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0c517c05-a920-4e38-820e-861396ea9ced?mode=deep",
+    "timestamp": "2026-01-27 00:26:18.894507",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: filter_vec()] [Ownership bypass] The filter_vec() method at lines 70-75 consumes the input vector - can an attacker exploit this by passing shared references that get cloned, bypassing memory limits and causing unbounded memory growth when filtering large transaction batches? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cccdafc4-9d95-4347-a3b8-0c7e7e650808?mode=deep",
+    "timestamp": "2026-01-27 00:26:37.949070",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Implementation: Option<F>] [Security bypass] Lines 78-106 implement Filterable for Option<F> where None always returns true (allows all items) - can an attacker exploit this by injecting a None filter configuration during filter deserialization to completely disable filtering and receive ALL transactions including sensitive validator/governance transactions that should be restricted? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9be3341e-ed5b-459f-bd23-296a6ed91506?mode=deep",
+    "timestamp": "2026-01-27 00:26:57.978615",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Implementation: Option<F>] [Validation bypass] In the Option<F> validate_state() at lines 84-89, when self is Some(filter), it calls filter.is_valid() which recursively validates - but if an attacker can manipulate the filter state after validation to set it to None, does this bypass all subsequent validation checks and allow malicious filters through? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f99175c-a757-4ac5-85f2-6dea9f1973cf?mode=deep",
+    "timestamp": "2026-01-27 00:27:19.353067",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Implementation: Option<F>] [Logic inconsistency] The Option<F>::matches() at lines 92-97 returns true for None while matches_opt() at lines 100-105 also returns true for None - is there a semantic inconsistency where None means 'match everything' but should it mean 'match nothing'? Can this confusion be exploited to bypass critical filters? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d94292f-772c-4c15-88d3-14c0c99861d2?mode=deep",
+    "timestamp": "2026-01-27 00:27:41.596486",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Implementation: Option<String>] [Exact match weakness] The Option<String> implementation at lines 108-121 uses exact string equality (filter == item) - can an attacker bypass string filters by exploiting Unicode normalization issues, case sensitivity, or whitespace differences in transaction addresses/module names? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7c3e0d02-a433-4a21-8147-b146d1c4b278?mode=deep",
+    "timestamp": "2026-01-27 00:28:05.059769",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Implementation: Option<String>] [No validation] The Option<String>::validate_state() at lines 110-112 always returns Ok(()) with no validation - can an attacker submit malformed strings (e.g., invalid UTF-8, excessively long strings >10MB, null bytes) that crash downstream parsing or cause buffer overflows in C++ interop code? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bf5ef7dd-abd3-48c0-9786-11c93043c3a4?mode=deep",
+    "timestamp": "2026-01-27 00:28:28.273400",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Implementation: Option<i32>] [Integer overflow] Lines 123-136 implement filtering for i32 with exact equality - can an attacker exploit integer overflow in transaction version numbers or sequence numbers by filtering for negative values when unsigned types are expected, causing type confusion and incorrect filtering? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_17ead603-acf6-4fb4-9b2d-6558cc386463?mode=deep",
+    "timestamp": "2026-01-27 00:28:52.148316",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Implementation: Option<bool>] [Boolean confusion] The Option<bool> implementation at lines 138-151 uses exact equality - can an attacker exploit boolean confusion by submitting filters where true/false have context-dependent meanings (e.g., 'success' field where true means 'failed' in some transaction types) leading to inverted filter logic? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ea655041-604a-4d30-8cd1-f965f64a4642?mode=deep",
+    "timestamp": "2026-01-27 00:29:17.198358",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: validate_state()] [Infinite recursion] The trait documentation at line 14 states validators must 'recursively check validity of nested filters by calling is_valid' - can an attacker create a circular filter reference (e.g., Filter A contains Filter B which contains Filter A) to cause infinite recursion and stack overflow crashes during validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ff8a328f-401c-4a2d-9066-841168a042b1?mode=deep",
+    "timestamp": "2026-01-27 00:29:42.307797",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: validate_state()] [Depth limit bypass] There is no maximum recursion depth limit enforced in validate_state() - can an attacker craft a filter with 10,000+ nested levels that consumes all stack space during validation, crashing the indexer service before filtering even begins? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfa0d564-70f3-4e43-b279-826376aeef22?mode=deep",
+    "timestamp": "2026-01-27 00:30:06.573574",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Error accumulation] Lines 32-38 accumulate trace paths via add_trace() for each level - can deeply nested filters cause unbounded memory growth in the error path vector, leading to OOM when validation fails on a maximally nested filter structure? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfae4e8f-6760-409d-ba92-d4a0dee203fd?mode=deep",
+    "timestamp": "2026-01-27 00:30:30.425521",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Validation order] The is_valid() method calls validate_state() first then adds trace information - if validate_state() is expensive (e.g., database queries, network calls), can an attacker trigger repeated validation attempts to DoS the indexer before errors are even reported? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_248b3bf8-1450-44ec-b4cb-b3ac723e87f6?mode=deep",
+    "timestamp": "2026-01-27 00:30:54.110826",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Error mutation] At line 32, the error is captured as 'mut e' and modified via add_trace() - can an attacker exploit race conditions if is_valid() is called concurrently on the same filter, causing corrupted error traces or lost error information? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7baf578-64f1-42d6-8905-cae754db2737?mode=deep",
+    "timestamp": "2026-01-27 00:31:17.693038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Type name injection] The std::any::type_name::<Self>() call at line 35 might expose internal type names - can an attacker use this to inject malicious type names via proc macros or build-time code generation to pollute error logs or exploit log injection vulnerabilities? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fceff042-2bb6-41d7-8443-2aa738b00606?mode=deep",
+    "timestamp": "2026-01-27 00:31:42.204901",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Function: is_valid()] [Serialization side effects] If a filter's Debug or Serialize implementation has side effects (e.g., incrementing counters, logging, network calls), can repeated calls to is_valid() trigger unintended behavior or resource exhaustion via serde_json::to_string() at line 34? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ea9847c-6df1-47b2-b85d-d219ca8b2462?mode=deep",
+    "timestamp": "2026-01-27 00:32:06.037372",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Trait: Filterable<T>] [Type confusion] The Filterable trait at lines 9-76 is generic over type T - can an attacker implement Filterable for the wrong type (e.g., Filterable<FakeTransaction> instead of Filterable<Transaction>) and pass it through type-erased interfaces to bypass filtering entirely? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_157cee3d-443f-4078-97cc-3d4be10ce3cc?mode=deep",
+    "timestamp": "2026-01-27 00:32:30.722519",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/transaction-filter/src/traits.rs] [Trait: Filterable<T>] [Trait bound bypass] The trait requires 'Self: Debug + Serialize' at line 11 - can an attacker implement a custom Debug/Serialize that lies about the filter's true state, passing validation but behaving maliciously during matches()? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ed89fe8d-15af-48fb-8680-a84cc19fe5de?mode=deep",
+    "timestamp": "2026-01-27 00:32:55.850452",
+    "report_generated": false
+  }
+]
