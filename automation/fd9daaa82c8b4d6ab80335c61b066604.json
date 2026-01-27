@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: reset()] [Expect on recreation] The function uses .expect() on buffered state recreation - if recreation fails after quit(), is the StateStore left in unusable state requiring node restart? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e24b8f90-29cd-4add-81ca-65cffabe9006?mode=deep",
+    "timestamp": "2026-01-27 07:58:28.525959",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: current_state_locked()] [Lock held across calls] This returns a MutexGuard that holds the lock - can callers hold this lock indefinitely blocking all state reads and commits? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_adafce4e-5f40-4d76-ac3e-7c6e8fae5cf3?mode=deep",
+    "timestamp": "2026-01-27 07:58:41.444333",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: get_prefixed_state_value_iterator()] [Non-sharded assumption] The comment states 'this can only handle non-sharded db scenario' - what happens if called on sharded db? Will it miss values in other shards causing incomplete queries? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a71e97dc-95c7-405a-acb2-05410d1f343d?mode=deep",
+    "timestamp": "2026-01-27 07:58:54.483819",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: init_state_ignoring_summary()] [Summary corruption] The function name says 'ignoring_summary' and creates state without proper summary calculation - can this be used to bypass state validation checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_33163d38-a577-4112-be3c-dbd3636e164c?mode=deep",
+    "timestamp": "2026-01-27 07:59:08.042472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: set_state_ignoring_summary()] [CORRUPTION_SENTINEL trees] The function creates SparseMerkleTrees with *CORRUPTION_SENTINEL - why use corruption sentinel in production? Can this marker be exploited to bypass validation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_324e0caa-716e-453b-a070-5306e3aac518?mode=deep",
+    "timestamp": "2026-01-27 07:59:22.613275",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: set_state_ignoring_summary()] [Forced snapshot] The function calls force_last_snapshot() on buffered_state - can this overwrite valid snapshots with corrupted state during testing or recovery? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c9aee3a-a2d4-4f48-9b50-9b53053b0ccd?mode=deep",
+    "timestamp": "2026-01-27 07:59:37.931239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: set_state_ignoring_summary()] [Persisted state hack] The function calls persisted_state.hack_reset() - does this bypass normal state validation allowing injection of arbitrary state? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12d85a10-5e3c-4c08-aa89-42ea18140f33?mode=deep",
+    "timestamp": "2026-01-27 07:59:54.283868",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: write_kv_batch()] [Indexer DB optional] The function checks if internal_indexer_db.is_some() - if indexer is disabled, are state keys never indexed causing query failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_023a1892-d92c-46b7-8085-a05ab435b826?mode=deep",
+    "timestamp": "2026-01-27 08:00:12.830663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: write_kv_batch()] [Progress before data] The function writes DbMetadataKey::StateSnapshotKvRestoreProgress before actual data - if crash occurs after progress update but before data write, will restore think it's complete when data is missing? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9f0e731f-c5ea-4bb4-a4c3-aa19baa47c5b?mode=deep",
+    "timestamp": "2026-01-27 08:00:32.645824",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: write_kv_batch()] [Indexer write failure] If write_keys_to_indexer_db() fails but main db write succeeds, is the transaction rolled back or does this leave indexer out of sync? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bb009d2-92d7-41a1-a603-7f64ee22d557?mode=deep",
+    "timestamp": "2026-01-27 08:00:53.362021",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: kv_finish()] [Usage write failure] The function calls put_usage() but if this fails, does kv_finish return error or continue to update indexer metadata causing inconsistency? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_350b4b3b-d6a8-463a-a81e-b106baee9e27?mode=deep",
+    "timestamp": "2026-01-27 08:01:15.211919",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: kv_finish()] [Version minus one] The function writes MetadataValue::Version(version - 1) - if version is 0, does this underflow to u64::MAX causing incorrect version tracking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6d9aa6fc-9010-4e4a-a96d-36ed9c0334db?mode=deep",
+    "timestamp": "2026-01-27 08:01:37.984955",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: kv_finish()] [Multiple metadata writes] The function writes LatestVersion, StateVersion, TransactionVersion, EventVersion separately - if some succeed and others fail, can partial metadata corrupt the indexer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_df4d3bf0-7e1b-4a88-88ef-2ed0d8f2c8ab?mode=deep",
+    "timestamp": "2026-01-27 08:02:01.727026",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: get_progress()] [Consistency check gap] The function only verifies main_progress.key_hash > indexer_progress.key_hash - what about equal key_hash values? Can this miss inconsistencies? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1832bb55-7f94-49f5-ac9c-723a9b353087?mode=deep",
+    "timestamp": "2026-01-27 08:02:26.557309",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: get_progress()] [Bail on mismatch] When progress is inconsistent, the function bails - does this prevent restore from completing even if the inconsistency is minor? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f8c6ab8-0cbe-4768-a718-8d34eca4998e?mode=deep",
+    "timestamp": "2026-01-27 08:02:52.269015",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: get_progress()] [None handling asymmetry] The function handles (None, None) and (None, Some(_)) but bails on (Some(_), None) - is this correct or should it attempt recovery? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_316d6dd1-eb19-432c-9170-daa45cb0d459?mode=deep",
+    "timestamp": "2026-01-27 08:03:18.533025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Struct: StateStore] [Buffered vs current state] The buffered_state and current_state are separate mutexes - can a read from current_state occur while buffered_state is being updated but before current_state is updated? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d899bf90-dd96-4202-9bbf-cf49ff8a265e?mode=deep",
+    "timestamp": "2026-01-27 08:03:45.011211",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Struct: StateStore] [Persisted state sharing] The persisted_state is shared via PersistedState struct - is this thread-safe? Can concurrent updates corrupt the persisted state reference? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e290ef6-0faa-4b52-807c-c40098b0ee2d?mode=deep",
+    "timestamp": "2026-01-27 08:04:12.753569",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: calculate_state_and_put_updates()] [Read-modify-write race] The function reads current_state, calculates updates, then writes batches - can another thread commit between read and write causing lost updates? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f77b08f6-e24a-4805-a978-bfd980b0c0b8?mode=deep",
+    "timestamp": "2026-01-27 08:04:41.328341",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: put_state_updates()] [Timer scope] The function uses timers but doesn't ensure atomic execution - can timing side channels leak information about state contents or commit patterns? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e8e491b-e4e3-4d36-85e0-674ac7635a4c?mode=deep",
+    "timestamp": "2026-01-27 08:05:11.288124",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [DbReader trait] [Deref pattern] StateStore derefs to StateDb for many operations - can this cause confusion where locks on StateStore don't protect StateDb operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c735de13-def6-404b-9f3d-21e430117698?mode=deep",
+    "timestamp": "2026-01-27 08:05:39.218097",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: get_value_chunk_iter()] [Index overflow] The function adds first_index to chunk_size - can overflow cause iterator to start at wrong position or wrap around? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1e743e53-f996-4d35-bc5b-abc68bf6d8c5?mode=deep",
+    "timestamp": "2026-01-27 08:06:06.581025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: put_stale_state_value_index_for_shard()] [Range arithmetic] The loop range first_version..first_version + num_versions can overflow - are version numbers validated to prevent wraparound? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7dcb3acb-3687-4507-a13e-f078eb13df8c?mode=deep",
+    "timestamp": "2026-01-27 08:06:33.210789",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Constant: MAX_WRITE_SETS_AFTER_SNAPSHOT] [Complex calculation] The formula involves multiple multiplications - can intermediate overflows occur even if final result fits in LeafCount type? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_66b8e5c7-0b23-4655-bf6e-dd5ed3d5a56a?mode=deep",
+    "timestamp": "2026-01-27 08:06:59.804938",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/aptosdb/src/state_store/mod.rs] [Function: sync_commit_progress()] [Batch size cast] The code casts difference as usize - can large differences on 32-bit systems cause truncation and incorrect batch sizes? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84773912-7e4c-454f-88ed-5ff758115d1f?mode=deep",
+    "timestamp": "2026-01-27 08:07:27.284829",
+    "report_generated": false
+  }
+]
