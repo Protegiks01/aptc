@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: config/src/keys.rs] [Function: private_key()] [Key material leakage] The private_key() method returns a cloned private key by calling self.clone().key, directly contradicting the stated goal that 'the private key to be moved out once' - can an attacker or malicious code repeatedly call this method to extract and duplicate validator private keys multiple times, violating key hygiene and enabling key compromise attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_53382a1f-ddd2-4b31-b1e6-d82cc873d86e?mode=deep",
+    "timestamp": "2026-01-27 02:23:13.636613",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [Cryptographic key duplication] The Clone trait implementation uses bcs::to_bytes() and bcs::from_bytes() with unwrap() to clone private keys, allowing unlimited duplication of sensitive cryptographic material - can this be exploited by malicious validator code to exfiltrate private keys by cloning ConfigKey instances and persisting them to disk or transmitting over network? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3dd850bb-4189-4703-ae20-acf66814b23a?mode=deep",
+    "timestamp": "2026-01-27 02:23:26.650745",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Key hygiene violation] The documentation states ConfigKey should only allow private keys to be 'moved out once' for good key hygiene, but the implementation makes keys fully clonable - does this design flaw enable validator private keys to be duplicated across multiple processes or machines, allowing Byzantine validators to run multiple instances with the same key and perform equivocation attacks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_49b76f3f-4f7f-4cb1-8751-3725f80a1172?mode=deep",
+    "timestamp": "2026-01-27 02:23:40.751623",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [Memory safety] The clone() implementation serializes and deserializes private key material through BCS encoding with two unwrap() calls - if either serialization or deserialization fails, can this cause a panic in a validator node during consensus operations, leading to liveness failures or enabling DoS attacks by forcing specific key types that fail serialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d5c8a331-8318-4182-8246-090c91323436?mode=deep",
+    "timestamp": "2026-01-27 02:23:54.731212",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: private_key()] [Key extraction] The method allows unrestricted extraction of the underlying PrivateKey by cloning - can malicious code in a compromised validator node call this repeatedly to extract consensus signing keys, network identity keys, or validator operator keys to perform unauthorized signing operations or impersonate validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d99224a-974b-4091-b8e3-3497d0b287d6?mode=deep",
+    "timestamp": "2026-01-27 02:24:09.747032",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: from_encoded_string()] [Deserialization attack] The method calls T::from_encoded_string() without validating the string format or length - can an attacker provide maliciously crafted encoded strings that exploit vulnerabilities in the underlying crypto library's deserialization logic, potentially causing buffer overflows, panics, or loading of attacker-controlled key material? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83635291-a51a-4945-9747-286d7584a64b?mode=deep",
+    "timestamp": "2026-01-27 02:24:26.615345",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [BCS deserialization] The unwrap() on bcs::from_bytes() assumes deserialization always succeeds - can an attacker cause memory corruption by providing a ConfigKey with corrupted internal state such that serialization succeeds but deserialization fails, causing a panic during critical consensus operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6086edaf-50ba-4195-96b8-9cb83c79f25f?mode=deep",
+    "timestamp": "2026-01-27 02:24:44.084057",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [BCS serialization] The unwrap() on bcs::to_bytes() assumes serialization always succeeds - are there edge cases with specific PrivateKey implementations where serialization could fail, causing panics during validator startup, epoch transitions, or configuration reloads that could halt consensus? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52ba7f48-a1b1-47c4-a9f5-9af71f9e1cd8?mode=deep",
+    "timestamp": "2026-01-27 02:25:04.609992",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: eq()] [Equality bypass] The PartialEq implementation compares BCS-serialized bytes with unwrap() - if serialization fails for one key but not the other, can this cause inconsistent equality checks or panics that could be exploited during validator set comparisons, configuration updates, or key rotation operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8a098cae-0ad8-4bbe-bd87-2c1ea9ecccc0?mode=deep",
+    "timestamp": "2026-01-27 02:25:26.358224",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: from_encoded_string()] [Error propagation] The method propagates CryptoMaterialError from the underlying from_encoded_string() call - are these errors properly handled by callers, or can malformed key strings cause configuration loading to fail silently, leaving validators with default/test keys or causing them to start with no valid consensus keys? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4da4cb4f-a773-4cd2-9117-499b3c971f47?mode=deep",
+    "timestamp": "2026-01-27 02:25:48.589703",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Type confusion] The generic type T is constrained to implement PrivateKey + Serialize, but the Clone implementation requires DeserializeOwned - can type confusion occur if a PrivateKey type is used that implements Serialize but not DeserializeOwned in a compatible way, causing runtime errors or allowing injection of malformed key material? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6cc9380c-841a-47d6-851b-2a0dac8c8555?mode=deep",
+    "timestamp": "2026-01-27 02:26:12.930414",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: new()] [Constructor validation] The new() constructor accepts any T: PrivateKey without validation - can an attacker pass a maliciously crafted PrivateKey implementation that satisfies the trait bounds but contains invalid key material, zero-length keys, or keys designed to cause consensus failures when used for signing? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f9e39835-f8c1-4a6f-a9bf-83fcbb8a2b47?mode=deep",
+    "timestamp": "2026-01-27 02:26:38.068954",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: public_key()] [Key derivation] The method calls aptos_crypto::PrivateKey::public_key() to derive the public key - if the underlying PrivateKey implementation has bugs in public key derivation, can this result in validators using inconsistent public keys across different operations, breaking signature verification and causing consensus failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_27f101b6-7633-4c24-a447-06b0ce700434?mode=deep",
+    "timestamp": "2026-01-27 02:27:04.441961",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Serde bounds] The serde bound 'bound(deserialize = \\",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6b99eda5-61a2-4701-91f1-a677dd4d0a9e?mode=deep",
+    "timestamp": "2026-01-27 02:27:31.773937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [Memory leakage] The clone implementation creates intermediate BCS-serialized byte buffers containing private key material - are these buffers properly zeroed after use, or do they remain in memory where they could be extracted through memory dumps, core dumps, or side-channel attacks on validators? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9913e30b-b0eb-4bc7-a803-6641951261d5?mode=deep",
+    "timestamp": "2026-01-27 02:27:59.127058",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: private_key()] [Key material in memory] The method returns a cloned private key by value - does this create additional copies of sensitive key material in memory that persist longer than necessary, increasing the attack surface for memory extraction attacks or leaving keys vulnerable to cold boot attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6ca9a8d4-f371-4957-b8d1-5299e2307035?mode=deep",
+    "timestamp": "2026-01-27 02:28:28.302101",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: eq()] [Unnecessary serialization] The equality check serializes both ConfigKey instances to bytes - does this create unnecessary copies of private key material in memory for comparison operations, potentially leaking keys through memory side channels or increasing exposure to speculative execution attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dfb506b7-3d0a-4bd6-8582-9a64b87eba05?mode=deep",
+    "timestamp": "2026-01-27 02:28:58.105468",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Drop implementation] There is no custom Drop implementation to securely wipe private key material from memory - when ConfigKey instances are dropped, does the private key material remain in memory unzeroed, allowing attackers with memory access to extract validator keys from deallocated memory regions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b03f37a5-ab15-4b93-8f03-722cc19f959d?mode=deep",
+    "timestamp": "2026-01-27 02:29:28.923500",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [Allocation failure] The BCS serialization and deserialization allocate heap memory - if memory allocation fails during clone operations (OOM conditions), can this cause validators to panic during critical operations like epoch transitions or configuration reloads, causing liveness failures? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_82af48dc-51a7-47f2-a613-8fbc41d05e9e?mode=deep",
+    "timestamp": "2026-01-27 02:30:00.740120",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Test key usage] The comment mentions ConfigKey is for 'testing or low security requirements' but is used throughout config - can production validators accidentally use this clonable key wrapper for critical consensus keys instead of using secure key managers, exposing validator keys to theft through configuration backups or logs? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1610a97f-7cdd-46c2-ac1a-9de0fc3f7af8?mode=deep",
+    "timestamp": "2026-01-27 02:30:33.978186",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: default()] [Test key generation] The Default trait implementation in #[cfg(test)] generates test keys using Uniform::generate_for_testing() - can production builds accidentally enable this code path through feature flags or compilation errors, causing validators to start with predictable test keys that attackers can precompute? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1a6f10c-a779-40d3-950f-8aed1b1b894d?mode=deep",
+    "timestamp": "2026-01-27 02:31:07.382519",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Serialization exposure] ConfigKey implements Serialize, allowing private keys to be serialized to JSON, YAML, TOML or other config formats - can validator configuration files containing serialized private keys be accidentally committed to version control, included in logs, or exposed through configuration endpoints? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_dced3053-56b5-4b3f-951c-92e3af9550b3?mode=deep",
+    "timestamp": "2026-01-27 02:31:40.830900",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: from_encoded_string()] [String parsing] The method accepts encoded string representations of private keys - are these strings validated to ensure they use constant-time comparison and parsing to prevent timing attacks that could leak key material bit-by-bit through response time measurements? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c978537-d9ed-40f1-bd3f-12d21b6d95c9?mode=deep",
+    "timestamp": "2026-01-27 02:32:11.748830",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Struct: ConfigKey] [Debug trait] ConfigKey derives Debug, which could print private key material to logs - does the Debug implementation properly redact sensitive key material, or can validator logs contain full private keys when ConfigKey instances are logged during debugging or error handling? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f05b545b-46c9-40ba-9c1e-7f0740b30928?mode=deep",
+    "timestamp": "2026-01-27 02:32:44.620836",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/keys.rs] [Function: clone()] [Race conditions] The clone() method involves serialization and deserialization which are not atomic - if a ConfigKey is being modified by another thread during clone(), can this cause data races that result in corrupted private keys, invalid key material, or keys that fail signature operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c0967ed-adb7-41a3-85f4-7cde63ef8485?mode=deep",
+    "timestamp": "2026-01-27 02:33:17.467743",
+    "report_generated": false
+  }
+]
