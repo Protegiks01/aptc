@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: clear_speculative_txn_logs()] [Side Effect Leakage] In start_abort, speculative logs are cleared. Can these logs be observed by other transactions before clearing, leaking information about aborted executions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c848278e-a72f-4fdf-83db-41351f6655ff?mode=deep",
+    "timestamp": "2026-01-27 03:34:49.016550",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: SPECULATIVE_ABORT_COUNT counter] [DoS via Abort Spam] The counter is incremented on each abort. Can an attacker trigger excessive aborts to overflow the counter or degrade performance through repeated abort processing? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6284e34e-3fe6-4cf4-988e-8a2dc4e550e8?mode=deep",
+    "timestamp": "2026-01-27 03:35:01.969320",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: prepare_for_block_epilogue()] [Epilogue in Executing] The function returns error if block epilogue is in Executing state. Can a malicious worker start executing the epilogue before prepare is called, causing block finalization to fail? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b6c6c262-f87e-4c52-97f4-7cd4e32a8e7d?mode=deep",
+    "timestamp": "2026-01-27 03:35:15.981729",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: prepare_for_block_epilogue()] [Epilogue Abort Loop] If the epilogue is Aborted or Executed, the function calls start_abort and to_pending_scheduling. Can this create an infinite loop if the epilogue keeps getting aborted? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f83d3a0-b1d0-4e7e-ac81-c11546d18bf8?mode=deep",
+    "timestamp": "2026-01-27 03:35:29.609681",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: prepare_for_block_epilogue()] [Epilogue Incarnation] The function may increment the epilogue's incarnation. Can this cause the epilogue to execute with a different incarnation than expected, breaking block finalization determinism? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7fe7932-3775-4812-b054-34c205ff3ab4?mode=deep",
+    "timestamp": "2026-01-27 03:35:44.444207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: StatusWithIncarnation state machine] [Invalid Transition] Can any code path cause a direct transition from Aborted to Executed, bypassing Executing state and causing execution results to be attributed to wrong incarnation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6269aa9a-cf85-4814-ba6b-5caa3b5f8d78?mode=deep",
+    "timestamp": "2026-01-27 03:36:00.416244",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: StatusWithIncarnation state machine] [Stuck in Aborted] Can a transaction get stuck in Aborted state indefinitely if finish_execution is never called, causing permanent exclusion from execution queue? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_52aeb141-dcf5-4b69-af27-fb0e3a27c11c?mode=deep",
+    "timestamp": "2026-01-27 03:36:17.484178",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: StatusWithIncarnation state machine] [PendingScheduling Loop] Can a transaction cycle between PendingScheduling and Executing without ever reaching Executed, wasting computational resources? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_387f063f-98e4-4c3e-8fea-b438c9bb994d?mode=deep",
+    "timestamp": "2026-01-27 03:36:35.879314",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: finish_execution() from Aborted] [Aborted to PendingScheduling] When finish_execution is called on Aborted status, it transitions to PendingScheduling with incremented incarnation. Can this be called multiple times before the transaction is re-scheduled, incrementing incarnation excessively? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05aaa60a-cbf8-48d5-9317-b97c4ffabb0c?mode=deep",
+    "timestamp": "2026-01-27 03:36:55.831184",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: start_executing() at high incarnation] [High Incarnation Behavior] Can a transaction that has been aborted many times (high incarnation number) behave differently in start_executing, potentially bypassing checks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_12bc3abb-c5ec-4ad8-b9a5-b96dd18618cd?mode=deep",
+    "timestamp": "2026-01-27 03:37:17.456426",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: Multiple transactions] [Transaction Index Bounds] The statuses Vec is indexed by txn_idx cast to usize. Can out-of-bounds access occur if txn_idx is maliciously large, causing panic or undefined behavior? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8ea99bf4-19b1-40d1-8ef8-e7a28b591fdd?mode=deep",
+    "timestamp": "2026-01-27 03:37:38.786449",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: ExecutionStatuses::new()] [Initialization] The function creates num_txns ExecutionStatus instances. Can num_txns be set to a huge value causing memory exhaustion during initialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ce422cf-9fde-4fb9-9f77-817c1830ccfd?mode=deep",
+    "timestamp": "2026-01-27 03:38:02.795416",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: BTreeSet<ModuleId> in Executing] [Module Set Size] The Executing status contains a BTreeSet of ModuleIds. Can this set grow unbounded if many modules are published concurrently, causing memory exhaustion? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e6cba636-2d30-44d5-9d6c-52cb7fd7653f?mode=deep",
+    "timestamp": "2026-01-27 03:38:27.244587",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: std::mem::replace in finish_execution()] [Move Semantics] The requirements BTreeSet is extracted via std::mem::replace. If a panic occurs during this operation, can the BTreeSet be lost permanently? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fa1ff97-5f97-497d-939d-e2282da923a1?mode=deep",
+    "timestamp": "2026-01-27 03:38:53.745236",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: All atomic operations] [Atomic Operation Failure] Can hardware transient faults cause atomic operations (fetch_add, fetch_max, fetch_sub, load, store, swap) to fail silently or produce incorrect results? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ab049b81-3032-4592-85cb-16f9b23fa54f?mode=deep",
+    "timestamp": "2026-01-27 03:39:18.970565",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: start_executing() → finish_execution() → start_abort() sequence] [Lifecycle Attack] Can an attacker manipulate the timing of these calls to cause a transaction to appear executed when it was actually aborted, breaking consensus? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_61e483c5-3136-4f95-bfef-0c230e213856?mode=deep",
+    "timestamp": "2026-01-27 03:39:44.414481",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: add_stall() → start_executing() race] [Stall Bypass] Can a transaction be scheduled for execution (start_executing succeeds) immediately after add_stall is called but before the execution queue removal completes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a1ab4174-4adc-4fa7-9376-3247aa379e7f?mode=deep",
+    "timestamp": "2026-01-27 03:40:09.976153",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: finish_abort() → start_executing() → start_abort() sequence] [Rapid Abort Cycle] Can rapid cycling through abort-execute-abort cause incarnation counter to increment faster than expected, causing issues with downstream components? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_fdbf5b03-6331-409f-adc3-a16e97901635?mode=deep",
+    "timestamp": "2026-01-27 03:40:35.254567",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: Multiple concurrent add_stall() and remove_stall()] [Stall Count Desync] Can concurrent adds and removes cause num_stalls to become desynced from actual stall state, causing transactions to be scheduled when stalled or vice versa? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c6228b0-1274-4f58-88ba-ee043e89fda4?mode=deep",
+    "timestamp": "2026-01-27 03:41:01.342666",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Function: defer_module_validation() → finish_abort() race] [Validation Loss] Can module validation requirements be lost if defer_module_validation is called concurrently with finish_abort, allowing invalid module reads to go undetected? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_647e73cf-a7a7-43d9-99f1-fa5aedc9542b?mode=deep",
+    "timestamp": "2026-01-27 03:41:28.703645",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Attack: Transaction Starvation] Can a malicious worker repeatedly call start_abort on a victim transaction, causing it to never successfully execute and effectively excluding it from the block? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_458e83da-d046-4904-b8ab-ad4beb0f666e?mode=deep",
+    "timestamp": "2026-01-27 03:41:53.933502",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Attack: Resource Exhaustion] Can an attacker cause memory exhaustion by creating transactions with large numbers of deferred module validation requirements, each containing many unique ModuleIds? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_78948c05-ff7d-48fa-9324-cc9c6eddcb1f?mode=deep",
+    "timestamp": "2026-01-27 03:42:20.778130",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Attack: Priority Inversion] Can stalling high-priority (low-index) transactions while allowing low-priority ones to execute break the BlockSTM assumption that lower-index transactions execute first? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c85aae36-cd8c-428d-bc56-aa8a2c19caf4?mode=deep",
+    "timestamp": "2026-01-27 03:42:48.189497",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Attack: Cascading Abort Exploitation] Can an attacker craft transactions that cause cascading aborts, where aborting transaction i causes i+1, i+2, ... to abort, degrading block throughput? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9d578ade-9b44-4d2a-bed2-c48b5c080895?mode=deep",
+    "timestamp": "2026-01-27 03:43:15.550555",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/aptos-move/block-executor/src/scheduler_status.rs] [Attack: Dependency Shortcut Manipulation] Can reading dependency_shortcut without proper synchronization allow an attacker to exploit stale values to schedule transactions in wrong order? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4f89b6e3-c791-41be-aef2-cac8b4912c1d?mode=deep",
+    "timestamp": "2026-01-27 03:43:44.939952",
+    "report_generated": false
+  }
+]
