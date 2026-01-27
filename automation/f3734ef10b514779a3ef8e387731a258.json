@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: Node::decode()] [Internal deserialization] At line 867, InternalNode::deserialize is called with &val[1..] - can off-by-one errors in slice indexing cause memory safety issues when val.len() == 1? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_15bd20c2-4248-4d43-a09c-eee172692adf?mode=deep",
+    "timestamp": "2026-01-27 01:22:14.600623",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: serialize_u64_varint()] [Continuation bit manipulation] At lines 902-913, the high bit indicates continuation - can attackers craft VarInt sequences with incorrect continuation bits that decode to wrong values, corrupting version numbers in the tree? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba237eac-5789-48f0-b41f-7f832108ea48?mode=deep",
+    "timestamp": "2026-01-27 01:22:27.240943",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: serialize_u64_varint()] [9-byte encoding] The comment at line 915 mentions last byte is raw - can values requiring 9 bytes (num > 2^56) be encoded ambiguously, allowing different decodings on different validators? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_97e1e72f-953e-4fbd-aaa3-3ecd5e3fe5eb?mode=deep",
+    "timestamp": "2026-01-27 01:22:40.925744",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: serialize_u64_varint()] [Infinite loop] The loop at line 903 can iterate up to 8 times then unconditionally writes last byte - can integer overflow in num cause unexpected loop behavior or wrong final byte? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_708f7304-fd86-4c4e-90d6-1b9742d080bd?mode=deep",
+    "timestamp": "2026-01-27 01:22:54.324908",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: serialize_u64_varint()] [Assert on large values] The assertion at line 916-917 expects num <= 0xFF after 8 iterations - can malformed num values cause this assertion to fail in production, crashing validators during tree serialization? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_89c830f2-4b80-43f9-a5d0-8cf0f035fc70?mode=deep",
+    "timestamp": "2026-01-27 01:23:08.805977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: deserialize_u64_varint()] [Bit shifting overflow] At line 929, left shift by (i * 7) can shift up to 56 bits - can i values >= 9 cause overflow or undefined behavior in the bit shift operation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3dd0cfcf-f3db-4fe3-983c-b5fc1ec4709d?mode=deep",
+    "timestamp": "2026-01-27 01:23:23.858467",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: deserialize_u64_varint()] [Non-minimal encoding] The VarInt encoding allows non-minimal representations (e.g., 0 could be encoded in 9 bytes) - can attackers exploit this to create different byte sequences that decode to same value, breaking deterministic serialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cac735a7-d1d9-400e-977b-c2c64641900e?mode=deep",
+    "timestamp": "2026-01-27 01:23:41.406704",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: deserialize_u64_varint()] [Last byte handling] At line 935-936, the last byte is read raw and shifted left by 56 - can this cause the most significant bits to be lost or misinterpreted, resulting in wrong version decoding? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ba1e033-db19-4ca2-9c13-f44105d4c179?mode=deep",
+    "timestamp": "2026-01-27 01:23:59.322348",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: deserialize_u64_varint()] [Early termination] At line 930-932, early return occurs when high bit is clear - can corrupted streams terminate early and return partial values, causing version mismatches? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_84d9bb96-defd-4c47-a908-a09d996361b2?mode=deep",
+    "timestamp": "2026-01-27 01:24:18.761337",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: deserialize_u64_varint()] [Read error handling] The read_u8()? calls at lines 928 and 935 can fail on EOF - can truncated or corrupted storage data cause frequent read errors that slow down validators or mask corruption? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d492c30c-406e-4633-a046-0f601c2f62f2?mode=deep",
+    "timestamp": "2026-01-27 01:24:39.495342",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Version time-travel] Can an attacker manipulate NodeKey versions to point to historical states, then use get_child_with_siblings() to generate proofs that mix current and historical data, creating invalid state transitions? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4fa924c7-4f9f-433e-8d0e-fbfcfa01d710?mode=deep",
+    "timestamp": "2026-01-27 01:25:01.642559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Concurrent serialization] Can concurrent calls to InternalNode::serialize() and modifications to children cause data races despite Rust's safety guarantees, if Arc<> is used without proper synchronization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3751caf-47e0-4eb6-af33-5b4cbba793cd?mode=deep",
+    "timestamp": "2026-01-27 01:25:23.415481",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Bitmap race condition] Can the mutable existence_bitmap modification at line 384 during serialization race with bitmap generation at line 452-463, causing inconsistent bitmaps to be stored? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4c70da0-3e7d-4e51-8c0b-7b6b8692b44f?mode=deep",
+    "timestamp": "2026-01-27 01:25:46.126174",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Hash cache race] Can the hash_cache Option<&HashMap> passed to Child::for_node() be modified concurrently, causing non-deterministic hash values to be used across validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_aeaabfbe-41d0-45d7-b2b3-308a723bc4d3?mode=deep",
+    "timestamp": "2026-01-27 01:26:09.852472",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Proof vs hash divergence] Can merkle_hash() and gen_node_in_proof() compute different hashes for the same subtree due to different code paths or tree_reader state, breaking proof verification? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ba803ed2-ba7e-47b9-bf54-fb3ab82a0389?mode=deep",
+    "timestamp": "2026-01-27 01:26:33.366158",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Partial write corruption] If InternalNode::serialize() is interrupted mid-write (e.g., power loss), can partially written nodes pass deserialize() validation and produce corrupted tree structures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c08a1db4-37b3-4224-b742-28cc8614dd54?mode=deep",
+    "timestamp": "2026-01-27 01:26:57.856978",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Storage layer manipulation] Can attackers with storage access modify encoded nodes in subtle ways (e.g., flipping single bits in VarInt encodings) that pass deserialization but produce different tree hashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ef8e8e6-504b-4882-bbda-a8fbb0dbbcbf?mode=deep",
+    "timestamp": "2026-01-27 01:27:22.912350",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Pruning race conditions] Can nodes being pruned from storage be accessed mid-deletion, causing NodeKey lookups to find partially deleted nodes that fail deserialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_390ba6f9-2d1a-4af3-8733-ce16e38addcc?mode=deep",
+    "timestamp": "2026-01-27 01:27:49.219480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Snapshot inconsistency] Can tree snapshots capture inconsistent state where parent nodes reference child NodeKeys that haven't been written yet, breaking tree traversal? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8cf83cff-1a76-4cbf-b8f8-dd5e5ec1c231?mode=deep",
+    "timestamp": "2026-01-27 01:28:15.433827",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: InternalNode::merkle_hash()] [Second preimage attack] Can an attacker find second preimage for SparseMerkleInternalNode::new(left, right).hash() at line 514, allowing them to construct different tree structures with identical root hashes? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6cdbd531-04a1-44bc-9fac-c86af043b159?mode=deep",
+    "timestamp": "2026-01-27 01:28:43.092349",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: LeafNode::hash()] [Collision attack] Can birthday attacks on SparseMerkleLeafNode hash function at line 737 find colliding account_key/value_hash pairs, allowing account impersonation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e74ebbe6-cdab-4664-a700-10ceb9922fb2?mode=deep",
+    "timestamp": "2026-01-27 01:29:11.065176",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: InternalNode::merkle_hash()] [Placeholder hash abuse] The SPARSE_MERKLE_PLACEHOLDER_HASH constant at line 488 is used for empty subtrees - can attackers craft leaf values that hash to this placeholder, creating ambiguity between empty and non-empty subtrees? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bce11508-c012-469b-9aeb-5184cf01f1ef?mode=deep",
+    "timestamp": "2026-01-27 01:29:37.203921",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Multiple Functions] [Hash function upgrade] If the hash function used by SparseMerkleInternalNode or SparseMerkleLeafNode is upgraded, can old nodes fail to verify against new hashes, causing state verification failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_6c8c649f-183e-4f04-a75a-f06258ccaf16?mode=deep",
+    "timestamp": "2026-01-27 01:30:03.318272",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: InternalNode::deserialize()] [Memory exhaustion] Can an attacker provide existence_bitmap with all 16 bits set and each child claiming billions of leaves (line 429), causing memory exhaustion when constructing Children vector? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ca8e0ca5-41a7-4c77-aa04-b62529bd831f?mode=deep",
+    "timestamp": "2026-01-27 01:30:29.300821",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/jellyfish-merkle/src/node_type/mod.rs] [Function: Node::encode()] [Storage exhaustion] Can repeatedly encoding large InternalNodes with 16 children consume excessive storage, and can this be weaponized to fill validator disk space? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d9072df-0459-4c73-8b8d-ffaa5e5522a2?mode=deep",
+    "timestamp": "2026-01-27 01:30:57.138010",
+    "report_generated": false
+  }
+]
