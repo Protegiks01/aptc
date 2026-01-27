@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Function: valid()] [Performance side-channel] Does the execution time difference between valid() returning Some vs None leak information about validation failure reasons, enabling attackers to distinguish between invalid signatures, expired keys, or malformed cryptographic data? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_474c9a47-7269-476d-8c8f-d189ff469057?mode=deep",
+    "timestamp": "2026-01-27 05:30:42.323478",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Function: unvalidated()] [Validation bypass] Can an attacker directly access unvalidated() to obtain cryptographic material without ever calling validate(), then use this unvalidated data in security-critical operations like signature verification or key derivation? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5e9d289e-50cb-4846-9ced-7ed4a3be8e24?mode=deep",
+    "timestamp": "2026-01-27 05:30:55.101057",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Function: unvalidated()] [Data leakage] If unvalidated() returns a reference to potentially malicious cryptographic material, can an attacker use this to extract information about the validation process, such as the expected key format or signature scheme? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9cb960ef-c934-4a88-9ae8-60e7bbe0c41c?mode=deep",
+    "timestamp": "2026-01-27 05:31:08.170468",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Function: unvalidated()] [Mutation through unsafe] While unvalidated() returns an immutable reference, can unsafe code obtain a mutable reference through pointer casting, allowing an attacker to mutate the unvalidated field after validation has succeeded, invalidating the cached validated value in OnceCell? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_73da0060-f941-4caf-a4fa-ffdbca9dbbf2?mode=deep",
+    "timestamp": "2026-01-27 05:31:22.693572",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Serialize] [Serialization bypass] Since serialize() uses the unvalidated form, can an attacker serialize a Validatable that appears valid in memory but produces invalid cryptographic material when serialized, causing consensus messages to be rejected by other validators? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_67a017ae-9cf8-4a5b-a398-b747baa68ecf?mode=deep",
+    "timestamp": "2026-01-27 05:31:37.155278",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Serialize] [Validation state loss] When serializing a Validatable that has been validated (OnceCell is initialized), the validation state is lost and only unvalidated data is serialized - can this cause performance degradation or security issues if deserialized Validatables must be re-validated repeatedly? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2d545f7e-8537-4962-a328-f798fe51666b?mode=deep",
+    "timestamp": "2026-01-27 05:31:52.438402",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Serialize] [Format confusion] If V::Unvalidated's Serialize implementation differs from V's (violating the trait contract), can an attacker exploit this discrepancy to create messages that deserialize into different cryptographic materials on different validators, causing consensus splits? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3d268cab-673e-4c14-99e1-b24667165ca7?mode=deep",
+    "timestamp": "2026-01-27 05:32:09.306028",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Serialize] [Malicious serialization] Can an attacker implement a malicious Serialize for V::Unvalidated that produces different output each time, causing the same Validatable to serialize to different bytes and break deterministic consensus state hashing? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_646fb28c-351a-4958-9877-fbbdb51898f6?mode=deep",
+    "timestamp": "2026-01-27 05:32:29.414533",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Serialize] [Side-channel leakage] Does serializing unvalidated cryptographic material leak sensitive information (e.g., private key bits) through timing, cache access patterns, or speculative execution that wouldn't be leaked when serializing validated material? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0050d520-3b37-419f-89e4-7f7dd9d44e4b?mode=deep",
+    "timestamp": "2026-01-27 05:32:49.298256",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Deserialize] [Validation bypass critical path] Line 101 explicitly states deserialization does NOT perform validation - can an attacker exploit this by injecting invalid cryptographic material through deserialization that bypasses security checks, allowing consensus messages with invalid signatures to propagate? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_44be8e05-ae4d-48b2-bb1f-07f937660cb6?mode=deep",
+    "timestamp": "2026-01-27 05:33:10.494315",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Deserialize] [Untrusted input handling] Since from_unvalidated() is called directly with deserialized data, can an attacker send crafted malicious inputs that exploit vulnerabilities in V::Unvalidated's Deserialize implementation, such as buffer overflows or integer overflows in cryptographic parameters? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5029ec8d-87a2-4088-917f-bf557066d024?mode=deep",
+    "timestamp": "2026-01-27 05:33:32.638396",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Deserialize] [Resource exhaustion] Can an attacker deserialize Validatable objects with extremely large unvalidated cryptographic materials (e.g., multi-megabyte public keys) that cause memory exhaustion when validators attempt to store these objects before validation fails? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b9caa64e-71aa-4042-9ece-a78d90b6ecb6?mode=deep",
+    "timestamp": "2026-01-27 05:33:56.104575",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Deserialize] [Deserialization bomb] Can an attacker craft a compact serialized format that deserializes into an exponentially larger Validatable structure, similar to XML billion laughs attack, causing memory exhaustion or CPU DoS when validators deserialize consensus messages? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8866b941-130e-4cf2-9b01-975221fd6e96?mode=deep",
+    "timestamp": "2026-01-27 05:34:20.801219",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Deserialize] [Format string exploitation] If V::Unvalidated contains string fields used in cryptographic operations, can an attacker inject format string specifiers or control characters during deserialization that exploit subsequent validation or logging operations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eaceb0d0-f5c5-4dea-b268-42133cf996da?mode=deep",
+    "timestamp": "2026-01-27 05:34:44.658776",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Deserialize] [Type confusion attack] Can an attacker craft serialized data that deserializes as valid V::Unvalidated but represents a completely different cryptographic scheme, allowing Ed25519 signatures to be interpreted as BLS signatures or vice versa? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_01681036-aa7e-4254-a176-cf715654f653?mode=deep",
+    "timestamp": "2026-01-27 05:35:09.547285",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Deserialize] [Canonicalization bypass] If V::Unvalidated should enforce canonical encoding (e.g., minimal DER encoding for signatures), but deserialization accepts non-canonical forms, can an attacker exploit this to create multiple serialized representations of the same cryptographic material, breaking hash-based deduplication? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ac408e2-8ca6-4daa-bb20-96cd11a368c6?mode=deep",
+    "timestamp": "2026-01-27 05:35:34.985593",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: PartialEq] [Equality confusion] Since equality compares only unvalidated forms, can two Validatable instances be equal even if one passes validation and the other fails, causing security issues where invalid cryptographic material is treated as equal to valid material? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f5685f41-ee69-49ce-b935-0fd3a8c8a478?mode=deep",
+    "timestamp": "2026-01-27 05:36:00.407234",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: PartialEq] [Validation state mismatch] Can an attacker exploit the fact that two Validatable instances are equal (unvalidated.eq()) but have different validation states (one cached in OnceCell, one not), causing consensus disagreements when validators use equality checks before validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b87ce47-afbd-4f6c-8d48-806eeeeffba5?mode=deep",
+    "timestamp": "2026-01-27 05:36:26.054564",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Eq] [Trait contract violation] If V::Unvalidated's Eq implementation is not reflexive, symmetric, or transitive, can this violate Rust's Eq contract and cause undefined behavior in collections like BTreeSet or HashMap used for validator tracking? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ccb069c9-80e3-4237-b4d9-52f740c89ea5?mode=deep",
+    "timestamp": "2026-01-27 05:36:52.119623",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: PartialEq] [Malleability attack] If V::Unvalidated allows multiple equivalent representations (e.g., normalized vs. unnormalized elliptic curve points), can an attacker create distinct-but-equal Validatable instances to exploit caching logic or duplicate message detection? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5c8187d7-b7be-4646-80fb-2c352c361b1e?mode=deep",
+    "timestamp": "2026-01-27 05:37:18.606207",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: PartialEq] [Timing side-channel] Does the V::Unvalidated equality check run in constant time, or can an attacker use timing differences to extract information about cryptographic material, such as the number of matching bytes in signatures or keys? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8bdbfffb-e490-4880-bc2a-cd5aeeb12b98?mode=deep",
+    "timestamp": "2026-01-27 05:37:45.801958",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Hash] [Hash collision exploitation] Since Hash only hashes unvalidated data, can an attacker create two Validatable instances with identical hashes where one is valid and one is invalid, allowing invalid cryptographic material to be substituted in HashMaps used for validator tracking? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_80702159-f2cc-4001-aeb9-058815dfd8d1?mode=deep",
+    "timestamp": "2026-01-27 05:38:13.856592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Hash] [Hash table poisoning] Can an attacker craft invalid cryptographic materials with specific hash values to cause collisions in hash-based consensus data structures, degrading performance or enabling denial-of-service attacks through hash flooding? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_f3e40c38-f874-43b4-847f-7892fc5a5e44?mode=deep",
+    "timestamp": "2026-01-27 05:38:42.402038",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-crypto/src/validatable.rs] [Impl: Hash] [Validation state inconsistency] Two Validatable instances with the same unvalidated data will have the same hash, but can have different validation states (OnceCell initialized or not) - can this cause issues in collections that assume equal hashes mean equal validation status? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7fe98d17-286b-48a1-a737-b71bdf19233e?mode=deep",
+    "timestamp": "2026-01-27 05:39:09.781590",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-core/src/validatable.rs] [Impl: Hash] [Hash algorithm weakness] If V::Unvalidated uses a weak or deprecated hash algorithm, can an attacker precompute collisions to inject invalid cryptographic material into consensus state stored in HashMaps or HashSets? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0cbbde55-718c-4274-9a21-de94d5b08113?mode=deep",
+    "timestamp": "2026-01-27 05:39:38.130419",
+    "report_generated": false
+  }
+]
