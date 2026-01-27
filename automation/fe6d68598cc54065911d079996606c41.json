@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Trait: BypasserTrait] [Access Control Bypass] Can a malicious actor exploit the async nature of request_can_bypass() to introduce race conditions where multiple concurrent bypass checks for the same request return inconsistent results, allowing unauthorized fund access? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_643865cb-faae-45d1-9a79-82141a5a3c09?mode=deep",
+    "timestamp": "2026-01-27 08:26:10.394777",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Trait: BypasserTrait] [Authentication Bypass] Does the request_can_bypass() method properly validate that CheckerData hasn't been tampered with between creation and bypass checking, or can an attacker modify source_ip/headers mid-flight to gain unauthorized bypass? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_32587885-0b16-4652-aa77-0dbdd5004a32?mode=deep",
+    "timestamp": "2026-01-27 08:26:23.075585",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Trait: BypasserTrait] [Error Handling] If request_can_bypass() returns an error Result, does the calling code default to allowing or denying bypass, and can an attacker trigger intentional errors to force a permissive failure mode? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c3e805ae-3e4a-443b-b2e6-5ce55477fc38?mode=deep",
+    "timestamp": "2026-01-27 08:26:35.976926",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Trait: BypasserTrait] [State Inconsistency] Since request_can_bypass() is async, can concurrent requests from the same source cause inconsistent bypass decisions if the underlying allowlist/token list is being modified during validation? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_30db09ae-5150-4237-a62d-1cd15e4d50c7?mode=deep",
+    "timestamp": "2026-01-27 08:26:49.491047",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Trait: BypasserTrait] [Fund Theft] If request_can_bypass() returns true, it bypasses ALL checkers and storage - can an attacker who gains bypass access drain the faucet by making unlimited concurrent requests without rate limiting? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_46abc10b-4685-46a7-9547-99bdfcbb6bb9?mode=deep",
+    "timestamp": "2026-01-27 08:27:03.787090",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: BypasserConfig] [Configuration Injection] Can an attacker manipulate the serde deserialization of BypasserConfig to inject malicious configurations that point to attacker-controlled allowlist files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7f84087f-d227-4702-b496-012bb69b1ef5?mode=deep",
+    "timestamp": "2026-01-27 08:27:19.314155",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: BypasserConfig] [Type Confusion] Does the #[serde(tag = 'type')] deserialization properly validate the type field, or can an attacker craft a malformed config that causes type confusion between AuthToken and IpAllowlist bypassers? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5983df04-a1b6-4612-9e4b-97a2ee705c49?mode=deep",
+    "timestamp": "2026-01-27 08:27:36.426321",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: BypasserConfig::AuthToken] [Path Traversal] Can the ListManagerConfig file path in AuthToken variant be exploited for path traversal to read arbitrary files containing valid auth tokens from the filesystem? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_99572290-fc5b-44ad-8b20-83d1fea63b22?mode=deep",
+    "timestamp": "2026-01-27 08:27:54.778682",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: BypasserConfig::IpAllowlist] [CIDR Manipulation] Can the IpRangeManagerConfig file path in IpAllowlist variant point to a file with maliciously crafted CIDR ranges (e.g., 0.0.0.0/0) that allow the entire internet to bypass checks? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b0636fff-6d8f-4e94-aa9d-d00bd37c151b?mode=deep",
+    "timestamp": "2026-01-27 08:28:14.750055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: BypasserConfig] [Clone Safety] Since BypasserConfig implements Clone, can cloned configs share mutable state that could lead to use-after-free or double-free vulnerabilities when configs are modified? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4d06c9c7-2304-430e-bee5-0b6952344782?mode=deep",
+    "timestamp": "2026-01-27 08:28:36.278834",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Function: BypasserConfig::build()] [Error Propagation] If AuthTokenBypasser::new() or IpAllowlistBypasser::new() fail during build(), does the error properly propagate, or can a panic/unwrap lead to DoS of the faucet service? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_05153b9d-95ee-45d9-9721-1113187df57e?mode=deep",
+    "timestamp": "2026-01-27 08:28:58.797744",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Function: BypasserConfig::build()] [Resource Exhaustion] Can an attacker provide a BypasserConfig pointing to an extremely large allowlist file that causes memory exhaustion during AuthTokenBypasser::new() or IpAllowlistBypasser::new()? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2f43e2fc-07cc-4090-9a5a-7dda55f4e169?mode=deep",
+    "timestamp": "2026-01-27 08:29:20.855548",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Function: BypasserConfig::build()] [Time-of-Check-Time-of-Use] Between reading the config file during build() and using the bypasser, can an attacker replace the allowlist file to add their IP/token, exploiting a TOCTOU race condition? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a3c10116-6104-4d4d-9759-7848e0d04815?mode=deep",
+    "timestamp": "2026-01-27 08:29:44.094721",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Function: BypasserConfig::build()] [Initialization Race] If multiple threads call build() concurrently with the same config, can race conditions in ListManager or IpRangeManager initialization lead to inconsistent bypass state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a33009a5-e162-4dbe-ac02-e2b0ec22bc30?mode=deep",
+    "timestamp": "2026-01-27 08:30:08.026017",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Function: BypasserConfig::build()] [File Handle Leak] Does build() properly handle file descriptor limits when reading allowlist files, or can an attacker trigger repeated build() calls to exhaust file handles and DoS the service? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9111e28b-4764-4285-b773-8400225bbc8a?mode=deep",
+    "timestamp": "2026-01-27 08:30:33.281710",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: Bypasser] [Enum Dispatch Bypass] Can the #[enum_dispatch(BypasserTrait)] macro be exploited to call the wrong bypasser implementation through type confusion or variant manipulation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e4d2a296-095b-40be-868f-7c0ab4383023?mode=deep",
+    "timestamp": "2026-01-27 08:30:57.847592",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: Bypasser] [Variant Exhaustiveness] If a new bypasser variant is added but not properly handled in all match statements, can this lead to unreachable code or default-allow bypass behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8d9bcdd5-fdb2-4d12-a0ef-3e0b1caa8acb?mode=deep",
+    "timestamp": "2026-01-27 08:31:22.543731",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: Bypasser::AuthTokenBypasser] [Multiple Bypassers] If multiple AuthTokenBypasser instances are configured, does the first match return true, or are all checked - can this lead to bypasses that shouldn't be allowed? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eaa063a6-e305-4489-8f11-e66b616e9b16?mode=deep",
+    "timestamp": "2026-01-27 08:31:45.592699",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: Bypasser::IpAllowlistBypasser] [Priority Ordering] If both AuthTokenBypasser and IpAllowlistBypasser are configured, is there a defined priority order, or can an attacker exploit ordering ambiguity to bypass restrictions? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c7e39797-bd8e-4ed9-bd22-d3c44208d811?mode=deep",
+    "timestamp": "2026-01-27 08:32:08.471093",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Enum: Bypasser] [Serialization Attack] Since Bypasser is an enum with From conversions, can an attacker exploit serialization to create a Bypasser variant that wasn't intended to be constructible? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_37c515cb-52df-47de-83a0-8f4aa6397977?mode=deep",
+    "timestamp": "2026-01-27 08:32:30.311427",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Integration: AuthTokenBypasser] [JWT vs API Token Confusion] Does the bypasser properly distinguish between Firebase JWT tokens (with X_IS_JWT_HEADER) and API auth tokens, or can an attacker use a JWT to bypass when only API tokens should work? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3b64ab0f-6183-4adf-8b6d-61313078925a?mode=deep",
+    "timestamp": "2026-01-27 08:32:51.225598",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Integration: AuthTokenBypasser] [Header Injection] Can an attacker inject both Authorization and X_IS_JWT_HEADER headers to confuse the auth token bypass logic and gain unauthorized access? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e04e695e-8bbd-44fb-8f52-9c464d7a6531?mode=deep",
+    "timestamp": "2026-01-27 08:33:10.404140",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Integration: AuthTokenBypasser] [Token Extraction] Does the Authorization header parsing properly handle malformed 'Bearer <token>' formats, or can an attacker craft headers with extra whitespace/characters to bypass token validation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_daa62004-02e4-4497-9a5f-e250432f8f5b?mode=deep",
+    "timestamp": "2026-01-27 08:33:30.819654",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Integration: AuthTokenBypasser] [Case Sensitivity] Is the auth token comparison case-sensitive, or can an attacker bypass checks by using different case variations of a valid token? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_493a10ad-8239-4924-9720-7c1b74fcc2e2?mode=deep",
+    "timestamp": "2026-01-27 08:33:53.090940",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/crates/aptos-faucet/core/src/bypasser/mod.rs] [Integration: AuthTokenBypasser] [Token Prefix] Does the bypasser validate that the Authorization header uses 'Bearer' prefix, or can attackers use other schemes like 'Basic' with valid tokens to bypass checks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_55f77c53-1c58-4b6b-a273-94e221fec5dd?mode=deep",
+    "timestamp": "2026-01-27 08:34:14.852062",
+    "report_generated": false
+  }
+]
