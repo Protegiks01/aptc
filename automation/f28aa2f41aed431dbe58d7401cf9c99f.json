@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_with_timeout()] [Race Condition on Metadata Creation] When creating metadata for empty store (lines 109-114), can concurrent calls create multiple metadata files with different chain_ids? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_632d65d6-724e-4fec-8831-40eb4a4826ad?mode=deep",
+    "timestamp": "2026-01-27 00:37:33.511415",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_with_timeout()] [Inconsistent Error Handling] NotFound error creates metadata (lines 108-114) while other errors return Err - can this inconsistency be exploited? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eac00e9b-8289-45ec-8843-87879398b227?mode=deep",
+    "timestamp": "2026-01-27 00:37:46.048937",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_with_timeout()] [Expect Causes Panic] Line 113 uses expect() which panics on error - can filesystem issues during metadata creation crash the indexer? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a46a0352-dd8a-45c5-96d9-551fc901c2a3?mode=deep",
+    "timestamp": "2026-01-27 00:37:59.068757",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_with_timeout()] [TOCTOU Metadata Check] Between reading metadata and validating chain_id, can an attacker modify the file to pass validation then revert it? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b7aefed9-cd49-4d82-b49f-2ab81a895b87?mode=deep",
+    "timestamp": "2026-01-27 00:38:12.454847",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [Atomic Write Missing] Lines 139-145 use tokio::fs::write() which may not be atomic - can partial writes leave corrupted metadata during crashes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0569f455-7283-469e-a288-6594c4d486dc?mode=deep",
+    "timestamp": "2026-01-27 00:38:26.436018",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [Race Condition on Metadata Update] Multiple concurrent calls can overwrite each other's metadata updates - can this cause version rollback or chain_id corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0001c3b7-36ce-4f5b-9691-bbdc4ac9a18d?mode=deep",
+    "timestamp": "2026-01-27 00:38:41.488055",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [Timestamp Update Before Write Confirmation] Line 141 updates latest_metadata_update_timestamp before confirming write success - can failed writes still update timestamp causing metadata staleness? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_621fdb58-d4be-4796-9468-8050b4bddb5d?mode=deep",
+    "timestamp": "2026-01-27 00:38:57.723690",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [Version Monotonicity Not Enforced] No check ensures new version > old version - can an attacker call this with version=0 to corrupt the metadata and cause data loss? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d9eb5c0a-819a-4462-b6d6-160f07e85c6d?mode=deep",
+    "timestamp": "2026-01-27 00:39:16.078133",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [No File Sync] After write, is there an fsync() call to ensure metadata persists to disk? Can crash-before-sync leave inconsistent state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_36598286-da35-4f35-9281-efaa7678afdb?mode=deep",
+    "timestamp": "2026-01-27 00:39:35.190951",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [Chain ID Change Allowed] Nothing prevents changing chain_id in subsequent calls - can this cause catastrophic data corruption by mixing different chain data? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2cc6649d-4dd2-48c0-8787-0267aae01964?mode=deep",
+    "timestamp": "2026-01-27 00:39:55.315383",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [Serialization Unwrap Panic] Line 139 uses unwrap() on serialization - although unlikely, can this panic be triggered through malicious data injection? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bc71399d-cb03-4abe-8ac5-ee760290eb51?mode=deep",
+    "timestamp": "2026-01-27 00:40:15.444155",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: update_file_store_metadata_internal()] [Storage Format Mismatch] If storage_format changes between updates, can old data become unreadable causing indexer failures? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_01f6e2ba-1c90-4674-9222-7bafb0d93679?mode=deep",
+    "timestamp": "2026-01-27 00:40:37.099860",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Unwrap Panic on Empty Batch] Line 154 unwraps transactions.first() - can an empty transactions vector cause panic-based DoS? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5666796f-b516-4a92-98e8-5a310e1a01e8?mode=deep",
+    "timestamp": "2026-01-27 00:40:58.306397",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Integer Overflow in Start Version] Can start_version be u64::MAX causing overflow when checking modulo FILE_ENTRY_TRANSACTION_COUNT? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_65f11590-586f-4d2d-a8cd-07b05ad3392d?mode=deep",
+    "timestamp": "2026-01-27 00:41:21.002262",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Batch Size Validation Bypass] Lines 156-163 require exact multiples of FILE_ENTRY_TRANSACTION_COUNT - can providing batch_size = 0 bypass these checks? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2db34e2d-0235-40ae-9e16-c88e06e5e600?mode=deep",
+    "timestamp": "2026-01-27 00:41:44.419962",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Inconsistent Transaction Versions] No validation ensures all transactions have sequential versions - can gaps or duplicates cause data corruption? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ae919a6b-3397-42f2-906c-9ad890aa51ce?mode=deep",
+    "timestamp": "2026-01-27 00:42:07.412204",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Chain ID Not Validated] The chain_id parameter is used for metadata but never validated against transactions - can wrong chain transactions be uploaded? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3f61a4f-590e-4fe4-b408-88b0fe81db39?mode=deep",
+    "timestamp": "2026-01-27 00:42:31.760480",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Race Condition in Directory Creation] Lines 175-178 check parent_dir.exists() then create - can concurrent uploads race in directory creation causing failures? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_3072751a-c903-48b1-89a5-5bb7f946cb8e?mode=deep",
+    "timestamp": "2026-01-27 00:42:55.512456",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Task Spawn Panic Propagation] Line 194 panics if task joining fails - can malicious task crashes cascade into indexer-wide panic? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_035f1e62-2310-411b-84e0-5ff2098365b8?mode=deep",
+    "timestamp": "2026-01-27 00:43:17.638024",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Partial Batch Upload] Lines 197-204 check results but don't rollback successful writes on partial failure - can this leave inconsistent file store state? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc50f2c4-7ff1-48cb-9029-e0837c50a242?mode=deep",
+    "timestamp": "2026-01-27 00:43:40.747708",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Concurrent Write to Same File] Can concurrent uploads with overlapping versions write to the same file simultaneously causing corruption? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e3738acf-3f37-49a2-8486-b613358a06d1?mode=deep",
+    "timestamp": "2026-01-27 00:44:02.513008",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Task Ordering Not Guaranteed] Spawned tasks at line 184 may complete in any order - can out-of-order completion corrupt filesystem state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_ec965a25-4968-4c7e-bb5a-08efa55b14c8?mode=deep",
+    "timestamp": "2026-01-27 00:44:27.129887",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Memory Exhaustion via Large Batch] If batch_size is extremely large (e.g., millions) but still a multiple of 1000, can spawning thousands of tasks exhaust memory? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1f225b23-5511-428a-80c2-c3fd29738550?mode=deep",
+    "timestamp": "2026-01-27 00:44:50.846891",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Atomic File Write Missing] Line 185 uses tokio::fs::write() without atomic write-then-rename - can crashes leave partial transaction files? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1ff09508-3a95-4835-8ab5-732b48351d76?mode=deep",
+    "timestamp": "2026-01-27 00:45:16.019253",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/ecosystem/indexer-grpc/indexer-grpc-utils/src/file_store_operator/local.rs] [Function: upload_transaction_batch()] [Path Traversal in File Entry Key] Line 172 builds file_entry_key from starting_version - can malicious FileEntry::build_key() implementation inject path traversal? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_e5cbf8dc-9d56-471d-8819-5ef2b1ce130a?mode=deep",
+    "timestamp": "2026-01-27 00:45:40.474086",
+    "report_generated": false
+  }
+]
