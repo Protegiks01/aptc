@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Constant: MAX_BATCHES] [Capacity tuning] Is MAX_BATCHES=100 sufficient for high-throughput backup scenarios, or can legitimate traffic exceed this causing blocking and performance degradation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_85496c6d-49f8-4e5c-88a6-d7796feb3680?mode=deep",
+    "timestamp": "2026-01-27 03:33:11.456283",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_res()] [Backpressure handling] The blocking_send() provides backpressure, but if the backup handler is in a tokio spawn_blocking() task, can this block the entire thread pool affecting other operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2e00675c-a151-466e-ba3a-c7d780cfe4ce?mode=deep",
+    "timestamp": "2026-01-27 03:33:23.914663",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Constant: MAX_BATCHES] [Queue overflow] If 100 batches are already queued and flush_buffer() tries to send another, the blocking_send() blocks forever if receiver never consumes - is there a timeout? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_afbb9423-4e06-40bd-b450-d422a22244f6?mode=deep",
+    "timestamp": "2026-01-27 03:33:36.878612",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: new()] [Channel type] Using tokio::sync::mpsc instead of async channel - does this cause issues when called from async contexts requiring .await? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_57618ba9-ae6b-4a88-a5be-e3789fc65c9c?mode=deep",
+    "timestamp": "2026-01-27 03:33:50.084523",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_res()] [Receiver drop] If the receiver is dropped (channel closed) while blocking_send() is waiting, does it return immediately or timeout? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_311a3be4-0895-497e-ad74-e3515c7bf66c?mode=deep",
+    "timestamp": "2026-01-27 03:34:04.339646",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Constant: TARGET_BATCH_SIZE] [Test mode risk] The test configuration sets TARGET_BATCH_SIZE=10 bytes at line 27 - could test code accidentally be compiled into production causing extremely small batches and performance issues? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bbfe9cbc-1179-4848-b056-0e0705119c98?mode=deep",
+    "timestamp": "2026-01-27 03:34:19.482761",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Constant: TARGET_BATCH_SIZE] [Configuration mismatch] The 1000x difference between test (10 bytes) and production (10KB) - are all tests actually exercising realistic batch sizes and buffering behavior? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_8c9c00ed-c564-44ca-87ab-a9736346c112?mode=deep",
+    "timestamp": "2026-01-27 03:34:35.484451",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Constant: MAX_BATCHES] [Test scaling] Is MAX_BATCHES=100 tested with production-size batches, or only with tiny test batches, potentially missing buffer overflow issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1bc9fc0b-4a6c-423c-ada8-3ff73da705a8?mode=deep",
+    "timestamp": "2026-01-27 03:34:53.673724",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Metrics accuracy] THROUGHPUT_COUNTER is incremented at line 71 - if send_res() fails after incrementing, are the metrics inflated showing bytes that were never successfully sent? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_00214278-d1c1-4e2a-b3d2-c857e278b464?mode=deep",
+    "timestamp": "2026-01-27 03:35:12.890952",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Metrics overflow] The counter increment with bytes.len() as u64 - over long uptime, could this u64 counter overflow causing metrics wraparound? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_665b29ae-b14d-45cf-a68b-88a440139435?mode=deep",
+    "timestamp": "2026-01-27 03:35:33.846330",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Metrics contention] If THROUGHPUT_COUNTER is a shared global metric, can high-frequency updates from many concurrent backup requests cause lock contention and performance issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_5f12d096-b5b1-487a-a578-0fc935ab75e5?mode=deep",
+    "timestamp": "2026-01-27 03:35:54.863743",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Struct: BytesSender] [Endpoint validation] The endpoint field is used for metrics labeling - can an attacker inject malicious strings into endpoint causing metrics corruption or injection attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a7815b82-8a0f-406a-866a-b27ab64e8da5?mode=deep",
+    "timestamp": "2026-01-27 03:36:16.865533",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: new()] [Stream consumption] The returned ReceiverStream at line 40 - if the caller never polls the stream, does this cause the sender to block indefinitely filling up the channel? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_616daa9d-297d-48c2-9119-8905c437d4b7?mode=deep",
+    "timestamp": "2026-01-27 03:36:39.589718",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Protocol compatibility] The size-prefixed BCS encoding format - is this documented and validated to be compatible with all backup restoration tools? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7b4d7f59-3109-4d29-9cd6-63366a03e600?mode=deep",
+    "timestamp": "2026-01-27 03:37:02.055302",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Freeze semantics] The buf.freeze() at line 66 - does this create a zero-copy view or copy the data, and can this cause use-after-free if the underlying BytesMut is reused? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a6c46252-7e66-4ab0-b15b-6550fb6b7317?mode=deep",
+    "timestamp": "2026-01-27 03:37:24.605236",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Split semantics] The buffer.split() at line 70 returns the full buffer and replaces it with empty - is this atomic, or can concurrent access see inconsistent state? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_91f8f860-d4a3-48e0-88d2-12bb4401b744?mode=deep",
+    "timestamp": "2026-01-27 03:37:47.311164",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Struct: BytesSender] [Drop safety] Does BytesSender implement Drop to ensure buffer is flushed, or can dropping an instance lose buffered data? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb7f7504-aa17-46a1-a622-088090a6a765?mode=deep",
+    "timestamp": "2026-01-27 03:38:11.244356",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: finish()] [Move semantics] The finish() method moves self - if called through a reference or in unsafe code context, could this cause double-free? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a50a1429-bfe6-463a-8bd6-5714b4cc425a?mode=deep",
+    "timestamp": "2026-01-27 03:38:35.407846",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: abort()] [Move semantics] The abort() method moves self - can this be exploited in combination with finish() to cause use-after-move? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cb3c8f19-3385-4adf-90ac-24a249115b51?mode=deep",
+    "timestamp": "2026-01-27 03:38:58.155249",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Reference safety] Taking &mut self ensures exclusive access, but is the BytesSender ever used with interior mutability patterns that could bypass this? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b8ec6f90-199d-46cc-9dfb-dc103984ba12?mode=deep",
+    "timestamp": "2026-01-27 03:39:22.599209",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_bytes()] [Buffer reallocation] BytesMut.extend() may need to reallocate if capacity is exceeded - can repeated small sends cause O(n²) behavior with many reallocations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c83147ac-ee7b-45a1-ae7c-41b3dbd6461f?mode=deep",
+    "timestamp": "2026-01-27 03:39:46.220340",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Double allocation] Line 62 allocates a new BytesMut, then line 66 sends it - could this be optimized to avoid allocation and reduce DoS attack surface? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4e98e718-0228-45b4-944a-e8659936f6ba?mode=deep",
+    "timestamp": "2026-01-27 03:40:08.920657",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: flush_buffer()] [Freeze overhead] The freeze() operation at line 70 - does this involve reference counting or atomic operations that could cause contention under high concurrency? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a52c549d-3a7a-402f-b5f7-ca2052a797e4?mode=deep",
+    "timestamp": "2026-01-27 03:40:31.830245",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Constant: TARGET_BATCH_SIZE] [Batch size optimization] Is 10KB the optimal batch size for backup performance, or could a different size reduce the attack surface of buffer exhaustion? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_0d64ba20-eea2-4003-b72d-3b9295c9f2f2?mode=deep",
+    "timestamp": "2026-01-27 03:40:53.092232",
+    "report_generated": false
+  },
+  {
+    "question": "[File: aptos-core/storage/backup/backup-service/src/handlers/bytes_sender.rs] [Function: send_size_prefixed_bcs_bytes()] [Length prefix attack] The u32 length prefix limits records to 4GB - but what prevents an attacker from sending a size prefix indicating 4GB when the actual data is smaller, causing the receiver to block waiting for more data? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bb0743e6-d847-4c66-8010-57a6e51a2b60?mode=deep",
+    "timestamp": "2026-01-27 03:41:14.237962",
+    "report_generated": false
+  }
+]
