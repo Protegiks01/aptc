@@ -1,0 +1,152 @@
+[
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::load_identity()] [Peer ID Derivation] Does from_identity_public_key() properly derive peer_id from the public key, or can hash collisions or edge cases in the derivation allow different private keys to produce the same peer_id, enabling impersonation? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_9b53030d-6144-4aee-b716-e2c9f87e85a3?mode=deep",
+    "timestamp": "2026-01-27 01:14:38.979025",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::load_identity()] [Return Type Ambiguity] Returning Option<Self> for both 'file doesn't exist' and 'valid identity loaded' cases—can calling code distinguish these, or does it treat missing identity as valid None, causing validators to run without proper identity? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2c4e8954-7540-4b61-87aa-e4e42dea9332?mode=deep",
+    "timestamp": "2026-01-27 01:14:51.422905",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::load_identity()] [File Permission Check] Does the function verify that the identity file has secure permissions (0600) before loading keys, or can it load keys from world-readable files that may be compromised? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_c0968987-6902-4d76-9aa6-5c8d113dd9e1?mode=deep",
+    "timestamp": "2026-01-27 01:15:04.681977",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::load_identity()] [Memory Safety] After loading private key bytes into memory, are they securely wiped from buffers and intermediate variables, or do they remain in memory vulnerable to swap file or memory dump attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b2bd38ad-367e-4cb9-8066-8795a8b14930?mode=deep",
+    "timestamp": "2026-01-27 01:15:17.768015",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::load_identity()] [Symbolic Link Following] Does fs::read() follow symbolic links, allowing attackers who can create symlinks to trick the validator into loading identity files from arbitrary locations? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_776998d4-9d8e-48af-a483-3e0da271500f?mode=deep",
+    "timestamp": "2026-01-27 01:15:31.794982",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::save_private_key()] [Directory Traversal] Does fs::create_dir_all() validate the parent_path, or can attackers provide paths with directory traversal (../../etc/) to create directories and save keys in arbitrary filesystem locations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_668816aa-98a8-4643-829b-f2e903cc9a33?mode=deep",
+    "timestamp": "2026-01-27 01:15:46.483563",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::save_private_key()] [Unwrap Panic] Does path.parent().unwrap() properly handle the case where path has no parent (e.g., root path '/'), or can it panic causing validator crash during key saving? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a31d1428-4d10-44f7-98db-0fed3237dcc5?mode=deep",
+    "timestamp": "2026-01-27 01:16:03.797552",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::save_private_key()] [Insecure File Permissions] Does File::create() set secure permissions (0600) for the private key file, or are keys saved world-readable by default, exposing validator network identity to local attackers? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_a9fc69dd-a951-4cea-8150-ff81f1d71504?mode=deep",
+    "timestamp": "2026-01-27 01:16:21.182719",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::save_private_key()] [Atomic Write Missing] Does the function write directly to the target file, or does it use atomic write patterns (write-to-temp-then-rename) to prevent corruption if the validator crashes mid-write? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_7ba426cd-2bd3-4fb9-8417-da1a6146c413?mode=deep",
+    "timestamp": "2026-01-27 01:16:39.811265",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::save_private_key()] [Key Material Exposure] Does to_bytes() leave unencrypted key material in memory or temporary buffers that aren't securely wiped, making keys vulnerable to memory analysis attacks? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_4235c9d6-fcca-4649-80e8-290a603b94b8?mode=deep",
+    "timestamp": "2026-01-27 01:16:59.732332",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::save_private_key()] [Disk Full Handling] If disk is full during write_all(), does the function properly detect and handle the error, or can partial writes create corrupted key files that prevent validator restart? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_932586a5-897e-48de-855c-b9aba59f31b9?mode=deep",
+    "timestamp": "2026-01-27 01:17:20.159559",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::save_private_key()] [Directory Permission Race] Between create_dir_all() and File::create(), can an attacker change directory permissions to make the parent directory world-writable, causing keys to be saved in an insecure location? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_83657661-02c2-4747-847f-e0d47e0db6f7?mode=deep",
+    "timestamp": "2026-01-27 01:17:41.990142",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Function: Identity::save_private_key()] [Symlink Attack] If the path points to a symlink, can an attacker create a symlink to a sensitive system file causing the validator to overwrite it with private key bytes? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_132c1b06-554f-414f-b52c-35bfb9177500?mode=deep",
+    "timestamp": "2026-01-27 01:18:03.667175",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromConfig] [Key Serialization] Does the ConfigKey wrapper properly prevent private key material from being serialized to logs, debug output, or config dumps, or can keys leak through accidental serialization? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_767973d4-08d2-471d-a8f6-8823838f75b4?mode=deep",
+    "timestamp": "2026-01-27 01:18:26.960638",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromConfig] [Peer ID Consistency] Is there runtime validation that peer_id matches the public key derived from the wrapped private key, or can deserialization create inconsistent states where peer_id doesn't match the key? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_2522b4dd-977b-4f8f-8773-77cb105a39d6?mode=deep",
+    "timestamp": "2026-01-27 01:18:50.647734",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromConfig] [Source Field Skip] The source: IdentitySource field is marked #[serde(skip)], meaning it's not persisted. Can this cause confusion where reloaded configs lose track of whether identity was auto-generated vs user-provided, affecting key rotation policies? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_bab74b3c-88c9-4abd-9219-483833ddba9b?mode=deep",
+    "timestamp": "2026-01-27 01:19:16.205863",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromConfig] [Flatten Directive] Does #[serde(flatten)] on the key field properly namespace the private key data in serialized config, or can it collide with other fields causing deserialization ambiguity? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_865837a6-7826-44d6-a079-ab686da02a70?mode=deep",
+    "timestamp": "2026-01-27 01:19:42.148942",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromConfig] [deny_unknown_fields] While deny_unknown_fields prevents extra fields, does it properly reject malformed configs, or can attackers craft configs with valid-but-unexpected field combinations that cause security issues? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_b169cbfd-48b8-4c3e-85aa-07a54ec3aade?mode=deep",
+    "timestamp": "2026-01-27 01:20:07.497361",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Enum: IdentitySource] [Default Confusion] The #[default] attribute makes UserProvided the default IdentitySource. Can this cause issues where auto-generated keys are mistakenly persisted as permanent user keys, preventing proper key rotation? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_d0a93c37-c720-4dfc-b9bc-0fe3a01a2f9f?mode=deep",
+    "timestamp": "2026-01-27 01:20:33.605503",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Enum: IdentitySource] [Security Policy Bypass] Since IdentitySource is not serialized, can attackers downgrade auto-generated (meant to be rotated) identities to user-provided (permanent) by manipulating config reload, bypassing key rotation security policies? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_cc09e64c-0634-4985-8823-4fb6c065d78d?mode=deep",
+    "timestamp": "2026-01-27 01:20:59.689746",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromStorage] [Backend Security] What prevents an attacker from modifying the SecureBackend configuration to point to a malicious key storage system, causing the validator to retrieve attacker-controlled keys? (Critical)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_eff78c2d-e3f9-40f6-8572-a807b8b5fcd4?mode=deep",
+    "timestamp": "2026-01-27 01:21:26.831239",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromStorage] [Key Name Length] Are key_name and peer_id_name strings length-limited, or can extremely long names cause buffer overflows or DoS in the underlying storage backend? (Medium)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_994e0ceb-9f6a-4afa-a7c2-949e233085f5?mode=deep",
+    "timestamp": "2026-01-27 01:21:54.575734",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromStorage] [Storage Key Injection] Can special characters in key_name or peer_id_name (e.g., SQL injection-style sequences) manipulate the storage backend to retrieve wrong keys or execute unintended operations? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_60012754-0cf4-496e-824f-11086432170b?mode=deep",
+    "timestamp": "2026-01-27 01:22:21.318822",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromStorage] [Backend Availability] If the SecureBackend becomes unavailable, does the validator handle this gracefully, or does it crash preventing recovery and causing loss of liveness? (High)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_1aa8fe88-7ec9-4a9b-852a-d9ce86dbf257?mode=deep",
+    "timestamp": "2026-01-27 01:22:48.501241",
+    "report_generated": false
+  },
+  {
+    "question": "[File: config/src/config/identity_config.rs] [Struct: IdentityFromStorage] [Eq Trait Implementation] Why does IdentityFromStorage implement Eq but IdentityFromConfig doesn't? Can this equality comparison reveal information about storage backend configuration that aids attacks? (Low)",
+    "url": "https://deepwiki.com/search/-you-are-an-elite-aptos-blockc_109c130c-ce67-4c50-90b4-b38f28bdae79?mode=deep",
+    "timestamp": "2026-01-27 01:23:15.599426",
+    "report_generated": false
+  }
+]
