@@ -1,1 +1,0 @@
-I'll analyze this security question about potential undefined behavior in the `postorder_to_inorder()` function.
